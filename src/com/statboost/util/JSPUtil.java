@@ -1,8 +1,7 @@
-package com.csc191.util;
+package com.statboost.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 
 public class JSPUtil {
     public static String nvl(String string)  {

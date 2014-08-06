@@ -1,6 +1,5 @@
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-</table>
+
+<footer>
+
+</footer>
+</html>

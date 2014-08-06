@@ -1,4 +1,4 @@
-package com.csc191;
+package com.statboost.controllers;
 
 import org.apache.log4j.Logger;
 
@@ -16,7 +16,6 @@ import java.util.Properties;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    public static final String SRV_MAP = "/login";
     static Logger logger = Logger.getLogger(LoginServlet.class);
     public static final String PARAM_USERNAME = "username";
     public static final String PARAM_PASSWORD = "password";
