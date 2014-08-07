@@ -1,56 +1,29 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head>
-    <title>Login</title>
+<jsp:include page="/include/Header.jsp"/>
 
-    <LINK href="/include/stylesheets/stylesheet.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-    <form style="height: 100%;" method="post" action="">
-        <table align=center; cellpadding="0" cellspacing="0" border="0" style="width:100%; height:100%; text-align: center;">
 
-            <tr>
-                <td>
-                    <table cellpadding="0" cellspacing="0" border="0" style="margin-left: auto; margin-right:auto; margin-top:15px;">
-                        <tr>
-                            <td style="color: white; font-size: 18px; font-weight: bold; text-align: center">
-                                <table cellpadding="0" cellspacing="0" border="0">
+<form method="post">
+    <div class="container">
+        <h2>Authenticate Yourself</h2>
+        <!--
+        @if(loginForm.hasGlobalErrors) {
+        <div class="alert alert-danger fade in">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <strong>Oops!</strong> @loginForm.globalError.message
+        </div>
+        } -->
+        <div class="form-inline">
+            <div class="form-group">
+                <input name="email" type="email" class="form-control" placeholder="Email" value="">
+            </div>
+            <div class="form-group">
+                <input name="password" type="password" class="form-control" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-primary">Sign in</button>
+        </div>
+    </div>
+</form>
 
-                                    <tr>
-                                        <td></td>
-                                    </tr>
 
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-
-            <tr>
-                <td id="topLogin"></td>
-            </tr>
-            <tr>
-                <td>
-                    <input class="loginBoxes" style="margin-bottom:10px;" type="text" value="" name="">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input class="loginBoxes" type="password" value="" name="">
-                </td>
-            </tr>
-            <tr>
-                <td><input type="submit" value="login" id="loginButtonGreen"></td>
-            </tr>
-            <tr>
-                <td style="height: 100%;"></td>
-            </tr>
-        </table>
-        </form>
-</body>
-
-</html>
+<jsp:include page="/include/Footer.jsp"/>

@@ -1,4 +1,3 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -14,3 +13,4 @@
     <script type="text/javascript" src="/include/javascripts/jquery-1.11.1.min.js"></script>
 
 </head>
+<body>

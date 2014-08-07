@@ -7,13 +7,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
-@WebServlet("/login")
-public class LoginServlet extends HttpServlet {
+/**
+ * Created by Sam Kerr
+ * 4:35 PM on 8/6/2014
+ */
+@WebServlet("/magicSearch")
+public class MagicSearchServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        request.getRequestDispatcher("Login.jsp").forward(request, response);
+        request.getRequestDispatcher("MagicSearch.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
