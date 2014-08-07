@@ -2,9 +2,7 @@ package com.statboost.models.actor;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.EbeanServer;
-import org.mindrot.jbcrypt.BCrypt;
-import play.data.validation.Constraints;
-import play.db.ebean.Model;
+import com.avaje.ebean.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -15,12 +13,9 @@ import javax.persistence.Id;
 @Entity
 public class User extends Model {
     @Id
-    @Constraints.Required
     public String email;
     public String name;
-    @Constraints.Required
     public String password;
-    @Constraints.Required
     public String role;
 
     /**
@@ -52,6 +47,7 @@ public class User extends Model {
      * @param password - User password
      * @return - User matching the email and password
      */
+    /*
     public static User authenticate(String email, String password) {
         EbeanServer userDB = Ebean.getServer("user");
         User candidate = userDB.find(User.class).where().eq("email", email).findUnique();
@@ -59,13 +55,14 @@ public class User extends Model {
             return candidate;
         else return null;
     }
-
+*/
     /**
      * This method inserts a new user into the database
      * @param email - New User email
      * @param password - New User password
      * @param name - New User name in the form of firstname_lastname
      */
+    /*
     public static boolean insert(String email, String password, String name) {
         EbeanServer userDB = Ebean.getServer("user");
         if (userDB.find(User.class).where().eq("email", email).findUnique() == null) {
@@ -76,7 +73,7 @@ public class User extends Model {
         }
         return false;
     }
-
+*/
     /**
      * This method inserts a new user into the database
      * @param email - New User email
@@ -84,6 +81,7 @@ public class User extends Model {
      * @param name - New User name in the form of firstname_lastname
      * @param role - Enum 'Admin', 'Employee', 'Customer'
      */
+    /*
     public static boolean insert(String email, String password, String name, String role) {
         EbeanServer userDB = Ebean.getServer("user");
         if (userDB.find(User.class).where().eq("email", email).findUnique() == null) {
@@ -94,7 +92,7 @@ public class User extends Model {
         }
         return false;
     }
-
+*/
     public static User retrieveUser(String email) {
         User candidate = null;
         if (email != null) {

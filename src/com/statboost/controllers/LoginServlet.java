@@ -1,5 +1,8 @@
 package com.statboost.controllers;
 
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.*;
+import com.statboost.models.mtg.MagicCard;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -12,6 +15,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 @WebServlet("/login")
@@ -64,6 +68,14 @@ public class LoginServlet extends HttpServlet {
 
     private static void forwardToLogin(HttpServletRequest request, HttpServletResponse response, ArrayList<String> error)
             throws IOException, ServletException {
+
+        //something here
+        EbeanServer mtg = Ebean.getServer("mtg");
+
+        Query res = mtg.find(MagicCard.class);
+
+        List<MagicCard> mtgCardResult = MagicCard.find.where().ilike("cardname", "azusa").findList();
+        System.out.println(mtgCardResult.get(0).toString());
         request.setAttribute(ATTR_ERRORS, error);
         request.getRequestDispatcher("Login.jsp").forward(request, response);
     }

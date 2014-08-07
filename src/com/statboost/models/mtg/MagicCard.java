@@ -1,7 +1,6 @@
 package com.statboost.models.mtg;
 
-import play.data.validation.Constraints;
-import play.db.ebean.Model;
+import com.avaje.ebean.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -22,21 +21,16 @@ public class MagicCard extends Model implements Comparable {
     private String colors;
     private String flavor;
     private int hand; //only exists for Vanguard cards
-    @Constraints.Required
     private String imagename;
     private String layout;
     private int life; //only exists for Vanguard cards
     private int loyalty;
     private String manacost;
     @Id
-    @Constraints.Required
     private int multiverseid;
     @Id
-    @Constraints.Max(150)
-    @Constraints.Required
     private String cardname;
     //private String[] names; //Only used for split, flip and dual cards
-    @Constraints.Required
     private String setid;
     private String cardnumber;
     private String cardpower;
