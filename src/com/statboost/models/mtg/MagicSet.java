@@ -1,8 +1,7 @@
 package com.statboost.models.mtg;
 
-import play.data.format.Formats;
-import play.data.validation.Constraints;
-import play.db.ebean.Model;
+
+import com.avaje.ebean.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -21,14 +20,11 @@ public class MagicSet extends Model implements Comparable {
     private String border;
     private ArrayList<MagicCard> cards;
 
-    @Constraints.Required
     private String codeid;
 
     @Id
-    @Constraints.Required
     private String setname;
 
-    @Formats.DateTime(pattern = "yyyy-MM-dd")
     private Date releasedate;
 
     private String settype;
