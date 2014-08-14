@@ -13,7 +13,7 @@ public class ServletUtil {
         Properties connectionProperties = new Properties();
         ResultSet rs = null;
         try   {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/statboost", "root", "2sUshicr3at0r5");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/statboost", "root", "");
             Statement statement = connection.createStatement();
             rs = statement.executeQuery(sql);
             return rs;

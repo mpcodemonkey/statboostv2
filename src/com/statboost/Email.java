@@ -1,4 +1,4 @@
-package com.statboost.models.email;
+package com.statboost;
 
 public class Email {
     private int uid;

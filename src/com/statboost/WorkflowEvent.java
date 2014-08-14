@@ -1,4 +1,5 @@
-package com.statboost.models.email;
+package com.statboost;
+
 
 public class WorkflowEvent {
     private int uid;
