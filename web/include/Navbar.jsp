@@ -1,11 +1,13 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Sam
   Date: 8/3/2014
   Time: 10:23 PM
 --%>
-
+<!--
 <script src="/include/javascripts/autocomplete.js" type="text/javascript"></script>
+-->
 <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
     <div class="container">
         <div class="navbar-header">
@@ -30,34 +32,33 @@
                 </div>
                 <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" action=""></span></button>
             </form>
-            <!--
-            @if(session().contains("email")) {
+
+            <c:if test="${sessionScope.email != null}">
                 <div class="btn-group">
                     <button type="button" class="btn navbar-btn navbar-right btn-success dropdown-toggle" data-toggle="dropdown">
-                        @session().get("email").substring(0, session.get("email").indexOf('@'))&nbsp;<span class="glyphicon glyphicon-user"></span>
+                        <c:out value="${sessionScope.email}"/>&nbsp;<span class="glyphicon glyphicon-user"></span>
                     </button>
                     <ul class="dropdown-menu">
                         <li><a href="/profile">User Profile</a></li>
-                        @if(session().containsKey("admin")) {
-                        <li><a href="/adminCP">Admin CP</a></li>
-                        }
+                        <c:if test="${sessionScope.admin != null}">
+                            <li><a href="/adminCP">Admin CP</a></li>
+                        </c:if>
                         <li class="divider"></li>
                         <li><a href="/logout">Logout</a></li>
                     </ul>
                 </div>
-            }
-            -->
+            </c:if>
+
         </div><!-- /.nav-collapse -->
     </div><!-- /.container -->
 </div><!-- /.navbar -->
-<br><br><br>
-
 <!--
-@if(flash().contains("message") && flash().contains("type")) {
-    <div class="alert alert-@flash().get("type") fade in">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-    <strong>@flash().get("message")</strong>
-    </div>
-}
-
+Alert Handler
 -->
+<c:if test="${requestScope.alert != null}">
+    <div class="alert alert-info fade in">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong>Alert: </strong> <c:out value="${requestScope.alert}" />
+    </div>
+</c:if>
+<br><br><br>

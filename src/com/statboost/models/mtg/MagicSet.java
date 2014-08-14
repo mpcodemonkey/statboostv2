@@ -1,8 +1,6 @@
 package com.statboost.models.mtg;
 
 
-import com.avaje.ebean.Model;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.ArrayList;
@@ -15,7 +13,7 @@ import java.util.Date;
 
 
 @Entity
-public class MagicSet extends Model implements Comparable {
+public class MagicSet implements Comparable {
     private String block;
     private String border;
     private ArrayList<MagicCard> cards;
@@ -36,7 +34,7 @@ public class MagicSet extends Model implements Comparable {
     /**
      * Finder for querying this model from the database
      */
-    public static Finder<Long, MagicSet> find = new Finder<Long, MagicSet>(Long.class, MagicSet.class);
+    //public static Finder<Long, MagicSet> find = new Finder<Long, MagicSet>(Long.class, MagicSet.class);
 
     public String getBlock() {
         return block;
