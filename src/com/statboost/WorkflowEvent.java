@@ -1,10 +1,18 @@
 package com.statboost;
 
+import javax.persistence.*;
 
+@Entity
+@Table(name = "stt_workflow_event")
 public class WorkflowEvent {
+    @Id @GeneratedValue
+    @Column(name="wev_uid")
     private int uid;
+    @Column(name="wev_name")
     private String name;
+    @Column(name="wev_description")
     private String description;
+    @Column(name="wev_code")
     private String code;
 
     public int getUid() {

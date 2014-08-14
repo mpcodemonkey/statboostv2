@@ -1,7 +1,6 @@
 package com.statboost.models.form;
 
 
-import com.statboost.models.actor.User;
 
 /**
  * Created by Sam Kerr on 4/3/2014.

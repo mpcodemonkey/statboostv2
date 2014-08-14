@@ -1,13 +1,28 @@
 package com.statboost;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "stt_email")
 public class Email {
+    @Id @GeneratedValue
+    @Column(name = "eml_uid")
     private int uid;
+    @Column(name="eml_name")
     private String name;
+    @Column(name="eml_subject")
     private String subject;
+    @Column(name="eml_from")
     private String from;
+    @Column(name = "eml_to")
     private String to;
+    @Column(name="eml_body")
     private String body;
+    @OneToOne
+    @JoinColumn(name="eml_etm_uid")
     private int emailTemplateUid;
+    @OneToOne
+    @JoinColumn(name="eml_vgr_uid")
     private int emailVariableGroupUid;
 
     public int getUid() {

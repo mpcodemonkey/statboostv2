@@ -53,4 +53,24 @@ create table stt_variable  (
   vrb_default_value varchar(1000),
   vrb_format varchar(100),
   vrb_display_name varchar(100) not null
-)
+);
+
+create table stt_user  (
+  usr_uid int primary key auto_increment,
+  usr_role ENUM('CUSTOMER', 'ADMIN', 'EMPLOYEE', 'GUEST') not null,
+  usr_email varchar(150) not null, //acts as a username
+  usr_password varchar(16) not null,
+  usr_address_1 varchar(150),
+  usr_address_2 varchar(100),
+  usr_city varchar(100),
+  usr_state varchar(2),
+  usr_zip varchar(5),
+  usr_first_name varchar(100),
+  usr_last_name varchar(100),
+  usr_phone varchar(10),
+  usr_newsletter boolean,
+  usr_active boolean,
+  usr_dci_number varchar(10)
+);
+
+
