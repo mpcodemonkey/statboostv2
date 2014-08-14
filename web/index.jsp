@@ -23,6 +23,8 @@
     </div>
     }
     -->
+
+
     <div class="container">
         <div class="row row-offcanvas row-offcanvas-right">
             <div class="col-xs-12 col-sm-9">
@@ -62,9 +64,9 @@
                     <a href="/magicSearch" class="list-group-item">Card Search</a>
                     <a href="/login" class="list-group-item">Login</a>
                     <a href="/register" class="list-group-item">Register</a>
-                 <!--   @if(session().contains("email")) {
-                    <a href="/logout" class="list-group-item">Logout</a>
-                    } -->
+                    <c:if test="${sessionScope.email != null}">
+                        <a href="/logout" class="list-group-item">Logout</a>
+                    </c:if>
                 </div>
             </div><!--/span-->
         </div><!--/row-->
