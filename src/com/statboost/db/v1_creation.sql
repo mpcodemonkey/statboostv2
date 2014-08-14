@@ -19,7 +19,7 @@ create table stt_email  (
   eml_etm_uid int not null,
   constraint eml_etm_uid_fk foreign key (eml_etm_uid) references stt_email_template(etm_uid),
   eml_vgr_uid int not null,
-  constraint eml_etm_uid_fk foreign key (eml_etm_uid) references stt_variable_group(vgr_uid)
+  constraint eml_vgr_uid_fk foreign key (eml_vgr_uid) references stt_variable_group(vgr_uid)
 );
 
 create table stt_workflow_event  (
@@ -32,23 +32,23 @@ create table stt_workflow_event  (
 create table stt_email_workflow_event_link  (
   ewe_uid int primary key auto_increment,
   ewe_eml_uid int not null,
-  constraint ewe_eml_uid_fk foreign key (ewe_eml_uid) references stt_email,
+  constraint ewe_eml_uid_fk foreign key (ewe_eml_uid) references stt_email (eml_uid),
   ewe_wev_uid int not null,
-  constraint ewe_wev_uid_fk foreign key (ewe_wev_uid) references stt_workflow_event
+  constraint ewe_wev_uid_fk foreign key (ewe_wev_uid) references stt_workflow_event (wev_uid)
 ) ;
 
 create table stt_group_event_link  (
   gel_uid int primary key auto_increment,
   gel_vgr_uid int not null,
-  constraint gel_vgr_uid_fk foreign key (gel_vgr_uid) references stt_variable_group,
+  constraint gel_vgr_uid_fk foreign key (gel_vgr_uid) references stt_variable_group (vgr_uid),
   gel_wev_uid int not null,
-  constraint gel_wev_uif_fk foreign key (gel_wev_uid) references stt_workflow_event
+  constraint gel_wev_uif_fk foreign key (gel_wev_uid) references stt_workflow_event (wev_uid)
 ) ;
 
 create table stt_variable  (
   vrb_uid int primary key auto_increment,
   vrb_vrg_uid int not null,
-  constraint vrb_vrg_uid_fk foreign key (vrb_vrg_uid) references stt_variable_group,
+  constraint vrb_vrg_uid_fk foreign key (vrb_vrg_uid) references stt_variable_group (vgr_uid),
   vrb_name varchar(50) not null,
   vrb_default_value varchar(1000),
   vrb_format varchar(100),

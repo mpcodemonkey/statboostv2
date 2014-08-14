@@ -1,6 +1,6 @@
 package com.statboost.controllers;
 
-import com.statboost.models.email.Email;
+import com.statboost.Email;
 import com.statboost.util.ServletUtil;
 import org.apache.log4j.Logger;
 
@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 @WebServlet("/emaileditor")
 public class EmailEditorServlet extends HttpServlet {
