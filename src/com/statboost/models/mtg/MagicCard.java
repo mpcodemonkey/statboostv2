@@ -1,9 +1,11 @@
 package com.statboost.models.mtg;
 
-import com.avaje.ebean.Model;
+//import com.avaje.ebean.Model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 /**
@@ -11,12 +13,20 @@ import javax.persistence.Id;
  * 3:50 PM on 2/15/14
  */
 
-
 @Entity
-public class MagicCard extends Model implements Comparable {
-
+@Table(name="stt_magic_card")
+public class MagicCard{
+    @Id
+    @Column(name="mcr_multiverse_id")
+    private int multiverseId;
+    @Id
+    @Column(name="mcr_card_name")
+    private String cardName;
+    @Column(name="mcr_artist")
     private String artist;
+    @Column(name="mcr_border")
     private String border;  //Only if different than border of set
+
     private double cmc;
     private String colors;
     private String flavor;
@@ -26,10 +36,7 @@ public class MagicCard extends Model implements Comparable {
     private int life; //only exists for Vanguard cards
     private int loyalty;
     private String manacost;
-    @Id
-    private int multiverseid;
-    @Id
-    private String cardname;
+
     //private String[] names; //Only used for split, flip and dual cards
     private String setid;
     private String cardnumber;
@@ -41,7 +48,7 @@ public class MagicCard extends Model implements Comparable {
     private String toughness;
     private String cardtype;
     //private String[] types;
-    //private int[] variations; //If a card has alternate art then each variation's multiverseid will be listed including the current multiverseid
+    //private int[] variations; //If a card has alternate art then each variation's multiverseId will be listed including the current multiverseId
     private String watermark;
 
     public MagicCard() {
@@ -51,7 +58,7 @@ public class MagicCard extends Model implements Comparable {
     /**
      * Finder for querying this model from the database
      */
-    public static Finder<Long, MagicCard> find = new Finder<Long, MagicCard>(Long.class, MagicCard.class);
+    //public static Finder<Long, MagicCard> find = new Finder<Long, MagicCard>(Long.class, MagicCard.class);
 
     public String getArtist() {
         return artist;
@@ -149,20 +156,20 @@ public class MagicCard extends Model implements Comparable {
         this.manacost = manaCost;
     }
 
-    public int getMultiverseid() {
-        return multiverseid;
+    public int getMultiverseId() {
+        return multiverseId;
     }
 
-    public void setMultiverseid(int multiverseid) {
-        this.multiverseid = multiverseid;
+    public void setMultiverseId(int multiverseId) {
+        this.multiverseId = multiverseId;
     }
 
     public String getName() {
-        return cardname;
+        return cardName;
     }
 
     public void setName(String name) {
-        this.cardname = name;
+        this.cardName = name;
     }
 /*
     public String[] getNames() {
@@ -261,8 +268,7 @@ public class MagicCard extends Model implements Comparable {
         this.watermark = watermark;
     }
 
-    @Override
     public int compareTo(Object o) {
-        return cardname.compareTo(((MagicCard)o).getName());
+        return cardName.compareTo(((MagicCard)o).getName());
     }
 }

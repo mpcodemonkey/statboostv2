@@ -1,9 +1,15 @@
-package com.statboost.models.email;
+package com.statboost;
 
-public class EmailTemplate {
+import javax.persistence.*;
+
+@Entity
+@Table(name="stt_variable_group")
+public class VariableGroup {
+    @Id @GeneratedValue
+    @Column(name="vgr_uid")
     private int uid;
+    @Column(name="vgr_name")
     private String name;
-    private String body;
 
     public int getUid() {
         return uid;
@@ -19,13 +25,5 @@ public class EmailTemplate {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
     }
 }

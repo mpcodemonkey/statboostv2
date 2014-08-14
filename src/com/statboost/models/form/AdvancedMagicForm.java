@@ -1,14 +1,13 @@
 package com.statboost.models.form;
 
 
-import com.avaje.ebean.Model;
 
 import java.util.List;
 
 /**
  * Created by Jon on 3/21/14.
  */
-public class AdvancedMagicForm extends Model
+public class AdvancedMagicForm
 {
     public String getCardName() {
         return cardName;

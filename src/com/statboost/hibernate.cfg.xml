@@ -7,9 +7,13 @@
     <property name="connection.url"/>
       <!--database connection settings-->
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-      <property name="connection.username">root</property>
-      <property name="connection.password"></property>
+    <property name="connection.username">root</property>
+    <property name="connection.password">S3ni0rPr0j3ct</property>
     <!-- DB schema will be updated if needed -->
+
     <!-- <property name="hbm2ddl.auto">update</property> -->
+
+      <!--<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>-->
+      <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
   </session-factory>
 </hibernate-configuration>
