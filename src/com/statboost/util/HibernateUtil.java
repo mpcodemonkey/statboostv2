@@ -11,15 +11,21 @@ import org.hibernate.service.ServiceRegistryBuilder;
 public class HibernateUtil {
 
 
-    private static  SessionFactory sessionFactory;
+    private static  SessionFactory userSessionFactory;
+    private static  SessionFactory mtgSessionFactory;
 
     static {
         try {
-            System.err.println();
-            Configuration configuration = new Configuration();
-            configuration.configure(); //reads hibernate.cfg.xml
-            ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();
-            sessionFactory =  configuration.buildSessionFactory(serviceRegistry);
+
+            Configuration userConfiguration = new Configuration();
+            userConfiguration.configure("userData.cfg.xml"); //reads userData.cfg.xml
+            ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(userConfiguration.getProperties()).buildServiceRegistry();
+            userSessionFactory =  userConfiguration.buildSessionFactory(serviceRegistry);
+
+            Configuration mtgConfiguration = new Configuration();
+            mtgConfiguration.configure("mtgData.cfg.xml"); //reads userData.cfg.xml
+            ServiceRegistry serviceRegistry2 = new ServiceRegistryBuilder().applySettings(mtgConfiguration.getProperties()).buildServiceRegistry();
+            mtgSessionFactory =  mtgConfiguration.buildSessionFactory(serviceRegistry2);
         } catch (Throwable ex) {
 
             System.err.println("Initial SessionFactory creation failed." + ex);
@@ -28,8 +34,11 @@ public class HibernateUtil {
         }
     }
 
-    public static SessionFactory getSessionFactory() {
-        return sessionFactory;
+    public static SessionFactory getUserSessionFactory() {
+        return userSessionFactory;
+    }
+    public static SessionFactory getMTGSessionFactory() {
+        return mtgSessionFactory;
     }
 
 }

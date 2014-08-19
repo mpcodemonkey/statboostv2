@@ -25,7 +25,7 @@ public class User {
     private String password;
     private String role;
 
-    private static SessionFactory factory = HibernateUtil.getSessionFactory();
+    private static SessionFactory userFactory = HibernateUtil.getUserSessionFactory();
 
     public User() {
 
@@ -60,23 +60,6 @@ public class User {
         return null;
     }
 
-    /**
-     * This method inserts a new user into the database
-     * @param email - New User email
-     * @param password - New User password
-     * @param name - New User name in the form of firstname_lastname
-     */
-
-    public static boolean insert(String email, String password, String name) {
-     /*   EbeanServer userDB = Ebean.getServer("default");
-        if (userDB.find(User.class).where().eq("email", email).findUnique() == null) {
-            String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
-            User newUser = new User(name, email, hashed);
-            userDB.save(newUser);
-            return true;
-        }
-        return false;*/return false;
-    }
 
     /**
      * This method inserts a new user into the database
@@ -85,18 +68,11 @@ public class User {
      * @param fname - New User first name
      * @param lname - New User first name
      * @param role - Enum 'Admin', 'Employee', 'Customer'
+     * @return boolean - true if success
      */
 
     public static boolean insert(String fname, String lname, String email, String password, String role) {
-       /* EbeanServer userDB = Ebean.getServer("user");
-        if (userDB.find(User.class).where().eq("email", email).findUnique() == null) {
-            String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
-            User newUser = new User(name, email, hashed, role);
-            userDB.save(newUser);
-            return true;
-        }
-        return false;*/
-        Session session = factory.openSession();
+        Session session = userFactory.openSession();
         Transaction tx = null;
         try{
             tx = session.beginTransaction();
@@ -114,46 +90,68 @@ public class User {
         return false;
     }
 
-    public static User retrieveUser(String email) {
-      /*  User candidate = null;
-        if (email != null) {
-            EbeanServer userDB = Ebean.getServer("user");
-            candidate = userDB.find(User.class).where().eq("email", email).findUnique();
-        }
-        return  candidate;*/return null;
-    }
-
-    public static User find(String email) {
-        User candidate = null;
-        Session session = factory.openSession();
+    /**
+     * This method updates the provided user object to the user database
+     * @param user
+     * @return boolean - true if success
+     */
+    public static boolean update(User user) {
+        Session session = userFactory.openSession();
         Transaction tx = null;
         try{
             tx = session.beginTransaction();
-
-            candidate = (User) session.createQuery("FROM User WHERE email='" + email + "'").uniqueResult();
-
+            session.update(user);
             tx.commit();
+            return true;
         } catch (HibernateException e) {
             if (tx!=null) tx.rollback();
             e.printStackTrace();
         }  finally {
             session.close();
         }
+        return false;
+    }
 
+    /**
+     * This method returns the User object for a user exists with the provided email string
+     * @param email
+     * @return User
+     */
+    public static User find(String email) {
+        User candidate = null;
+        Session session = userFactory.openSession();
+        Transaction tx = null;
+        if (email !=null) {
+            try {
+                tx = session.beginTransaction();
+                //query
+                candidate = (User) session.createQuery("FROM User WHERE email='" + email + "'").uniqueResult();
+                tx.commit();
+            } catch (HibernateException e) {
+                if (tx != null) tx.rollback();
+                e.printStackTrace();
+            } finally {
+                session.close();
+            }
+        }
         return candidate;
     }
 
 
+    /**
+     * This method returns true if the provided email is an Admin user
+     * @param email
+     * @return  boolean - true if success
+     */
     public static boolean isAdmin(String email) {
-     /*   boolean result = false;
+        boolean result = false;
         if (email != null) {
-            EbeanServer userDB = Ebean.getServer("user");
-            User candidate = userDB.find(User.class).where().eq("email", email).findUnique();
+            User candidate = User.find(email);
             if (candidate != null && candidate.role.equals("Admin")) {
                 result = true;
             }
         }
-        return  result;*/return false;
+        return  result;
     }
 
 
