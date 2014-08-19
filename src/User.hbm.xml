@@ -6,7 +6,7 @@
 <hibernate-mapping>
     <class name="com.statboost.models.actor.User" table="USER">
         <meta attribute="class-description">
-            This class contains the employee detail.
+            This class contains user detail.
         </meta>
         <id name="userID" type="int" column="user_id">
             <generator class="native"/>
