@@ -7,22 +7,14 @@
         <property name="hibernate.dialect">
             org.hibernate.dialect.MySQLDialect
         </property>
-        <property name="hibernate.connection.driver_class">
-            com.mysql.jdbc.Driver
-        </property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
 
-        <property name="hibernate.connection.url">
-            jdbc:mysql://107.138.64.59:3306/mtg_data?characterEncoding=UTF-8
-        </property>
-        <property name="hibernate.connection.username">
-            generic
-        </property>
-        <property name="hibernate.connection.password">
-            generic11PASSWORD
-        </property>
+        <property name="hibernate.connection.url">jdbc:mysql://107.138.64.59:3306/mtg_data?characterEncoding=UTF-8</property>
+        <property name="hibernate.connection.username">generic</property>
+        <property name="hibernate.connection.password">generic11PASSWORD</property>
 
         <!-- List of XML mapping files -->
-        <mapping resource="User.hbm.xml"/>
-
+        <mapping resource="MagicCard.hbm.xml"/>
+        <mapping resource="MagicSet.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

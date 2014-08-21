@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.statboost.models.mtg.MagicSet" table="magic_set">
+        <meta attribute="class-description">
+            This class contains Magic Set detail.
+        </meta>
+        <id name="codeID" type="string" column="CodeID">
+            <generator class="native"/>
+        </id>
+
+        <set name="magicCardList" table="magic_card" cascade="all" inverse="true">
+            <key column="mgc_uid" not-null="true"></key>
+            <one-to-many class="com.statboost.models.mtg.MagicCard"/>
+        </set>
+
+        <property name="setName" column="SetName" type="string"/>
+        <property name="releaseDate" column="ReleaseDate" type="string"/>
+        <property name="border" column="Border" type="string"/>
+        <property name="setType" column="SetType" type="string"/>
+        <property name="block" column="Block" type="string"/>
+    </class>
+</hibernate-mapping>

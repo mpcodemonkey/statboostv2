@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.mindrot.jbcrypt.BCrypt;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
 
 
@@ -15,7 +16,7 @@ import javax.persistence.Id;
  * Created by Sam Kerr on 4/3/2014.
  */
 
-
+@Entity
 public class User {
     @Id
     private int userID;

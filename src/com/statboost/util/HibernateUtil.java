@@ -11,33 +11,27 @@ import org.hibernate.service.ServiceRegistryBuilder;
 public class HibernateUtil {
 
 
-    private static  SessionFactory userSessionFactory;
-    private static  SessionFactory mtgSessionFactory;
+    private static SessionFactory userSessionFactory;
+    private static SessionFactory mtgSessionFactory;
 
-    static {
-        try {
-
+    public static SessionFactory getUserSessionFactory() {
+        if (userSessionFactory == null) {
             Configuration userConfiguration = new Configuration();
             userConfiguration.configure("userData.cfg.xml"); //reads userData.cfg.xml
             ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(userConfiguration.getProperties()).buildServiceRegistry();
             userSessionFactory =  userConfiguration.buildSessionFactory(serviceRegistry);
-
-            Configuration mtgConfiguration = new Configuration();
-            mtgConfiguration.configure("mtgData.cfg.xml"); //reads userData.cfg.xml
-            ServiceRegistry serviceRegistry2 = new ServiceRegistryBuilder().applySettings(mtgConfiguration.getProperties()).buildServiceRegistry();
-            mtgSessionFactory =  mtgConfiguration.buildSessionFactory(serviceRegistry2);
-        } catch (Throwable ex) {
-
-            System.err.println("Initial SessionFactory creation failed." + ex);
-            //throw new ExceptionInInitializerError(ex.getMessage());
-
         }
-    }
-
-    public static SessionFactory getUserSessionFactory() {
         return userSessionFactory;
     }
+
+
     public static SessionFactory getMTGSessionFactory() {
+        if (mtgSessionFactory == null) {
+            Configuration mtgConfiguration = new Configuration();
+            mtgConfiguration.configure("mtgData.cfg.xml"); //reads mtgData.cfg.xml
+            ServiceRegistry serviceRegistry2 = new ServiceRegistryBuilder().applySettings(mtgConfiguration.getProperties()).buildServiceRegistry();
+            mtgSessionFactory =  mtgConfiguration.buildSessionFactory(serviceRegistry2);
+        }
         return mtgSessionFactory;
     }
 

@@ -1,5 +1,8 @@
 package com.statboost.controllers;
 
+
+import com.statboost.models.mtg.MagicCard;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,7 +23,10 @@ public class MagicSearchServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        MagicCard testCard = MagicCard.find("Bogardan Firefiend");
+        request.setAttribute("card", testCard);
 
+        request.getRequestDispatcher("MagicSearch.jsp").forward(request, response);
     }
 
 }

@@ -3,12 +3,19 @@
   User: Sam
   Date: 8/6/2014
   Time: 4:42 PM
-  To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <jsp:include page="/include/Header.jsp"/>
 <jsp:include page="/include/Navbar.jsp"/>
+
+
+<c:if test="${requestScope.card != null}">
+    <div class="alert alert-info fade in">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong>Test Result:</strong> <c:out value="${requestScope.card.cardName}" /> has been retrieved from the database.
+    </div>
+</c:if>
 
 <div>
     <style>

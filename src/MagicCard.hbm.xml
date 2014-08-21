@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.statboost.models.mtg.MagicCard" table="magic_card">
+        <meta attribute="class-description">
+            This class contains Magic Card detail.
+        </meta>
+
+        <id name="mgcUID" type="int" column="mgc_uid">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="magicSet" class="com.statboost.models.mtg.MagicSet"
+                     column="setid" not-null="true"
+                     cascade="all" />
+
+        <property name="cardName" column="cardname" type="string"/>
+        <property name="multiverseID" column="multiverseid" type="int"/>
+        <property name="cardNames" column="CardNames" type="string"/>
+        <property name="manacost" column="ManaCost" type="string"/>
+        <property name="cmc" column="CMC" type="double"/>
+        <property name="colors" column="Colors" type="string"/>
+        <property name="cardType" column="CardType" type="string"/>
+        <property name="subTypes" column="SubTypes" type="string"/>
+        <property name="types" column="Types" type="string"/>
+        <property name="superTypes" column="SuperTypes" type="string"/>
+        <property name="rarity" column="Rarity" type="string"/>
+        <property name="text" column="Text" type="string"/>
+        <property name="flavor" column="Flavor" type="string"/>
+        <property name="artist" column="Artist" type="string"/>
+        <property name="cardNumber" column="CardNumber" type="string"/>
+        <property name="cardPower" column="CardPower" type="string"/>
+        <property name="toughness" column="Toughness" type="string"/>
+        <property name="loyalty" column="Loyalty" type="int"/>
+        <property name="layout" column="Layout" type="string"/>
+        <property name="variations" column="Variations" type="string"/>
+        <property name="imageName" column="ImageName" type="string"/>
+        <property name="watermark" column="Watermark" type="string"/>
+        <property name="border" column="Border" type="string"/>
+        <property name="hand" column="Hand" type="int"/>
+        <property name="life" column="Life" type="int"/>
+
+    </class>
+</hibernate-mapping>
