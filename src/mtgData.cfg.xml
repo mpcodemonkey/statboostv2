@@ -9,7 +9,7 @@
         </property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
 
-        <property name="hibernate.connection.url">jdbc:mysql://192.168.1.160:3306/mtg_data?characterEncoding=UTF-8</property>
+        <property name="hibernate.connection.url">jdbc:mysql://107.138.64.59:3306/mtg_data?characterEncoding=UTF-8</property>
         <property name="hibernate.connection.username">generic</property>
         <property name="hibernate.connection.password">generic11PASSWORD</property>
 
