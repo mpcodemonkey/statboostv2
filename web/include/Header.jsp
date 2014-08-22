@@ -10,11 +10,14 @@
 
     <!-- Include css here -->
     <link rel="stylesheet" media="screen" href="/include/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/include/stylesheets/jquery-ui.css">
 
     <!-- Include js here -->
     <script type="text/javascript" src="/include/javascripts/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="/include/javascripts/jquery.mask.min.js"></script>
     <script type="text/javascript" src="/include/javascripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/include/javascripts/autocomplete.js"></script>
+    <script type="text/javascript" src="/include/javascripts/jquery-ui.min.js"></script>
 
 </head>
 <body>

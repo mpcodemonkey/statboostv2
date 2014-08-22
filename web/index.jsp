@@ -4,10 +4,11 @@
   Date: 8/6/14
   Time: 11:21 AM
 --%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/include/Header.jsp"/>
 <jsp:include page="/include/Navbar.jsp"/>
+
+
 <div>
 <!--
     @if(flash().contains("success")) {
@@ -74,5 +75,6 @@
         <footer>
             <p align="center">&copy; StatBoost 2014</p>
         </footer>
+    </div>
 </div>
 <jsp:include page="/include/Footer.jsp"/>
