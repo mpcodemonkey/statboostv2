@@ -30,10 +30,10 @@ public class MagicSearchServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        MagicCard testCard = MagicCard.find("Bogardan Firefiend");
-        request.setAttribute("card", testCard);
+        //MagicCard testCard = MagicCard.find("Bogardan Firefiend");
+        //request.setAttribute("card", testCard);
 
-        request.getRequestDispatcher("MagicSearch.jsp").forward(request, response);
+        //request.getRequestDispatcher("MagicSearch.jsp").forward(request, response);
         Session session = mtgFactory.openSession();
 
 
@@ -127,7 +127,7 @@ public class MagicSearchServlet extends HttpServlet {
             if(request.getParameterValues("rarities") != null)
             {
                 String or = " or";
-                System.out.println(request.getParameterValues("rarities"));
+                //System.out.println(request.getParameterValues("rarities"));
                 String defCon = " rarity = :rarity";
                 String[] rarities = request.getParameterValues("rarities");
 
@@ -229,9 +229,12 @@ public class MagicSearchServlet extends HttpServlet {
 
             for(MagicCard m : cards)
             {
-                System.out.println(m.getCardName());
+                System.out.println(m.getSetID());
             }
             tx.commit();
+
+            request.setAttribute("cardList", cards);
+            request.getRequestDispatcher("MagicResult.jsp").forward(request, response);
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
             e.printStackTrace();

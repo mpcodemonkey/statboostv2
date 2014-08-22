@@ -42,6 +42,7 @@
         <property name="border" column="Border" type="string"/>
         <property name="hand" column="Hand" type="int"/>
         <property name="life" column="Life" type="int"/>
+        <property name="setID" column="setID" type="string"/>
 
     </class>
 </hibernate-mapping>
