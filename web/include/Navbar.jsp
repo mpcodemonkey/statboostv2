@@ -5,9 +5,28 @@
   Date: 8/3/2014
   Time: 10:23 PM
 --%>
+
+
+
 <!--
-<script src="/include/javascripts/autocomplete.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var basePath = '${pageContext.request.contextPath}';
+</script>
+
+<script>
+
+        $("input.search").autocomplete({
+            source: function( request, response ) {
+                $.getJSON( "/autocomplete", {
+                    term: request.term
+                }, response );
+            }
+
+        });
+
+</script>
 -->
+
 <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
     <div class="container">
         <div class="navbar-header">
@@ -28,7 +47,7 @@
             </ul>
             <form class="navbar-form navbar-left" role="search" method="post" action="">
                 <div class="form-group">
-                    <input type="text" id="search" name="search" class="autocomplete form-control" data-url="">
+                    <input type="text" id="search" name="search" class="autocomplete form-control" data-url="/autocomplete">
                 </div>
                 <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" action=""></span></button>
             </form>
