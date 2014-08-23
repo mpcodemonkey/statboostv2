@@ -31,6 +31,7 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect("/");
 
         } else {
+            request.setAttribute("alertType", "danger");
             request.setAttribute("alert", "Invalid email or password");
             request.getRequestDispatcher("Login.jsp").forward(request, response);
         }
