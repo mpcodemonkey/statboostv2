@@ -71,13 +71,12 @@
         </div><!-- /.nav-collapse -->
     </div><!-- /.container -->
 </div><!-- /.navbar -->
-<!--
-Alert Handler
--->
-<c:if test="${requestScope.alert != null}">
-    <div class="alert alert-info fade in">
+<br><br><br>
+<%--Alert Handler--%>
+<c:if test="${requestScope.alert != null && requestScope.alertType != null}">
+    <div class="alert alert-${requestScope.alertType} fade in">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <strong>Alert: </strong> <c:out value="${requestScope.alert}" />
     </div>
 </c:if>
-<br><br><br>
+

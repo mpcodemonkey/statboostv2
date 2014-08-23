@@ -17,6 +17,7 @@ import java.util.List;
 
 /**
  * Created by Sam Kerr
+ * Logic by Jon Tinney
  * 4:35 PM on 8/6/2014
  */
 @WebServlet("/magicSearch")
@@ -232,15 +233,23 @@ public class MagicSearchServlet extends HttpServlet {
                 System.out.println(m.getSetID());
             }
             tx.commit();
-
-            request.setAttribute("cardList", cards);
-            request.getRequestDispatcher("MagicResult.jsp").forward(request, response);
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
             e.printStackTrace();
         } finally {
             session.close();
         }
+
+
+        //set search results
+        if (cards != null) {
+            request.setAttribute("cardList", cards);
+        } else {
+            request.setAttribute("alertType", "warning");
+            request.setAttribute("alert", "Sorry, no cards were found.  Please try another search.");
+        }
+        //route to results page even if no results found or transaction throws exception
+        request.getRequestDispatcher("MagicResult.jsp").forward(request, response);
     }
 
 }

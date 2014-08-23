@@ -27,6 +27,7 @@ public class RegisterServlet extends HttpServlet {
             User.insert(request.getParameter("firstname"), request.getParameter("lastname"), request.getParameter("email"), request.getParameter("password"), "Customer");
             response.sendRedirect("login");
         } else {
+            request.setAttribute("alertType", "danger");
             request.setAttribute("alert", "The email you have chosen is currently taken, please try another.");
             request.getRequestDispatcher("Register.jsp").forward(request, response);
         }
