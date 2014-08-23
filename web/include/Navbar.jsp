@@ -73,10 +73,10 @@
 </div><!-- /.navbar -->
 <br><br><br>
 <%--Alert Handler--%>
-<c:if test="${requestScope.alert != null && requestScope.alertType != null}">
+<c:if test="${requestScope.navAlert != null && requestScope.alertType != null}">
     <div class="alert alert-${requestScope.alertType} fade in">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <strong>Alert: </strong> <c:out value="${requestScope.alert}" />
+        <strong>Alert: </strong> <c:out value="${requestScope.navAlert}" />
     </div>
 </c:if>
 

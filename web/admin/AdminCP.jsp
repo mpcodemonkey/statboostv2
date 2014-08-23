@@ -1,0 +1,78 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<jsp:include page="/include/Header.jsp"/>
+<jsp:include page="/include/Navbar.jsp"/>
+
+<div>
+    <div class="container-fluid">
+        <div class="well well-lg">
+            <h1 style="text-align: center">Admin Control Panel</h1>
+            <c:if test="${requestScope.alert != null && requestScope.alertType != null}">
+                <div class="alert alert-${requestScope.alertType} fade in">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong>Oops!</strong> <c:out value="${requestScope.alert}" />
+                </div>
+            </c:if>
+
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h1 class="panel-title">Manage Users</h1>
+                </div>
+                <div class="panel-body">
+                    <div class="btn-toolbar">
+                        <div class="btn-group"><button class="btn btn-primary">Add New Employee</button></div>
+                        <div class="btn-group"><a href="addNewAdmin"><button class="btn btn-primary">Add New Admin</button></a></div>
+                        <div class="btn-group"><button class="btn btn-primary">Add New Customer</button></div>
+                        <div class="btn-group"><button class="btn btn-primary">Delete User</button></div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h1 class="panel-title">Manage Events</h1>
+                </div>
+                <div class="panel-body">
+                    <div class="btn-toolbar">
+                        <div class="btn-group"><button class="btn btn-primary">View Event Calendar</button></div>
+                        <div class="btn-group"><button class="btn btn-primary">Add New Event</button></div>
+                        <div class="btn-group"><button class="btn btn-primary">Cancel Event</button></div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h1 class="panel-title">Manage Inventory</h1>
+                </div>
+                <div class="panel-body">
+                    <div class="btn-toolbar">
+                        <div class="btn-group"><button class="btn btn-primary">Add New Inventory</button></div>
+                        <div class="btn-group"><button class="btn btn-primary">Edit Existing Inventory</button></div>
+                        <div class="btn-group"><button class="btn btn-primary">Remove Inventory</button></div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h1 class="panel-title">Manage Email Notifications</h1>
+                </div>
+                <div class="panel-body">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Email Templates</div>
+                        <div class="panel-body"><li>--available email templates will be listed here--</li></div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Email Alerts</div>
+                        <div class="panel-body"><li>--available email alerts will be listed here--</li></div>
+                    </div>
+                    <div class="btn-toolbar">
+                        <div class="btn-group"><button class="btn btn-primary">New Email Template</button></div>
+                        <div class="btn-group"><button class="btn btn-primary">New Email Alert</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<jsp:include page="/include/Footer.jsp"/>
