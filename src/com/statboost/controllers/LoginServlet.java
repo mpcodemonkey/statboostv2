@@ -28,11 +28,14 @@ public class LoginServlet extends HttpServlet {
         User candidate = User.authenticate(email, password);
         if (candidate != null) {
             session.setAttribute("email", candidate.getEmail());
+            if (candidate.getRole().equals("Admin")) {
+                session.setAttribute("admin", "true");
+            }
             response.sendRedirect("/");
 
         } else {
             request.setAttribute("alertType", "danger");
-            request.setAttribute("alert", "Invalid email or password");
+            request.setAttribute("alert", "Invalid email or password.");
             request.getRequestDispatcher("Login.jsp").forward(request, response);
         }
 

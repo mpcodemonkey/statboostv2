@@ -62,9 +62,16 @@
             <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
                 <div class="list-group">
                     <a href="/" class="list-group-item active">Home</a>
+                    <c:if test="${sessionScope.admin != null}">
+                        <a href="/adminCP" class="list-group-item">Admin CP</a>
+                    </c:if>
                     <a href="/magicSearch" class="list-group-item">Card Search</a>
-                    <a href="/login" class="list-group-item">Login</a>
-                    <a href="/register" class="list-group-item">Register</a>
+                    <c:if test="${sessionScope.email == null}">
+                        <a href="/login" class="list-group-item">Login</a>
+                    </c:if>
+                    <c:if test="${sessionScope.email == null}">
+                        <a href="/register" class="list-group-item">Register</a>
+                    </c:if>
                     <c:if test="${sessionScope.email != null}">
                         <a href="/logout" class="list-group-item">Logout</a>
                     </c:if>

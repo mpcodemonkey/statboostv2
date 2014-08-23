@@ -11,6 +11,7 @@
     <!-- Include css here -->
     <link rel="stylesheet" media="screen" href="/include/stylesheets/bootstrap.min.css">
     <link rel="stylesheet" href="/include/stylesheets/jquery-ui.css">
+    <link rel="stylesheet" href="/include/stylesheets/stylesheet.css">
 
     <!-- Include js here -->
     <script type="text/javascript" src="/include/javascripts/jquery-1.11.1.min.js"></script>

@@ -1,5 +1,7 @@
 package com.statboost.controllers;
 
+import com.statboost.models.actor.User;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +17,12 @@ public class UserProfileServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false); //obtain the session object if exists
         if (session != null && session.getAttribute("email") != null) {
+
+            User user = User.find((String)session.getAttribute("email"));
+            request.setAttribute("user", user);
+
+
+
             request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
         }
 

@@ -1,4 +1,4 @@
-package com.statboost.controllers;
+package com.statboost.controllers.admin;
 
 import com.statboost.models.actor.User;
 
@@ -16,17 +16,25 @@ public class AdminCPServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false); //obtain the session object if exists
-        if (session != null && session.getAttribute("email") != null && User.isAdmin((String)session.getAttribute("email"))) {
-            request.getRequestDispatcher("AdminCP.jsp").forward(request, response);
+        //check that the user is logged in and check that the user is an admin either through session attribute or db check
+        if (session != null && session.getAttribute("email") != null &&
+            (session.getAttribute("admin").equals("true") || User.isAdmin((String)session.getAttribute("email")))) {
+
+                request.getRequestDispatcher("admin/AdminCP.jsp").forward(request, response);
         } else {
-            request.setAttribute("alertType", "danger");
-            request.setAttribute("alert", "You are not authorized to view that page.");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            response.sendRedirect("/");
         }
 
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+
+    }
+
+
+
+    private void addNewAdmin() {
 
 
     }
