@@ -17,22 +17,22 @@
             <div class="form-group">
                 <div class="form-inline">
                     <div class="form-group">
-                        <input name="firstname" type="firstname" class="form-control" placeholder="First Name" value="">
+                        <input name="firstname" type="firstname" class="form-control" placeholder="First Name" value="" required>
                     </div>
                     <div class="form-group">
-                        <input name="lastname" type="lastname" class="form-control" placeholder="Last Name" value="">
+                        <input name="lastname" type="lastname" class="form-control" placeholder="Last Name" value="" required>
                     </div>
                 </div>
                 <br>
                 <div class="form-inline">
                     <div class="form-group">
-                        <input name="email" type="email" class="form-control" placeholder="Email" value="">
+                        <input name="email" type="email" class="form-control" placeholder="Email" value="" required>
                     </div>
                     <div class="form-group">
-                        <input name="password" type="password" class="form-control" placeholder="Password">
+                        <input name="password" type="password" class="form-control" placeholder="Password" required>
                     </div>
                     <div class="form-group">
-                        <input name="passwordConf" type="password" class="form-control" placeholder="Confirm Password">
+                        <input name="passwordConf" type="password" class="form-control" placeholder="Confirm Password" required>
                     </div>
                 </div>
                 <br>
