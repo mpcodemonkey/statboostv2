@@ -23,6 +23,16 @@ public class RegisterServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        //validate matching passwords
+        if(!request.getParameter("password").equals(request.getParameter("passwordConf"))) {
+            request.setAttribute("alertType", "warning");
+            request.setAttribute("alert", "Your passwords do not match.");
+            request.getRequestDispatcher("Register.jsp").forward(request, response);
+        } else
+
+
+
+
         if (User.find(request.getParameter("email")) == null) { //check that the user email doesn't already exist
             User.insert(request.getParameter("firstname"), request.getParameter("lastname"), request.getParameter("email"), request.getParameter("password"), "Customer");
             response.sendRedirect("login");
