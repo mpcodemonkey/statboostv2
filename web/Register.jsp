@@ -50,6 +50,12 @@
             alert('Password must be at least 8 characters.');
             return false;
         }
+        if(document.getElementById('pswd').value != document.getElementById('pswdConf').value) {
+            alert('Passwords must match!');
+            document.getElementById('pswd').value = '';
+            document.getElementById('pswdConf').value = '';
+            return false;
+        }
         return true;
     }
 </script>
@@ -88,7 +94,7 @@
                                 <input id="pswd" name="password" type="password" class="form-control" placeholder="Password" required>
                             </div>
                             <div class="form-group">
-                                <input name="passwordConf" type="password" class="form-control" placeholder="Confirm Password" required>
+                                <input id="pswdConf" name="passwordConf" type="password" class="form-control" placeholder="Confirm Password" required>
                             </div>
                             <br><br>
                             <div class="row">
@@ -96,12 +102,7 @@
                                     <div class="pwstrength_viewport_progress"></div>
                                 </div>
                             </div>
-
                         </div>
-
-
-
-
                     </div>
                     <br>
                     <div class="form-inline">

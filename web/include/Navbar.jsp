@@ -60,7 +60,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="/profile">User Profile</a></li>
                         <c:if test="${sessionScope.admin != null}">
-                            <li><a href="/adminCP">Admin CP</a></li>
+                            <li><a href="/admin/adminCP">Admin CP</a></li>
                         </c:if>
                         <li class="divider"></li>
                         <li><a href="/logout">Logout</a></li>

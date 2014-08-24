@@ -11,16 +11,18 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 
-@WebServlet("/admin/adminCP")
-public class AdminCPServlet extends HttpServlet {
+@WebServlet("/admin/deleteUser")
+public class DeleteUserServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false); //obtain the session object if exists
         //validate the user
         if (User.isAdmin(session)) {
-                request.getRequestDispatcher("AdminCP.jsp").forward(request, response);
 
 
+
+
+            request.getRequestDispatcher("DeleteUser.jsp").forward(request, response);
         } else {
             response.sendRedirect("/");
         }
@@ -37,4 +39,5 @@ public class AdminCPServlet extends HttpServlet {
             response.sendRedirect("/");
         }
     }
+
 }

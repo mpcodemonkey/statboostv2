@@ -10,7 +10,7 @@
             <c:if test="${requestScope.alert != null && requestScope.alertType != null}">
                 <div class="alert alert-${requestScope.alertType} fade in">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <strong>Oops!</strong> <c:out value="${requestScope.alert}" />
+                    <strong>Alert: </strong><c:out value="${requestScope.alert}" />
                 </div>
             </c:if>
 
@@ -20,10 +20,10 @@
                 </div>
                 <div class="panel-body">
                     <div class="btn-toolbar">
-                        <div class="btn-group"><button class="btn btn-primary">Add New Employee</button></div>
-                        <div class="btn-group"><a href="addNewAdmin"><button class="btn btn-primary">Add New Admin</button></a></div>
-                        <div class="btn-group"><button class="btn btn-primary">Add New Customer</button></div>
-                        <div class="btn-group"><button class="btn btn-primary">Delete User</button></div>
+                        <div class="btn-group"><a href="/admin/addNewUser?type=employee"><button class="btn btn-primary">Add New Employee</button></a></div>
+                        <div class="btn-group"><a href="/admin/addNewUser?type=admin"><button class="btn btn-primary">Add New Admin</button></a></div>
+                        <div class="btn-group"><a href="/admin/addNewUser?type=customer"><button class="btn btn-primary">Add New Customer</button></a></div>
+                        <div class="btn-group"><a href="/admin/deleteUser"><button class="btn btn-primary">Delete User</button></a></div>
                     </div>
                 </div>
             </div>
