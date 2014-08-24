@@ -45,11 +45,11 @@
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
-            <form class="navbar-form navbar-left" role="search" method="post" action="">
+            <form class="navbar-form navbar-left" role="search" method="get" action="magicSearch">
                 <div class="form-group">
-                    <input type="text" id="search" name="search" class="autocomplete form-control" data-url="/autocomplete">
+                    <input type="text" id="search" name="cardName" class="autocomplete form-control" data-url="/autocomplete">
                 </div>
-                <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" action=""></span></button>
+                &nbsp;<span class="glyphicon glyphicon-search" style="color:white" title="Type a card name to search for."></span>
             </form>
 
             <c:if test="${sessionScope.email != null}">

@@ -1,5 +1,5 @@
 /**
- * Created by Sam on 3/8/14.
+ * Created by Jon on 3/8/14.
  */
 
 $(function() {
@@ -33,7 +33,7 @@ $(function() {
     })
     .data("ui-autocomplete")._renderItem = function(ul, item){
         return $("<li>")
-            .append( "<a id='"+item.id+"'>" + item.name + "<br>" + item.text + "</a>" )
+            .append( "<a href=magicSearch?cardName="+encodeURIComponent(item.name)+">" + item.name + "<br>" + item.text + "</a>" )
             .appendTo(ul);
     }
 

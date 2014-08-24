@@ -25,7 +25,6 @@ public class AutoCompleteServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         System.out.println("I did something!");
         SessionFactory mtgFactory = HibernateUtil.getMTGSessionFactory();
         Session session = mtgFactory.openSession();
@@ -44,5 +43,6 @@ public class AutoCompleteServlet extends HttpServlet {
         }
         response.getWriter().write(new Gson().toJson(j));
     }
+
 
 }
