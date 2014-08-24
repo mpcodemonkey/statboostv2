@@ -72,23 +72,23 @@
                 <div class="form-group">
                     <div class="form-inline">
                         <div class="form-group">
-                            <input id="firstname" name="firstname" type="firstname" class="form-control" placeholder="First Name" value="">
+                            <input id="firstname" name="firstname" type="firstname" class="form-control" placeholder="First Name" value="" required>
                         </div>
                         <div class="form-group">
-                            <input id="lastname" name="lastname" type="lastname" class="form-control" placeholder="Last Name" value="">
+                            <input id="lastname" name="lastname" type="lastname" class="form-control" placeholder="Last Name" value="" required>
                         </div>
                     </div>
                     <br>
                     <div class="form-inline">
                         <div id="pwd-container">
                             <div class="form-group">
-                                <input id="username" name="email" type="email" class="form-control" placeholder="Email" value="">
+                                <input id="username" name="email" type="email" class="form-control" placeholder="Email" value="" required>
                             </div>
                             <div class="form-group">
-                                <input id="pswd" name="password" type="password" class="form-control" placeholder="Password">
+                                <input id="pswd" name="password" type="password" class="form-control" placeholder="Password" required>
                             </div>
                             <div class="form-group">
-                                <input name="passwordConf" type="password" class="form-control" placeholder="Confirm Password">
+                                <input name="passwordConf" type="password" class="form-control" placeholder="Confirm Password" required>
                             </div>
                             <br><br>
                             <div class="row">
