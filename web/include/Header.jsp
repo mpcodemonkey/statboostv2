@@ -8,6 +8,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Include favicon here -->
+    <link rel="shortcut icon" href="/include/images/favicon.ico">
+
     <!-- Include css here -->
     <link rel="stylesheet" media="screen" href="/include/stylesheets/bootstrap.min.css">
     <link rel="stylesheet" href="/include/stylesheets/jquery-ui.css">
