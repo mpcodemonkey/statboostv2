@@ -8,7 +8,7 @@
 
     <div class="btn-toolbar">
         <c:if test="${user.role == 'Admin'}">
-            <div class="btn-group"><button type="button" class="btn btn-primary" onclick="location.href='adminCP'">Admin CP</button></div>
+            <div class="btn-group"><button type="button" class="btn btn-primary" onclick="location.href='/admin/adminCP'">Admin CP</button></div>
         </c:if>
         <c:if test="${user.role == 'Customer'}">
             <div class="btn-group"><button type="button" class="btn btn-primary" onclick="location.href='#'">View Order History</button></div>
