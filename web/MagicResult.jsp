@@ -44,7 +44,7 @@
                                     <c:otherwise>${card.flavor}</c:otherwise>
                                 </c:choose>
                             </td>
-                            <td><img src="http://mtgimage.com/set/${card.setID}/${card.imageName}&#46;jpg" width="50%" ></td>
+                            <td><img src="http://mtgimage.com/set/${card.setID}/${card.imageName}&#46;jpg" style="min-width: 175px; max-width: 175px;"></td>
                         </tr>
                         </tbody>
                     </table>
