@@ -42,7 +42,7 @@ public class MagicSearchServlet extends HttpServlet {
         HashMap<String, String> buildableQuery = new HashMap<>();
         boolean prevCon = false;
         String and = " and";
-        String defaultOrderBy = "multiverseid";
+        String defaultOrderBy = "mcrMultiverseId";
         String defaultOrder = "desc";
 
 
@@ -51,7 +51,7 @@ public class MagicSearchServlet extends HttpServlet {
 
         if(request.getParameter("cardName") != null && !request.getParameter("cardName").equals(""))
         {
-            nameConstraint = "cardname LIKE :name";
+            nameConstraint = "mcrCardName LIKE :name";
 
             queryparams.add(nameConstraint);
             buildableQuery.put("name", "%" + request.getParameter("cardName") + "%");
@@ -63,7 +63,7 @@ public class MagicSearchServlet extends HttpServlet {
             int i = 0;
             for(String s : types)
             {
-                typeConstraint = " types  LIKE :type" + i;
+                typeConstraint = " mcrTypes  LIKE :type" + i;
 
                 if(prevCon)
                 {
@@ -81,7 +81,7 @@ public class MagicSearchServlet extends HttpServlet {
             int i = 0;
             for(String s : subtypes)
             {
-                subTypeConstraint = " subtypes  LIKE :subs" + i;
+                subTypeConstraint = " mcrSubtypes  LIKE :subs" + i;
 
                 if(prevCon)
                 {
@@ -96,12 +96,12 @@ public class MagicSearchServlet extends HttpServlet {
         if(request.getParameterValues("colors") != null)
         {
             System.out.println(request.getParameterValues("colors"));
-            String defCon = " colors = :colors";
+            String defCon = " mcrColors = :colors";
             String[] colors = request.getParameterValues("colors");
 
             if(colors.length > 1)
             {
-                defCon = " colors LIKE :colors";
+                defCon = " mcrColors LIKE :colors";
             }
             for(int i = 0; i < colors.length; i++)
             {
@@ -124,12 +124,12 @@ public class MagicSearchServlet extends HttpServlet {
         {
             String or = " or";
             //System.out.println(request.getParameterValues("rarities"));
-            String defCon = " rarity = :rarity";
+            String defCon = " mcrRarity = :rarity";
             String[] rarities = request.getParameterValues("rarities");
 
             if(rarities.length > 1)
             {
-                defCon = " rarity LIKE :rarity";
+                defCon = " mcrRarity LIKE :rarity";
             }
             for(int i = 0; i < rarities.length; i++)
             {
@@ -167,7 +167,7 @@ public class MagicSearchServlet extends HttpServlet {
         //null here since the selected index shown is -1, which is null(see advFind view js at bottom of advFind.scala.html for ref).
         if(request.getParameter("setID") != null)
         {
-            setIdConstraint = " setid LIKE :setid";
+            setIdConstraint = " mcrSetId LIKE :setid";
             if(prevCon)
             {
                 setIdConstraint = and + setIdConstraint;
@@ -178,7 +178,7 @@ public class MagicSearchServlet extends HttpServlet {
         }
         if(request.getParameter("rulesContain") != null && !request.getParameter("rulesContain").equals(""))
         {
-            rulesConstraint = " text LIKE :text";
+            rulesConstraint = " mcrText LIKE :text";
             if(prevCon)
             {
                 rulesConstraint = and + rulesConstraint;
@@ -189,7 +189,7 @@ public class MagicSearchServlet extends HttpServlet {
         }
         if(request.getParameter("cmc") != null && !request.getParameter("cmc").equals(""))
         {
-            cmcConstraint = " cmc " + request.getParameter("cmcModifier") + " :cmc";
+            cmcConstraint = " mcrCmc " + request.getParameter("cmcModifier") + " :cmc";
             if(prevCon)
             {
                 cmcConstraint = and + cmcConstraint;
@@ -234,7 +234,7 @@ public class MagicSearchServlet extends HttpServlet {
 
             for(MagicCard m : cards)
             {
-                System.out.println(m.getSetID());
+                System.out.println(m.getMcrSetId());
             }
             tx.commit();
         } catch (HibernateException e) {

@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,14 +26,13 @@ public class MagicSet implements Serializable {
     private static final long serialVersionUID = 9146156921169669644L;
     private static SessionFactory mtgFactory = HibernateUtil.getMTGSessionFactory();
 
-
     @Id
-    private String codeID;
-    private String setName;
-    private Date releaseDate;
-    private String setType;
-    private String block;
-    private String border;
+    private String mstUid;
+    private String mstName;
+    private java.sql.Date mstReleaseDate;
+    private String mstBorder;
+    private String mstType;
+    private String mstBlock;
 
     @OneToMany
     private Set<MagicCard> magicCardList  = new HashSet<>();
@@ -48,7 +46,7 @@ public class MagicSet implements Serializable {
             try {
                 tx = session.beginTransaction();
                 //query
-                magicSet = (MagicSet) session.createQuery("FROM MagicSet WHERE setName='" + setName + "'").list().get(0);; //just return one result for now
+                magicSet = (MagicSet) session.createQuery("FROM MagicSet WHERE mstName='" + setName + "'").list().get(0);; //just return one result for now
                 tx.commit();
             } catch (HibernateException e) {
                 if (tx != null) tx.rollback();
@@ -61,34 +59,53 @@ public class MagicSet implements Serializable {
     }
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        MagicSet that = (MagicSet) o;
-
-        if (block != null ? !block.equals(that.getBlock()) : that.getBlock() != null) return false;
-        if (border != null ? !border.equals(that.getBorder()) : that.getBorder() != null) return false;
-        if (codeID != null ? !codeID.equals(that.getCodeID()) : that.getCodeID() != null) return false;
-        if (releaseDate != null ? !releaseDate.equals(that.getReleaseDate()) : that.getReleaseDate() != null) return false;
-        if (setName != null ? !setName.equals(that.getSetName()) : that.getSetName() != null) return false;
-        if (setType != null ? !setType.equals(that.getSetType()) : that.getSetType() != null) return false;
-
-        return true;
+    public String getMstName() {
+        return mstName;
     }
 
-    @Override
-    public int hashCode() {
-        int result = setName != null ? setName.hashCode() : 0;
-        result = 31 * result + (codeID != null ? codeID.hashCode() : 0);
-        result = 31 * result + (releaseDate != null ? releaseDate.hashCode() : 0);
-        result = 31 * result + (border != null ? border.hashCode() : 0);
-        result = 31 * result + (setType != null ? setType.hashCode() : 0);
-        result = 31 * result + (block != null ? block.hashCode() : 0);
-        return result;
+    public void setMstName(String mstName) {
+        this.mstName = mstName;
     }
 
+    public String getMstUid() {
+        return mstUid;
+    }
+
+    public void setMstUid(String mstUid) {
+        this.mstUid = mstUid;
+    }
+
+    public java.sql.Date getMstReleaseDate() {
+        return mstReleaseDate;
+    }
+
+    public void setMstReleaseDate(java.sql.Date mstReleaseDate) {
+        this.mstReleaseDate = mstReleaseDate;
+    }
+
+    public String getMstBorder() {
+        return mstBorder;
+    }
+
+    public void setMstBorder(String mstBorder) {
+        this.mstBorder = mstBorder;
+    }
+
+    public String getMstType() {
+        return mstType;
+    }
+
+    public void setMstType(String mstType) {
+        this.mstType = mstType;
+    }
+
+    public String getMstBlock() {
+        return mstBlock;
+    }
+
+    public void setMstBlock(String mstBlock) {
+        this.mstBlock = mstBlock;
+    }
 
     public Set<MagicCard> getMagicCardList() {
         return magicCardList;
@@ -98,51 +115,32 @@ public class MagicSet implements Serializable {
         this.magicCardList = magicCardList;
     }
 
-    public String getCodeID() {
-        return codeID;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MagicSet that = (MagicSet) o;
+
+        if (mstBlock != null ? !mstBlock.equals(that.mstBlock) : that.mstBlock != null) return false;
+        if (mstBorder != null ? !mstBorder.equals(that.mstBorder) : that.mstBorder != null) return false;
+        if (mstName != null ? !mstName.equals(that.mstName) : that.mstName != null) return false;
+        if (mstReleaseDate != null ? !mstReleaseDate.equals(that.mstReleaseDate) : that.mstReleaseDate != null)
+            return false;
+        if (mstType != null ? !mstType.equals(that.mstType) : that.mstType != null) return false;
+        if (mstUid != null ? !mstUid.equals(that.mstUid) : that.mstUid != null) return false;
+
+        return true;
     }
 
-    public void setCodeID(String codeID) {
-        this.codeID = codeID;
-    }
-
-    public String getSetName() {
-        return setName;
-    }
-
-    public void setSetName(String setName) {
-        this.setName = setName;
-    }
-
-    public Date getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
-    public String getSetType() {
-        return setType;
-    }
-
-    public void setSetType(String setType) {
-        this.setType = setType;
-    }
-
-    public String getBlock() {
-        return block;
-    }
-
-    public void setBlock(String block) {
-        this.block = block;
-    }
-
-    public String getBorder() {
-        return border;
-    }
-
-    public void setBorder(String border) {
-        this.border = border;
+    @Override
+    public int hashCode() {
+        int result = mstName != null ? mstName.hashCode() : 0;
+        result = 31 * result + (mstUid != null ? mstUid.hashCode() : 0);
+        result = 31 * result + (mstReleaseDate != null ? mstReleaseDate.hashCode() : 0);
+        result = 31 * result + (mstBorder != null ? mstBorder.hashCode() : 0);
+        result = 31 * result + (mstType != null ? mstType.hashCode() : 0);
+        result = 31 * result + (mstBlock != null ? mstBlock.hashCode() : 0);
+        return result;
     }
 }

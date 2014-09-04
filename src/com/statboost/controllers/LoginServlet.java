@@ -27,8 +27,8 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
         User candidate = User.authenticate(email, password);
         if (candidate != null) {
-            session.setAttribute("email", candidate.getEmail());
-            if (candidate.getRole().equals("Admin")) {
+            session.setAttribute("email", candidate.getUsrEmail());
+            if (candidate.getUsrRole().equals("Admin")) {
                 session.setAttribute("admin", "true");
             }
             response.sendRedirect("/");

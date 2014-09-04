@@ -17,40 +17,36 @@ import java.io.Serializable;
  * 3:50 PM on 2/15/14
  */
 @Entity
-//@Table(name="stt_magic_card")
 public class MagicCard implements Serializable {
     @Id
-    private int mgcUID;
-    // @Column(name="mcr_card_name")
-    private String cardName;
-   // @Column(name="mcr_multiverse_id")
-    private Integer multiverseID;
-   // @Column(name="mcr_artist")
-    private String artist;
-   // @Column(name="mcr_border")
-    private String border;  //Only if different than border of set
-    private Double cmc;
-    private Integer hand; //only exists for Vanguard cards
-    private Integer life; //only exists for Vanguard cards
-    private Integer loyalty;
-    private String colors;
-    private String flavor;
-    private String imageName;
-    private String layout;
-    private String manacost;
-    private String cardNames; //Only used for split, flip and dual cards
-    private String setID;
-    private String cardNumber;
-    private String cardPower;
-    private String rarity;
-    private String subTypes;
-    private String superTypes;
-    private String text;
-    private String toughness;
-    private String cardType;
-    private String types;
-    private String variations; //If a card has alternate art then each variation's multiverseId will be listed including the current multiverseId
-    private String watermark;
+    private int mcrUid;
+    private String mcrCardName;
+    private String mcrNames;
+    private String mcrSetId;
+    private String mcrManaCost;
+    private Double mcrCmc;
+    private String mcrColors;
+    private String mcrType;
+    private String mcrSuperTypes;
+    private String mcrSubTypes;
+    private String mcrTypes;
+    private String mcrRarity;
+    private String mcrText;
+    private String mcrFlavor;
+    private String mcrArtist;
+    private String mcrNumber;
+    private String mcrPower;
+    private String mcrToughness;
+    private Integer mcrLoyalty;
+    private String mcrLayout;
+    private Integer mcrMultiverseId;
+    private String mcrVariations;
+    private String mcrImageName;
+    private String mcrWatermark;
+    private String mcrBorder;
+    private Integer mcrHand;
+    private Integer mcrLife;
+
 
     @ManyToOne
     private MagicSet magicSet;
@@ -58,12 +54,13 @@ public class MagicCard implements Serializable {
     private static SessionFactory mtgFactory = HibernateUtil.getMTGSessionFactory();
     private static final long serialVersionUID = 8052962961003467437L;
 
-    public MagicCard () {
+    public MagicCard() {
 
     }
 
     /**
      * This method returns the MagicCard object given a card exists with the provided name string
+     *
      * @param cardName
      * @return MagicCard
      */
@@ -72,11 +69,11 @@ public class MagicCard implements Serializable {
         Session session = mtgFactory.openSession();
 
         Transaction tx = null;
-        if (cardName !=null) {
+        if (cardName != null) {
             try {
                 tx = session.beginTransaction();
                 //query
-                card = (MagicCard) session.createQuery("FROM MagicCard WHERE cardName='" + cardName + "'").list().get(0); //just return one result for now
+                card = (MagicCard) session.createQuery("FROM MagicCard WHERE mcrCardName='" + cardName + "'").list().get(0); //just return one result for now
                 tx.commit();
             } catch (HibernateException e) {
                 if (tx != null) tx.rollback();
@@ -89,88 +86,224 @@ public class MagicCard implements Serializable {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        MagicCard that = (MagicCard) o;
-
-        if (mgcUID != that.getMgcUID()) return false;
-        if (multiverseID != that.getMultiverseID()) return false;
-        if (artist != null ? !artist.equals(that.getArtist()) : that.getArtist() != null) return false;
-        if (border != null ? !border.equals(that.getBorder()) : that.getBorder() != null) return false;
-        if (cardName != null ? !cardName.equals(that.getCardName()) : that.getCardName() != null) return false;
-        if (cardNames != null ? !cardNames.equals(that.getCardNames()) : that.getCardNames() != null) return false;
-        if (cardNumber != null ? !cardNumber.equals(that.getCardNumber()) : that.getCardNumber() != null) return false;
-        if (cardPower != null ? !cardPower.equals(that.getCardPower()) : that.getCardPower() != null) return false;
-        if (cardType != null ? !cardType.equals(that.getCardType()) : that.getCardType() != null) return false;
-        if (cmc != null ? !cmc.equals(that.getCmc()) : that.getCmc() != null) return false;
-        if (colors != null ? !colors.equals(that.getColors()) : that.getColors() != null) return false;
-        if (flavor != null ? !flavor.equals(that.getFlavor()) : that.getFlavor() != null) return false;
-        if (hand != null ? !hand.equals(that.getHand()) : that.getHand() != null) return false;
-        if (imageName != null ? !imageName.equals(that.getImageName()) : that.getImageName() != null) return false;
-        if (layout != null ? !layout.equals(that.getLayout()) : that.getLayout() != null) return false;
-        if (life != null ? !life.equals(that.getLife()) : that.getLife() != null) return false;
-        if (loyalty != null ? !loyalty.equals(that.getLoyalty()) : that.getLoyalty() != null) return false;
-        if (manacost != null ? !manacost.equals(that.getManacost()) : that.getManacost() != null) return false;
-        if (rarity != null ? !rarity.equals(that.getRarity()) : that.getRarity() != null) return false;
-        if (setID != null ? !setID.equals(that.getSetID()) : that.getSetID() != null) return false;
-        if (subTypes != null ? !subTypes.equals(that.getSubTypes()) : that.getSubTypes() != null) return false;
-        if (superTypes != null ? !superTypes.equals(that.getSuperTypes()) : that.getSuperTypes() != null) return false;
-        if (text != null ? !text.equals(that.getText()) : that.getText() != null) return false;
-        if (toughness != null ? !toughness.equals(that.getToughness()) : that.getToughness() != null) return false;
-        if (types != null ? !types.equals(that.getTypes()) : that.getTypes() != null) return false;
-        if (variations != null ? !variations.equals(that.getVariations()) : that.getVariations() != null) return false;
-        if (watermark != null ? !watermark.equals(that.getWatermark()) : that.getWatermark() != null) return false;
-
-        return true;
+    /**
+     * Getters and Setters
+     */
+    public String getMcrCardName() {
+        return mcrCardName;
     }
 
-    @Override
-    public int hashCode() {
-        int result = cardName != null ? cardName.hashCode() : 0;
-        result = 31 * result + (cardNames != null ? cardNames.hashCode() : 0);
-        result = 31 * result + (setID != null ? setID.hashCode() : 0);
-        result = 31 * result + (manacost != null ? manacost.hashCode() : 0);
-        result = 31 * result + (cmc != null ? cmc.hashCode() : 0);
-        result = 31 * result + (colors != null ? colors.hashCode() : 0);
-        result = 31 * result + (cardType != null ? cardType.hashCode() : 0);
-        result = 31 * result + (superTypes != null ? superTypes.hashCode() : 0);
-        result = 31 * result + (subTypes != null ? subTypes.hashCode() : 0);
-        result = 31 * result + (types != null ? types.hashCode() : 0);
-        result = 31 * result + (rarity != null ? rarity.hashCode() : 0);
-        result = 31 * result + (text != null ? text.hashCode() : 0);
-        result = 31 * result + (flavor != null ? flavor.hashCode() : 0);
-        result = 31 * result + (artist != null ? artist.hashCode() : 0);
-        result = 31 * result + (cardNumber != null ? cardNumber.hashCode() : 0);
-        result = 31 * result + (cardPower != null ? cardPower.hashCode() : 0);
-        result = 31 * result + (toughness != null ? toughness.hashCode() : 0);
-        result = 31 * result + (loyalty != null ? loyalty.hashCode() : 0);
-        result = 31 * result + (layout != null ? layout.hashCode() : 0);
-        result = 31 * result + multiverseID;
-        result = 31 * result + (variations != null ? variations.hashCode() : 0);
-        result = 31 * result + (imageName != null ? imageName.hashCode() : 0);
-        result = 31 * result + (watermark != null ? watermark.hashCode() : 0);
-        result = 31 * result + (border != null ? border.hashCode() : 0);
-        result = 31 * result + (hand != null ? hand.hashCode() : 0);
-        result = 31 * result + (life != null ? life.hashCode() : 0);
-        result = 31 * result + mgcUID;
-        return result;
+    public void setMcrCardName(String mcrCardName) {
+        this.mcrCardName = mcrCardName;
     }
 
+    public String getMcrNames() {
+        return mcrNames;
+    }
+
+    public void setMcrNames(String mcrNames) {
+        this.mcrNames = mcrNames;
+    }
+
+    public String getMcrSetId() {
+        return mcrSetId;
+    }
+
+    public void setMcrSetId(String mcrSetId) {
+        this.mcrSetId = mcrSetId;
+    }
+
+    public String getMcrManaCost() {
+        return mcrManaCost;
+    }
+
+    public void setMcrManaCost(String mcrManaCost) {
+        this.mcrManaCost = mcrManaCost;
+    }
+
+    public Double getMcrCmc() {
+        return mcrCmc;
+    }
+
+    public void setMcrCmc(Double mcrCmc) {
+        this.mcrCmc = mcrCmc;
+    }
+
+    public String getMcrColors() {
+        return mcrColors;
+    }
+
+    public void setMcrColors(String mcrColors) {
+        this.mcrColors = mcrColors;
+    }
+
+    public String getMcrType() {
+        return mcrType;
+    }
+
+    public void setMcrType(String mcrType) {
+        this.mcrType = mcrType;
+    }
+
+    public String getMcrSuperTypes() {
+        return mcrSuperTypes;
+    }
+
+    public void setMcrSuperTypes(String mcrSuperTypes) {
+        this.mcrSuperTypes = mcrSuperTypes;
+    }
+
+    public String getMcrSubTypes() {
+        return mcrSubTypes;
+    }
+
+    public void setMcrSubTypes(String mcrSubTypes) {
+        this.mcrSubTypes = mcrSubTypes;
+    }
+
+    public String getMcrTypes() {
+        return mcrTypes;
+    }
+
+    public void setMcrTypes(String mcrTypes) {
+        this.mcrTypes = mcrTypes;
+    }
+
+    public String getMcrRarity() {
+        return mcrRarity;
+    }
+
+    public void setMcrRarity(String mcrRarity) {
+        this.mcrRarity = mcrRarity;
+    }
+
+    public String getMcrText() {
+        return mcrText;
+    }
+
+    public void setMcrText(String mcrText) {
+        this.mcrText = mcrText;
+    }
+
+    public String getMcrFlavor() {
+        return mcrFlavor;
+    }
+
+    public void setMcrFlavor(String mcrFlavor) {
+        this.mcrFlavor = mcrFlavor;
+    }
+
+    public String getMcrArtist() {
+        return mcrArtist;
+    }
+
+    public void setMcrArtist(String mcrArtist) {
+        this.mcrArtist = mcrArtist;
+    }
+
+    public String getMcrNumber() {
+        return mcrNumber;
+    }
+
+    public void setMcrNumber(String mcrNumber) {
+        this.mcrNumber = mcrNumber;
+    }
+
+    public String getMcrPower() {
+        return mcrPower;
+    }
+
+    public void setMcrPower(String mcrPower) {
+        this.mcrPower = mcrPower;
+    }
+
+    public String getMcrToughness() {
+        return mcrToughness;
+    }
+
+    public void setMcrToughness(String mcrToughness) {
+        this.mcrToughness = mcrToughness;
+    }
+
+    public Integer getMcrLoyalty() {
+        return mcrLoyalty;
+    }
+
+    public void setMcrLoyalty(Integer mcrLoyalty) {
+        this.mcrLoyalty = mcrLoyalty;
+    }
+
+    public String getMcrLayout() {
+        return mcrLayout;
+    }
+
+    public void setMcrLayout(String mcrLayout) {
+        this.mcrLayout = mcrLayout;
+    }
+
+    public Integer getMcrMultiverseId() {
+        return mcrMultiverseId;
+    }
+
+    public void setMcrMultiverseId(Integer mcrMultiverseId) {
+        this.mcrMultiverseId = mcrMultiverseId;
+    }
+
+    public String getMcrVariations() {
+        return mcrVariations;
+    }
+
+    public void setMcrVariations(String mcrVariations) {
+        this.mcrVariations = mcrVariations;
+    }
+
+    public String getMcrImageName() {
+        return mcrImageName;
+    }
+
+    public void setMcrImageName(String mcrImageName) {
+        this.mcrImageName = mcrImageName;
+    }
+
+    public String getMcrWatermark() {
+        return mcrWatermark;
+    }
+
+    public void setMcrWatermark(String mcrWatermark) {
+        this.mcrWatermark = mcrWatermark;
+    }
+
+    public String getMcrBorder() {
+        return mcrBorder;
+    }
+
+    public void setMcrBorder(String mcrBorder) {
+        this.mcrBorder = mcrBorder;
+    }
+
+    public Integer getMcrHand() {
+        return mcrHand;
+    }
+
+    public void setMcrHand(Integer mcrHand) {
+        this.mcrHand = mcrHand;
+    }
+
+    public Integer getMcrLife() {
+        return mcrLife;
+    }
+
+    public void setMcrLife(Integer mcrLife) {
+        this.mcrLife = mcrLife;
+    }
+
+    public int getMcrUid() {
+        return mcrUid;
+    }
+
+    public void setMcrUid(int mcrUid) {
+        this.mcrUid = mcrUid;
+    }
 
     public MagicSet getMagicSet() {
         return magicSet;
@@ -180,220 +313,76 @@ public class MagicCard implements Serializable {
         this.magicSet = magicSet;
     }
 
-    public int getMgcUID() {
-        return mgcUID;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MagicCard that = (MagicCard) o;
+
+        if (mcrUid != that.mcrUid) return false;
+        if (mcrArtist != null ? !mcrArtist.equals(that.mcrArtist) : that.mcrArtist != null) return false;
+        if (mcrBorder != null ? !mcrBorder.equals(that.mcrBorder) : that.mcrBorder != null) return false;
+        if (mcrCardName != null ? !mcrCardName.equals(that.mcrCardName) : that.mcrCardName != null) return false;
+        if (mcrCmc != null ? !mcrCmc.equals(that.mcrCmc) : that.mcrCmc != null) return false;
+        if (mcrColors != null ? !mcrColors.equals(that.mcrColors) : that.mcrColors != null) return false;
+        if (mcrFlavor != null ? !mcrFlavor.equals(that.mcrFlavor) : that.mcrFlavor != null) return false;
+        if (mcrHand != null ? !mcrHand.equals(that.mcrHand) : that.mcrHand != null) return false;
+        if (mcrImageName != null ? !mcrImageName.equals(that.mcrImageName) : that.mcrImageName != null) return false;
+        if (mcrLayout != null ? !mcrLayout.equals(that.mcrLayout) : that.mcrLayout != null) return false;
+        if (mcrLife != null ? !mcrLife.equals(that.mcrLife) : that.mcrLife != null) return false;
+        if (mcrLoyalty != null ? !mcrLoyalty.equals(that.mcrLoyalty) : that.mcrLoyalty != null) return false;
+        if (mcrManaCost != null ? !mcrManaCost.equals(that.mcrManaCost) : that.mcrManaCost != null) return false;
+        if (mcrMultiverseId != null ? !mcrMultiverseId.equals(that.mcrMultiverseId) : that.mcrMultiverseId != null)
+            return false;
+        if (mcrNames != null ? !mcrNames.equals(that.mcrNames) : that.mcrNames != null) return false;
+        if (mcrNumber != null ? !mcrNumber.equals(that.mcrNumber) : that.mcrNumber != null) return false;
+        if (mcrPower != null ? !mcrPower.equals(that.mcrPower) : that.mcrPower != null) return false;
+        if (mcrRarity != null ? !mcrRarity.equals(that.mcrRarity) : that.mcrRarity != null) return false;
+        if (mcrSetId != null ? !mcrSetId.equals(that.mcrSetId) : that.mcrSetId != null) return false;
+        if (mcrSubTypes != null ? !mcrSubTypes.equals(that.mcrSubTypes) : that.mcrSubTypes != null) return false;
+        if (mcrSuperTypes != null ? !mcrSuperTypes.equals(that.mcrSuperTypes) : that.mcrSuperTypes != null)
+            return false;
+        if (mcrText != null ? !mcrText.equals(that.mcrText) : that.mcrText != null) return false;
+        if (mcrToughness != null ? !mcrToughness.equals(that.mcrToughness) : that.mcrToughness != null) return false;
+        if (mcrType != null ? !mcrType.equals(that.mcrType) : that.mcrType != null) return false;
+        if (mcrTypes != null ? !mcrTypes.equals(that.mcrTypes) : that.mcrTypes != null) return false;
+        if (mcrVariations != null ? !mcrVariations.equals(that.mcrVariations) : that.mcrVariations != null)
+            return false;
+        if (mcrWatermark != null ? !mcrWatermark.equals(that.mcrWatermark) : that.mcrWatermark != null) return false;
+
+        return true;
     }
 
-    public void setMgcUID(int mgcUID) {
-        this.mgcUID = mgcUID;
+    @Override
+    public int hashCode() {
+        int result = mcrCardName != null ? mcrCardName.hashCode() : 0;
+        result = 31 * result + (mcrNames != null ? mcrNames.hashCode() : 0);
+        result = 31 * result + (mcrSetId != null ? mcrSetId.hashCode() : 0);
+        result = 31 * result + (mcrManaCost != null ? mcrManaCost.hashCode() : 0);
+        result = 31 * result + (mcrCmc != null ? mcrCmc.hashCode() : 0);
+        result = 31 * result + (mcrColors != null ? mcrColors.hashCode() : 0);
+        result = 31 * result + (mcrType != null ? mcrType.hashCode() : 0);
+        result = 31 * result + (mcrSuperTypes != null ? mcrSuperTypes.hashCode() : 0);
+        result = 31 * result + (mcrSubTypes != null ? mcrSubTypes.hashCode() : 0);
+        result = 31 * result + (mcrTypes != null ? mcrTypes.hashCode() : 0);
+        result = 31 * result + (mcrRarity != null ? mcrRarity.hashCode() : 0);
+        result = 31 * result + (mcrText != null ? mcrText.hashCode() : 0);
+        result = 31 * result + (mcrFlavor != null ? mcrFlavor.hashCode() : 0);
+        result = 31 * result + (mcrArtist != null ? mcrArtist.hashCode() : 0);
+        result = 31 * result + (mcrNumber != null ? mcrNumber.hashCode() : 0);
+        result = 31 * result + (mcrPower != null ? mcrPower.hashCode() : 0);
+        result = 31 * result + (mcrToughness != null ? mcrToughness.hashCode() : 0);
+        result = 31 * result + (mcrLoyalty != null ? mcrLoyalty.hashCode() : 0);
+        result = 31 * result + (mcrLayout != null ? mcrLayout.hashCode() : 0);
+        result = 31 * result + (mcrMultiverseId != null ? mcrMultiverseId.hashCode() : 0);
+        result = 31 * result + (mcrVariations != null ? mcrVariations.hashCode() : 0);
+        result = 31 * result + (mcrImageName != null ? mcrImageName.hashCode() : 0);
+        result = 31 * result + (mcrWatermark != null ? mcrWatermark.hashCode() : 0);
+        result = 31 * result + (mcrBorder != null ? mcrBorder.hashCode() : 0);
+        result = 31 * result + (mcrHand != null ? mcrHand.hashCode() : 0);
+        result = 31 * result + (mcrLife != null ? mcrLife.hashCode() : 0);
+        result = 31 * result + mcrUid;
+        return result;
     }
-
-    public int getMultiverseID() {
-        return multiverseID;
-    }
-
-    public void setMultiverseID(int multiverseID) {
-        this.multiverseID = multiverseID;
-    }
-
-    public String getCardName() {
-        return cardName;
-    }
-
-    public void setCardName(String cardName) {
-        this.cardName = cardName;
-    }
-
-    public String getArtist() {
-        return artist;
-    }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
-
-    public String getBorder() {
-        return border;
-    }
-
-    public void setBorder(String border) {
-        this.border = border;
-    }
-
-    public Double getCmc() {
-        return cmc;
-    }
-
-    public void setCmc(Double cmc) {
-        this.cmc = cmc;
-    }
-
-    public String getColors() {
-        return colors;
-    }
-
-    public void setColors(String colors) {
-        this.colors = colors;
-    }
-
-    public String getFlavor() {
-        return flavor;
-    }
-
-    public void setFlavor(String flavor) {
-        this.flavor = flavor;
-    }
-
-    public Integer getHand() {
-        return hand;
-    }
-
-    public void setHand(Integer hand) {
-        this.hand = hand;
-    }
-
-    public String getImageName() {
-        return imageName;
-    }
-
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
-    }
-
-    public String getLayout() {
-        return layout;
-    }
-
-    public void setLayout(String layout) {
-        this.layout = layout;
-    }
-
-    public Integer getLife() {
-        return life;
-    }
-
-    public void setLife(Integer life) {
-        this.life = life;
-    }
-
-    public Integer getLoyalty() {
-        return loyalty;
-    }
-
-    public void setLoyalty(Integer loyalty) {
-        this.loyalty = loyalty;
-    }
-
-    public String getManacost() {
-        return manacost;
-    }
-
-    public void setManacost(String manacost) {
-        this.manacost = manacost;
-    }
-
-    public String getSetID() {
-        return setID;
-    }
-
-    public void setSetID(String setID) {
-        this.setID = setID;
-    }
-
-    public String getCardNumber() {
-        return cardNumber;
-    }
-
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
-    }
-
-    public String getCardPower() {
-        return cardPower;
-    }
-
-    public void setCardPower(String cardPower) {
-        this.cardPower = cardPower;
-    }
-
-    public String getRarity() {
-        return rarity;
-    }
-
-    public void setRarity(String rarity) {
-        this.rarity = rarity;
-    }
-
-    public String getSubTypes() {
-        return subTypes;
-    }
-
-    public void setSubTypes(String subtypes) {
-        this.subTypes = subtypes;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getToughness() {
-        return toughness;
-    }
-
-    public void setToughness(String toughness) {
-        this.toughness = toughness;
-    }
-
-    public String getCardType() {
-        return cardType;
-    }
-
-    public void setCardType(String cardType) {
-        this.cardType = cardType;
-    }
-
-    public String getWatermark() {
-        return watermark;
-    }
-
-    public void setWatermark(String watermark) {
-        this.watermark = watermark;
-    }
-
-    public String getCardNames() {
-        return cardNames;
-    }
-
-    public void setCardNames(String cardNames) {
-        this.cardNames = cardNames;
-    }
-
-    public String getSuperTypes() {
-        return superTypes;
-    }
-
-    public void setSuperTypes(String superTypes) {
-        this.superTypes = superTypes;
-    }
-
-    public String getVariations() {
-        return variations;
-    }
-
-    public void setVariations(String variations) {
-        this.variations = variations;
-    }
-
-    public String getTypes() {
-        return types;
-    }
-
-    public void setTypes(String types) {
-        this.types = types;
-    }
-
 }

@@ -24,6 +24,8 @@ public class UserProfileServlet extends HttpServlet {
 
 
             request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("/");
         }
 
     }

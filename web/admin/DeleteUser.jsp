@@ -19,9 +19,26 @@
                     <h1 class="panel-title">Delete an Administrator</h1>
                 </div>
                 <div class="panel-body">
-
-                TODO: List all admins here
-
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email Address</th>
+                                <th>Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach items="${admins}" var="admin">
+                                <tr>
+                                    <td>${admin.usrFirstName}</td>
+                                    <td>${admin.usrLastName}</td>
+                                    <td>${admin.usrEmail}</td>
+                                    <td>${admin.usrRole}</td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -30,9 +47,26 @@
                     <h1 class="panel-title">Delete an Employee</h1>
                 </div>
                 <div class="panel-body">
-
-                    TODO: List all employees here
-
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email Address</th>
+                                <th>Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach items="${employees}" var="employee">
+                                <tr>
+                                    <td>${employee.usrFirstName}</td>
+                                    <td>${employee.usrLastName}</td>
+                                    <td>${employee.usrEmail}</td>
+                                    <td>${employee.usrRole}</td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -42,7 +76,12 @@
                 </div>
                 <div class="panel-body">
 
-                    TODO: add customer search bar, maybe auto complete?
+                    <form class="navbar-form navbar-left" role="search" method="get" action="">
+                        <div class="form-group">
+                            <input type="text" id="search" name="userName" class="autocomplete form-control" data-url="">
+                        </div>
+                        &nbsp;<span class="glyphicon glyphicon-search" style="color:black" title="Type a user name to search for."></span>
+                    </form>
 
                 </div>
             </div>
