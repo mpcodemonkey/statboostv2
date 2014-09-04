@@ -28,7 +28,7 @@ public class AutoCompleteServlet extends HttpServlet {
         System.out.println("I did something!");
         SessionFactory mtgFactory = HibernateUtil.getMTGSessionFactory();
         Session session = mtgFactory.openSession();
-        String hql = "From MagicCard as m where m.cardName like :name group by m.cardName order by m.multiverseID desc";
+        String hql = "From MagicCard as m where m.mcrCardName like :name group by m.mcrCardName order by m.mcrMultiverseId desc";
         Query query = session.createQuery(hql);
         query.setParameter("name", "%"+request.getParameter("term")+"%");
         query.setMaxResults(4);
@@ -37,8 +37,8 @@ public class AutoCompleteServlet extends HttpServlet {
         JsonArray j = new JsonArray();
         for(MagicCard m : result) {
             JsonObject jo = new JsonObject();
-            jo.addProperty("name", m.getCardName());
-            jo.addProperty("text", m.getText());
+            jo.addProperty("name", m.getMcrCardName());
+            jo.addProperty("text", m.getMcrText());
             j.add(jo);
         }
         response.getWriter().write(new Gson().toJson(j));

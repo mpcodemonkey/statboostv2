@@ -6,27 +6,6 @@
   Time: 10:23 PM
 --%>
 
-
-
-<!--
-<script type="text/javascript">
-    var basePath = '${pageContext.request.contextPath}';
-</script>
-
-<script>
-
-        $("input.search").autocomplete({
-            source: function( request, response ) {
-                $.getJSON( "/autocomplete", {
-                    term: request.term
-                }, response );
-            }
-
-        });
-
-</script>
--->
-
 <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
     <div class="container">
         <div class="navbar-header">

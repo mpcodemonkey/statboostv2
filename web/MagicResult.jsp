@@ -13,7 +13,7 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        ${card.cardName}
+                        ${card.mcrCardName}
                     </h3>
                 </div>
                 <div class="panel-body">
@@ -24,7 +24,7 @@
                             <th>Card Number</th>
                             <th>Rarity</th>
                             <th>Type</th>
-                            <th>Mana cost</th>
+                            <th>ManaCost</th>
                             <th>Text</th>
                             <th>Flavor</th>
                             <th>Image</th>
@@ -32,19 +32,19 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td>${card.setID}</td>
-                            <td>${card.cardNumber}</td>
-                            <td>${card.rarity}</td>
-                            <td>${card.types}</td>
-                            <td>${card.manacost}</td>
-                            <td>${card.text}</td>
+                            <td>${card.mcrSetId}</td>
+                            <td>${card.mcrNumber}</td>
+                            <td>${card.mcrRarity}</td>
+                            <td>${card.mcrTypes}</td>
+                            <td>${card.mcrManaCost}</td>
+                            <td>${card.mcrText}</td>
                             <td>
                                 <c:choose>
-                                    <c:when test="${card.flavor} == null">N/A</c:when>
-                                    <c:otherwise>${card.flavor}</c:otherwise>
+                                    <c:when test="${card.mcrFlavor} == null">N/A</c:when>
+                                    <c:otherwise>${card.mcrFlavor}</c:otherwise>
                                 </c:choose>
                             </td>
-                            <td><img src="http://mtgimage.com/set/${card.setID}/${card.imageName}&#46;jpg" style="min-width: 175px; max-width: 175px;"></td>
+                            <td><img src="http://mtgimage.com/set/${card.mcrSetId}/${card.mcrImageName}&#46;jpg" style="min-width: 175px; max-width: 175px;"></td>
                         </tr>
                         </tbody>
                     </table>

@@ -51,19 +51,19 @@ public class AddUserServlet extends HttpServlet {
                 //Handle Admin insertion
                 if (request.getParameter("type")!=null && request.getParameter("type").equals("admin")) {
                     User.insert(request.getParameter("firstname"), request.getParameter("lastname"), request.getParameter("email"), request.getParameter("password"), "Admin");
-                    request.setAttribute("alertType", "success");
+                    request.setAttribute("alertType", "warning");
                     request.setAttribute("alert", "Administrator account has been successfully created for: " + request.getParameter("firstname") + " " + request.getParameter("lastname"));
                 }
                 //Handle Employee insertion
                  else if (request.getParameter("type")!=null && request.getParameter("type").equals("employee")) {
                     User.insert(request.getParameter("firstname"), request.getParameter("lastname"), request.getParameter("email"), request.getParameter("password"), "Employee");
-                    request.setAttribute("alertType", "success");
+                    request.setAttribute("alertType", "warning");
                     request.setAttribute("alert", "Employee account has been successfully created for: " + request.getParameter("firstname") + " " + request.getParameter("lastname"));
                 }
                 //Handle Customer insertion
                  else if (request.getParameter("type")!=null && request.getParameter("type").equals("customer")) {
                     User.insert(request.getParameter("firstname"), request.getParameter("lastname"), request.getParameter("email"), request.getParameter("password"), "Customer");
-                    request.setAttribute("alertType", "success");
+                    request.setAttribute("alertType", "warning");
                     request.setAttribute("alert", "Customer account has been successfully created for: " + request.getParameter("firstname") + " " + request.getParameter("lastname"));
                 } else {
                     request.setAttribute("alertType", "danger");

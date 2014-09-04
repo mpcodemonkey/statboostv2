@@ -4,45 +4,38 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="com.statboost.models.mtg.MagicCard" table="magic_card">
-        <meta attribute="class-description">
-            This class contains Magic Card detail.
-        </meta>
-
-        <id name="mgcUID" type="int" column="mgc_uid">
-            <generator class="native"/>
-        </id>
+    <class name="com.statboost.models.mtg.MagicCard" table="stt_magic_card" schema="" catalog="mtg_data">
+        <id name="mcrUid" column="mcr_uid"/>
 
         <many-to-one name="magicSet" class="com.statboost.models.mtg.MagicSet"
-                     column="setid" not-null="true"
+                     column="mcr_set_id" not-null="true" insert="false" update="false"
                      cascade="all" />
 
-        <property name="cardName" column="cardname" type="string"/>
-        <property name="multiverseID" column="multiverseid" type="int"/>
-        <property name="cardNames" column="CardNames" type="string"/>
-        <property name="manacost" column="ManaCost" type="string"/>
-        <property name="cmc" column="CMC" type="double"/>
-        <property name="colors" column="Colors" type="string"/>
-        <property name="cardType" column="CardType" type="string"/>
-        <property name="subTypes" column="SubTypes" type="string"/>
-        <property name="types" column="Types" type="string"/>
-        <property name="superTypes" column="SuperTypes" type="string"/>
-        <property name="rarity" column="Rarity" type="string"/>
-        <property name="text" column="Text" type="string"/>
-        <property name="flavor" column="Flavor" type="string"/>
-        <property name="artist" column="Artist" type="string"/>
-        <property name="cardNumber" column="CardNumber" type="string"/>
-        <property name="cardPower" column="CardPower" type="string"/>
-        <property name="toughness" column="Toughness" type="string"/>
-        <property name="loyalty" column="Loyalty" type="int"/>
-        <property name="layout" column="Layout" type="string"/>
-        <property name="variations" column="Variations" type="string"/>
-        <property name="imageName" column="ImageName" type="string"/>
-        <property name="watermark" column="Watermark" type="string"/>
-        <property name="border" column="Border" type="string"/>
-        <property name="hand" column="Hand" type="int"/>
-        <property name="life" column="Life" type="int"/>
-        <property name="setID" column="setID" type="string"/>
-
+        <property name="mcrCardName" column="mcr_card_name"/>
+        <property name="mcrNames" column="mcr_names"/>
+        <property name="mcrSetId" column="mcr_set_id"/>
+        <property name="mcrManaCost" column="mcr_mana_cost"/>
+        <property name="mcrCmc" column="mcr_cmc"/>
+        <property name="mcrColors" column="mcr_colors"/>
+        <property name="mcrType" column="mcr_type"/>
+        <property name="mcrSuperTypes" column="mcr_super_types"/>
+        <property name="mcrSubTypes" column="mcr_sub_types"/>
+        <property name="mcrTypes" column="mcr_types"/>
+        <property name="mcrRarity" column="mcr_rarity"/>
+        <property name="mcrText" column="mcr_text"/>
+        <property name="mcrFlavor" column="mcr_flavor"/>
+        <property name="mcrArtist" column="mcr_artist"/>
+        <property name="mcrNumber" column="mcr_number"/>
+        <property name="mcrPower" column="mcr_power"/>
+        <property name="mcrToughness" column="mcr_toughness"/>
+        <property name="mcrLoyalty" column="mcr_loyalty"/>
+        <property name="mcrLayout" column="mcr_layout"/>
+        <property name="mcrMultiverseId" column="mcr_multiverse_id"/>
+        <property name="mcrVariations" column="mcr_variations"/>
+        <property name="mcrImageName" column="mcr_image_name"/>
+        <property name="mcrWatermark" column="mcr_watermark"/>
+        <property name="mcrBorder" column="mcr_border"/>
+        <property name="mcrHand" column="mcr_hand"/>
+        <property name="mcrLife" column="mcr_life"/>
     </class>
 </hibernate-mapping>

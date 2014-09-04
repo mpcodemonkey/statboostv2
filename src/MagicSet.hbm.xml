@@ -4,23 +4,18 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="com.statboost.models.mtg.MagicSet" table="magic_set">
-        <meta attribute="class-description">
-            This class contains Magic Set detail.
-        </meta>
-        <id name="codeID" type="string" column="CodeID">
-            <generator class="native"/>
-        </id>
+    <class name="com.statboost.models.mtg.MagicSet" table="stt_magic_set" schema="" catalog="mtg_data">
+        <id name="mstUid" column="mst_uid"/>
 
-        <set name="magicCardList" table="magic_card" cascade="all" inverse="true">
-            <key column="mgc_uid" not-null="true"></key>
+        <set name="magicCardList" table="stt_magic_card" cascade="all" inverse="true">
+            <key column="mcr_uid" not-null="true"></key>
             <one-to-many class="com.statboost.models.mtg.MagicCard"/>
         </set>
 
-        <property name="setName" column="SetName" type="string"/>
-        <property name="releaseDate" column="ReleaseDate" type="string"/>
-        <property name="border" column="Border" type="string"/>
-        <property name="setType" column="SetType" type="string"/>
-        <property name="block" column="Block" type="string"/>
+        <property name="mstName" column="mst_name"/>
+        <property name="mstReleaseDate" column="mst_release_date"/>
+        <property name="mstBorder" column="mst_border"/>
+        <property name="mstType" column="mst_type"/>
+        <property name="mstBlock" column="mst_block"/>
     </class>
 </hibernate-mapping>
