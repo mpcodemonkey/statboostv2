@@ -121,12 +121,12 @@ create table stt_group_event_link  (
   constraint gel_wev_uif_fk foreign key (gel_wev_uid) references stt_workflow_event (wev_uid)
 ) ;
 
-create table stt_variable  (
-  vrb_uid int primary key auto_increment,
-  vrb_vrg_uid int not null,
-  constraint vrb_vrg_uid_fk foreign key (vrb_vrg_uid) references stt_variable_group (vgr_uid),
-  vrb_name varchar(50) not null,
-  vrb_default_value varchar(1000),
-  vrb_format varchar(100),
-  vrb_display_name varchar(100) not null
+create table stt_email_variable  (
+  evr_uid int primary key auto_increment,
+  evr_vgr_uid int not null,
+  constraint evr_vgr_uid_fk foreign key (evr_vgr_uid) references stt_variable_group (vgr_uid),
+  evr_name varchar(50) not null,
+  err_default_value varchar(1000),
+  evr_format varchar(100),
+  evr_display_name varchar(100) not null
 );
