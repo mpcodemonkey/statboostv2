@@ -40,6 +40,7 @@
     <orderEntry type="library" name="gson-2.3" level="project" />
     <orderEntry type="library" name="jbcrypt-0.3m" level="project" />
     <orderEntry type="library" name="mysql-connector-java-5.1.31" level="project" />
+    <orderEntry type="library" name="net.authorize:anet-java-sdk:1.8.2" level="project" />
   </component>
 </module>
 
