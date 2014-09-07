@@ -19,9 +19,7 @@ public class EmailSqllistServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String sql = "select * from stt_email";
-
         ResultSet emails = ServletUtil.getResultSetFromSql(sql);
-
         forwardToSqllist(request, response, emails);
     }
 
