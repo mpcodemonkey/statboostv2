@@ -106,7 +106,7 @@ public class MagicSearchServlet extends HttpServlet {
             for(int i = 0; i < colors.length; i++)
             {
                 colorsConstraint = defCon + i;
-                System.out.println("I ran, current color is: " + colors[i]);
+                //System.out.println("I ran, current color is: " + colors[i]);
                 if(prevCon)
                 {
                     colorsConstraint = and + defCon + i;
