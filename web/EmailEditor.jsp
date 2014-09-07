@@ -2,7 +2,6 @@
 <%@ page import="com.statboost.controllers.EmailEditorServlet" %>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="com.statboost.Email" %>
-<%@ page import="java.util.List" %>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -14,6 +13,7 @@
     %>
     <%
         ResultSet emailTemplates = (ResultSet) request.getAttribute(EmailEditorServlet.ATTR_EMAIL_TEMPLATE);
+        ResultSet emailVariables = (ResultSet) request.getAttribute(EmailEditorServlet.ATTR_EMAIL_VARIABLES);
         Email email = (Email) request.getAttribute(EmailEditorServlet.ATTR_EMAIL);
     %>
     <script type="text/javascript" src="/tinymce/tinymce.min.js"></script>
@@ -36,11 +36,67 @@
                 {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
             ]
         });
+
+        function insertVariable()  {
+//            todo: check that this works
+            insertAtCaret('elm1', document.getElementById('emailVariable').value);
+        }
+
+        function insertAtCaret(areaId,text) {
+            var txtarea = document.getElementById(areaId);
+            var scrollPos = txtarea.scrollTop;
+            var strPos = 0;
+            var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ?
+                    "ff" : (document.selection ? "ie" : false ) );
+            if (br == "ie") {
+                txtarea.focus();
+                var range = document.selection.createRange();
+                range.moveStart ('character', -txtarea.value.length);
+                strPos = range.text.length;
+            }
+            else if (br == "ff") strPos = txtarea.selectionStart;
+
+            var front = (txtarea.value).substring(0,strPos);
+            var back = (txtarea.value).substring(strPos,txtarea.value.length);
+            txtarea.value=front+text+back;
+            strPos = strPos + text.length;
+            if (br == "ie") {
+                txtarea.focus();
+                var range = document.selection.createRange();
+                range.moveStart ('character', -txtarea.value.length);
+                range.moveStart ('character', strPos);
+                range.moveEnd ('character', 0);
+                range.select();
+            }
+            else if (br == "ff") {
+                txtarea.selectionStart = strPos;
+                txtarea.selectionEnd = strPos;
+                txtarea.focus();
+            }
+            txtarea.scrollTop = scrollPos;
+        }
     </script>
 </head>
 <body>
 <form method="post" action="<%=EmailEditorServlet.SRV_MAP%>">
-<table>
+    <input type="hidden" name="<%=EmailEditorServlet.PARAM_EMAIL_UID%>" value="<%=email.getUid()%>">
+    <input type="hidden" name="<%=EmailEditorServlet.PARAM_EMAIL_VARIABLE_GROUP_UID%>" value="<%=email.getEmailVariableGroupUid()%>">
+<table cellpadding="0" cellspacing="0" border="0">
+    <tr>
+        <td>Email Variable</td>
+        <td>
+            <select id="emailVariable" onchange="insertVariable();return false;">
+                <option value="">Select One</option>
+                <%
+                    while(emailVariables != null && emailVariables.next())  {
+                %>
+                <option value="<%=emailVariables.getString("evr_name")%>"><%=emailVariables.getString("evr_display_name")%></option>
+                <%
+                    }    
+                %>
+            </select>    
+        </td>
+    </tr>
     <tr>
         <td>Name</td>
         <td><input type="text" name="<%=EmailEditorServlet.PARAM_NAME%>" value="<%=email.getName()%>"/></td>

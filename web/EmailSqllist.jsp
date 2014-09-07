@@ -19,9 +19,6 @@
 <body>
     <table>
         <tr>
-            <td colspan="2"><a href="<%=EmailEditorServlet.SRV_MAP%>">New Email</a></td>
-        </tr>
-        <tr>
             <td>Name</td>
             <td>Subject</td>
         </tr>
