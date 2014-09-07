@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.statboost.models.actor.User" table="stt_user" schema="" catalog="user_data">
+        <id name="usrUid" column="usr_uid"/>
+        <property name="usrFirstName" column="usr_first_name"/>
+        <property name="usrLastName" column="usr_last_name"/>
+        <property name="usrEmail" column="usr_email"/>
+        <property name="usrPassword" column="usr_password"/>
+        <property name="usrRole" column="usr_role"/>
+        <property name="usrAddress1" column="usr_address_1"/>
+        <property name="usrAddress2" column="usr_address_2"/>
+        <property name="usrCity" column="usr_city"/>
+        <property name="usrState" column="usr_state"/>
+        <property name="usrZip" column="usr_zip"/>
+        <property name="usrPhone" column="usr_phone"/>
+        <property name="usrNewsletter" column="usr_newsletter"/>
+        <property name="usrActive" column="usr_active"/>
+        <property name="usrDciNumber" column="usr_dci_number"/>
+    </class>
+</hibernate-mapping>

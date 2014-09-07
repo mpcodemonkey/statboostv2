@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">
+            org.hibernate.dialect.MySQLDialect
+        </property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+
+        <property name="hibernate.connection.url">jdbc:mysql://107.138.64.59:3306/mtg_data?characterEncoding=UTF-8</property>
+        <property name="hibernate.connection.username">generic</property>
+        <property name="hibernate.connection.password">generic11PASSWORD</property>
+
+        <!-- List of XML mapping files -->
+        <mapping resource="MagicCard.hbm.xml"/>
+        <mapping resource="MagicSet.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>

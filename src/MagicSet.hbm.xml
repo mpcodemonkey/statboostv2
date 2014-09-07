@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.statboost.models.mtg.MagicSet" table="stt_magic_set" schema="" catalog="mtg_data">
+        <id name="mstUid" column="mst_uid"/>
+
+        <set name="magicCardList" table="stt_magic_card" cascade="all" inverse="true">
+            <key column="mcr_uid" not-null="true"></key>
+            <one-to-many class="com.statboost.models.mtg.MagicCard"/>
+        </set>
+
+        <property name="mstName" column="mst_name"/>
+        <property name="mstReleaseDate" column="mst_release_date"/>
+        <property name="mstBorder" column="mst_border"/>
+        <property name="mstType" column="mst_type"/>
+        <property name="mstBlock" column="mst_block"/>
+    </class>
+</hibernate-mapping>
