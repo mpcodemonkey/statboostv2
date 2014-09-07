@@ -150,14 +150,26 @@ public class User {
     }
 
     /**
+     * Check that the user is logged in
+     * @param session
+     * @return - true if User is logged in
+     */
+    public static boolean isLoggedIn(HttpSession session) {
+        //check that the user is logged in
+        if (session != null && session.getAttribute("email") != null) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Check that the user is logged in and check that the user is an Admin, either through session attribute or db check last resort
-     *
      * @param session
      * @return - true if Admin is legit
      */
     public static boolean isAdmin(HttpSession session) {
         //check that the user is logged in and check that the user is an admin either through session attribute or db check
-        if (session != null && session.getAttribute("email") != null &&
+        if (isLoggedIn(session) &&
                 (session.getAttribute("admin").equals("true") || User.isAdmin((String) session.getAttribute("email")))) {
             return true;
         }
@@ -167,7 +179,6 @@ public class User {
 
     /**
      * This method returns true if the provided email is an Admin user
-     *
      * @param email
      * @return boolean - true if success
      */
