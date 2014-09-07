@@ -14,7 +14,7 @@ import java.util.ArrayList;
 @WebServlet("/emailtemplateeditor")
 public class EmailTemplateEditorServlet {
     static Logger logger = Logger.getLogger(EmailTemplateEditorServlet.class);
-    public static final String SRV_MAP = "emailtemplateeditor";
+    public static final String SRV_MAP = "/emailtemplateeditor";
     public static final String PARAM_EMAIL_TEMPLATE_UID = "emailTemplateUid";
     public static final String PARAM_NAME = "name";
     public static final String ATTR_EMAIL_TEMPLATE = "emailTemplate";
