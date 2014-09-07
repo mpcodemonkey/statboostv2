@@ -130,3 +130,10 @@ create table stt_email_variable  (
   evr_format varchar(100),
   evr_display_name varchar(100) not null
 );
+
+create table stt_webpage  (
+  wbp_uid int primary key auto_increment,
+  wbp_name varchar(150),
+  wbp_body text,
+  wbp_code varchar(150)
+);

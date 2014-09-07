@@ -18,7 +18,7 @@
 <body>
 <table>
     <tr>
-        <td><a href="<%=EmailTemplateEditorServlet.SRV_MAP%>">New Email</a></td>
+        <td><a href="<%=EmailTemplateEditorServlet.SRV_MAP%>">New Email Template</a></td>
     </tr>
     <tr>
         <td>Name</td>
@@ -34,7 +34,7 @@
     <%
                 }
             } catch (Exception e)  {
-                logger.error("Could not loop through the emails.", e);
+                logger.error("Could not loop through the emails templates.", e);
             }
         }
     %>
