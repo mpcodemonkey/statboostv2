@@ -16,6 +16,17 @@
         ResultSet emailVariables = (ResultSet) request.getAttribute(EmailEditorServlet.ATTR_EMAIL_VARIABLES);
         Email email = (Email) request.getAttribute(EmailEditorServlet.ATTR_EMAIL);
     %>
+    <style type="text/css">
+        <%--class example--%>
+        .leftNav   {
+            font-weight:bold;
+            padding-right:20px;
+        }
+        /*id example*/
+        #leftNav  {
+            font-family: Arial, Helvetica, Sans-Serif;
+        }
+    </style>
     <script type="text/javascript" src="/tinymce/tinymce.min.js"></script>
     <script type="text/javascript">
         tinymce.init({
@@ -98,7 +109,7 @@
         </td>
     </tr>
     <tr>
-        <td>Name</td>
+        <td class="leftNav">Name</td>
         <td><input type="text" name="<%=EmailEditorServlet.PARAM_NAME%>" value="<%=email.getName()%>"/></td>
     </tr>
     <tr>
