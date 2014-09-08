@@ -6,7 +6,7 @@
 <div>
     <div class="container-fluid">
         <div class="well well-lg">
-            <h1 style="text-align: center">Delete Users</h1>
+            <h1 style="text-align: center">Delete a User</h1>
             <c:if test="${requestScope.alert != null && requestScope.alertType != null}">
                 <div class="alert alert-${requestScope.alertType} fade in">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -14,7 +14,7 @@
                 </div>
             </c:if>
 
-            <div class="panel panel-primary" id="adminDelete">
+            <div class="panel panel-info">
                 <div class="panel-heading">
                     <h1 class="panel-title">Delete an Administrator</h1>
                 </div>
@@ -22,7 +22,6 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Delete</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Email Address</th>
@@ -31,9 +30,7 @@
                         </thead>
                         <tbody>
                             <c:forEach items="${admins}" var="admin">
-
                                 <tr>
-                                    <td><input name="adminDelete" value="${admin.usrEmail}" type="checkbox"></td>
                                     <td>${admin.usrFirstName}</td>
                                     <td>${admin.usrLastName}</td>
                                     <td>${admin.usrEmail}</td>
@@ -45,7 +42,7 @@
                 </div>
             </div>
 
-            <div class="panel panel-primary" id="employeeDelete">
+            <div class="panel panel-info">
                 <div class="panel-heading">
                     <h1 class="panel-title">Delete an Employee</h1>
                 </div>
@@ -53,7 +50,6 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Delete</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Email Address</th>
@@ -63,7 +59,6 @@
                         <tbody>
                             <c:forEach items="${employees}" var="employee">
                                 <tr>
-                                    <td><input name="employeeDelete" value="${employee.usrEmail}" type="checkbox"></td>
                                     <td>${employee.usrFirstName}</td>
                                     <td>${employee.usrLastName}</td>
                                     <td>${employee.usrEmail}</td>
@@ -75,7 +70,7 @@
                 </div>
             </div>
 
-            <div class="panel panel-primary">
+            <div class="panel panel-info">
                 <div class="panel-heading">
                     <h1 class="panel-title">Search for a Customer</h1>
                 </div>
@@ -91,32 +86,9 @@
                 </div>
             </div>
 
-           <div align="center"> <button class="btn btn-primary" onclick="submit();">Delete Selected Users</button></div>
-
         </div>
     </div>
 </div>
-
-<script>
-    function submit() {
-        var deleteAdmins = [];
-        $('#adminDelete input:checked').each(function() {
-            deleteAdmins.push($(this).attr('value'));
-        });
-
-        var deleteEmployees = [];
-        $('#employeeDelete input:checked').each(function() {
-            deleteEmployees.push($(this).attr('value'));
-        });
-
-        $.post("/admin/deleteUser",'deleteList='+deleteAdmins.concat(deleteEmployees),success);
-    }
-
-    function success(response) {
-       //do something maybe
-    }
-
-</script>
 
 
 <jsp:include page="/include/Footer.jsp"/>

@@ -24,6 +24,7 @@ public class DeleteUserServlet extends HttpServlet {
         //validate the user
         if (User.isAdmin(session)) {
 
+
             //get list of admins and employees
             List<User> employeeUserList=null, adminUserList=null;
             Session userDB = HibernateUtil.getUserSessionFactory().openSession();
@@ -44,6 +45,8 @@ public class DeleteUserServlet extends HttpServlet {
             request.setAttribute("admins", adminUserList);
 
 
+
+
             request.getRequestDispatcher("DeleteUser.jsp").forward(request, response);
         } else {
             response.sendRedirect("/");
@@ -55,11 +58,6 @@ public class DeleteUserServlet extends HttpServlet {
         //validate the user
         if (User.isAdmin(session)) {
 
-
-            String[] deleteList = request.getParameterValues("deleteList");
-            for (String s : deleteList) {
-                System.out.println(s);
-            }
 
 
         } else {

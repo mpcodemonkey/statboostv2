@@ -16,10 +16,11 @@ public class UserProfileServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false); //obtain the session object if exists
-        if (User.isLoggedIn(request.getSession(false))) {
+        if (session != null && session.getAttribute("email") != null) {
 
             User user = User.find((String)session.getAttribute("email"));
             request.setAttribute("user", user);
+
 
 
             request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
