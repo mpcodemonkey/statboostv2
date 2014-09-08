@@ -46,8 +46,8 @@ public class EmailEditorServlet extends HttpServlet {
 
         //load up all of the email templates so they can select from a dropdown
         ResultSet emailTemplates = ServletUtil.getResultSetFromSql("select * from stt_email_template;");
-        //todo: decide if we need to load up the workflow event?
-        //todo; what do we want to do about the to email address?
+        //todo: decide if we need to load up the workflow event? - do this to display the workflow event name so that they know when ti is sent
+        //todo: what do we want to do about the to email address? - just add this in sql and display in the editor
 
        forwardToEditor(request, response, email, emailTemplates, emailVariables, null, null);
 
