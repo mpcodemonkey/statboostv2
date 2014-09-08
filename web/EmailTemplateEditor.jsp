@@ -1,6 +1,6 @@
 <%@ page import="org.apache.log4j.Logger" %>
 <%@ page import="java.sql.ResultSet" %>
-<%@ page import="com.statboost.controllers.EmailTemplateEditorServlet" %>
+<%@ page import="com.statboost.controllers.admin.EmailTemplateEditorServlet" %>
 <%@ page import="com.statboost.EmailTemplate" %>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"

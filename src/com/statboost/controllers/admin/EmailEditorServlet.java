@@ -1,7 +1,6 @@
-package com.statboost.controllers;
+package com.statboost.controllers.admin;
 
 import com.statboost.Email;
-import com.statboost.EmailVariable;
 import com.statboost.util.ServletUtil;
 import org.apache.log4j.Logger;
 
