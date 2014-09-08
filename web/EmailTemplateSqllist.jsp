@@ -1,7 +1,7 @@
 <%@ page import="java.sql.ResultSet" %>
-<%@ page import="com.statboost.controllers.EmailTemplateSqllistServlet" %>
+<%@ page import="com.statboost.controllers.admin.EmailTemplateSqllistServlet" %>
 <%@ page import="org.apache.log4j.Logger" %>
-<%@ page import="com.statboost.controllers.EmailTemplateEditorServlet" %>
+<%@ page import="com.statboost.controllers.admin.EmailTemplateEditorServlet" %>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">

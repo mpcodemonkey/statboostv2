@@ -1,5 +1,5 @@
 <%@ page import="org.apache.log4j.Logger" %>
-<%@ page import="com.statboost.controllers.EmailEditorServlet" %>
+<%@ page import="com.statboost.controllers.admin.EmailEditorServlet" %>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="com.statboost.Email" %>
 <?xml version="1.0" encoding="UTF-8"?>

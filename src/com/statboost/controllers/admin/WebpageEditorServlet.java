@@ -1,4 +1,4 @@
-package com.statboost.controllers;
+package com.statboost.controllers.admin;
 
 import com.statboost.Webpage;
 import com.statboost.util.ServletUtil;
