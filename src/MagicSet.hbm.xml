@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="com.statboost.models.mtg.MagicSet" table="stt_magic_set" schema="" catalog="mtg_data">
+    <class name="com.statboost.models.mtg.MagicSet" table="stt_magic_set">
         <id name="mstUid" column="mst_uid"/>
 
         <set name="magicCardList" table="stt_magic_card" cascade="all" inverse="true">

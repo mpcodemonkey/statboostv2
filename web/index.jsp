@@ -7,25 +7,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="/include/Header.jsp"/>
 <jsp:include page="/include/Navbar.jsp"/>
-
+<!-- Begin Page Content (No html, head, or body tags required here)-->
 
 <div>
-<!--
-    @if(flash().contains("success")) {
-    <div class="alert alert-info fade in">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <strong>@flash().get("success")</strong>
-    </div>
-    }
-    @if(flash().contains("forbidden")) {
-    <div class="alert alert-warning fade in">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <strong>@flash().get("forbidden")</strong>
-    </div>
-    }
-    -->
-
-
     <div class="container">
         <div class="row row-offcanvas row-offcanvas-right">
             <div class="col-xs-12 col-sm-9">
@@ -85,4 +69,6 @@
         </footer>
     </div>
 </div>
+
+<!-- End Page Content -->
 <jsp:include page="/include/Footer.jsp"/>

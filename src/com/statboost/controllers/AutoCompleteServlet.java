@@ -26,7 +26,7 @@ public class AutoCompleteServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("I did something!");
-        SessionFactory mtgFactory = HibernateUtil.getMTGSessionFactory();
+        SessionFactory mtgFactory = HibernateUtil.getDatabaseSessionFactory();
         Session session = mtgFactory.openSession();
         String hql = "From MagicCard as m where m.mcrCardName like :name group by m.mcrCardName order by m.mcrMultiverseId desc";
         Query query = session.createQuery(hql);
