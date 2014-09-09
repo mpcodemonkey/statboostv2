@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="com.statboost.models.actor.User" table="stt_user" schema="" catalog="user_data">
+    <class name="com.statboost.models.actor.User" table="stt_user">
         <id name="usrUid" column="usr_uid"/>
         <property name="usrFirstName" column="usr_first_name"/>
         <property name="usrLastName" column="usr_last_name"/>

@@ -36,7 +36,7 @@ public class ServletUtil {
     }
 
     public static Object getObjectFromSql(String sql)  {
-        SessionFactory sessionFactory = HibernateUtil.getMTGSessionFactory();
+        SessionFactory sessionFactory = HibernateUtil.getDatabaseSessionFactory();
         Session session = sessionFactory.openSession();
         Query query = session.createQuery(sql);
         return query.list();
@@ -47,7 +47,7 @@ public class ServletUtil {
     }
 
    public static void saveObject(Object objectToSave)  {
-       SessionFactory sessionFactory = HibernateUtil.getMTGSessionFactory();
+       SessionFactory sessionFactory = HibernateUtil.getDatabaseSessionFactory();
        Session session = sessionFactory.openSession();
        session.beginTransaction();
        //todo: make sure that this will save without knowing the specific class, if not, fix

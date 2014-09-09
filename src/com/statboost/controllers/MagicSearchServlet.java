@@ -23,7 +23,7 @@ import java.util.List;
 @WebServlet("/magicSearch")
 public class MagicSearchServlet extends HttpServlet {
 
-    private static SessionFactory mtgFactory = HibernateUtil.getMTGSessionFactory();
+    private static SessionFactory mtgFactory = HibernateUtil.getDatabaseSessionFactory();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //allows for url based searches like: /magicSearch?cardName=Regathan Firecat

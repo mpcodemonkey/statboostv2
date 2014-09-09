@@ -10,29 +10,21 @@ import org.hibernate.service.ServiceRegistryBuilder;
  */
 public class HibernateUtil {
 
+    /**
+     * This class returns a session factory instance for opening a connection to the database
+     */
 
-    private static SessionFactory userSessionFactory;
-    private static SessionFactory mtgSessionFactory;
+    private static SessionFactory dbSessionFactory;
 
-    public static SessionFactory getUserSessionFactory() {
-        if (userSessionFactory == null) {
+    public static SessionFactory getDatabaseSessionFactory() {
+        if (dbSessionFactory == null) {
             Configuration userConfiguration = new Configuration();
-            userConfiguration.configure("userData.cfg.xml"); //reads userData.cfg.xml
+            userConfiguration.configure("statboost.cfg.xml"); //reads statboost.cfg.xml
             ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(userConfiguration.getProperties()).buildServiceRegistry();
-            userSessionFactory =  userConfiguration.buildSessionFactory(serviceRegistry);
+            dbSessionFactory =  userConfiguration.buildSessionFactory(serviceRegistry);
         }
-        return userSessionFactory;
+        return dbSessionFactory;
     }
 
-
-    public static SessionFactory getMTGSessionFactory() {
-        if (mtgSessionFactory == null) {
-            Configuration mtgConfiguration = new Configuration();
-            mtgConfiguration.configure("mtgData.cfg.xml"); //reads mtgData.cfg.xml
-            ServiceRegistry serviceRegistry2 = new ServiceRegistryBuilder().applySettings(mtgConfiguration.getProperties()).buildServiceRegistry();
-            mtgSessionFactory =  mtgConfiguration.buildSessionFactory(serviceRegistry2);
-        }
-        return mtgSessionFactory;
-    }
 
 }

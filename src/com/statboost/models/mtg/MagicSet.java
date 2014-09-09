@@ -24,7 +24,7 @@ import java.util.Set;
 @Entity
 public class MagicSet implements Serializable {
     private static final long serialVersionUID = 9146156921169669644L;
-    private static SessionFactory mtgFactory = HibernateUtil.getMTGSessionFactory();
+    private static SessionFactory mtgFactory = HibernateUtil.getDatabaseSessionFactory();
 
     @Id
     private String mstUid;

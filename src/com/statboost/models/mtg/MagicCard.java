@@ -51,7 +51,7 @@ public class MagicCard implements Serializable {
     @ManyToOne
     private MagicSet magicSet;
 
-    private static SessionFactory mtgFactory = HibernateUtil.getMTGSessionFactory();
+    private static SessionFactory mtgFactory = HibernateUtil.getDatabaseSessionFactory();
     private static final long serialVersionUID = 8052962961003467437L;
 
     public MagicCard() {
