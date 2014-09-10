@@ -17,5 +17,6 @@
         <mapping resource="User.hbm.xml"/>
         <mapping resource="MagicCard.hbm.xml"/>
         <mapping resource="MagicSet.hbm.xml"/>
+        <mapping resource="SttYugiohCard.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

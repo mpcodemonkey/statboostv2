@@ -23,7 +23,6 @@ import java.util.List;
 @WebServlet("/magicSearch")
 public class MagicSearchServlet extends HttpServlet {
 
-    private static SessionFactory mtgFactory = HibernateUtil.getDatabaseSessionFactory();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //allows for url based searches like: /magicSearch?cardName=Regathan Firecat
@@ -45,6 +44,7 @@ public class MagicSearchServlet extends HttpServlet {
         String defaultOrderBy = "mcrMultiverseId";
         String defaultOrder = "desc";
 
+        SessionFactory mtgFactory = HibernateUtil.getDatabaseSessionFactory();
 
         //query
         String hql = "From MagicCard where ";
@@ -81,7 +81,7 @@ public class MagicSearchServlet extends HttpServlet {
             int i = 0;
             for(String s : subtypes)
             {
-                subTypeConstraint = " mcrSubtypes  LIKE :subs" + i;
+                subTypeConstraint = " mcrSubTypes  LIKE :subs" + i;
 
                 if(prevCon)
                 {
@@ -232,10 +232,6 @@ public class MagicSearchServlet extends HttpServlet {
 
             cards = query.list();
 
-            for(MagicCard m : cards)
-            {
-                System.out.println(m.getMcrSetId());
-            }
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
