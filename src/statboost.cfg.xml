@@ -17,14 +17,14 @@
         <mapping resource="User.hbm.xml"/>
         <mapping resource="MagicCard.hbm.xml"/>
         <mapping resource="MagicSet.hbm.xml"/>
-        <mapping resource="SttYugiohCard.hbm.xml"/>
-        <mapping resource="com/statboost/SttEmailEntity.hbm.xml"/>
-        <mapping resource="com/statboost/SttEmailTemplateEntity.hbm.xml"/>
-        <mapping resource="com/statboost/SttEmailVariableEntity.hbm.xml"/>
-        <mapping resource="com/statboost/SttEmailVariableGroupEntity.hbm.xml"/>
-        <mapping resource="com/statboost/SttEmailWorkflowEventLinkEntity.hbm.xml"/>
-        <mapping resource="com/statboost/SttGroupEventLinkEntity.hbm.xml"/>
-        <mapping resource="com/statboost/SttWebpageEntity.hbm.xml"/>
-        <mapping resource="com/statboost/SttWorkflowEventEntity.hbm.xml"/>
+        <mapping resource="YugiohCard.hbm.xml"/>
+        <mapping resource="Email.hbm.xml"/>
+        <mapping resource="EmailTemplate.hbm.xml"/>
+        <mapping resource="EmailVariable.hbm.xml"/>
+        <mapping resource="EmailVariableGroup.hbm.xml"/>
+        <mapping resource="EmailWorkflowEventLink.hbm.xml"/>
+        <mapping resource="GroupEventLink.hbm.xml"/>
+        <mapping resource="Webpage.hbm.xml"/>
+        <mapping resource="WorkflowEvent.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

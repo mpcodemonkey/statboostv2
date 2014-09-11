@@ -1,6 +1,6 @@
 package com.statboost.controllers.admin;
 
-import com.statboost.Webpage;
+import com.statboost.models.email.Webpage;
 import com.statboost.util.ServletUtil;
 
 import javax.servlet.ServletException;

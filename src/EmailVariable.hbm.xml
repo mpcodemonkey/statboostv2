@@ -4,15 +4,15 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.statboost.EmailVariable" table="stt_email_variable" schema="" catalog="statboost">
+    <class name="com.statboost.models.email.EmailVariable" table="stt_email_variable" schema="" catalog="statboost">
         <id name="uid" column="evr_uid"/>
         <property name="name" column="evr_name"/>
         <property name="defaultValue" column="err_default_value"/>
         <property name="format" column="evr_format"/>
         <property name="displayName" column="evr_display_name"/>
 
-        <many-to-one name="emailVariableGroupUid" class="com.statboost.EmailVariableGroup"
-                     column="" not-null="true" insert="true" update="true"
+        <many-to-one name="emailVariableGroupUid" class="com.statboost.models.email.EmailVariableGroup"
+                     column="evr_evg_uid" not-null="true" insert="true" update="true"
                      cascade="all" />
     </class>
 </hibernate-mapping>

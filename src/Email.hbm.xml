@@ -4,18 +4,18 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.statboost.Email" table="stt_email" schema="" catalog="statboost">
+    <class name="com.statboost.models.email.Email" table="stt_email" schema="" catalog="statboost">
         <id name="uid" column="eml_uid"/>
         <property name="name" column="eml_name"/>
         <property name="subject" column="eml_subject"/>
         <property name="from" column="eml_from"/>
         <property name="to" column="eml_to"/>
         <property name="body" column="eml_body"/>
-        <many-to-one name="emailVariableGroupUid" class="com.statboost.EmailVariableGroup"
-                     column="ewe_vgr_uid" not-null="true" insert="true" update="true"
+        <many-to-one name="emailVariableGroupUid" class="com.statboost.models.email.EmailVariableGroup"
+                     column="eml_evg_uid" not-null="true" insert="true" update="true"
                      cascade="all" />
-        <many-to-one name="emailTemplateUid" class="com.statboost.EmailTemplate"
-                     column="ewe_etm_uid" not-null="true" insert="true" update="true"
+        <many-to-one name="emailTemplateUid" class="com.statboost.models.email.EmailTemplate"
+                     column="eml_etm_uid" not-null="true" insert="true" update="true"
                      cascade="all" />
     </class>
 </hibernate-mapping>

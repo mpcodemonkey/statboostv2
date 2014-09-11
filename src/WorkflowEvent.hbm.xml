@@ -4,7 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.statboost.WorkflowEvent" table="stt_workflow_event" schema="" catalog="statboost">
+    <class name="com.statboost.models.email.WorkflowEvent" table="stt_workflow_event" schema="" catalog="statboost">
         <id name="uid" column="wev_uid"/>
         <property name="name" column="wev_name"/>
         <property name="description" column="wev_description"/>
