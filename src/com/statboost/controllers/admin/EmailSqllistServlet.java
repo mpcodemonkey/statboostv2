@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.ResultSet;
 
-@WebServlet("/emailsqllist")
+@WebServlet("/admin/emailsqllist")
 public class EmailSqllistServlet extends HttpServlet {
     public static final String ATTR_EMAILS = "emails";
-    public static final String SRV_MAP = "/emailsqllist";
+    public static final String SRV_MAP = "/admin/emailsqllist";
     static Logger logger = Logger.getLogger(EmailSqllistServlet.class);
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -26,6 +26,6 @@ public class EmailSqllistServlet extends HttpServlet {
     private static void forwardToSqllist(HttpServletRequest request, HttpServletResponse response, ResultSet emails)
             throws IOException, ServletException {
         request.setAttribute(ATTR_EMAILS, emails);
-        request.getRequestDispatcher("EmailSqllist.jsp").forward(request, response);
+        request.getRequestDispatcher("/EmailSqllist.jsp").forward(request, response);
     }
 }

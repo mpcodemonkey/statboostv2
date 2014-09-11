@@ -13,9 +13,9 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-@WebServlet("/emaileditor")
+@WebServlet("/admin/emaileditor")
 public class EmailEditorServlet extends HttpServlet {
-    public static final String SRV_MAP = "/emaileditor";
+    public static final String SRV_MAP = "/admin/emaileditor";
     public static final String PARAM_EMAIL_UID = "emailUid";
     public static final String PARAM_NAME = "name";
     public static final String PARAM_FROM = "from";

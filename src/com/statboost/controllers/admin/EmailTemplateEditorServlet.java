@@ -1,5 +1,6 @@
 package com.statboost.controllers.admin;
 
+import com.statboost.models.email.EmailTemplate;
 import com.statboost.util.ServletUtil;
 import org.apache.log4j.Logger;
 
@@ -10,10 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet("/emailtemplateeditor")
+@WebServlet("/admin/emailtemplateeditor")
 public class EmailTemplateEditorServlet {
     static Logger logger = Logger.getLogger(EmailTemplateEditorServlet.class);
-    public static final String SRV_MAP = "/emailtemplateeditor";
+    public static final String SRV_MAP = "/admin/emailtemplateeditor";
     public static final String PARAM_EMAIL_TEMPLATE_UID = "emailTemplateUid";
     public static final String PARAM_NAME = "name";
     public static final String ATTR_EMAIL_TEMPLATE = "emailTemplate";
