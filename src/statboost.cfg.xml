@@ -25,5 +25,6 @@
         <mapping resource="com/statboost/SttEmailWorkflowEventLinkEntity.hbm.xml"/>
         <mapping resource="com/statboost/SttGroupEventLinkEntity.hbm.xml"/>
         <mapping resource="com/statboost/SttWebpageEntity.hbm.xml"/>
+        <mapping resource="com/statboost/SttWorkflowEventEntity.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>
