@@ -1,9 +1,9 @@
 package com.statboost.util;
 
-import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.Properties;
@@ -16,12 +16,12 @@ public class ServletUtil {
         Properties connectionProperties = new Properties();
         ResultSet rs = null;
         try   {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/statboost", "root", "");
+            connection = DriverManager.getConnection("jdbc:mysql://107.138.64.59:3306/statboost?characterEncoding=UTF-8", "", "generic11PASSWORD");
             Statement statement = connection.createStatement();
             rs = statement.executeQuery(sql);
             return rs;
         } catch (Exception e)  {
-            logger.error("Could not get the result set", e);
+            logger.error("Could not get the result set.", e);
         } finally  {
             //todo: closing it here may cause issues
             if(connection != null)  {

@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.ResultSet;
 
-@WebServlet("/webpagesqllist")
+@WebServlet("/admin/webpagesqllist")
 public class WebpageSqllistServlet {
     public static final String ATTR_WEBPAGES = "webpages";
-    public static final String SRV_MAP = "/webpagessqllist";
+    public static final String SRV_MAP = "/admin/webpagessqllist";
     static Logger logger = Logger.getLogger(WebpageSqllistServlet.class);
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

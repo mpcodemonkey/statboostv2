@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet("/webpageeditor")
+@WebServlet("/admin/webpageeditor")
 public class WebpageEditorServlet {
-    public static final String SRV_MAP = "/webpageeditor";
+    public static final String SRV_MAP = "/admin/webpageeditor";
     public static final String PARAM_WEBPAGE_UID = "webpageUid";
     public static final String PARAM_NAME = "name";
     public static final String ATTR_WEBPAGE = "webpage";
