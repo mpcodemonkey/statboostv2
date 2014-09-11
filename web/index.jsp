@@ -50,7 +50,8 @@
                     <c:if test="${sessionScope.admin != null}">
                         <a href="/admin/adminCP" class="list-group-item">Admin CP</a>
                     </c:if>
-                    <a href="/magicSearch" class="list-group-item">Card Search</a>
+                    <a href="/magicSearch" class="list-group-item">Magic Search</a>
+                    <a href="/ygoSearch" class="list-group-item">Yu-Gi-Oh Search</a>
                     <c:if test="${sessionScope.email == null}">
                         <a href="/login" class="list-group-item">Login</a>
                     </c:if>

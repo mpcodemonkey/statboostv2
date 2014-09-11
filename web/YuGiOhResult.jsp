@@ -15,38 +15,30 @@
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                        ${card.mcrCardName}
+                        ${card.ycrName}
                 </h3>
             </div>
             <div class="panel-body">
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>Set ID</th>
-                        <th>Card Number</th>
-                        <th>Rarity</th>
-                        <th>Type</th>
-                        <th>ManaCost</th>
-                        <th>Text</th>
-                        <th>Flavor</th>
-                        <th>Image</th>
+                        <th>Card Type</th>
+                        <th>Attribute</th>
+                        <th>Monster Type</th>
+                        <th>Card Type</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td>${card.mcrSetId}</td>
-                        <td>${card.mcrNumber}</td>
-                        <td>${card.mcrRarity}</td>
-                        <td>${card.mcrTypes}</td>
-                        <td>${card.mcrManaCost}</td>
-                        <td>${card.mcrText}</td>
+                        <td>${card.ycrCardType}</td>
+                        <td>${card.ycrAttribute}</td>
+                        <td>${card.ycrType}</td>
                         <td>
                             <c:choose>
-                                <c:when test="${card.mcrFlavor} == null">N/A</c:when>
-                                <c:otherwise>${card.mcrFlavor}</c:otherwise>
+                                <c:when test="${card.ycrDescription} == null">N/A</c:when>
+                                <c:otherwise>${card.ycrDescription}</c:otherwise>
                             </c:choose>
                         </td>
-                        <td><img src="http://mtgimage.com/set/${card.mcrSetId}/${card.mcrImageName}&#46;jpg" style="min-width: 175px; max-width: 175px;"></td>
                     </tr>
                     </tbody>
                 </table>

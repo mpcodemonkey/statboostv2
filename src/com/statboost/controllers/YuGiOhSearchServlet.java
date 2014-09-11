@@ -50,10 +50,6 @@ public class YuGiOhSearchServlet extends HttpServlet {
 
                 cards = query.list();
 
-                for(YugiohCard y : cards)
-                {
-                    System.out.println(y.getYcrName());
-                }
 
                 tx.commit();
             } catch (HibernateException e) {
@@ -62,6 +58,16 @@ public class YuGiOhSearchServlet extends HttpServlet {
             } finally {
                 session.close();
             }
+
+            //set search results
+            if (cards != null) {
+                request.setAttribute("cardList", cards);
+            } else {
+                request.setAttribute("alertType", "warning");
+                request.setAttribute("alert", "Sorry, no cards were found.  Please try another search.");
+            }
+            //route to results page even if no results found or transaction throws exception
+            request.getRequestDispatcher("YuGiOhResult.jsp").forward(request, response);
 
         }
     }
