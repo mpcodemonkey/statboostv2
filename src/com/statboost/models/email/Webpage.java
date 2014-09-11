@@ -1,12 +1,12 @@
-package com.statboost;
+package com.statboost.models.email;
 
 /**
  * Created by Jessica on 9/11/14.
  */
-public class WorkflowEvent {
+public class Webpage {
     private int uid;
     private String name;
-    private String description;
+    private String body;
     private String code;
 
     public int getUid() {
@@ -25,12 +25,12 @@ public class WorkflowEvent {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getBody() {
+        return body;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setBody(String body) {
+        this.body = body;
     }
 
     public String getCode() {
@@ -46,12 +46,11 @@ public class WorkflowEvent {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        WorkflowEvent that = (WorkflowEvent) o;
+        Webpage that = (Webpage) o;
 
         if (uid != that.uid) return false;
+        if (body != null ? !body.equals(that.body) : that.body != null) return false;
         if (code != null ? !code.equals(that.code) : that.code != null) return false;
-        if (description != null ? !description.equals(that.description) : that.description != null)
-            return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
 
         return true;
@@ -61,7 +60,7 @@ public class WorkflowEvent {
     public int hashCode() {
         int result = uid;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (body != null ? body.hashCode() : 0);
         result = 31 * result + (code != null ? code.hashCode() : 0);
         return result;
     }
