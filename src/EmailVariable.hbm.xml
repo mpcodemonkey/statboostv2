@@ -11,7 +11,7 @@
         <property name="format" column="evr_format"/>
         <property name="displayName" column="evr_display_name"/>
 
-        <many-to-one name="emailVariableGroupUid" class="com.statboost.models.email.EmailVariableGroup"
+        <many-to-one name="emailVariableGroup" class="com.statboost.models.email.EmailVariableGroup"
                      column="evr_evg_uid" not-null="true" insert="true" update="true"
                      cascade="all" />
     </class>

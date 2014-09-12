@@ -5,8 +5,8 @@ package com.statboost.models.email;
  */
 public class GroupEventLink {
     private int uid;
-    private int emailVariableGroupUid;
-    private int workflowEventUid;
+    private EmailVariableGroup emailVariableGroup;
+    private WorkflowEvent workflowEvent;
 
     public int getUid() {
         return uid;
@@ -16,20 +16,20 @@ public class GroupEventLink {
         this.uid = uid;
     }
 
-    public int getEmailVariableGroupUid() {
-        return emailVariableGroupUid;
+    public EmailVariableGroup getEmailVariableGroup() {
+        return emailVariableGroup;
     }
 
-    public void setEmailVariableGroupUid(int emailVariableGroupUid) {
-        this.emailVariableGroupUid = emailVariableGroupUid;
+    public void setEmailVariableGroup(EmailVariableGroup emailVariableGroup) {
+        this.emailVariableGroup = emailVariableGroup;
     }
 
-    public int getWorkflowEventUid() {
-        return workflowEventUid;
+    public WorkflowEvent getWorkflowEvent() {
+        return workflowEvent;
     }
 
-    public void setWorkflowEventUid(int workflowEventUid) {
-        this.workflowEventUid = workflowEventUid;
+    public void setWorkflowEvent(WorkflowEvent workflowEvent) {
+        this.workflowEvent = workflowEvent;
     }
 
     @Override

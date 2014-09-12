@@ -16,21 +16,12 @@ public class ServletUtil {
         Properties connectionProperties = new Properties();
         ResultSet rs = null;
         try   {
-            connection = DriverManager.getConnection("jdbc:mysql://107.138.64.59:3306/statboost?characterEncoding=UTF-8", "", "generic11PASSWORD");
+            connection = DriverManager.getConnection("jdbc:mysql://107.138.64.59:3306/statboost?characterEncoding=UTF-8", "generic", "generic11PASSWORD");
             Statement statement = connection.createStatement();
             rs = statement.executeQuery(sql);
             return rs;
         } catch (Exception e)  {
             logger.error("Could not get the result set.", e);
-        } finally  {
-            //todo: closing it here may cause issues
-            if(connection != null)  {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    logger.error("Could not close the connection", e);
-                }
-            }
         }
         return null;
     }
