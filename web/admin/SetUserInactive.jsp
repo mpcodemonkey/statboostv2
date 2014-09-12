@@ -155,6 +155,8 @@
 
 <script>
     function submit() {
+        $('#confirmAction').modal('hide');
+
         var selectAdmins = [];
         $('#adminSelect input:checked').each(function() {
             selectAdmins.push($(this).attr('value'));
@@ -166,8 +168,8 @@
         });
 
         $.post("/admin/setUserInactive",'selectList='+selectAdmins.concat(selectEmployees),success);
-        //$('#confirmAction').modal('hide');
-        window.location.reload();
+
+        setTimeout(function() {window.location='/admin/setUserInactive';}, 1000);
     }
 
     function success(response) {

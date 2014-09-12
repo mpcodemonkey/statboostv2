@@ -11,6 +11,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 
 /**
@@ -150,6 +151,32 @@ public class User {
         try {
             tx = session.beginTransaction();
             session.update(user);
+            tx.commit();
+            result = true;
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+
+    /**
+     * This method updates the provided user object to the user database
+     *
+     * @param users
+     * @return boolean - true if success
+     */
+    public static boolean updateUsers(List<User> users) {
+        boolean result = false;
+        Session session = userFactory.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            for (User u : users) {
+                session.update(u);
+            }
             tx.commit();
             result = true;
         } catch (HibernateException e) {

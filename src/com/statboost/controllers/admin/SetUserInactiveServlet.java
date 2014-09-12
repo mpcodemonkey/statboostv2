@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -60,6 +61,7 @@ public class SetUserInactiveServlet extends HttpServlet {
 
             String deleteListString = request.getParameter("selectList");
             String[] deleteList = deleteListString.split(",");
+            List<User> userUpdateList = new ArrayList<>();
 
             boolean error = false;
             String errorList = "";
@@ -70,21 +72,23 @@ public class SetUserInactiveServlet extends HttpServlet {
                     errorList += s+" ";
                 } else {
                     user.setUsrActive(new Byte(Byte.MIN_VALUE)); //set false
-                    User.update(user); //database update
+                    userUpdateList.add(user);
                 }
             }
 
-
+            User.updateUsers(userUpdateList); //database update
+/*
             if (error) {
                 request.setAttribute("alert", "Something went wrong finding the following users: " + errorList + "<br>Please try again or contact an administrator.");
                 request.setAttribute("alertType", "danger");
-                request.getRequestDispatcher("SetUserInactive.jsp").forward(request, response);
-            } else { System.out.println("poop");
+                doGet(request, response);
+
+            } else {
                 request.setAttribute("alert", "All the selected user accounts have been updated.");
                 request.setAttribute("alertType", "success");
-                request.getRequestDispatcher("AdminCP.jsp").forward(request, response);
+                doGet(request, response);
             }
-
+*/
 
         } else {
             response.sendRedirect("/");
