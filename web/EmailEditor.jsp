@@ -2,6 +2,9 @@
 <%@ page import="com.statboost.models.email.Email" %>
 <%@ page import="org.apache.log4j.Logger" %>
 <%@ page import="java.sql.ResultSet" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.statboost.models.email.EmailVariable" %>
+<%@ page import="com.statboost.models.email.EmailTemplate" %>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -12,8 +15,8 @@
         static Logger logger = Logger.getLogger(EmailEditorServlet.class);
     %>
     <%
-        ResultSet emailTemplates = (ResultSet) request.getAttribute(EmailEditorServlet.ATTR_EMAIL_TEMPLATE);
-        ResultSet emailVariables = (ResultSet) request.getAttribute(EmailEditorServlet.ATTR_EMAIL_VARIABLES);
+        List<EmailTemplate> emailTemplates = (List<EmailTemplate>) request.getAttribute(EmailEditorServlet.ATTR_EMAIL_TEMPLATE);
+        List<EmailVariable> emailVariables = (List<EmailVariable>) request.getAttribute(EmailEditorServlet.ATTR_EMAIL_VARIABLES);
         Email email = (Email) request.getAttribute(EmailEditorServlet.ATTR_EMAIL);
     %>
     <style type="text/css">
@@ -99,10 +102,12 @@
             <select id="emailVariable" onchange="insertVariable();return false;">
                 <option value="">Select One</option>
                 <%
-                    while(emailVariables != null && emailVariables.next())  {
+                    if(emailVariables != null)  {
+                        for(EmailVariable currentEmailVariable : emailVariables)  {
                 %>
-                <option value="<%=emailVariables.getString("evr_name")%>"><%=emailVariables.getString("evr_display_name")%></option>
+                <option value="<%=currentEmailVariable.getName()%>"><%=currentEmailVariable.getDisplayName()%></option>
                 <%
+                        }
                     }    
                 %>
             </select>    
@@ -117,10 +122,12 @@
         <td>
             <select id="emailTemplates" name="<%=EmailEditorServlet.PARAM_EMAIL_TEMPLATE_UID%>">
                 <%
-                    while(emailTemplates.next())  {
+                    if(emailTemplates != null)  {
+                        for(EmailTemplate currentEmailTemplate: emailTemplates)  {
                 %>
-                <option value="<%=emailTemplates.getInt("etm_uid")%>"><%=emailTemplates.getString("etm_name")%></option>
+                <option value="<%=currentEmailTemplate.getUid()%>"><%=currentEmailTemplate.getName()%></option>
                 <%
+                        }
                     }
                 %>
             </select>
