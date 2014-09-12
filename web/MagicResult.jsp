@@ -40,7 +40,7 @@
                             <td>${card.mcrText}</td>
                             <td>
                                 <c:choose>
-                                    <c:when test="${card.mcrFlavor} == null">N/A</c:when>
+                                    <c:when test="${card.mcrFlavor == null}">N/A</c:when>
                                     <c:otherwise>${card.mcrFlavor}</c:otherwise>
                                 </c:choose>
                             </td>

@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.util.List;
 
 
-@WebServlet("/admin/deleteUser")
-public class DeleteUserServlet extends HttpServlet {
+@WebServlet("/admin/setUserInactive")
+public class SetUserInactiveServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false); //obtain the session object if exists
@@ -47,7 +47,7 @@ public class DeleteUserServlet extends HttpServlet {
 
 
 
-            request.getRequestDispatcher("DeleteUser.jsp").forward(request, response);
+            request.getRequestDispatcher("SetUserInactive.jsp").forward(request, response);
         } else {
             response.sendRedirect("/");
         }
@@ -58,10 +58,33 @@ public class DeleteUserServlet extends HttpServlet {
         //validate the user
         if (User.isAdmin(session)) {
 
-            String[] deleteList = request.getParameterValues("deleteList");
+            String deleteListString = request.getParameter("selectList");
+            String[] deleteList = deleteListString.split(",");
+
+            boolean error = false;
+            String errorList = "";
             for (String s : deleteList) {
-                System.out.println(s);
+                User user = User.find(s);
+                if (user == null) {
+                    error = true;
+                    errorList += s+" ";
+                } else {
+                    user.setUsrActive(new Byte(Byte.MIN_VALUE)); //set false
+                    User.update(user); //database update
+                }
             }
+
+
+            if (error) {
+                request.setAttribute("alert", "Something went wrong finding the following users: " + errorList + "<br>Please try again or contact an administrator.");
+                request.setAttribute("alertType", "danger");
+                request.getRequestDispatcher("SetUserInactive.jsp").forward(request, response);
+            } else { System.out.println("poop");
+                request.setAttribute("alert", "All the selected user accounts have been updated.");
+                request.setAttribute("alertType", "success");
+                request.getRequestDispatcher("AdminCP.jsp").forward(request, response);
+            }
+
 
         } else {
             response.sendRedirect("/");

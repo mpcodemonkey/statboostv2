@@ -43,18 +43,54 @@ public class User {
     }
 
     /**
+     * Basic Constructor
      * @param firstName
      * @param lastName
      * @param email     - user's email address
      * @param password  - user's hashed password
      * @param role      - Enum 'Admin', 'Employee', 'Customer'
      */
-    public User(String firstName, String lastName, String email, String password, String role) {
+    public User(String firstName, String lastName, String email, String password, String role, Byte active) {
         this.usrFirstName = firstName;
         this.usrLastName = lastName;
         this.usrEmail = email;
         this.usrPassword = password;
         this.usrRole = role;
+        this.usrActive = active;
+    }
+
+    /**
+     * Full Constructor
+     * @param usrFirstName
+     * @param usrLastName
+     * @param usrEmail
+     * @param usrPassword
+     * @param usrRole
+     * @param usrAddress1
+     * @param usrAddress2
+     * @param usrCity
+     * @param usrState
+     * @param usrZip
+     * @param usrPhone
+     * @param usrNewsletter
+     * @param usrActive
+     * @param usrDciNumber
+     */
+    public User(String usrFirstName, String usrLastName, String usrEmail, String usrPassword, String usrRole, String usrAddress1, String usrAddress2, String usrCity, String usrState, String usrZip, String usrPhone, Byte usrNewsletter, Byte usrActive, String usrDciNumber) {
+        this.usrFirstName = usrFirstName;
+        this.usrLastName = usrLastName;
+        this.usrEmail = usrEmail;
+        this.usrPassword = usrPassword;
+        this.usrRole = usrRole;
+        this.usrAddress1 = usrAddress1;
+        this.usrAddress2 = usrAddress2;
+        this.usrCity = usrCity;
+        this.usrState = usrState;
+        this.usrZip = usrZip;
+        this.usrPhone = usrPhone;
+        this.usrNewsletter = usrNewsletter;
+        this.usrActive = usrActive;
+        this.usrDciNumber = usrDciNumber;
     }
 
     /**
@@ -82,22 +118,23 @@ public class User {
      * @return boolean - true if success
      */
     public static boolean insert(String fname, String lname, String email, String password, String role) {
+        boolean result = false;
         Session session = userFactory.openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
             String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
-            User newUser = new User(fname, lname, email, hashed, role);
+            User newUser = new User(fname, lname, email, hashed, role, new Byte(Byte.MAX_VALUE)); //user is active
             session.save(newUser);
             tx.commit();
-            return true;
+            result = true;
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
             e.printStackTrace();
         } finally {
             session.close();
         }
-        return false;
+        return result;
     }
 
     /**
@@ -107,20 +144,21 @@ public class User {
      * @return boolean - true if success
      */
     public static boolean update(User user) {
+        boolean result = false;
         Session session = userFactory.openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
             session.update(user);
             tx.commit();
-            return true;
+            result = true;
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
             e.printStackTrace();
         } finally {
             session.close();
         }
-        return false;
+        return result;
     }
 
     /**
@@ -148,6 +186,8 @@ public class User {
         }
         return candidate;
     }
+
+
 
     /**
      * Check that the user is logged in
