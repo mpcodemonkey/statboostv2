@@ -1,9 +1,6 @@
 package com.statboost.controllers.admin;
 
-import com.statboost.models.email.Email;
-import com.statboost.models.email.EmailTemplate;
-import com.statboost.models.email.EmailVariable;
-import com.statboost.models.email.EmailVariableGroup;
+import com.statboost.models.email.*;
 import com.statboost.util.HibernateUtil;
 import com.statboost.util.ServletUtil;
 import org.apache.log4j.Logger;
@@ -43,6 +40,7 @@ public class EmailEditorServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Email email = null;
         List<EmailVariable> emailVariables = null;
+        WorkflowEvent workflowEvent = null;
         if(request.getParameter(PARAM_EMAIL_UID) == null || request.getParameter(PARAM_EMAIL_UID).equals(""))  {
             //should not ever get here, this would mean we were allowing them to create a new email
             email = new Email();
@@ -50,17 +48,8 @@ public class EmailEditorServlet extends HttpServlet {
             //load up the email obj from the db
             SessionFactory sessionFactory = HibernateUtil.getDatabaseSessionFactory();
             Session session = sessionFactory.openSession();
-            String getEmailHql = "From Email as email where email.uid = :emailUid";
-            Query query = session.createQuery(getEmailHql);
-            query.setParameter("emailUid", Integer.parseInt(request.getParameter(PARAM_EMAIL_UID)));
-            List<Email> emailList = query.list();
-
-            email = (Email) session.load(Email.class, new Integer(Integer.parseInt(request.getParameter(PARAM_EMAIL_UID))));
-            emailVariables = (List<EmailVariable>) session.createSQLQuery("select * from stt_email_variable where evr_evg_uid = " + 1).list();
-
-
-            //EmailVariableGroup emailVariableGroup = (EmailVariableGroup) session.load(EmailVariableGroup.class, email.getEmailVariableGroup().getUid());
-            //emailVariables = ServletUtil.getResultSetFromSql("from EmailVariable as emailVariable where emailVariable.emailVariableGroup.uid = " + email.getEmailVariableGroup().getUid());
+            email = (Email) session.load(Email.class, Integer.parseInt(request.getParameter(PARAM_EMAIL_UID)));
+            emailVariables = (List<EmailVariable>) session.createSQLQuery("select * from stt_email_variable where evr_evg_uid = " + email.getUid()).addEntity(EmailVariable.class).list();
         }
 
         //load up all of the email templates so they can select from a dropdown
@@ -68,7 +57,6 @@ public class EmailEditorServlet extends HttpServlet {
         Session session = sessionFactory.openSession();
         List<EmailTemplate> emailTemplates = session.createSQLQuery("select * from stt_email_template").addEntity(EmailTemplate.class).list();
         //todo: decide if we need to load up the workflow event? - do this to display the workflow event name so that they know when ti is sent
-        //todo: what do we want to do about the to email address? - just add this in sql and display in the editor
 
        forwardToEditor(request, response, email, emailTemplates, emailVariables, null, null);
 
@@ -84,11 +72,8 @@ public class EmailEditorServlet extends HttpServlet {
             //load up the email obj from the db
             SessionFactory sessionFactory = HibernateUtil.getDatabaseSessionFactory();
             Session session = sessionFactory.openSession();
-            emailVariables = (List<EmailVariable>) session.createSQLQuery("select * from stt_email_variable where evr_evg_uid = " + request.getParameter(PARAM_EMAIL_VARIABLE_GROUP_UID)).addEntity(EmailVariableGroup.class).list();
             email = (Email) session.load(Email.class, Integer.parseInt(request.getParameter(PARAM_EMAIL_UID)));
-
-            //EmailVariableGroup emailVariableGroup = (EmailVariableGroup) session.load(EmailVariableGroup.class, email.getEmailVariableGroup().getUid());
-            //emailVariables = ServletUtil.getResultSetFromSql("from EmailVariable as emailVariable where emailVariable.emailVariableGroup.uid = " + email.getEmailVariableGroup().getUid());
+            emailVariables = (List<EmailVariable>) session.createSQLQuery("select * from stt_email_variable where evr_evg_uid = " + email.getUid()).addEntity(EmailVariable.class).list();
         }
 
         SessionFactory sessionFactory = HibernateUtil.getDatabaseSessionFactory();
@@ -149,6 +134,6 @@ public class EmailEditorServlet extends HttpServlet {
         request.setAttribute(ATTR_EMAIL_VARIABLES, emailVariables);
         request.setAttribute(ATTR_ERRORS, errors);
         request.setAttribute(ATTR_INFO, info);
-        request.getRequestDispatcher("EmailEditor.jsp").forward(request, response);
+        request.getRequestDispatcher("/EmailEditor.jsp").forward(request, response);
     }
 }

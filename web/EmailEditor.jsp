@@ -15,9 +15,10 @@
         static Logger logger = Logger.getLogger(EmailEditorServlet.class);
     %>
     <%
+        Email email = (Email) request.getAttribute(EmailEditorServlet.ATTR_EMAIL);
         List<EmailTemplate> emailTemplates = (List<EmailTemplate>) request.getAttribute(EmailEditorServlet.ATTR_EMAIL_TEMPLATE);
         List<EmailVariable> emailVariables = (List<EmailVariable>) request.getAttribute(EmailEditorServlet.ATTR_EMAIL_VARIABLES);
-        Email email = (Email) request.getAttribute(EmailEditorServlet.ATTR_EMAIL);
+
     %>
     <style type="text/css">
         <%--class example--%>
@@ -108,7 +109,7 @@
                 <option value="<%=currentEmailVariable.getName()%>"><%=currentEmailVariable.getDisplayName()%></option>
                 <%
                         }
-                    }    
+                    }
                 %>
             </select>    
         </td>
@@ -152,9 +153,8 @@
         <td><input type="text" name="<%=EmailEditorServlet.PARAM_FROM%>" value="<%=email.getFrom()%>"></td>
     </tr>
     <tr>
-        <%--todo: figure out what we are doing for this--%>
         <td>To</td>
-        <td></td>
+        <td><%=email.getTo()%></td>
     </tr>
     <tr>
         <td>Subject</td>
