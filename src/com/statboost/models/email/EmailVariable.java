@@ -9,7 +9,7 @@ public class EmailVariable {
     private String defaultValue;
     private String format;
     private String displayName;
-    private int emailVariableGroupUid;
+    private EmailVariableGroup emailVariableGroup;
 
     public int getUid() {
         return uid;
@@ -51,12 +51,12 @@ public class EmailVariable {
         this.displayName = displayName;
     }
 
-    public int getEmailVariableGroupUid() {
-        return emailVariableGroupUid;
+    public EmailVariableGroup getEmailVariableGroup() {
+        return emailVariableGroup;
     }
 
-    public void setEmailVariableGroupUid(int emailVariableGroupUid) {
-        this.emailVariableGroupUid = emailVariableGroupUid;
+    public void setEmailVariableGroup(EmailVariableGroup emailVariableGroup) {
+        this.emailVariableGroup = emailVariableGroup;
     }
 
     @Override

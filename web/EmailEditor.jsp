@@ -91,7 +91,7 @@
 <body>
 <form method="post" action="<%=EmailEditorServlet.SRV_MAP%>">
     <input type="hidden" name="<%=EmailEditorServlet.PARAM_EMAIL_UID%>" value="<%=email.getUid()%>">
-    <input type="hidden" name="<%=EmailEditorServlet.PARAM_EMAIL_VARIABLE_GROUP_UID%>" value="<%=email.getEmailVariableGroupUid()%>">
+    <input type="hidden" name="<%=EmailEditorServlet.PARAM_EMAIL_VARIABLE_GROUP_UID%>" value="<%=email.getEmailVariableGroup()%>">
 <table cellpadding="0" cellspacing="0" border="0">
     <tr>
         <td>Email Variable</td>
@@ -125,10 +125,10 @@
                 %>
             </select>
             <%
-                if(email.getEmailTemplateUid() > 0)  {
+                if(email.getEmailTemplate() != null)  {
             %>
             <script type="text/javascript">
-                document.getElementById('emailTemplates').value = '<%=email.getEmailTemplateUid()%>';
+                document.getElementById('emailTemplates').value = '<%=email.getEmailTemplate().getUid()%>';
             </script>
             <%
                 }

@@ -6,10 +6,10 @@
 
     <class name="com.statboost.models.email.GroupEventLink" table="stt_group_event_link" schema="" catalog="statboost">
         <id name="uid" column="gel_uid"/>
-        <many-to-one name="emailVariableGroupUid" class="com.statboost.models.email.EmailVariableGroup"
+        <many-to-one name="emailVariableGroup" class="com.statboost.models.email.EmailVariableGroup"
                      column="gel_evg_uid" not-null="true" insert="true" update="true"
                      cascade="all" />
-        <many-to-one name="workflowEventUid" class="com.statboost.models.email.WorkflowEvent"
+        <many-to-one name="workflowEvent" class="com.statboost.models.email.WorkflowEvent"
                      column="gel_wev_uid" not-null="true" insert="true" update="true"
                      cascade="all" />
     </class>

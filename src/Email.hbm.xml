@@ -11,10 +11,10 @@
         <property name="from" column="eml_from"/>
         <property name="to" column="eml_to"/>
         <property name="body" column="eml_body"/>
-        <many-to-one name="emailVariableGroupUid" class="com.statboost.models.email.EmailVariableGroup"
+        <many-to-one name="emailVariableGroup" class="com.statboost.models.email.EmailVariableGroup"
                      column="eml_evg_uid" not-null="true" insert="true" update="true"
                      cascade="all" />
-        <many-to-one name="emailTemplateUid" class="com.statboost.models.email.EmailTemplate"
+        <many-to-one name="emailTemplate" class="com.statboost.models.email.EmailTemplate"
                      column="eml_etm_uid" not-null="true" insert="true" update="true"
                      cascade="all" />
     </class>

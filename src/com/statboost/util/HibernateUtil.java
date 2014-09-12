@@ -18,10 +18,10 @@ public class HibernateUtil {
 
     public static SessionFactory getDatabaseSessionFactory() {
         if (dbSessionFactory == null) {
-            Configuration userConfiguration = new Configuration();
-            userConfiguration.configure("statboost.cfg.xml"); //reads statboost.cfg.xml
-            ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(userConfiguration.getProperties()).buildServiceRegistry();
-            dbSessionFactory =  userConfiguration.buildSessionFactory(serviceRegistry);
+            Configuration configuration = new Configuration();
+            configuration.configure("statboost.cfg.xml"); //reads statboost.cfg.xml
+            ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();
+            dbSessionFactory =  configuration.buildSessionFactory(serviceRegistry);
         }
         return dbSessionFactory;
     }

@@ -10,8 +10,8 @@ public class Email {
     private String from;
     private String to;
     private String body;
-    private int emailVariableGroupUid;
-    private int emailTemplateUid;
+    private EmailVariableGroup emailVariableGroup;
+    private EmailTemplate emailTemplate;
 
     public int getUid() {
         return uid;
@@ -61,20 +61,20 @@ public class Email {
         this.body = body;
     }
 
-    public int getEmailVariableGroupUid() {
-        return emailVariableGroupUid;
+    public EmailTemplate getEmailTemplate() {
+        return emailTemplate;
     }
 
-    public void setEmailVariableGroupUid(int emailVariableGroupUid) {
-        this.emailVariableGroupUid = emailVariableGroupUid;
+    public void setEmailTemplate(EmailTemplate emailTemplate) {
+        this.emailTemplate = emailTemplate;
     }
 
-    public int getEmailTemplateUid() {
-        return emailTemplateUid;
+    public EmailVariableGroup getEmailVariableGroup() {
+        return emailVariableGroup;
     }
 
-    public void setEmailTemplateUid(int emailTemplateUid) {
-        this.emailTemplateUid = emailTemplateUid;
+    public void setEmailVariableGroup(EmailVariableGroup emailVariableGroup) {
+        this.emailVariableGroup = emailVariableGroup;
     }
 
     @Override

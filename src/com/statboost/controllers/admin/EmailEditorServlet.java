@@ -1,8 +1,12 @@
 package com.statboost.controllers.admin;
 
 import com.statboost.models.email.Email;
+import com.statboost.models.email.EmailTemplate;
+import com.statboost.util.HibernateUtil;
 import com.statboost.util.ServletUtil;
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,15 +40,18 @@ public class EmailEditorServlet extends HttpServlet {
         Email email = null;
         ResultSet emailVariables = null;
         if(request.getParameter(PARAM_EMAIL_UID) == null || request.getParameter(PARAM_EMAIL_UID).equals(""))  {
+            //should not ever get here, this would mean we were allowing them to create a new email
             email = new Email();
         } else  {
             //load up the email obj from the db
-            email = (Email) ServletUtil.getObjectFromSql("select * from stt_email where eml_uid = " + request.getParameter(PARAM_EMAIL_UID));
-            emailVariables = ServletUtil.getResultSetFromSql("select * from stt_email_variable where evr_vgr_uid = " + email.getEmailVariableGroupUid());
+            SessionFactory sessionFactory = HibernateUtil.getDatabaseSessionFactory();
+            Session session = sessionFactory.openSession();
+            email = (Email) session.load(Email.class, Integer.parseInt(request.getParameter(PARAM_EMAIL_UID)));
+            emailVariables = ServletUtil.getResultSetFromSql("from EmailVariable as emailVariable where emailVariable.emailVariableGroup.uid = " + email.getEmailVariableGroup().getUid());
         }
 
         //load up all of the email templates so they can select from a dropdown
-        ResultSet emailTemplates = ServletUtil.getResultSetFromSql("select * from stt_email_template;");
+        ResultSet emailTemplates = ServletUtil.getResultSetFromSql("from stt_email_template");
         //todo: decide if we need to load up the workflow event? - do this to display the workflow event name so that they know when ti is sent
         //todo: what do we want to do about the to email address? - just add this in sql and display in the editor
 
@@ -60,7 +67,7 @@ public class EmailEditorServlet extends HttpServlet {
         } else  {
             //load up the email obj from the db
             email = (Email) ServletUtil.getObjectFromSql("select * from stt_email where eml_uid = " + request.getParameter(PARAM_EMAIL_UID));
-            emailVariables = ServletUtil.getResultSetFromSql("select * from stt_email_variable where evr_vgr_uid = " + email.getEmailVariableGroupUid());
+            emailVariables = ServletUtil.getResultSetFromSql("select * from stt_email_variable where evr_vgr_uid = " + email.getEmailVariableGroup());
         }
 
         ResultSet emailTemplates = ServletUtil.getResultSetFromSql("select * from stt_email_template;");
@@ -72,7 +79,7 @@ public class EmailEditorServlet extends HttpServlet {
 
         ArrayList<String> errors = new ArrayList<String>();
         if(request.getParameter(PARAM_EMAIL_TEMPLATE_UID) != null && !request.getParameter(PARAM_EMAIL_TEMPLATE_UID).equals(""))  {
-            email.setEmailTemplateUid(Integer.parseInt(request.getParameter(PARAM_EMAIL_TEMPLATE_UID)));
+            email.setEmailTemplate((EmailTemplate) ServletUtil.getObjectFromSql("select * from stt_email_template where etm_uid = " + request.getParameter(PARAM_EMAIL_TEMPLATE_UID)));
         } else  {
             errors.add("You must select an email template.");
         }
