@@ -201,9 +201,9 @@ public class MagicSearchServlet extends HttpServlet {
         {
             defaultOrderBy = request.getParameter("sortBy");
         }
-        if(request.getParameter("sortBy") != null)
+        if(request.getParameter("sortorder") != null)
         {
-            defaultOrder = request.getParameter("sortBy");
+            defaultOrder = request.getParameter("sortorder");
         }
 
 
