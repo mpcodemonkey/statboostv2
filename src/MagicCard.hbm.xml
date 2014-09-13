@@ -37,5 +37,8 @@
         <property name="mcrBorder" column="mcr_border"/>
         <property name="mcrHand" column="mcr_hand"/>
         <property name="mcrLife" column="mcr_life"/>
+        <property name="mcrTimeshifted" column="mcr_timeshifted"/>
+        <property name="mcrReserved" column="mcr_reserved"/>
+        <property name="mcrReleaseDate" column="mcr_release_date"/>
     </class>
 </hibernate-mapping>
