@@ -26,7 +26,20 @@
                 <b>Name:</b> ${user.usrFirstName} ${user.usrLastName}
             </li>
             <li><b>Email:</b> ${user.usrEmail}</li>
+            <li><b>Phone:</b> ${user.usrPhone}</li>
             <li><b>Role:</b> ${user.usrRole}</li>
+            <hr>
+            <div align="right">
+                <button class="btn btn-primary">Edit</button>
+            </div>
+            <li><b>Address 1:</b> ${user.usrAddress1}</li>
+            <li><b>Address 2:</b> ${user.usrAddress2}</li>
+            <li><b>City:</b> ${user.usrCity}</li>
+            <li><b>State:</b> ${user.usrState}</li>
+            <li><b>Zip:</b> ${user.usrZip}</li>
+            <br>
+            <li><b>Recieve Newsletter? </b> <c:choose><c:when test="${user.usrNewsletter == '-128'}">No</c:when><c:otherwise>Yes</c:otherwise></c:choose></li>
+            <li><b>DCI Number:</b> ${user.usrDciNumber}</li>
         </div>
     </div>
 

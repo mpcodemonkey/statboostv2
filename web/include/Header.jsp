@@ -19,7 +19,6 @@
     <!-- Include js here -->
     <script type="text/javascript" src="/include/javascripts/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="/include/javascripts/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="/include/javascripts/jquery.mask.min.js"></script>
     <script type="text/javascript" src="/include/javascripts/js-webshim/minified/polyfiller.js"></script>
     <script type="text/javascript" src="/include/javascripts/bootstrap.min.js"></script>
     <script type="text/javascript" src="/include/javascripts/autocomplete.js"></script>

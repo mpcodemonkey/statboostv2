@@ -110,14 +110,41 @@ public class User {
 
     /**
      * This method inserts a new user into the database
-     *
-     * @param email    - New User email
-     * @param password - New User password
-     * @param fname    - New User first name
-     * @param lname    - New User first name
-     * @param role     - Enum 'Admin', 'Employee', 'Customer'
-     * @return boolean - true if success
+     * @param usrFirstName
+     * @param usrLastName
+     * @param usrEmail
+     * @param usrPassword
+     * @param usrRole
+     * @param usrAddress1
+     * @param usrAddress2
+     * @param usrCity
+     * @param usrState
+     * @param usrZip
+     * @param usrPhone
+     * @param usrNewsletter
+     * @param usrDciNumber
+     * @return true if success
      */
+    public static boolean insert(String usrFirstName, String usrLastName, String usrEmail, String usrPassword, String usrRole, String usrAddress1, String usrAddress2, String usrCity, String usrState, String usrZip, String usrPhone, Byte usrNewsletter, String usrDciNumber) {
+        boolean result = false;
+        Session session = userFactory.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String hashed = BCrypt.hashpw(usrPassword, BCrypt.gensalt());
+            User newUser = new User(usrFirstName, usrLastName, usrEmail, hashed, usrRole, usrAddress1, usrAddress2, usrCity, usrState, usrZip, usrPhone, usrNewsletter, new Byte(Byte.MAX_VALUE), usrDciNumber); //user is active
+            session.save(newUser);
+            tx.commit();
+            result = true;
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+
     public static boolean insert(String fname, String lname, String email, String password, String role) {
         boolean result = false;
         Session session = userFactory.openSession();
