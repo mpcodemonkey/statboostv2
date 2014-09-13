@@ -23,7 +23,8 @@
                         <div class="btn-group"><a href="/admin/addNewUser?type=employee"><button class="btn btn-primary">Add New Employee</button></a></div>
                         <div class="btn-group"><a href="/admin/addNewUser?type=admin"><button class="btn btn-primary">Add New Admin</button></a></div>
                         <div class="btn-group"><a href="/admin/addNewUser?type=customer"><button class="btn btn-primary">Add New Customer</button></a></div>
-                        <div class="btn-group"><a href="/admin/setUserInactive"><button class="btn btn-primary">Deactivate User</button></a></div>
+                        <div class="btn-group"><a href="/admin/setUserStatus?action=deactivate"><button class="btn btn-primary">Deactivate User</button></a></div>
+                        <div class="btn-group"><a href="/admin/setUserStatus?action=activate"><button class="btn btn-primary">Activate User</button></a></div>
                     </div>
                 </div>
             </div>
