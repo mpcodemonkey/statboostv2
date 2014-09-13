@@ -1,7 +1,7 @@
 CREATE TABLE `stt_magic_card` (
   `mcr_card_name` varchar(150) DEFAULT NULL,
   `mcr_names` varchar(150) DEFAULT NULL,
-  `mcr_set_id` char(3) DEFAULT NULL,
+  `mcr_set_id` char(4) DEFAULT NULL,
   `mcr_mana_cost` varchar(50) DEFAULT NULL,
   `mcr_cmc` double DEFAULT NULL,
   `mcr_colors` varchar(100) DEFAULT NULL,
@@ -25,16 +25,18 @@ CREATE TABLE `stt_magic_card` (
   `mcr_border` varchar(15) DEFAULT NULL,
   `mcr_hand` int(11) DEFAULT NULL,
   `mcr_life` int(11) DEFAULT NULL,
-  `mcr_uid` int(11) NOT NULL DEFAULT '0',
+  `mcr_timeshifted` boolean DEFAULT FALSE,
+  `mcr_reserved` boolean DEFAULT FALSE,
+  `mcr_release_date` varchar(50) DEFAULT NULL,
+  `mcr_uid` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`mcr_uid`),
-  KEY `SetID` (`mcr_set_id`),
-  CONSTRAINT `stt_magic_card_ibfk_1` FOREIGN KEY (`mcr_set_id`) REFERENCES `stt_magic_set` (`mst_uid`)
+  CONSTRAINT `stt_magic_card` FOREIGN KEY (`mcr_set_id`) REFERENCES `stt_magic_set` (`mst_uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `stt_magic_set` (
   `mst_name` varchar(100) DEFAULT NULL,
-  `mst_uid` char(3) NOT NULL DEFAULT '',
-  `mst_release_date` date DEFAULT NULL,
+  `mst_uid` char(4) NOT NULL DEFAULT '',
+  `mst_release_date` varchar(50) DEFAULT NULL,
   `mst_border` varchar(20) DEFAULT NULL,
   `mst_type` varchar(50) DEFAULT NULL,
   `mst_block` varchar(50) DEFAULT NULL,
@@ -54,8 +56,8 @@ CREATE TABLE `stt_user` (
   `usr_state` varchar(2) DEFAULT NULL,
   `usr_zip` varchar(5) DEFAULT NULL,
   `usr_phone` varchar(10) DEFAULT NULL,
-  `usr_newsletter` tinyint(1) DEFAULT NULL,
-  `usr_active` tinyint(1) DEFAULT NULL,
+  `usr_newsletter` boolean DEFAULT false,
+  `usr_active` boolean DEFAULT true,
   `usr_dci_number` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`usr_uid`),
   UNIQUE KEY `email` (`usr_email`)

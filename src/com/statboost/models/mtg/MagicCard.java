@@ -46,6 +46,9 @@ public class MagicCard implements Serializable {
     private String mcrBorder;
     private Integer mcrHand;
     private Integer mcrLife;
+    private String mcrReleaseDate;
+    private Byte mcrTimeshifted;
+    private Byte mcrReserved;
 
 
     @ManyToOne
@@ -303,6 +306,30 @@ public class MagicCard implements Serializable {
 
     public void setMcrUid(int mcrUid) {
         this.mcrUid = mcrUid;
+    }
+
+    public String getMcrReleaseDate() {
+        return mcrReleaseDate;
+    }
+
+    public void setMcrReleaseDate(String mcrReleaseDate) {
+        this.mcrReleaseDate = mcrReleaseDate;
+    }
+
+    public Byte getMcrTimeshifted() {
+        return mcrTimeshifted;
+    }
+
+    public void setMcrTimeshifted(Byte mcrTimeshifted) {
+        this.mcrTimeshifted = mcrTimeshifted;
+    }
+
+    public Byte getMcrReserved() {
+        return mcrReserved;
+    }
+
+    public void setMcrReserved(Byte mcrReserved) {
+        this.mcrReserved = mcrReserved;
     }
 
     public MagicSet getMagicSet() {
