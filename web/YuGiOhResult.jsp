@@ -25,7 +25,7 @@
                         <th>Card Type</th>
                         <th>Attribute</th>
                         <th>Monster Type</th>
-                        <th>Card Type</th>
+                        <th>Card Text</th>
                     </tr>
                     </thead>
                     <tbody>
