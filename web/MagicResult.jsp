@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="/include/Header.jsp"/>
 <jsp:include page="/include/Navbar.jsp"/>
@@ -10,10 +11,15 @@
 --%>
     <div class="container-fluid">
         <c:forEach items="${requestScope.cardList}" var="card">
-            <div class="panel panel-primary">
+            <%-- Prepare card manacost for mtgimage symbol search --%>
+            <c:set var="manacost">${fn:replace(fn:replace(card.mcrManaCost,"{",""),"}"," ")}</c:set>
+            <c:set var="manaParts" value="${fn:split(manacost, ' ')}" />
+
+            <div class="panel panel-primary" style="min-width: 710px;">
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         ${card.mcrCardName}
+                        <img src="http://mtgimage.com/symbol/set/${card.mcrSetId}/${card.mcrRarity}/64&#46;png" align="right" style="margin-top: -7px;max-height: 32px;">
                     </h3>
                 </div>
                 <div class="panel-body">
@@ -36,7 +42,13 @@
                             <td>${card.mcrNumber}</td>
                             <td>${card.mcrRarity}</td>
                             <td>${card.mcrTypes}</td>
-                            <td>${card.mcrManaCost}</td>
+                            <td>
+                                <c:forEach items="${manaParts}" var="mana">
+                                    <c:if test="${mana != ''}">
+                                    <img src="http://mtgimage.com/symbol/mana/${mana}/24&#46;png" style="" align="middle">
+                                    </c:if>
+                                </c:forEach>
+                            </td>
                             <td>${card.mcrText}</td>
                             <td>
                                 <c:choose>
