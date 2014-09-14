@@ -105,9 +105,9 @@
 											<label class="control-label" for="colors">Colors</label>
 											<br>
 											<label class="control-label" for="ac1">and</label>
-											<input type="checkbox" class="attribCheck" id="ac1">
+											<input type="radio" name="attribCheck" id="ac1" value="and">
 											<label class="control-label" for="ac1">or</label>
-											<input type="checkbox" class="attribCheck" id="ac2">
+											<input type="radio" name="attribCheck" id="ac2" value="or">
 											<select class="form-control multiselect" multiple="multiple" id="colors" name="colors">
 												<option value="white">White</option>
 												<option value="blue">Blue</option>
@@ -126,9 +126,9 @@
 											<label class="control-label" for="rarities">Rarity</label>
 											<br>
 											<label class="control-label" for="ic1">and</label>
-											<input type="checkbox" class="iconCheck" id="ic1">
+											<input type="radio" name="rarity" id="ic1" value="and">
 											<label class="control-label" for="ic2">or</label>
-											<input type="checkbox" class="iconCheck" id="ic2">
+											<input type="radio" name="rarity" id="ic2" value="or">
 											<select class="form-control multiselect" multiple="multiple" name="rarities" id="rarities">
 												<option value="common">Common</option>
 												<option value="uncommon">Uncommon</option>
@@ -142,9 +142,9 @@
 											<label class="control-label" for="setID">Expansion</label>
 											<br>
 											<label class="control-label" for="mc1">and</label>
-											<input type="checkbox" class="monsterCheck" id="mc1">
+											<input type="radio" name="expansion" id="mc1" value="and">
 											<label class="control-label" for="mc2">or</label>
-											<input type="checkbox" class="monsterCheck" id="mc2">
+											<input type="radio" name="expansion" id="mc2" value="or">
 											<select class="form-control multiselect" multiple="multiple" id="setID" name="setID">
 												<optgroup label="Core Sets">
 													<option value="LEA">Limited Edition Alpha</option>
@@ -264,9 +264,9 @@
 											<label class="control-label" for="format">Format</label>
 											<br>
 											<label class="control-label" for="cc1">and</label>
-											<input type="checkbox" class="cardCheck" id="cc1">
+											<input type="radio" name="format" id="cc1" value="and">
 											<label class="control-label" for="cc2">or</label>
-											<input type="checkbox" class="cardCheck" id="cc2">
+											<input type="radio" name="format" id="cc2" value="or">
 											<select class="form-control multiselect" multiple="multiple" id="format" name="format">
 												<option value="Classic">Classic</option>
 												<option value="Commander">Commander</option>
@@ -304,20 +304,20 @@
 										</div>
 										<div class="form-group">
 											<!-- multiselect for card Type(not type) -->
-											<label class="control-label" for="orderByGroup">Sort By</label>
+											<label class="control-label" for="orderBy">Sort By</label>
 											<br>
-											<select name="sortby" id="orderByGroup" class="selectpicker">
-												<option value="multiverseid">Multiverse ID</option>
-												<option value="cardname">Name</option>
-												<option value="rarity">Rarity</option>
-												<option value="cardpower">Power</option>
-												<option value="toughness">Toughness</option>
+											<select name="orderBy" id="orderBy" class="selectpicker">
+												<option value="mcrMultiverseId">Multiverse ID</option>
+												<option value="mcrCardName">Name</option>
+												<option value="mcrRarity">Rarity</option>
+												<option value="mcrPower">Power</option>
+												<option value="mcrToughness">Toughness</option>
 											</select>
 										</div>
 										<div class="form-group">
 											<label class="control-label" for="order">Sort Order</label>
 											<br>
-											<select name="sortby" id="order" class="selectpicker">
+											<select name="order" id="order" class="selectpicker">
 												<option value="asc">Ascending</option>
 												<option value="desc">Descending</option>
 											</select>
