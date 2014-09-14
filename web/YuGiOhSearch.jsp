@@ -8,7 +8,7 @@
 
 <jsp:include page="/include/Header.jsp"/>
 <jsp:include page="/include/Navbar.jsp"/>
-<script src="/include/javascripts/bootstrap-multiselect.js"></script>
+
 <link rel="stylesheet" href="/include/stylesheets/bootstrap-multiselect.css">
 
 <div class="container">
@@ -200,7 +200,9 @@
 
 <jsp:include page="/include/Footer.jsp"/>
 
-<!-- Initialize the plugin: -->
+<!-- scripts at bottom, faster load time: -->
+<script src="/include/javascripts/bootstrap-multiselect.js"></script>
+
 <script type="text/javascript">
     $(document).ready(function() {
         $('.multiselect').multiselect({
