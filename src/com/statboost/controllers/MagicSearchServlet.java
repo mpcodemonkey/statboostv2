@@ -134,7 +134,6 @@ public class MagicSearchServlet extends HttpServlet {
             for(int i = 0; i < rarities.length; i++)
             {
                 rarityConstraint = defCon + i;
-                System.out.println("I ran, current rarity is: " + rarities[i]);
                 if(prevCon && i == 0)
                 {
                     rarityConstraint =  and + "(" + defCon + i;
@@ -145,11 +144,11 @@ public class MagicSearchServlet extends HttpServlet {
                 }
                 else if(i > 0 && i < rarities.length - 1)
                 {
-                    rarityConstraint = or + defCon + i;
+                    rarityConstraint = " " + request.getParameter("rarity") + " " + defCon + i;
                 }
                 else if(i == rarities.length - 1)
                 {
-                    rarityConstraint = or + defCon + i + ")";
+                    rarityConstraint = " " + request.getParameter("rarity") + " " + defCon + i + ")";
                 }
                 //add paren if only 1 item selected
                 if(rarities.length == 1)
@@ -197,13 +196,13 @@ public class MagicSearchServlet extends HttpServlet {
             queryparams.add(cmcConstraint);
             buildableQuery.put("cmc", request.getParameter("cmc"));
         }
-        if(request.getParameter("sortBy") != null)
+        if(request.getParameter("orderBy") != null)
         {
-            defaultOrderBy = request.getParameter("sortBy");
+            defaultOrderBy = request.getParameter("orderBy");
         }
-        if(request.getParameter("sortorder") != null)
+        if(request.getParameter("order") != null)
         {
-            defaultOrder = request.getParameter("sortorder");
+            defaultOrder = request.getParameter("order");
         }
 
 
