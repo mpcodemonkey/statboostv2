@@ -30,36 +30,34 @@
                     <div class="tabbed-search">
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs" role="tablist">
-                            <li><a href="#simple" role="tab" data-toggle="tab">Simple Search</a>
+                            <li class="active"><a href="#simple" role="tab" data-toggle="tab">Simple Search</a>
                             </li>
-                            <li class="active"><a href="#advanced" role="tab" data-toggle="tab">Advanced Search</a>
+                            <li><a href="#advanced" role="tab" data-toggle="tab">Advanced Search</a>
                             </li>
                         </ul>
 
                         <!-- Tab panes -->
                         <div class="tab-content">
-                            <div class="tab-pane" id="simple" style="">
+                            <div class="tab-pane active fade in" id="simple" style="">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <form action="" method="post">
                                             <label class="control-label" for="fi1">Card Search</label>
                                             <input type="text" class="form-control" id="fi1" name="fi1" placeholder="">
                                             <label>Search By:</label>
-                                            <input name="r1" type="radio" id="cName" value="cName">
+                                            <input name="r1" type="checkbox" id="cName" value="cName">
                                             <label>Name</label>
-                                            <input name="r1" type="radio" id="cType" value="cType">
+                                            <input name="r1" type="checkbox" id="cType" value="cType">
                                             <label>Type</label>
-                                            <input name="r1" type="radio" id="cText" value="cText">
+                                            <input name="r1" type="checkbox" id="cText" value="cText">
                                             <label>Text</label>
-                                            <input checked="" name="r1" type="radio" id="all" value="all">
-                                            <label>All</label>
                                             <br>
                                             <input type="submit" name="simpleSubmit" value="Search">
                                         </form>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane active" id="advanced" name="advancedSubmit">
+                            <div class="tab-pane fade" id="advanced" name="advancedSubmit">
                                 <form action="" method="post">
                                     <div class="col-md-6">
                                         <div class="form-group">
