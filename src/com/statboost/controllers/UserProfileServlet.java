@@ -41,7 +41,9 @@ public class UserProfileServlet extends HttpServlet {
             user.setUsrZip(request.getParameter("zip"));
             user.setUsrPhone(request.getParameter("phone"));
             if (request.getParameter("newsletter") != null) {
-                user.setUsrNewsletter(request.getParameter("newsletter").equals("true") ? Byte.MAX_VALUE : Byte.MIN_VALUE);
+                user.setUsrNewsletter(Byte.MAX_VALUE);
+            } else {
+                user.setUsrNewsletter(Byte.MIN_VALUE);
             }
             user.setUsrDciNumber(request.getParameter("dcinumber"));
             User.update(user);
