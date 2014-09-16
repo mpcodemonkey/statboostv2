@@ -46,7 +46,7 @@ public class SetUserStatusServlet extends HttpServlet {
                 request.setAttribute("admins", adminUserList);
                 //going to be activating
                 request.setAttribute("actionType", "Activate");
-
+                request.getRequestDispatcher("SetUserStatus.jsp").forward(request, response);
 
             } else if (request.getParameter("action")!=null && request.getParameter("action").equalsIgnoreCase("deactivate")) {
                 //get list of admins and employees
@@ -69,13 +69,14 @@ public class SetUserStatusServlet extends HttpServlet {
                 request.setAttribute("admins", adminUserList);
                 //going to be deactivating
                 request.setAttribute("actionType", "Deactivate");
+                request.getRequestDispatcher("SetUserStatus.jsp").forward(request, response);
 
             } else {
                 response.sendRedirect("/admin/adminCP"); //bad get parameter
             }
 
 
-            request.getRequestDispatcher("SetUserStatus.jsp").forward(request, response);
+
         } else {
             response.sendRedirect("/");
         }

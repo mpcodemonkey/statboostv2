@@ -132,7 +132,7 @@ public class User {
         try {
             tx = session.beginTransaction();
             String hashed = BCrypt.hashpw(usrPassword, BCrypt.gensalt());
-            User newUser = new User(usrFirstName, usrLastName, usrEmail, hashed, usrRole, usrAddress1, usrAddress2, usrCity, usrState, usrZip, usrPhone, usrNewsletter, new Byte(Byte.MAX_VALUE), usrDciNumber); //user is active
+            User newUser = new User(usrFirstName, usrLastName, usrEmail, hashed, usrRole, usrAddress1, usrAddress2, usrCity, usrState, usrZip, usrPhone, usrNewsletter, Byte.MAX_VALUE, usrDciNumber); //user is active
             session.save(newUser);
             tx.commit();
             result = true;
@@ -152,7 +152,7 @@ public class User {
         try {
             tx = session.beginTransaction();
             String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
-            User newUser = new User(fname, lname, email, hashed, role, new Byte(Byte.MAX_VALUE)); //user is active
+            User newUser = new User(fname, lname, email, hashed, role, Byte.MAX_VALUE); //user is active
             session.save(newUser);
             tx.commit();
             result = true;
