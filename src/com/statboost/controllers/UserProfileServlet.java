@@ -31,8 +31,22 @@ public class UserProfileServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-
+        HttpSession session = request.getSession(false); //obtain the session object if exists
+        if (User.isLoggedIn(session)) {
+            User user = User.find((String) session.getAttribute("email"));
+            user.setUsrAddress1(request.getParameter("address1"));
+            user.setUsrAddress2(request.getParameter("address2"));
+            user.setUsrCity(request.getParameter("city"));
+            user.setUsrState(request.getParameter("state"));
+            user.setUsrZip(request.getParameter("zip"));
+            user.setUsrPhone(request.getParameter("phone"));
+            user.setUsrNewsletter(request.getParameter("newsletter").equals("true") ? Byte.MAX_VALUE : Byte.MIN_VALUE);
+            user.setUsrDciNumber(request.getParameter("dcinumber"));
+            User.update(user);
+            doGet(request, response);
+        } else {
+            response.sendRedirect("/");
+        }
     }
 
 }

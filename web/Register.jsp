@@ -13,12 +13,9 @@
 <script>
     $(document).ready(function () {
         //init input masks
-        $('#phone').mask('(999)-999-9999',{placeholder:" "});
-        $('#zip').mask('99999?-9999',{placeholder:" "});
-        $('#dcinumber').mask('9999999999',{placeholder:" "});
-
-
-
+        $('#phone').mask('(999)-999-9999',{placeholder:"_"});
+        $('#zip').mask('99999?-9999',{placeholder:"_"});
+        $('#dcinumber').mask('9999999999',{placeholder:"_"});
 
         //init password strength checker
         "use strict";
