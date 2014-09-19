@@ -43,3 +43,21 @@ insert into stt_email_variable (
   ,'NONE'  -- evr_format - IN varchar(100)
   ,'Order - Billing Name'  -- evr_display_name - IN varchar(100)
 );
+
+insert into stt_workflow_event (  
+  wev_name
+  ,wev_description
+  ,wev_code
+) VALUES (   
+  'Order Placed'  -- wev_name - IN varchar(100)
+  ,'This will be triggered when a customer has successfullly place and paid for an order.'  -- wev_description - IN varchar(1000)
+  ,'ORDER_PLACED'  -- wev_code - IN varchar(100)
+);
+
+insert into stt_email_workflow_event_link (  
+  ewe_eml_uid
+  ,ewe_wev_uid
+) VALUES (   
+  (select eml_uid from stt_email where eml_name = 'Order Placed')   -- ewe_eml_uid - IN int(11)
+  ,(select wev_uid from stt_workflow_event where wev_name = 'Order Placed')   -- ewe_wev_uid - IN int(11)
+);

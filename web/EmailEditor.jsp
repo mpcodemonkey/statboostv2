@@ -5,6 +5,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.statboost.models.email.EmailVariable" %>
 <%@ page import="com.statboost.models.email.EmailTemplate" %>
+<%@ page import="com.statboost.models.email.WorkflowEvent" %>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -18,8 +19,11 @@
         Email email = (Email) request.getAttribute(EmailEditorServlet.ATTR_EMAIL);
         List<EmailTemplate> emailTemplates = (List<EmailTemplate>) request.getAttribute(EmailEditorServlet.ATTR_EMAIL_TEMPLATE);
         List<EmailVariable> emailVariables = (List<EmailVariable>) request.getAttribute(EmailEditorServlet.ATTR_EMAIL_VARIABLES);
+        WorkflowEvent workflowEvent = (WorkflowEvent) request.getAttribute(EmailEditorServlet.ATTR_WORKFLOW_EVENT);
 
     %>
+    <script type="text/javascript" src="/include/javascripts/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/include/javascripts/jquery-ui.min.js"></script>
     <style type="text/css">
         <%--class example--%>
         .leftNav   {
@@ -53,42 +57,7 @@
         });
 
         function insertVariable()  {
-//            todo: check that this works
-            insertAtCaret('elm1', document.getElementById('emailVariable').value);
-        }
-
-        function insertAtCaret(areaId,text) {
-            var txtarea = document.getElementById(areaId);
-            var scrollPos = txtarea.scrollTop;
-            var strPos = 0;
-            var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ?
-                    "ff" : (document.selection ? "ie" : false ) );
-            if (br == "ie") {
-                txtarea.focus();
-                var range = document.selection.createRange();
-                range.moveStart ('character', -txtarea.value.length);
-                strPos = range.text.length;
-            }
-            else if (br == "ff") strPos = txtarea.selectionStart;
-
-            var front = (txtarea.value).substring(0,strPos);
-            var back = (txtarea.value).substring(strPos,txtarea.value.length);
-            txtarea.value=front+text+back;
-            strPos = strPos + text.length;
-            if (br == "ie") {
-                txtarea.focus();
-                var range = document.selection.createRange();
-                range.moveStart ('character', -txtarea.value.length);
-                range.moveStart ('character', strPos);
-                range.moveEnd ('character', 0);
-                range.select();
-            }
-            else if (br == "ff") {
-                txtarea.selectionStart = strPos;
-                txtarea.selectionEnd = strPos;
-                txtarea.focus();
-            }
-            txtarea.scrollTop = scrollPos;
+            tinymce.activeEditor.execCommand('mceInsertContent', false, document.getElementById('emailVariable').value);
         }
     </script>
 </head>
@@ -97,6 +66,9 @@
     <input type="hidden" name="<%=EmailEditorServlet.PARAM_EMAIL_UID%>" value="<%=email.getUid()%>">
     <input type="hidden" name="<%=EmailEditorServlet.PARAM_EMAIL_VARIABLE_GROUP_UID%>" value="<%=email.getEmailVariableGroup()%>">
 <table cellpadding="0" cellspacing="0" border="0">
+    <tr>
+        <td colspan="2"><input type="submit"></td>
+    </tr>
     <tr>
         <td>Email Variable</td>
         <td>
@@ -144,13 +116,13 @@
         </td>
     </tr>
     <tr>
-        <%--todo: Load up the workflow event associated with the email--%>
         <td>Sent</td>
-        <td></td>
+        <%--Just get the first one because there will only ever be 1 event associated with an email--%>
+        <td><%=workflowEvent.getName()%>:<%=workflowEvent.getDescription()%></td>
     </tr>
     <tr>
         <td>From</td>
-        <td><input type="text" name="<%=EmailEditorServlet.PARAM_FROM%>" value="<%=email.getFrom()%>"></td>
+        <td><%=email.getFrom()%></td>
     </tr>
     <tr>
         <td>To</td>

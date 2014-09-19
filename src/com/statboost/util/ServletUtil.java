@@ -36,16 +36,4 @@ public class ServletUtil {
     public static boolean isEmailPattern(String possibleEmail)  {
         return possibleEmail.matches("[a-zA-Z0-9\\.]+@[a-zA-Z0-9\\-\\_\\.]+\\.[a-zA-Z0-9]{3}");
     }
-
-   public static void saveObject(Object objectToSave)  {
-       SessionFactory sessionFactory = HibernateUtil.getDatabaseSessionFactory();
-       Session session = sessionFactory.openSession();
-       session.beginTransaction();
-       //todo: make sure that this will save without knowing the specific class, if not, fix
-       session.save(objectToSave);
-       session.getTransaction().commit();
-       session.close();
-       sessionFactory.close();
-   }
-
 }
