@@ -1,7 +1,10 @@
 package com.statboost.controllers.admin;
 
 import com.statboost.models.email.Webpage;
+import com.statboost.util.HibernateUtil;
 import com.statboost.util.ServletUtil;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -58,7 +61,10 @@ public class WebpageEditorServlet {
 
         if(errors.size() == 0)  {
             //no errors so save the object and forward back to the editor with a save message
-            ServletUtil.saveObject(webpage);
+            SessionFactory sessionFactory = HibernateUtil.getDatabaseSessionFactory();
+            Session session = sessionFactory.openSession();
+            session.save(webpage);
+            session.getTransaction().commit();
             forwardToEditor(request, response, webpage, errors, "The record was save successfully.");
         }  else  {
             forwardToEditor(request, response, webpage, errors, "");

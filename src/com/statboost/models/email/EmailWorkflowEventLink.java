@@ -1,11 +1,16 @@
 package com.statboost.models.email;
 
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+
 /**
  * Created by Jessica on 9/11/14.
  */
 public class EmailWorkflowEventLink {
     private int uid;
+    @ManyToOne(fetch = FetchType.EAGER)
     private Email email;
+    @ManyToOne(fetch = FetchType.EAGER)
     private WorkflowEvent emailWorkflowEvent;
 
     public int getUid() {
@@ -32,20 +37,4 @@ public class EmailWorkflowEventLink {
         this.emailWorkflowEvent = emailWorkflowEvent;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        EmailWorkflowEventLink that = (EmailWorkflowEventLink) o;
-
-        if (uid != that.uid) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return uid;
-    }
 }

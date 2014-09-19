@@ -1,8 +1,11 @@
 package com.statboost.controllers.admin;
 
 import com.statboost.models.email.EmailTemplate;
+import com.statboost.util.HibernateUtil;
 import com.statboost.util.ServletUtil;
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -58,7 +61,10 @@ public class EmailTemplateEditorServlet {
 
         if(errors.size() == 0)  {
             //no errors so save the object and forward back to the editor with a save message
-            ServletUtil.saveObject(emailTemplate);
+            SessionFactory sessionFactory = HibernateUtil.getDatabaseSessionFactory();
+            Session session = sessionFactory.openSession();
+            session.save(emailTemplate);
+            session.getTransaction().commit();
             forwardToEditor(request, response, emailTemplate, errors, "The record was save successfully.");
         }  else  {
             forwardToEditor(request, response, emailTemplate, errors, "");
