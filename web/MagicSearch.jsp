@@ -11,9 +11,13 @@
 
 <link rel="stylesheet" href="/include/stylesheets/bootstrap-multiselect.css">
 <link rel="stylesheet" href="/include/stylesheets/bootstrap-select.min.css">
+<link rel="stylesheet" href="/include/stylesheets/bootstrap.css">
+<link rel="stylesheet" href="/include/stylesheets/bootstrapValidator.min.css">
 
 <script src="/include/javascripts/bootstrap-multiselect.js"></script>
 <script src="/include/javascripts/bootstrap-select.min.js"></script>
+<script src="/include/javascripts/bootstrap.js"></script>
+<script src="/include/javascripts/bootstrapValidator.min.js"></script>
 
 <c:if test="${requestScope.card != null}">
     <div class="alert alert-info fade in">
@@ -39,27 +43,43 @@
                         <!-- Tab panes -->
                         <div class="tab-content">
                             <div class="tab-pane active fade in" id="simple" style="">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <form action="" method="post">
-                                            <label class="control-label" for="fi1">Card Search</label>
-                                            <input type="text" class="form-control" id="fi1" name="fi1" placeholder="">
-                                            <label>Search By:</label>
-                                            <input name="r1" type="checkbox" id="cName" value="cName">
-                                            <label>Name</label>
-                                            <input name="r1" type="checkbox" id="cType" value="cType">
-                                            <label>Type</label>
-                                            <input name="r1" type="checkbox" id="cText" value="cText">
-                                            <label>Text</label>
-                                            <br>
-                                            <input type="submit" name="simpleSubmit" value="Search">
-                                        </form>
-                                    </div>
-                                </div>
+                                <!--<div class="col-md-6">-->
+                                    <form action="" method="post" id="searchFailSafe1" class="form-horizontal">
+                                        <br />
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label" for="fi1">Search Text:</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" id="fi1" name="fi1" placeholder="" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">Search By:</label>
+                                            <div class="col-lg-5">
+                                                <span class="col-lg-4">
+                                                <label>Name:</label>
+                                                <input name="r1" type="checkbox" id="cName" value="cName">
+                                                </span>
+                                                <span class="col-lg-4">
+                                                <label>Type:</label>
+                                                <input name="r1" type="checkbox" id="cType" value="cType">
+                                                </span>
+                                                <span class="col-lg-4">
+                                                <label>Text:</label>
+                                                <input name="r1" type="checkbox" id="cText" value="cText">
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <span class="col-lg-3"></span>
+                                            <input class="col-lg-4 btn btn-primary" type="submit" name="simpleSubmit" value="Search">
+                                        </div>
+                                    </form>
+                                <!--</div>-->
                             </div>
                             <div class="tab-pane fade" id="advanced" name="advancedSubmit">
                                 <form action="" method="post">
                                     <div class="col-md-6">
+                                        <br />
                                         <div class="form-group">
                                             <label class="control-label" for="cardName">Name</label>
                                             <input type="text" class="form-control" id="cardName" name="cardName" placeholder="The name of the card">
@@ -119,10 +139,11 @@
 									</div>
 
 									<div class="col-md-6">
+                                    <br />
 										<div class="form-group">
 											<!-- multiselect for card icon -->
 											<label class="control-label" for="rarities">Rarity</label>
-											<br>
+											<br />
 											<label class="control-label" for="ic1">and</label>
 											<input type="radio" name="rarity" id="ic1" value="and">
 											<label class="control-label" for="ic2">or</label>
@@ -320,7 +341,7 @@
 												<option value="desc">Descending</option>
 											</select>
 										</div>
-										<input type="submit" name="advancedSubmit" value="Search">
+										<input class="btn btn-primary" type="submit" name="advancedSubmit" value="Search">
 									</div>
                                 </form>
                             </div>
@@ -339,6 +360,28 @@
     $(document).ready(function() {
         $('.multiselect').multiselect({
             maxHeight: 200
+        });
+    });
+
+    $(document).ready(function (){
+        $('#searchFailSafe1').bootstrapValidator({
+            container: 'tooltip',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields:{
+                fi1:{
+                    validators:{
+                        stringLength: {
+                            enabled: true,
+                            min: 3,
+                            message: 'Your search must be 3 or more characters'
+                        }
+                    }
+                }
+            }
         });
     });
 </script>
