@@ -18,7 +18,8 @@
 <body>
 <table>
     <tr>
-        <td><a href="<%=WebpageEditorServlet.SRV_MAP%>">New Email</a></td>
+        <%--todo: take this out--%>
+        <td><a href="<%=WebpageEditorServlet.SRV_MAP%>">New Webpage</a></td>
     </tr>
     <tr>
         <td>Name</td>
