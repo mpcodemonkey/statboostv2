@@ -1,11 +1,13 @@
 package com.statboost.util;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.apache.log4j.Logger;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 
 public class ServletUtil {
@@ -37,5 +39,12 @@ public class ServletUtil {
         }
 
         return stringToCheck;
+    }
+
+    //todo: create a date formatting method
+
+    public static Date getCurrentDate()  {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.getTime();
     }
 }

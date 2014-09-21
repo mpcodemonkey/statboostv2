@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.statboost.models.form.Announcement" table="stt_announcement" schema="" catalog="statboost">
+        <id name="uid" column="ann_uid"/>
+        <property name="created" column="ann_created"/>
+        <property name="title" column="ann_title"/>
+        <property name="content" column="ann_content"/>
+    </class>
+</hibernate-mapping>

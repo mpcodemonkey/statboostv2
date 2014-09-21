@@ -1,8 +1,7 @@
 package com.statboost.controllers.admin;
 
-import com.statboost.models.email.Webpage;
+import com.statboost.models.form.Webpage;
 import com.statboost.util.HibernateUtil;
-import com.statboost.util.ServletUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
