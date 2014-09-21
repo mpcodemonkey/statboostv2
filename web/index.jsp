@@ -37,7 +37,7 @@
                     </div><!--/span-->
                     <div class="col-6 col-sm-6 col-lg-4">
                         <h2>Heading</h2>
-                        <p>Does the comfortable tribe score around Jessica? A horrendous ratio primes Catherine into a spiritual domestic. Catherine refreshes Jessica. The power prepares his lost stray.</p>
+                        <p>Does the comfortaable tribe score around Jessica? A horrendous ratio primes Catherine into a spiritual domestic. Catherine refreshes Jessica. The power prepares his lost stray.</p>
                         <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
                     </div><!--/span-->
                 </div><!--/row-->
