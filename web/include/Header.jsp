@@ -15,6 +15,7 @@
     <link rel="stylesheet" media="screen" href="/include/stylesheets/bootstrap.min.css">
     <link rel="stylesheet" href="/include/stylesheets/jquery-ui.css">
     <link rel="stylesheet" href="/include/stylesheets/stylesheet.css">
+    <link rel="stylesheet" href="/include/stylesheets/bootstrapValidator.min.css">
 
     <!-- Include js here -->
     <script type="text/javascript" src="/include/javascripts/jquery-1.11.1.min.js"></script>
@@ -22,6 +23,7 @@
     <script type="text/javascript" src="/include/javascripts/js-webshim/minified/polyfiller.js"></script>
     <script type="text/javascript" src="/include/javascripts/bootstrap.min.js"></script>
     <script type="text/javascript" src="/include/javascripts/autocomplete.js"></script>
+    <script src="/include/javascripts/bootstrapValidator.min.js"></script>
 
 </head>
 <body>
