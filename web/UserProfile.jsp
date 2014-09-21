@@ -32,6 +32,7 @@
                 <hr>
                 <div align="right">
                     <button class="btn btn-primary" onclick="editProfile();">Edit</button>
+                    <button class="btn btn-primary" onclick="changePswd();">Change Password</button>
                 </div>
                 <li><b>Address 1:</b> ${user.usrAddress1}</li>
                 <li><b>Address 2:</b> ${user.usrAddress2}</li>
@@ -47,19 +48,19 @@
                     <form method="post">
                         <div class="form-group-sm">
                             <div class="form-group">
-                                <labe>Address 1</labe>
+                                <label>Address 1</label>
                                 <input id="address1" name="address1" type="text" class="form-control" value="${user.usrAddress1}">
                             </div>
                             <div class="form-group">
-                                <labe>Address 2</labe>
+                                <label>Address 2</label>
                                 <input id="address2" name="address2" type="text" class="form-control" value="${user.usrAddress2}">
                             </div>
                             <div class="form-group">
-                                <labe>City</labe>
+                                <label>City</label>
                                 <input id="city" name="city" type="text" class="form-control" value="${user.usrCity}">
                             </div>
                             <div class="form-group">
-                                <labe>State</labe>
+                                <label>State</label>
                                 <select id="state" name="state" class="form-control">
                                     <option value="AL">Alabama</option>
                                     <option value="AK">Alaska</option>
@@ -115,11 +116,11 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <labe>Zip</labe>
+                                <label>Zip</label>
                                 <input id="zip" name="zip" type="text" class="form-control" value="${user.usrZip}">
                             </div>
                             <div class="form-group">
-                                <labe>Phone</labe>
+                                <label>Phone</label>
                                 <input id="phone" name="phone" type="text" class="form-control" value="${user.usrPhone}">
                             </div>
                             <div class="form-group">
@@ -138,6 +139,32 @@
                     </form>
                 </div>
             </div>
+            <div id="changePswd" style="display: none;">
+                <div style="max-width: 300px;" align="left">
+                    <div class="form-inline">
+                        <div id="pwd-container">
+                            <div class="form-group">
+                                <label>Current Password</label>
+                                <input id="oldPswd" name="oldPassword" type="password" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input id="pswd" name="newPassword" type="password" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input id="pswdConf" name="passwordConf" type="password" class="form-control" placeholder="Confirm Password" required>
+                            </div>
+                            <div style="width: 200px;display: inline-block;vertical-align: text-top;">
+                                <div class="pwstrength_viewport_progress"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div align="center">
+                        <button class="btn btn-primary" onclick="">Change Password</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -145,6 +172,7 @@
 </div>
 
 <script src="/include/javascripts/jquery.maskedinput.min.js"></script>
+<script src="/include/javascripts/pwstrength-1.2.0.min.js"></script>
 <script>
 
 
@@ -154,11 +182,39 @@
         $('#zip').mask('99999?-9999', {placeholder: "_"});
         $('#dcinumber').mask('9999999999', {placeholder: "_"});
 
+
     });
 
     function editProfile() {
         $('#profileInfo').hide();
         $('#editProfile').show();
+    }
+
+    function changePswd() {
+        $('#editProfile').hide();
+        initPswdChecker();
+        $('#changePswd').show();
+    }
+
+    function initPswdChecker() {
+        //init password strength checker
+        "use strict";
+        var options = {};
+        options.ui = {
+            container: "#pwd-container",
+            showVerdictsInsideProgressBar: true,
+            viewports: {
+                progress: ".pwstrength_viewport_progress"
+            }
+        };
+        options.common = {
+            minChar: 1,
+            debug: true,
+            onLoad: function () {
+                $('#messages').text('Start typing password');
+            }
+        };
+        $('#pswd').pwstrength(options);
     }
 </script>
 

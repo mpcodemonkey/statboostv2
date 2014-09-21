@@ -4,14 +4,27 @@
 
 <hibernate-configuration>
     <session-factory>
-        <property name="hibernate.dialect">
-            org.hibernate.dialect.MySQLDialect
-        </property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.autoReconnect">true</property>
+        <property name="connection.autoReconnectForPools">true</property>
+        <property name="connection.is-connection-validation-required">true</property>
 
         <property name="hibernate.connection.url">jdbc:mysql://107.138.64.59:3306/statboost?characterEncoding=UTF-8</property>
         <property name="hibernate.connection.username">generic</property>
         <property name="hibernate.connection.password">generic11PASSWORD</property>
+
+
+        <!-- Set up connection pools -->
+        <property name="hibernate.connection.provider_class">org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider</property>
+        <property name="hibernate.connection.pool_size">10</property>
+        <property name="show_sql">true</property>
+        <property name="hibernate.c3p0.idle_test_period">300</property> <!-- In seconds -->
+        <property name="hibernate.c3p0.min_size">5</property>
+        <property name="hibernate.c3p0.max_size">20</property>
+        <property name="hibernate.c3p0.timeout">1800</property>
+        <property name="hibernate.c3p0.max_statements">50</property>
+
 
         <!-- List of XML mapping files -->
         <mapping resource="User.hbm.xml"/>
