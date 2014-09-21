@@ -61,3 +61,23 @@ insert into stt_email_workflow_event_link (
   (select eml_uid from stt_email where eml_name = 'Order Placed')   -- ewe_eml_uid - IN int(11)
   ,(select wev_uid from stt_workflow_event where wev_name = 'Order Placed')   -- ewe_wev_uid - IN int(11)
 );
+
+insert into stt_email_variable_group (
+  evg_name
+) VALUES (
+  'Company'  -- evg_name - IN varchar(50)
+);
+
+insert into stt_email_variable (
+  evr_evg_uid
+  ,evr_name
+  ,err_default_value
+  ,evr_format
+  ,evr_display_name
+) VALUES (
+  (select evg_uid from stt_email_variable_group where evg_name='Company')   -- evr_evg_uid - IN int(11)
+  ,'emailContent'  -- evr_name - IN varchar(50)
+  ,''  -- err_default_value - IN varchar(1000)
+  ,'NONE'  -- evr_format - IN varchar(100)
+  ,'Email Content'  -- evr_display_name - IN varchar(100)
+);

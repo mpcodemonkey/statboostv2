@@ -1,6 +1,11 @@
 <%@ page import="com.statboost.controllers.admin.EmailTemplateEditorServlet" %>
 <%@ page import="com.statboost.models.email.EmailTemplate" %>
 <%@ page import="org.apache.log4j.Logger" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="com.statboost.models.email.EmailVariable" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.statboost.util.ServletUtil" %>
+<%@ page import="com.statboost.controllers.admin.EmailTemplateSqllistServlet" %>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -12,6 +17,8 @@
     %>
     <%
         EmailTemplate emailTemplate = (EmailTemplate) request.getAttribute(EmailTemplateEditorServlet.ATTR_EMAIL_TEMPLATE);
+        List<EmailVariable> emailVariables = (List<EmailVariable>) request.getAttribute(EmailTemplateEditorServlet.ATTR_EMAIL_VARIABLES);
+
     %>
     <script type="text/javascript" src="/tinymce/tinymce.min.js"></script>
     <script type="text/javascript">
@@ -33,21 +40,70 @@
                 {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
             ]
         });
+
+        function insertVariable()  {
+            tinymce.activeEditor.execCommand('mceInsertContent', false, '\${' + document.getElementById('emailVariable').value + '}');
+        }
     </script>
 </head>
 <body>
 <form method="post" action="<%=EmailTemplateEditorServlet.SRV_MAP%>">
     <input type="hidden" name="<%=EmailTemplateEditorServlet.PARAM_EMAIL_TEMPLATE_UID%>" value="<%=emailTemplate.getUid()%>">
     <table cellpadding="0" cellspacing="0" border="0">
-        <tr>
-            <td>Name</td>
-            <td><input type="text" name="<%=EmailTemplateEditorServlet.PARAM_NAME%>" value="<%=emailTemplate.getName()%>"></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <textarea id="elm1" name="area"><%=emailTemplate.getBody()%></textarea>
-            </td>
-        </tr>
+    <%
+        if(request.getAttribute(EmailTemplateEditorServlet.ATTR_INFO)  != null)  {
+    %>
+    <tr>
+        <td colspan="2" class="info">
+            <%=request.getAttribute(EmailTemplateEditorServlet.ATTR_INFO)%>
+        </td>
+    </tr>
+    <%
+        }
+    %>
+    <%
+        if(request.getAttribute(EmailTemplateEditorServlet.ATTR_ERRORS) != null)  {
+            ArrayList<String> errors = (ArrayList<String>) request.getAttribute(EmailTemplateEditorServlet.ATTR_ERRORS);
+            for(String currentError : errors)  {
+    %>
+    <tr>
+        <td colspan="2" class="error">
+            <%=currentError%>
+        </td>
+    </tr>
+    <%
+            }
+        }
+    %>
+    <tr>
+        <td><input type="submit"/></td>
+        <td><a href="<%=EmailTemplateSqllistServlet.SRV_MAP%>">Close</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <select id="emailVariable" onchange="insertVariable();return false;">
+                <option value="">Select One</option>
+                <%
+                    if(emailVariables != null)  {
+                        for(EmailVariable currentEmailVariable : emailVariables)  {
+                %>
+                <option value="<%=currentEmailVariable.getName()%>"><%=currentEmailVariable.getDisplayName()%></option>
+                <%
+                        }
+                    }
+                %>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>Name</td>
+        <td><input type="text" name="<%=EmailTemplateEditorServlet.PARAM_NAME%>" value="<%=ServletUtil.hideNulls(emailTemplate.getName())%>"></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <textarea id="elm1" name="area"><%=ServletUtil.hideNulls(emailTemplate.getBody())%></textarea>
+        </td>
+    </tr>
     </table>
 </form>
 </body>

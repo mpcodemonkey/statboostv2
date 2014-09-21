@@ -21,10 +21,10 @@ import java.util.List;
 
 @WebServlet("/admin/emaileditor")
 public class EmailEditorServlet extends HttpServlet {
+    static Logger logger = Logger.getLogger(EmailEditorServlet.class);
     public static final String SRV_MAP = "/admin/emaileditor";
     public static final String PARAM_EMAIL_UID = "emailUid";
     public static final String PARAM_NAME = "name";
-    public static final String PARAM_FROM = "from";
     public static final String PARAM_SUBJECT = "subject";
     public static final String PARAM_EMAIL_TEMPLATE_UID = "emailTemplateUid";
     public static final String PARAM_EMAIL_VARIABLE_GROUP_UID = "emailVariableGroupUid";
@@ -37,19 +37,18 @@ public class EmailEditorServlet extends HttpServlet {
     //doesn't follow standard so that it works with tinymce
     public static final String PARAM_BODY = "area";
 
-    static Logger logger = Logger.getLogger(EmailEditorServlet.class);
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Email email = null;
         List<EmailVariable> emailVariables = null;
         WorkflowEvent workflowEvent = null;
-        if(request.getParameter(PARAM_EMAIL_UID) == null || request.getParameter(PARAM_EMAIL_UID).equals(""))  {
+        SessionFactory sessionFactory = HibernateUtil.getDatabaseSessionFactory();
+        Session session = sessionFactory.openSession();
+        if(request.getParameter(PARAM_EMAIL_UID) == null || request.getParameter(PARAM_EMAIL_UID).equals("") ||
+                request.getParameter(PARAM_EMAIL_UID).equals("0"))  {
             //should not ever get here, this would mean we were allowing them to create a new email
             email = new Email();
         } else  {
             //load up the email obj from the db
-            SessionFactory sessionFactory = HibernateUtil.getDatabaseSessionFactory();
-            Session session = sessionFactory.openSession();
             email = (Email) session.load(Email.class, Integer.parseInt(request.getParameter(PARAM_EMAIL_UID)));
             emailVariables = (List<EmailVariable>) session.createSQLQuery("select * from stt_email_variable where evr_evg_uid = " + email.getUid()).addEntity(EmailVariable.class).list();
             List<EmailWorkflowEventLink> emailWorkflowEventLink = (List<EmailWorkflowEventLink>) session.createSQLQuery("select * from stt_email_workflow_event_link where ewe_eml_uid = " + email.getUid()).addEntity(EmailWorkflowEventLink.class).list();
@@ -57,8 +56,6 @@ public class EmailEditorServlet extends HttpServlet {
         }
 
         //load up all of the email templates so they can select from a dropdown
-        SessionFactory sessionFactory = HibernateUtil.getDatabaseSessionFactory();
-        Session session = sessionFactory.openSession();
         List<EmailTemplate> emailTemplates = session.createSQLQuery("select * from stt_email_template").addEntity(EmailTemplate.class).list();
 
        forwardToEditor(request, response, email, emailTemplates, emailVariables, null, null, workflowEvent);
@@ -73,7 +70,8 @@ public class EmailEditorServlet extends HttpServlet {
         SessionFactory sessionFactory = HibernateUtil.getDatabaseSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        if(request.getParameter(PARAM_EMAIL_UID) == null || request.getParameter(PARAM_EMAIL_UID).equals(""))  {
+        if(request.getParameter(PARAM_EMAIL_UID) == null || request.getParameter(PARAM_EMAIL_UID).equals("") ||
+                request.getParameter(PARAM_EMAIL_UID).equals("0"))  {
             //should not ever get here, this would mean we were allowing them to create a new email
             email = new Email();
         } else  {

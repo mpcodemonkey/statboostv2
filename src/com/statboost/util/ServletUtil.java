@@ -26,14 +26,16 @@ public class ServletUtil {
         return null;
     }
 
-    public static Object getObjectFromSql(String sql)  {
-        SessionFactory sessionFactory = HibernateUtil.getDatabaseSessionFactory();
-        Session session = sessionFactory.openSession();
-        Query query = session.createQuery(sql);
-        return query.list();
-    }
-
     public static boolean isEmailPattern(String possibleEmail)  {
         return possibleEmail.matches("[a-zA-Z0-9\\.]+@[a-zA-Z0-9\\-\\_\\.]+\\.[a-zA-Z0-9]{3}");
+    }
+
+    //checks if a string is null and if it is replaces it with a blank string so null isn't shown to the user
+    public static String hideNulls(String stringToCheck)  {
+        if(stringToCheck == null)  {
+            return "";
+        }
+
+        return stringToCheck;
     }
 }
