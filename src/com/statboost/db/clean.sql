@@ -139,3 +139,10 @@ create table stt_webpage  (
   wbp_body text,
   wbp_code varchar(150)
 );
+
+create table stt_announcement  (
+  ann_uid int primary key auto_increment,
+  ann_created datetime,
+  ann_title varchar(150),
+  ann_content text
+);

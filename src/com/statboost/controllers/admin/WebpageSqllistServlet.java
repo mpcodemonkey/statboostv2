@@ -19,8 +19,8 @@ public class WebpageSqllistServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String sql = "select * from stt_webpage";
-        ResultSet emails = ServletUtil.getResultSetFromSql(sql);
-        forwardToSqllist(request, response, emails);
+        ResultSet webpages = ServletUtil.getResultSetFromSql(sql);
+        forwardToSqllist(request, response, webpages);
     }
 
     private static void forwardToSqllist(HttpServletRequest request, HttpServletResponse response, ResultSet webpages)

@@ -1,4 +1,4 @@
-package com.statboost.models.email;
+package com.statboost.models.form;
 
 /**
  * Created by Jessica on 9/11/14.

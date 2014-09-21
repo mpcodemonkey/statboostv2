@@ -18,10 +18,6 @@
 <body>
 <table>
     <tr>
-        <%--todo: take this out--%>
-        <td><a href="<%=WebpageEditorServlet.SRV_MAP%>">New Webpage</a></td>
-    </tr>
-    <tr>
         <td>Name</td>
     </tr>
     <%
