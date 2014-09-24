@@ -16,14 +16,16 @@
     <%
         Announcement announcement = (Announcement) request.getAttribute(AnnouncementEditorServlet.ATTR_ANNOUNCEMENT);
     %>
+    <script type="text/javascript" src="/include/javascripts/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/include/javascripts/jquery-ui.min.js"></script>
     <script type="text/javascript">
-        function confirmDelete()  {
-            if(window.confirm("Are you sure you want to delete the announcement?"))  {
-                return true;
-            } else  {
-                return false;
-            }
-        }
+        jQuery(document).ready(function() {
+            jQuery('#deleteButton').click(function() {
+                if (confirm('Are you sure you want to delete the announcement?')) {
+                    document.location.assign('<%=AnnouncementEditorServlet.getDeleteUrl(announcement.getUid())%>');
+                }
+            });
+        });
     </script>
 </head>
 <body>
@@ -41,7 +43,7 @@
         %>
         <tr>
             <td><a href="<%=AnnouncementSqllistServlet.SRV_MAP%>">Close</a></td>
-            <td><a href="<%=AnnouncementEditorServlet.getDeleteUrl(announcement.getUid())%>" onclick="confirmDelete();">Delete</a></td>
+            <td><a href="#" onclick="confirmDelete()" id="deleteButton">Delete</a></td>
         </tr>
         <tr>
             <td><%=ServletUtil.hideNulls(announcement.getTitle())%></td>

@@ -2,6 +2,7 @@
 <%@ page import="org.apache.log4j.Logger" %>
 <%@ page import="com.statboost.controllers.admin.AnnouncementSqllistServlet" %>
 <%@ page import="com.statboost.controllers.admin.AnnouncementEditorServlet" %>
+<%@ page import="com.statboost.util.ServletUtil" %>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -42,7 +43,7 @@
     %>
     <tr>
         <td><a href="<%=AnnouncementEditorServlet.getEditUrl(announcements.getInt("ann_uid"))%>"><%=announcements.getString("ann_title")%></a></td>
-        <td><a href="<%=AnnouncementEditorServlet.getEditUrl(announcements.getInt("ann_uid"))%>"><%=announcements.getDate("ann_created")%></a></td>
+        <td><a href="<%=AnnouncementEditorServlet.getEditUrl(announcements.getInt("ann_uid"))%>"><%=ServletUtil.formatDateTime(announcements.getTimestamp("ann_created"))%></a></td>
     </tr>
     <%
                 }
