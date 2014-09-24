@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
@@ -41,10 +42,17 @@ public class ServletUtil {
         return stringToCheck;
     }
 
-    //todo: create a date formatting method
-
     public static Date getCurrentDate()  {
         Calendar calendar = Calendar.getInstance();
         return calendar.getTime();
     }
+
+    public static String formatDate(Date date)  {
+        return new SimpleDateFormat("MM/dd/yyyy").format(date);
+    }
+
+    public static String formatDateTime(Date date)  {
+        return new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a").format(date);
+    }
+
 }
