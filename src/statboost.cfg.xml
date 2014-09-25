@@ -40,5 +40,10 @@
         <mapping resource="Webpage.hbm.xml"/>
         <mapping resource="WorkflowEvent.hbm.xml"/>
         <mapping resource="Announcement.hbm.xml"/>
+        <mapping resource="SttEvent.hbm.xml"/>
+        <mapping resource="SttInventory.hbm.xml"/>
+        <mapping resource="SttInventoryItem.hbm.xml"/>
+        <mapping resource="SttOrder.hbm.xml"/>
+        <mapping resource="SttStockNotification.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>
