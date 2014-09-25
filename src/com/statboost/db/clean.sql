@@ -146,3 +146,69 @@ create table stt_announcement  (
   ann_title varchar(150),
   ann_content text
 );
+
+create table stt_order  (
+  ord_uid int primary key auto_increment,
+  ord_usr_uid int not null,
+  constraint ord_usr_uid_fk foreign key (ord_usr_uid) references stt_user (usr_uid),
+  ord_status enum('PLACED','SHIPPED','RETURNED','READY_FOR_PICKUP', 'CANCELLED', 'DELIVERED') DEFAULT NULL,
+  ord_shipping_address1 varchar(150), -- all shipping address fields nullable in case they are picking it up in the store
+  ord_shipping_address2 varchar(100),
+  ord_shipping_city varchar(100),
+  ord_shipping_state varchar(2),
+  ord_shipping_zip varchar(5),
+  ord_transaction_id varchar(10),
+  ord_tracking_number varchar(35),
+  ord_in_store_pickup tinyint(1),
+  ord_paid tinyint(1)
+);
+
+create table stt_event  (
+  evn_uid int primary key auto_increment,
+  evn_date datetime not null,
+  evn_title varchar(200),
+  evn_description text,
+  evn_player_limit int,
+  evn_number_in_store_users int
+);
+
+create table stt_inventory  (
+  inv_uid int primary key auto_increment,
+  inv_price double,
+  inv_number_in_stock int,
+  inv_name varchar(200),
+  inv_image varchar(300),
+  inv_mcr_uid int,
+  constraint inv_mcr_uid_fk foreign key (inv_mcr_uid) references stt_magic_card (mcr_uid),
+  inv_ycr_uid int,
+  constraint inv_ycr_uid_fk foreign key (inv_ycr_uid) references stt_yugioh_card (ycr_uid),
+  inv_evn_uid int,
+  constraint inv_evn_uid_fk foreign key (inv_evn_uid) references stt_event (evn_uid),
+  inv_pre_order tinyint(1),
+  inv_description text
+);
+
+create table stt_inventory_item  (
+  iit_uid int primary key auto_increment,
+  iit_ord_uid int not null,
+  constraint iit_ord_uid_fk foreign key (iit_ord_uid) references stt_order (ord_uid),
+  iit_price double not null,
+  iit_name varchar(200) not null,
+  iit_image varchar(300) not null,
+  iit_mcr_uid int,
+  constraint iit_mcr_uid_fk foreign key (iit_mcr_uid) references  stt_inventory (inv_uid),
+  iit_ycr_uid int,
+  constraint iit_ycr_uid_fk foreign key (iit_ycr_uid) references stt_yugioh_card (ycr_uid),
+  iit_evn_uid int,
+  constraint iit_evn_uid_fk foreign key (iit_evn_uid) references stt_event (evn_uid),
+  iit_pre_order tinyint(1),
+  iit_description text not null
+);
+
+create table stt_stock_notification  (
+  snt_uid int primary key auto_increment,
+  snt_email varchar(200),
+  snt_inv_uid int not null,
+  constraint snt_inv_uid_fk foreign key (snt_inv_uid) references stt_inventory (inv_uid)
+);
+
