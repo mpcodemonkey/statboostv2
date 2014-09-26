@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.statboost.models.inventory.Event" table="stt_event" schema="" catalog="statboost">
+        <id name="uid" column="evn_uid"/>
+        <property name="date" column="evn_date"/>
+        <property name="title" column="evn_title"/>
+        <property name="description" column="evn_description"/>
+        <property name="playerLimit" column="evn_player_limit"/>
+        <property name="numberInStoreUsers" column="evn_number_in_store_users"/>
+    </class>
+</hibernate-mapping>
