@@ -17,6 +17,7 @@ public class InventoryItem {
     private MagicCard magicCard;
     private YugiohCard yugiohCard;
     private Event event;
+    private String condition;
 
     public int getUid() {
         return uid;
@@ -96,5 +97,13 @@ public class InventoryItem {
 
     public void setEvent(Event event) {
         this.event = event;
+    }
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
     }
 }
