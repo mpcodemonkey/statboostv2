@@ -27,7 +27,7 @@
                 <li><a href="/AboutUs.jsp">About</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
-            <form class="navbar-form navbar-left" role="search" method="get" action="magicSearch">
+            <form class="navbar-form navbar-left" role="search" method="get" action="/magicSearch">
                 <div class="form-group">
                     <input type="text" id="search" name="cardName" class="autocomplete form-control" data-url="/autocomplete">
                 </div>

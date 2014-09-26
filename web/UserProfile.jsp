@@ -5,7 +5,6 @@
 
 
 <div class="container">
-
     <div class="btn-toolbar">
         <c:if test="${user.usrRole == 'Admin'}">
             <div class="btn-group"><button type="button" class="btn btn-primary" onclick="location.href='/admin/adminCP'">Admin CP</button></div>
@@ -22,6 +21,12 @@
             <h1 class="panel-title">${user.usrEmail}'s Profile</h1>
         </div>
         <div class="panel-body">
+            <c:if test="${requestScope.alert != null && requestScope.alertType != null}">
+                <div class="alert alert-${requestScope.alertType} fade in">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong>Alert:</strong> <c:out value="${requestScope.alert}" />
+                </div>
+            </c:if>
             <div id="profileInfo">
                 <li>
                     <b>Name:</b> ${user.usrFirstName} ${user.usrLastName}
@@ -131,38 +136,41 @@
                                 <label><i>DCI Number:</i></label>
                                 <input id="dcinumber" name="dcinumber" type="text" class="form-control" value="${user.usrDciNumber}">
                             </div>
+                            <input type="hidden" name="profileUpdate" value="true">
                             <div align="center">
                                 <button class="btn btn-primary" type="SUBMIT">Save</button>
-                                <button class="btn btn-primary" onclick="window.location.back()">Cancel</button>
+                                <button class="btn btn-primary" onclick="reset()">Cancel</button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
             <div id="changePswd" style="display: none;">
-                <div style="max-width: 300px;" align="left">
-                    <div class="form-inline">
-                        <div id="pwd-container">
-                            <div class="form-group">
-                                <label>Current Password</label>
-                                <input id="oldPswd" name="oldPassword" type="password" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>New Password</label>
-                                <input id="pswd" name="newPassword" type="password" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>New Password</label>
-                                <input id="pswdConf" name="passwordConf" type="password" class="form-control" placeholder="Confirm Password" required>
-                            </div>
-                            <div style="width: 200px;display: inline-block;vertical-align: text-top;">
-                                <div class="pwstrength_viewport_progress"></div>
+                <div style="max-width: 300px;margin-left: auto; margin-right: auto;">
+                    <form method="post" onsubmit="return validatePswd()">
+                        <div class="form-inline">
+                            <div id="pwd-container">
+                                <div class="form-group">
+                                    <input id="oldPswd" name="oldPassword" type="password" class="form-control" placeholder="Current Password" required>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <input id="pswd" name="newPassword" type="password" class="form-control" placeholder="New Password" required>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <input id="pswdConf" name="passwordConf" type="password" class="form-control" placeholder="Confirm Password" required>
+                                </div>
+                                <div style="width: 200px;display: inline-block;vertical-align: text-top;">
+                                    <div class="pwstrength_viewport_progress"></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div align="center">
-                        <button class="btn btn-primary" onclick="">Change Password</button>
-                    </div>
+                        <div align="center">
+                            <button class="btn btn-primary" type="submit">Change Password</button>
+                            <button class="btn btn-primary" onclick="reset()">Cancel</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -174,15 +182,13 @@
 <script src="/include/javascripts/jquery.maskedinput.min.js"></script>
 <script src="/include/javascripts/pwstrength-1.2.0.min.js"></script>
 <script>
-
-
     $(document).ready(function () {
         //init input masks
         $('#phone').mask('(999)-999-9999', {placeholder: "_"});
         $('#zip').mask('99999?-9999', {placeholder: "_"});
         $('#dcinumber').mask('9999999999', {placeholder: "_"});
 
-
+        initPswdChecker();
     });
 
     function editProfile() {
@@ -191,9 +197,43 @@
     }
 
     function changePswd() {
+        $('#oldPswd').val("");
+        $('#pswd').val("");
+        $('#pswdConf').val("");
         $('#editProfile').hide();
-        initPswdChecker();
+        $('#profileInfo').hide();
         $('#changePswd').show();
+    }
+
+    function validatePswd() {
+        var oldPswd = $('#oldPswd').val();
+        var newPswd = $('#pswd').val();
+        var passConf = $('#pswdConf').val();
+        if (newPswd === passConf) {
+            if (newPswd.length >= 8) { return true; }
+            else {
+                alert("Password must be at least 8 characters");
+                $('#oldPswd').val("");
+                $('#pswd').val("");
+                $('#pswdConf').val("");
+                return false;
+            }
+        } else {
+            alert("Passwords must match");
+            $('#oldPswd').val("");
+            $('#pswd').val("");
+            $('#pswdConf').val("");
+            return false;
+        }
+    }
+
+    function reset() {
+        $('#oldPswd').val("");
+        $('#pswd').val("");
+        $('#pswdConf').val("");
+        $('#editProfile').hide();
+        $('#changePswd').hide();
+        $('#profileInfo').show();
     }
 
     function initPswdChecker() {
