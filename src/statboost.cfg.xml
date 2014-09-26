@@ -52,5 +52,7 @@
         <mapping resource="InventoryItem.hbm.xml"/>
         <mapping resource="Order.hbm.xml"/>
         <mapping resource="StockNotification.hbm.xml"/>
+        <mapping resource="SttCondition.hbm.xml"/>
+        <mapping resource="SttConditionInventoryLink.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>
