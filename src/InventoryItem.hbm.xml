@@ -11,6 +11,7 @@
         <property name="image" column="iit_image"/>
         <property name="preOrder" column="iit_pre_order"/>
         <property name="description" column="iit_description"/>
+        <property name="condition" column="iit_condition"/>
         <many-to-one name="magicCard" class="com.statboost.models.mtg.MagicCard"
                      column="iit_mcr_uid" not-null="true" insert="true" update="true"
                      cascade="all" />

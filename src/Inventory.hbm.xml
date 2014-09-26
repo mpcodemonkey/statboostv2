@@ -7,7 +7,6 @@
     <class name="com.statboost.models.inventory.Inventory" table="stt_inventory" schema="" catalog="statboost">
         <id name="uid" column="inv_uid"/>
         <property name="price" column="inv_price"/>
-        <property name="numberInStock" column="inv_number_in_stock"/>
         <property name="name" column="inv_name"/>
         <property name="image" column="inv_image"/>
         <property name="preOrder" column="inv_pre_order"/>
