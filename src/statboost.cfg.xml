@@ -10,15 +10,22 @@
         <property name="connection.autoReconnectForPools">true</property>
         <property name="connection.is-connection-validation-required">true</property>
 
+        <!-- Dev Connection -->
         <property name="hibernate.connection.url">jdbc:mysql://107.138.64.59:3306/statboost?characterEncoding=UTF-8</property>
         <property name="hibernate.connection.username">generic</property>
         <property name="hibernate.connection.password">generic11PASSWORD</property>
 
+        <!-- Prod Connection -->
+        <!--
+        <property name="hibernate.connection.url">jdbc:mysql://10.128.219.28:3306/teamjjac_statboost</property>
+        <property name="hibernate.connection.username">teamjjac_apiuser</property>
+        <property name="hibernate.connection.password">1!a^%=%+Z|6G1:X</property>
+        -->
 
         <!-- Set up connection pools -->
         <property name="hibernate.connection.provider_class">org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider</property>
         <property name="hibernate.connection.pool_size">10</property>
-        <property name="show_sql">true</property>
+        <!-- <property name="show_sql">true</property> -->
         <property name="hibernate.c3p0.idle_test_period">300</property> <!-- In seconds -->
         <property name="hibernate.c3p0.min_size">5</property>
         <property name="hibernate.c3p0.max_size">20</property>
@@ -40,10 +47,10 @@
         <mapping resource="Webpage.hbm.xml"/>
         <mapping resource="WorkflowEvent.hbm.xml"/>
         <mapping resource="Announcement.hbm.xml"/>
-        <mapping resource="SttEvent.hbm.xml"/>
-        <mapping resource="SttInventory.hbm.xml"/>
-        <mapping resource="SttInventoryItem.hbm.xml"/>
-        <mapping resource="SttOrder.hbm.xml"/>
-        <mapping resource="SttStockNotification.hbm.xml"/>
+        <mapping resource="Event.hbm.xml"/>
+        <mapping resource="Inventory.hbm.xml"/>
+        <mapping resource="InventoryItem.hbm.xml"/>
+        <mapping resource="Order.hbm.xml"/>
+        <mapping resource="StockNotification.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

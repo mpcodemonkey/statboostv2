@@ -49,10 +49,9 @@ public class MagicSearchServlet extends HttpServlet {
 
         //query
         String hql = "From MagicCard where ";
-
-        if (request.getParameter("simpleSubmit") != null) {
+        if (request.getParameter("simpleSubmit") != null || !request.getParameter("cardName").isEmpty()) {
             String[]constraints = request.getParameterValues("r1");
-            String fieldText = request.getParameter("fi1");
+            String fieldText = request.getParameter("fi1") != null ? request.getParameter("fi1") : request.getParameter("cardName");
             int len = constraints == null ? 0 : constraints.length;
             for(int i = 0; i < len; i++)
             {
