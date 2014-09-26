@@ -9,7 +9,6 @@ import com.statboost.models.ygo.YugiohCard;
 public class Inventory {
     private int uid;
     private Double price;
-    private int numberInStock;
     private String name;
     private String image;
     private boolean preOrder;
@@ -80,14 +79,6 @@ public class Inventory {
 
     public void setEvent(Event event) {
         this.event = event;
-    }
-
-    public int getNumberInStock() {
-        return numberInStock;
-    }
-
-    public void setNumberInStock(int numberInStock) {
-        this.numberInStock = numberInStock;
     }
 
     public boolean isPreOrder() {
