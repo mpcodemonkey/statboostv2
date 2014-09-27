@@ -30,14 +30,14 @@
 </div>
 
 
-<span class="col-lg-3">
+<span class="col-sm-3">
 
 <div class="item" style="float: right ;"><img src="include/images/SarkhanSide.PNG"></div>
 </span>
 
 
 
-<span class="col-lg-6">
+<span class="col-sm-6">
     <div id="demo" style="float: left;">
         <div class="container">
             <div class="row">
@@ -56,7 +56,7 @@
     </div>
 </span>
 
-<span class="col-lg-3">
+<span class="col-sm-3">
 
 <div class="item" style="float: left;"><img src="include/images/SorinSide.PNG"></div>
 </span>
@@ -112,7 +112,7 @@
         <div class="row">
             <div class="span12">
                 <h5>Team JJACS Prototype
-                    <a href="mailto:owl@owlgraphic.com?subject=Hey Owl!">email</a>
+                    <a href="mailto:teamjjacs@gmail.com?subject=Hey Owl!">email</a>
                     <script>
                         var owldomain = window.location.hostname.indexOf("owlgraphic");
                         if(owldomain !== -1){
@@ -160,6 +160,23 @@
         });
     });
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <script src="include/javascripts/bootstrap-collapse.js"></script>
 <script src="include/javascripts/bootstrap-transition.js"></script>
