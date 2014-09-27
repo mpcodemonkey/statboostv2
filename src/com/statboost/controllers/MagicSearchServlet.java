@@ -3,6 +3,7 @@ package com.statboost.controllers;
 
 import com.statboost.models.mtg.MagicCard;
 import com.statboost.util.HibernateUtil;
+import com.statboost.util.ServletUtil;
 import org.hibernate.*;
 
 import javax.servlet.ServletException;
@@ -60,7 +61,7 @@ public class MagicSearchServlet extends HttpServlet {
                         nameConstraint="mcrCardName LIKE :name";
                         prevCon = true;
                         queryparams.add(nameConstraint);
-                        buildableQuery.put("name", sanitizeName(fieldText));
+                        buildableQuery.put("name", ServletUtil.sanitizeString(fieldText));
                         break;
                     }
                     case "cType":{
@@ -71,7 +72,7 @@ public class MagicSearchServlet extends HttpServlet {
                             typeConstraint= " mcrTypes like :type";
                         }
                         queryparams.add(typeConstraint);
-                        buildableQuery.put("type", sanitizeName(fieldText));
+                        buildableQuery.put("type", ServletUtil.sanitizeString(fieldText));
                         break;
                     }
                     case "cText":{
@@ -82,7 +83,7 @@ public class MagicSearchServlet extends HttpServlet {
                             rulesConstraint+= " mcrText like :text";
                         }
                         queryparams.add(rulesConstraint);
-                        buildableQuery.put("text", sanitizeName(fieldText));
+                        buildableQuery.put("text", ServletUtil.sanitizeString(fieldText));
                         break;
                     }
                 }
@@ -91,7 +92,7 @@ public class MagicSearchServlet extends HttpServlet {
             if(len == 0){
                 nameConstraint="mcrCardName LIKE :name";
                 queryparams.add(nameConstraint);
-                buildableQuery.put("name", sanitizeName(fieldText));
+                buildableQuery.put("name", ServletUtil.sanitizeString(fieldText));
             }
 
 
@@ -127,7 +128,7 @@ public class MagicSearchServlet extends HttpServlet {
                 nameConstraint = "mcrCardName LIKE :name";
 
                 queryparams.add(nameConstraint);
-                buildableQuery.put("name", sanitizeName(request.getParameter("cardName")));
+                buildableQuery.put("name", ServletUtil.sanitizeString(request.getParameter("cardName")));
                 prevCon = true;
             }
             if (request.getParameter("type") != null && !request.getParameter("type").equals("")) {
@@ -288,13 +289,5 @@ public class MagicSearchServlet extends HttpServlet {
         }
         //route to results page even if no results found or transaction throws exception
         request.getRequestDispatcher("MagicResult.jsp").forward(request, response);
-    }
-
-    private String sanitizeName(String dirty) {
-        String clean = dirty.replaceAll("%", "");
-        if (!clean.equals("")) {
-            clean = "%" + clean + "%";
-        }
-        return clean;
     }
 }

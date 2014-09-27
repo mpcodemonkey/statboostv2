@@ -1,10 +1,12 @@
 package com.statboost.controllers.admin;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.statboost.models.actor.User;
 import com.statboost.util.HibernateUtil;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import com.statboost.util.ServletUtil;
+import org.hibernate.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -71,12 +73,38 @@ public class SetUserStatusServlet extends HttpServlet {
                 request.setAttribute("actionType", "Deactivate");
                 request.getRequestDispatcher("SetUserStatus.jsp").forward(request, response);
 
+            } else if (request.getParameter("customerSearch") != null) {
+                List<User> result = null;
+                SessionFactory dbFactory = HibernateUtil.getDatabaseSessionFactory();
+                Session dbSession = dbFactory.openSession();
+                String hql = "From User where usrFirstName like :name and usrRole='Customer' order by usrLastName desc";
+                try {
+
+                    Query query = dbSession.createQuery(hql);
+                    query.setParameter("name", ServletUtil.sanitizeString(request.getParameter("term")));
+                    query.setMaxResults(4);
+
+                    result = query.list();
+                } catch (HibernateException e) {
+                    e.printStackTrace();
+                } finally {
+                    dbSession.close();
+                }
+
+                if (result != null) {
+                    JsonArray j = new JsonArray();
+                    for(User u : result) {
+                        JsonObject jo = new JsonObject();
+                        jo.addProperty("name", u.getUsrFirstName() + " " + u.getUsrLastName());
+                        jo.addProperty("email", u.getUsrEmail());
+                        j.add(jo);
+                    }
+                    response.getWriter().write(new Gson().toJson(j));
+                }
+
             } else {
-                response.sendRedirect("/admin/adminCP"); //bad get parameter
+                response.sendRedirect("/admin/adminCP"); //bad parameter
             }
-
-
-
         } else {
             response.sendRedirect("/");
         }

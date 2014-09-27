@@ -2,6 +2,7 @@
 
 <jsp:include page="/include/Header.jsp"/>
 <jsp:include page="/include/Navbar.jsp"/>
+<script type="text/javascript" src="/include/javascripts/customerAuto.js"></script>
 
 <style>
     .active {
@@ -180,7 +181,7 @@
 
                     <form class="navbar-form navbar-left" role="search" method="get" action="">
                         <div class="form-group">
-                            <input type="text" id="search" name="userName" class="autocomplete form-control" data-url="">
+                            <input type="text" id="searchCust" name="userName" class="cust-autocomplete form-control" data-url="/admin/setUserStatus?customerSearch">
                         </div>
                         &nbsp;<span class="glyphicon glyphicon-search" style="color:black" title="Type a user name to search for."></span>
                     </form>
