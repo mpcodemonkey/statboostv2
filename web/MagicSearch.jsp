@@ -381,6 +381,15 @@
                             message: 'Your search must be 3 or more characters'
                         }
                     }
+                },
+
+                r1:{
+                    validators:{
+                        choice:{
+                            min:1,
+                            message: 'Your search must be for Name, Type and/or Text'
+                        }
+                    }
                 }
             }
         });
