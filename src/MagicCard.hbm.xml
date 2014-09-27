@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.statboost.models.mtg.MagicCard" table="stt_magic_card">
+        <id name="mcrUid" column="mcr_uid"/>
+
+        <many-to-one name="magicSet" class="com.statboost.models.mtg.MagicSet"
+                     column="mcr_set_id" not-null="true" insert="false" update="false"
+                     cascade="all" />
+
+        <property name="mcrCardName" column="mcr_card_name"/>
+        <property name="mcrNames" column="mcr_names"/>
+        <property name="mcrSetId" column="mcr_set_id"/>
+        <property name="mcrManaCost" column="mcr_mana_cost"/>
+        <property name="mcrCmc" column="mcr_cmc"/>
+        <property name="mcrColors" column="mcr_colors"/>
+        <property name="mcrType" column="mcr_type"/>
+        <property name="mcrSuperTypes" column="mcr_super_types"/>
+        <property name="mcrSubTypes" column="mcr_sub_types"/>
+        <property name="mcrTypes" column="mcr_types"/>
+        <property name="mcrRarity" column="mcr_rarity"/>
+        <property name="mcrText" column="mcr_text"/>
+        <property name="mcrFlavor" column="mcr_flavor"/>
+        <property name="mcrArtist" column="mcr_artist"/>
+        <property name="mcrNumber" column="mcr_number"/>
+        <property name="mcrPower" column="mcr_power"/>
+        <property name="mcrToughness" column="mcr_toughness"/>
+        <property name="mcrLoyalty" column="mcr_loyalty"/>
+        <property name="mcrLayout" column="mcr_layout"/>
+        <property name="mcrMultiverseId" column="mcr_multiverse_id"/>
+        <property name="mcrVariations" column="mcr_variations"/>
+        <property name="mcrImageName" column="mcr_image_name"/>
+        <property name="mcrWatermark" column="mcr_watermark"/>
+        <property name="mcrBorder" column="mcr_border"/>
+        <property name="mcrHand" column="mcr_hand"/>
+        <property name="mcrLife" column="mcr_life"/>
+        <property name="mcrTimeshifted" column="mcr_timeshifted"/>
+        <property name="mcrReserved" column="mcr_reserved"/>
+        <property name="mcrReleaseDate" column="mcr_release_date"/>
+    </class>
+</hibernate-mapping>
