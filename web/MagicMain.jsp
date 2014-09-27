@@ -30,14 +30,14 @@
 </div>
 
 
-<span class="col-sm-3">
+<span class="col-lg-3">
 
 <div class="item" style="float: right ;"><img src="include/images/SarkhanSide.PNG"></div>
 </span>
 
 
 
-<span class="col-sm-6">
+<span class="col-lg-6">
     <div id="demo" style="float: left;">
         <div class="container">
             <div class="row">
@@ -56,7 +56,7 @@
     </div>
 </span>
 
-<span class="col-sm-3">
+<span class="col-lg-3">
 
 <div class="item" style="float: left;"><img src="include/images/SorinSide.PNG"></div>
 </span>
