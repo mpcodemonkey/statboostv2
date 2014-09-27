@@ -10,6 +10,12 @@
   Time: 3:21 PM
 --%>
     <div class="container-fluid">
+        <c:if test="${requestScope.alert != null && requestScope.alertType != null}">
+            <div class="alert alert-${requestScope.alertType} fade in">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <strong>Alert:</strong> <c:out value="${requestScope.alert}" />
+            </div>
+        </c:if>
         <c:forEach items="${requestScope.cardList}" var="card">
             <%-- Prepare card manacost for mtgimage symbol search --%>
             <c:set var="manacost">${fn:replace(fn:replace(card.mcrManaCost,"{",""),"}"," ")}</c:set>
