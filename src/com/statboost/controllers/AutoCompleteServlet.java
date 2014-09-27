@@ -30,8 +30,9 @@ public class AutoCompleteServlet extends HttpServlet {
         Session session = mtgFactory.openSession();
         String hql = "From MagicCard as m where m.mcrCardName like :name group by m.mcrCardName order by m.mcrMultiverseId desc";
         Query query = session.createQuery(hql);
-        query.setParameter("name", "%"+request.getParameter("term")+"%");
+        query.setParameter("name", sanitizeName(request.getParameter("term")));
         query.setMaxResults(4);
+
         List<MagicCard> result = query.list();
 
         JsonArray j = new JsonArray();
@@ -44,5 +45,17 @@ public class AutoCompleteServlet extends HttpServlet {
         response.getWriter().write(new Gson().toJson(j));
     }
 
+    /**
+     * The purpose of this method is to strip out wildcards or any other malicious characters from the given string.
+     * @param dirty
+     * @return clean
+     */
+    private String sanitizeName(String dirty) {
+        String clean = dirty.replaceAll("%", "");
+        if (!clean.equals("")) {
+            clean = "%" + clean + "%";
+        }
+        return clean;
+    }
 
 }

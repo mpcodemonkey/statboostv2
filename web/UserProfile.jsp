@@ -119,6 +119,9 @@
                                     <option value="WI">Wisconsin</option>
                                     <option value="WY">Wyoming</option>
                                 </select>
+                                <script>
+                                    $('#state option[value="${user.usrState}"]').attr("selected", "selected");
+                                </script>
                             </div>
                             <div class="form-group">
                                 <label>Zip</label>
@@ -139,7 +142,7 @@
                             <input type="hidden" name="profileUpdate" value="true">
                             <div align="center">
                                 <button class="btn btn-primary" type="SUBMIT">Save</button>
-                                <button class="btn btn-primary" onclick="reset()">Cancel</button>
+                                <span class="btn btn-primary" type="button" name="button" onclick="reset()">Cancel</span>
                             </div>
                         </div>
                     </form>
@@ -168,7 +171,7 @@
                         </div>
                         <div align="center">
                             <button class="btn btn-primary" type="submit">Change Password</button>
-                            <button class="btn btn-primary" onclick="reset()">Cancel</button>
+                            <span class="btn btn-primary" type="button" name="button" onclick="reset()">Cancel</span>
                         </div>
                     </form>
                 </div>
