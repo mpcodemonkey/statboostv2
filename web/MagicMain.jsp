@@ -112,7 +112,7 @@
         <div class="row">
             <div class="span12">
                 <h5>Team JJACS Prototype
-                    <a href="mailto:owl@owlgraphic.com?subject=Hey Owl!">email</a>
+                    <a href="mailto:teamjjacs@gmail.com?subject=Hey Owl!">email</a>
                     <script>
                         var owldomain = window.location.hostname.indexOf("owlgraphic");
                         if(owldomain !== -1){
@@ -160,6 +160,23 @@
         });
     });
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <script src="include/javascripts/bootstrap-collapse.js"></script>
 <script src="include/javascripts/bootstrap-transition.js"></script>
