@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.statboost.models.mtg.MagicCard;
 import com.statboost.util.HibernateUtil;
+import com.statboost.util.ServletUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -30,7 +31,7 @@ public class AutoCompleteServlet extends HttpServlet {
         Session session = mtgFactory.openSession();
         String hql = "From MagicCard as m where m.mcrCardName like :name group by m.mcrCardName order by m.mcrMultiverseId desc";
         Query query = session.createQuery(hql);
-        query.setParameter("name", sanitizeName(request.getParameter("term")));
+        query.setParameter("name", ServletUtil.sanitizeString(request.getParameter("term")));
         query.setMaxResults(4);
 
         List<MagicCard> result = query.list();
@@ -43,19 +44,6 @@ public class AutoCompleteServlet extends HttpServlet {
             j.add(jo);
         }
         response.getWriter().write(new Gson().toJson(j));
-    }
-
-    /**
-     * The purpose of this method is to strip out wildcards or any other malicious characters from the given string.
-     * @param dirty
-     * @return clean
-     */
-    private String sanitizeName(String dirty) {
-        String clean = dirty.replaceAll("%", "");
-        if (!clean.equals("")) {
-            clean = "%" + clean + "%";
-        }
-        return clean;
     }
 
 }

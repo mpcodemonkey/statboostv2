@@ -55,4 +55,17 @@ public class ServletUtil {
         return new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a").format(date);
     }
 
+    /**
+     * The purpose of this method is to strip out wildcards or any other malicious characters from the given string.
+     * @param dirty
+     * @return clean
+     */
+    public static String sanitizeString(String dirty) {
+        String clean = dirty.replaceAll("%", "");
+        if (!clean.equals("")) {
+            clean = "%" + clean + "%";
+        }
+        return clean;
+    }
+
 }
