@@ -85,7 +85,7 @@ public class WebpageEditorServlet extends HttpServlet {
         request.setAttribute(ATTR_WEBPAGE, webpage);
         request.setAttribute(ATTR_ERRORS, errors);
         request.setAttribute(ATTR_INFO, info);
-        request.getRequestDispatcher("/WebpageEditor.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/WebpageEditor.jsp").forward(request, response);
     }
 
     public static String getEditUrl(int webpageUid)  {

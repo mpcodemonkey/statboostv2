@@ -29,6 +29,6 @@ public class AnnouncementSqllistServlet extends HttpServlet {
     private static void forwardToSqllist(HttpServletRequest request, HttpServletResponse response, ResultSet announcements)
             throws IOException, ServletException {
         request.setAttribute(ATTR_ANNOUNCEMENTS, announcements);
-        request.getRequestDispatcher("/AnnouncementSqllist.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/AnnouncementSqllist.jsp").forward(request, response);
     }
 }

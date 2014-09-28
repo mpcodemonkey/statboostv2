@@ -27,6 +27,6 @@ public class EmailTemplateSqllistServlet extends HttpServlet {
     private static void forwardToSqllist(HttpServletRequest request, HttpServletResponse response, ResultSet emailTemplates)
             throws IOException, ServletException {
         request.setAttribute(ATTR_EMAILS_TEMPLATES, emailTemplates);
-        request.getRequestDispatcher("/EmailTemplateSqllist.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/EmailTemplateSqllist.jsp").forward(request, response);
     }
 }
