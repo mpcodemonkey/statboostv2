@@ -125,17 +125,6 @@ CREATE TABLE `stt_email_workflow_event_link` (
   CONSTRAINT `ewe_wev_uid_fk` FOREIGN KEY (`ewe_wev_uid`) REFERENCES `stt_workflow_event` (`wev_uid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
-CREATE TABLE `stt_group_event_link` (
-  `gel_uid` int(11) NOT NULL AUTO_INCREMENT,
-  `gel_evg_uid` int(11) NOT NULL,
-  `gel_wev_uid` int(11) NOT NULL,
-  PRIMARY KEY (`gel_uid`),
-  KEY `gel_evg_uid_fk` (`gel_evg_uid`),
-  KEY `gel_wev_uif_fk` (`gel_wev_uid`),
-  CONSTRAINT `gel_evg_uid_fk` FOREIGN KEY (`gel_evg_uid`) REFERENCES `stt_email_variable_group` (`evg_uid`),
-  CONSTRAINT `gel_wev_uif_fk` FOREIGN KEY (`gel_wev_uid`) REFERENCES `stt_workflow_event` (`wev_uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE `stt_email_variable` (
   `evr_uid` int(11) NOT NULL AUTO_INCREMENT,
   `evr_evg_uid` int(11) NOT NULL,

@@ -43,7 +43,6 @@
         <mapping resource="EmailVariable.hbm.xml"/>
         <mapping resource="EmailVariableGroup.hbm.xml"/>
         <mapping resource="EmailWorkflowEventLink.hbm.xml"/>
-        <mapping resource="GroupEventLink.hbm.xml"/>
         <mapping resource="Webpage.hbm.xml"/>
         <mapping resource="WorkflowEvent.hbm.xml"/>
         <mapping resource="Announcement.hbm.xml"/>

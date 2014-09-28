@@ -35,7 +35,7 @@ public class AnnouncementEditorServlet extends HttpServlet {
     public static final String PARAM_IS_DELETE = "isDelete";
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //todo: should let them create, view, or delete an announcement, but not edit it
+        //should let them create, view, or delete an announcement, but not edit it
         Announcement announcement = null;
         SessionFactory sessionFactory = HibernateUtil.getDatabaseSessionFactory();
         Session session = sessionFactory.openSession();
