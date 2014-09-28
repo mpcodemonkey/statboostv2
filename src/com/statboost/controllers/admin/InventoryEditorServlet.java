@@ -1,16 +1,11 @@
 package com.statboost.controllers.admin;
 
-import com.statboost.models.email.EmailTemplate;
-import com.statboost.models.email.EmailVariable;
-import com.statboost.models.inventory.Condition;
-import com.statboost.models.inventory.ConditionInventoryLink;
 import com.statboost.models.inventory.Event;
 import com.statboost.models.inventory.Inventory;
 import com.statboost.models.mtg.MagicCard;
 import com.statboost.models.ygo.YugiohCard;
 import com.statboost.util.HibernateUtil;
 import com.statboost.util.ServletUtil;
-import com.sun.org.apache.xalan.internal.xsltc.dom.SimpleResultTreeImpl;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -23,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Jessica on 9/25/14.
@@ -33,19 +27,16 @@ import java.util.List;
 public class InventoryEditorServlet extends HttpServlet {
     static Logger logger = Logger.getLogger(InventoryEditorServlet.class);
     public static final String SRV_MAP = "/admin/inventoryeditor";
-    public static final String ATTR_EVENT = "event";
-    public static final String ATTR_MAGIC_CARD = "magicCard";
-    public static final String ATTR_YUGIOH_CARD = "yugiohCard";
-    public static final String ATTR_INVENTORY = "inventory";
     public static final String PARAM_INVENTORY_UID = "inventoryUid";
-    public static final String PARAM_PRICE = "price";
-    public static final String PARAM_NAME = "name";
-    public static final String PARAM_IMAGE = "image";
-    public static final String PARAM_PRE_ORDER = "preOrder";
-    public static final String PARAM_DESCRIPTION = "desciption";
-    public static final String PARAM_MAGIC_CARD_UID = "magicCardUid";
-    public static final String PARAM_YUGIOH_CARD = "yugiohCardUid";
-    public static final String PARAM_EVENT_UID = "eventUid";
+    public static final String PARAM_INVENTORY_PRICE = "inventoryPrice";
+    public static final String PARAM_INVENTORY_NAME = "inventoryName";
+    public static final String PARAM_INVENTORY_IMAGE = "inventoryImage";
+    public static final String PARAM_INVENTORY_PRE_ORDER = "inventoryPreOrder";
+    public static final String PARAM_INVENTORY_DESCRIPTION = "inventoryDescription";
+    //detemines if it is a magic card, yugioh card, event, or generic item
+    public static final String PARAM_TYPE = "type";
+
+    public static final String ATTR_INVENTORY = "inventory";
     public static final String ATTR_CONDITION_INVENTORY_LINKS = "conditionInventoryLinks";
     public static final String ATTR_ERRORS = "errors";
     public static final String ATTR_INFO = "info";
@@ -60,6 +51,8 @@ public class InventoryEditorServlet extends HttpServlet {
     public static final String PARAM_YUGIOH_ATK = "yugiohATK";
     public static final String PARAM_YUGIOH_DEF = "yugiohDEF";
     public static final String PARAM_YUGIOH_DESCRIPTION = "yugiohDescription";
+    public static final String PARAM_YUGIOH_UID = "yugiohCardUid";
+    public static final String ATTR_YUGIOH_CARD = "yugiohCard";
 
     //params for magic card
     public static final String PARAM_MAGIC_CARD_NAME = "magicCardName";
@@ -85,8 +78,25 @@ public class InventoryEditorServlet extends HttpServlet {
     public static final String PARAM_MAGIC_VARIATIONS = "variations";
     public static final String PARAM_MAGIC_IMAGE_NAME = "magicImageName";
     public static final String PARAM_MAGIC_WATERMARK = "magicWatermark";
+    public static final String PARAM_MAGIC_BORDER = "magicBorder";
+    public static final String PARAM_MAGIC_HAND = "magicHand";
+    public static final String PARAM_MAGIC_LIFE = "magicLife";
+    public static final String PARAM_MAGIC_TIMESHIFTED = "magicTimeShifted";
+    public static final String PARAM_MAGIC_RESERVED = "magicReserved";
+    public static final String PARAM_MAGIC_RELEASE_DATE = "magicReleaseDate";
+    public static final String PARAM_MAGIC_CARD_UID = "magicCardUid";
+    public static final String ATTR_MAGIC_CARD = "magicCard";
 
     //params for event
+    public static final String PARAM_EVENT_DATE = "eventDate";
+    public static final String PARAM_EVENT_TITLE = "eventTitle";
+    public static final String PARAM_EVENT_DESCRIPTION = "eventDescription";
+    public static final String PARAM_EVENT_PLAYER_LIMIT = "eventPlayerLimit";
+    public static final String PARAM_EVENT_NUMBER_IN_STORE_USERS = "eventNumberInStoreUsers";
+    public static final String PARAM_EVENT_UID = "eventUid";
+    public static final String ATTR_EVENT = "event";
+
+
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Inventory inventory = null;
@@ -102,7 +112,7 @@ public class InventoryEditorServlet extends HttpServlet {
         } else  {
             inventory = (Inventory) session.load(Inventory.class, Integer.parseInt(request.getParameter(PARAM_INVENTORY_UID)));
             magicCard = (MagicCard) session.load(MagicCard.class, Integer.parseInt(request.getParameter(PARAM_MAGIC_CARD_UID)));
-            yugiohCard = (YugiohCard) session.load(YugiohCard.class, Integer.parseInt(request.getParameter(PARAM_YUGIOH_CARD)));
+            yugiohCard = (YugiohCard) session.load(YugiohCard.class, Integer.parseInt(request.getParameter(PARAM_YUGIOH_UID)));
             event = (Event) session.load(Event.class, Integer.parseInt(request.getParameter(PARAM_EVENT_UID)));
         }
 
@@ -126,7 +136,7 @@ public class InventoryEditorServlet extends HttpServlet {
         } else  {
             inventory = (Inventory) session.load(Inventory.class, Integer.parseInt(request.getParameter(PARAM_INVENTORY_UID)));
             magicCard = (MagicCard) session.load(MagicCard.class, Integer.parseInt(request.getParameter(PARAM_MAGIC_CARD_UID)));
-            yugiohCard = (YugiohCard) session.load(YugiohCard.class, Integer.parseInt(request.getParameter(PARAM_YUGIOH_CARD)));
+            yugiohCard = (YugiohCard) session.load(YugiohCard.class, Integer.parseInt(request.getParameter(PARAM_YUGIOH_UID)));
             event = (Event) session.load(Event.class, Integer.parseInt(request.getParameter(PARAM_EVENT_UID)));
         }
 
@@ -136,31 +146,50 @@ public class InventoryEditorServlet extends HttpServlet {
         ArrayList<String> errors = new ArrayList<String>();
         String warning = "";
 
-        if(request.getParameter(PARAM_PRE_ORDER) != null && !request.getParameter(PARAM_PRE_ORDER).equals(""))  {
+        //inventory validation & setting
+        if(request.getParameter(PARAM_INVENTORY_PRE_ORDER) != null && !request.getParameter(PARAM_INVENTORY_PRE_ORDER).equals(""))  {
             inventory.setPreOrder(true);
         } else  {
             inventory.setPreOrder(false);
         }
 
         //warning about not filling price
-        if(request.getParameter(PARAM_NAME) != null && !request.getParameter(PARAM_NAME).equals(""))  {
-            inventory.setName(request.getParameter(PARAM_NAME));
+        if(request.getParameter(PARAM_INVENTORY_NAME) != null && !request.getParameter(PARAM_INVENTORY_NAME).equals(""))  {
+            inventory.setName(request.getParameter(PARAM_INVENTORY_NAME));
         } else  {
             errors.add("You must enter the name of the inventory.");
         }
 
-        if(request.getParameter(PARAM_PRICE) != null && !request.getParameter(PARAM_PRICE).equals("") &&
-                !request.getParameter(PARAM_PRICE).equals("0"))  {
-          inventory.setPrice(Double.parseDouble(request.getParameter(PARAM_PRICE)));
+        if(request.getParameter(PARAM_INVENTORY_PRICE) != null && !request.getParameter(PARAM_INVENTORY_PRICE).equals("") &&
+                !request.getParameter(PARAM_INVENTORY_PRICE).equals("0"))  {
+          inventory.setPrice(Double.parseDouble(request.getParameter(PARAM_INVENTORY_PRICE)));
         } else  {
             warning = "You did not enter a price.";
         }
 
-        inventory.setDescription(request.getParameter(PARAM_DESCRIPTION));
+        inventory.setDescription(request.getParameter(PARAM_INVENTORY_DESCRIPTION));
         inventory.setEvent(event);
-        inventory.setImage(request.getParameter(PARAM_IMAGE));
+        inventory.setImage(request.getParameter(PARAM_INVENTORY_IMAGE));
         inventory.setMagicCard(magicCard);
         inventory.setYugiohCard(yugiohCard);
+
+        //check if it is a yugioh card, if it is validate and set the yugioh fields
+        if(request.getParameter(PARAM_TYPE) != null && !request.getParameter(PARAM_TYPE).equals("") &&
+                request.getParameter(PARAM_TYPE).equals("YUGIOH"))  {
+            //all fields required except description, atk, adn def
+
+
+            //check if it is a magic card, if it is validate and set the magic fields
+        } else if(request.getParameter(PARAM_TYPE) != null && !request.getParameter(PARAM_TYPE).equals("") &&
+                request.getParameter(PARAM_TYPE).equals("MAGIC"))  {
+            //all fields required except flavor and rules
+
+            //check if it is a event, if it is validate and set the event fields
+        } else if(request.getParameter(PARAM_TYPE) != null && !request.getParameter(PARAM_TYPE).equals("") &&
+                request.getParameter(PARAM_TYPE).equals("EVENT"))  {
+
+        }
+        //otherwise it is just a generic item
 
         if(errors.size() == 0)  {
             //no errors so save the object and forward back to the editor with a save message
@@ -191,7 +220,8 @@ public class InventoryEditorServlet extends HttpServlet {
 
     private static void forwardToEditor(HttpServletRequest request, HttpServletResponse response,ArrayList<String> errors,
                                         String info, ResultSet conditions, Inventory inventory, MagicCard magicCard,
-                                        Event event, YugiohCard yugiohCard, String warning) throws IOException, ServletException {
+                                        Event event, YugiohCard yugiohCard, String warning) throws IOException,
+            ServletException {
         request.setAttribute(ATTR_CONDITION_INVENTORY_LINKS, conditions);
         request.setAttribute(ATTR_ERRORS, errors);
         request.setAttribute(ATTR_INFO, info);
@@ -199,6 +229,7 @@ public class InventoryEditorServlet extends HttpServlet {
         request.setAttribute(ATTR_INVENTORY, inventory);
         request.setAttribute(ATTR_MAGIC_CARD, magicCard);
         request.setAttribute(ATTR_YUGIOH_CARD, yugiohCard);
+        request.setAttribute(ATTR_WARNING, warning);
         request.getRequestDispatcher("/admin/InventoryEditor.jsp").forward(request, response);
     }
 
