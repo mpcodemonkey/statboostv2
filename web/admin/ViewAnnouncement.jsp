@@ -16,8 +16,7 @@
     <%
         Announcement announcement = (Announcement) request.getAttribute(AnnouncementEditorServlet.ATTR_ANNOUNCEMENT);
     %>
-    <script type="text/javascript" src="/include/javascripts/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="/include/javascripts/jquery-ui.min.js"></script>
+    <jsp:include page="/include/HeadTags.jsp"/>
     <script type="text/javascript">
         jQuery(document).ready(function() {
             jQuery('#deleteButton').click(function() {

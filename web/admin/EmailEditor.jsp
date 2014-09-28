@@ -25,8 +25,7 @@
         WorkflowEvent workflowEvent = (WorkflowEvent) request.getAttribute(EmailEditorServlet.ATTR_WORKFLOW_EVENT);
 
     %>
-    <script type="text/javascript" src="/include/javascripts/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="/include/javascripts/jquery-ui.min.js"></script>
+    <jsp:include page="/include/HeadTags.jsp"/>
     <script type="text/javascript" src="/tinymce/tinymce.min.js"></script>
     <script type="text/javascript">
         tinymce.init({

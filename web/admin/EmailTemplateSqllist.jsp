@@ -14,6 +14,7 @@
     <%
         ResultSet emailTemplates = (ResultSet) request.getAttribute(EmailTemplateSqllistServlet.ATTR_EMAILS_TEMPLATES);
     %>
+    <jsp:include page="/include/HeadTags.jsp"/>
 </head>
 <body>
 <table>

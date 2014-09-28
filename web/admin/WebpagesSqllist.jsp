@@ -14,6 +14,7 @@
     <%
         ResultSet webpages = (ResultSet) request.getAttribute(WebpageSqllistServlet.ATTR_WEBPAGES);
     %>
+    <jsp:include page="/include/HeadTags.jsp"/>
 </head>
 <body>
 <table>

@@ -15,6 +15,7 @@
     <%
         ResultSet emails = (ResultSet) request.getAttribute(EmailSqllistServlet.ATTR_EMAILS);
     %>
+    <jsp:include page="/include/HeadTags.jsp"/>
 </head>
 <body>
     <table>
