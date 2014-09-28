@@ -20,6 +20,7 @@
         List<EmailVariable> emailVariables = (List<EmailVariable>) request.getAttribute(EmailTemplateEditorServlet.ATTR_EMAIL_VARIABLES);
 
     %>
+    <jsp:include page="/include/HeadTags.jsp"/>
     <script type="text/javascript" src="/tinymce/tinymce.min.js"></script>
     <script type="text/javascript">
         tinymce.init({

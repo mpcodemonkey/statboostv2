@@ -15,6 +15,7 @@
     <%
         ResultSet announcements = (ResultSet) request.getAttribute(AnnouncementSqllistServlet.ATTR_ANNOUNCEMENTS);
     %>
+    <jsp:include page="/include/HeadTags.jsp"/>
 </head>
 <body>
 <table>
