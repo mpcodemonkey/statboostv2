@@ -115,6 +115,6 @@ public class EmailTemplateEditorServlet extends HttpServlet  {
         request.setAttribute(ATTR_ERRORS, errors);
         request.setAttribute(ATTR_INFO, info);
         request.setAttribute(ATTR_EMAIL_VARIABLES, emailVariables);
-        request.getRequestDispatcher("/EmailTemplateEditor.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/EmailTemplateEditor.jsp").forward(request, response);
     }
 }

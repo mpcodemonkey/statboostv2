@@ -99,21 +99,21 @@ public class AnnouncementEditorServlet extends HttpServlet {
         request.setAttribute(ATTR_ANNOUNCEMENT, announcement);
         request.setAttribute(ATTR_ERRORS, errors);
         request.setAttribute(ATTR_INFO, info);
-        request.getRequestDispatcher("/AnnouncementEditor.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/AnnouncementEditor.jsp").forward(request, response);
     }
 
     private static void forwardToView(HttpServletRequest request, HttpServletResponse response, Announcement announcement, String info)
             throws IOException, ServletException {
         request.setAttribute(ATTR_ANNOUNCEMENT, announcement);
         request.setAttribute(ATTR_INFO, info);
-        request.getRequestDispatcher("/ViewAnnouncement.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/ViewAnnouncement.jsp").forward(request, response);
     }
 
     private static void forwardToSqllist(HttpServletRequest request, HttpServletResponse response, Announcement announcement, String info)
             throws IOException, ServletException {
         request.setAttribute(ATTR_ANNOUNCEMENT, announcement);
         request.setAttribute(ATTR_INFO, info);
-        request.getRequestDispatcher("/AnnouncementSqllist.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/AnnouncementSqllist.jsp").forward(request, response);
     }
 
     public static String getEditUrl(int announcementUid)  {

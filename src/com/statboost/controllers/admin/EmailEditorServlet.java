@@ -136,6 +136,6 @@ public class EmailEditorServlet extends HttpServlet {
         request.setAttribute(ATTR_ERRORS, errors);
         request.setAttribute(ATTR_INFO, info);
         request.setAttribute(ATTR_WORKFLOW_EVENT, workflowEvent);
-        request.getRequestDispatcher("/EmailEditor.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/EmailEditor.jsp").forward(request, response);
     }
 }

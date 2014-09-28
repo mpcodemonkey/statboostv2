@@ -26,6 +26,6 @@ public class EmailSqllistServlet extends HttpServlet {
     private static void forwardToSqllist(HttpServletRequest request, HttpServletResponse response, ResultSet emails)
             throws IOException, ServletException {
         request.setAttribute(ATTR_EMAILS, emails);
-        request.getRequestDispatcher("/EmailSqllist.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/EmailSqllist.jsp").forward(request, response);
     }
 }

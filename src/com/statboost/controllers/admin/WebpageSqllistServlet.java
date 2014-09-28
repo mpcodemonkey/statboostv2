@@ -26,6 +26,6 @@ public class WebpageSqllistServlet extends HttpServlet {
     private static void forwardToSqllist(HttpServletRequest request, HttpServletResponse response, ResultSet webpages)
             throws IOException, ServletException {
         request.setAttribute(ATTR_WEBPAGES, webpages);
-        request.getRequestDispatcher("/WebpagesSqllist.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/WebpagesSqllist.jsp").forward(request, response);
     }
 }
