@@ -33,7 +33,7 @@ $(function() {
     })
     .data("ui-autocomplete")._renderItem = function(ul, item){
         return $("<li>")
-            .append( "<a href=magicSearch?cardName="+encodeURIComponent(item.name)+"><b><u>" + item.name + "</u></b><br><i>" + item.text + "</i></a>" )
+            .append( "<a href=/magicSearch?cardName="+encodeURIComponent(item.name)+"><b><u>" + item.name + "</u></b><br><i>" + item.text + "</i></a>" )
             .appendTo(ul);
     }
 

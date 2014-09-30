@@ -77,24 +77,31 @@ public class SetUserStatusServlet extends HttpServlet {
                 List<User> result = null;
                 SessionFactory dbFactory = HibernateUtil.getDatabaseSessionFactory();
                 Session dbSession = dbFactory.openSession();
-                String hql = "From User where usrFirstName like :name and usrRole='Customer' order by usrLastName desc";
+                String hqlName = "From User where usrFirstName like :name and usrRole='Customer' order by usrLastName desc";
+                String hqlEmail = "From User where usrEmail like :email and usrRole='Customer' order by usrLastName desc";
                 try {
-
-                    Query query = dbSession.createQuery(hql);
+                    //query by name
+                    Query query = dbSession.createQuery(hqlName);
                     query.setParameter("name", ServletUtil.sanitizeString(request.getParameter("term")));
                     query.setMaxResults(4);
-
                     result = query.list();
+
+                    //query by email
+                    Query query2 = dbSession.createQuery(hqlEmail);
+                    query2.setParameter("email", ServletUtil.sanitizeString(request.getParameter("term")));
+                    query2.setMaxResults(4);
+                    result.addAll(query2.list());
                 } catch (HibernateException e) {
                     e.printStackTrace();
                 } finally {
                     dbSession.close();
                 }
-
+                //Build and send json payload from query results
                 if (result != null) {
                     JsonArray j = new JsonArray();
                     for(User u : result) {
                         JsonObject jo = new JsonObject();
+                        jo.addProperty("id", u.getUsrUid());
                         jo.addProperty("name", u.getUsrFirstName() + " " + u.getUsrLastName());
                         jo.addProperty("email", u.getUsrEmail());
                         j.add(jo);
@@ -102,8 +109,51 @@ public class SetUserStatusServlet extends HttpServlet {
                     response.getWriter().write(new Gson().toJson(j));
                 }
 
+            } else if (request.getParameter("customerID") != null) {
+                String user_uid_str = request.getParameter("customerID");
+                int user_uid = -1;
+                boolean validParam = true;
+                try {
+                    user_uid = Integer.parseInt(user_uid_str);
+                } catch (NumberFormatException e) {
+                    validParam = false;
+                }
+                if (validParam) {
+                    User customer = null;
+                    SessionFactory dbFactory = HibernateUtil.getDatabaseSessionFactory();
+                    Session dbSession = dbFactory.openSession();
+                    String hql = "From User where usrUid = :id";
+                    try {
+                        Query query = dbSession.createQuery(hql);
+                        query.setParameter("id", user_uid);
+                        customer = (User)query.uniqueResult();
+                    } catch (HibernateException e) {
+                        e.printStackTrace();
+                    } finally {
+                        dbSession.close();
+                    }
+
+                    if (customer != null) {
+                        if (customer.getUsrActive() == Byte.MAX_VALUE) {
+                            request.setAttribute("actionType", "Deactivate");
+                        } else {
+                            request.setAttribute("actionType", "Activate");
+                        }
+                        request.setAttribute("customer", customer);
+                        request.getRequestDispatcher("SetCustomerStatus.jsp").forward(request, response);
+                    } else {
+                        request.setAttribute("alert", "Sorry, could not find a user with the id: " + user_uid);
+                        request.setAttribute("alertType", "danger");
+                        request.getRequestDispatcher("AdminCP.jsp").forward(request, response);
+                    }
+                } else {
+                    request.setAttribute("alert", "Sorry, the provided parameter is invalid: " + user_uid_str);
+                    request.setAttribute("alertType", "danger");
+                    request.getRequestDispatcher("AdminCP.jsp").forward(request, response);
+                }
+
             } else {
-                response.sendRedirect("/admin/adminCP"); //bad parameter
+                request.getRequestDispatcher("AdminCP.jsp").forward(request, response);
             }
         } else {
             response.sendRedirect("/");
