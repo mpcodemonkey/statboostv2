@@ -60,7 +60,7 @@ public class ServletUtil {
      * @param dirty
      * @return clean
      */
-    public static String sanitizeString(String dirty) {
+    public static String sanitizeWildcard(String dirty) {
         String clean = dirty.replaceAll("%", "");
         if (!clean.equals("")) {
             clean = "%" + clean + "%";
