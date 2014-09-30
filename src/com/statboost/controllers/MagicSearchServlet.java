@@ -81,7 +81,8 @@ public class MagicSearchServlet extends HttpServlet {
                 //set search results
                 if (cards != null && cards.size()>0) {
                     request.setAttribute("cardList", cards);
-                    int numberOfPages = (int)Math.ceil(mcAccessObject.getNumberOfResults()/mcAccessObject.getNumberPerPage());
+                    int numberOfPages = (int)Math.ceil((double)mcAccessObject.getNumberOfResults()/mcAccessObject.getNumberPerPage());
+                    System.out.println(numberOfPages);
                     request.setAttribute("numberOfPages", numberOfPages);
                     request.setAttribute("currentPage", mcAccessObject.getCurrentPage());
                 } else {
@@ -90,7 +91,7 @@ public class MagicSearchServlet extends HttpServlet {
                 }
                 //route to results page even if no results found or transaction throws exception
                 request.getRequestDispatcher("MagicResult.jsp").forward(request, response);
-                return;
+                return;//necessary
             }
         }
 
@@ -302,7 +303,7 @@ public class MagicSearchServlet extends HttpServlet {
         //set search results
         if (cards != null && cards.size()>0) {
             request.setAttribute("cardList", cards);
-            int numberOfPages = (int)Math.ceil(mcAccessObject.getNumberOfResults()/mcAccessObject.getNumberPerPage());
+            int numberOfPages = (int)Math.ceil((double)mcAccessObject.getNumberOfResults()/mcAccessObject.getNumberPerPage());
             request.setAttribute("numberOfPages", numberOfPages);
             request.setAttribute("currentPage", mcAccessObject.getCurrentPage());
         } else {
