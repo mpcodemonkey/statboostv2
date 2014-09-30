@@ -1,16 +1,19 @@
 package com.statboost.controllers;
 
 
+import com.statboost.models.DAO.GenericDAO;
+import com.statboost.models.DAO.QueryObject;
 import com.statboost.models.mtg.MagicCard;
 import com.statboost.util.HibernateUtil;
 import com.statboost.util.ServletUtil;
-import org.hibernate.*;
+import org.hibernate.SessionFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +32,10 @@ public class MagicSearchServlet extends HttpServlet {
         //allows for url based searches like: /magicSearch?cardName=Regathan Firecat
         if(request.getParameter("cardName") != null && !request.getParameter("cardName").equals("")) {
             doPost(request, response);
-        } else {
+        } else if(request.getParameter("page") != null && !request.getParameter("page").equals("")) {
+            doPost(request, response);
+        }else{
+
             request.getRequestDispatcher("MagicSearch.jsp").forward(request, response);
         }
     }
@@ -45,11 +51,52 @@ public class MagicSearchServlet extends HttpServlet {
         String defaultOrderBy = "mcrMultiverseId";
         String defaultOrder = "desc";
         List<MagicCard> cards = null;
-
+        int page = 1;
         SessionFactory mtgFactory = HibernateUtil.getDatabaseSessionFactory();
 
         //query
         String hql = "From MagicCard where ";
+
+        //check if query object is in the session
+        //new search invalidates check
+        if(request.getParameter("page") == null) {
+            HttpSession session = request.getSession();
+            if (session.getAttribute("QueryObject") != null) {
+                session.removeAttribute("QueryObject");
+            }
+        }
+        else if(request.getParameter("page") != null){
+            HttpSession session = request.getSession();
+            if (session.getAttribute("QueryObject") != null) {
+                page = Integer.parseInt(request.getParameter("page"));
+                QueryObject sessionQuery = (QueryObject)session.getAttribute("QueryObject");
+
+                GenericDAO mcAccessObject = new GenericDAO();
+
+                cards = (List<MagicCard>)mcAccessObject.getResultSet(sessionQuery, page);
+
+
+                session.setAttribute("QueryObject", sessionQuery);
+
+                //set search results
+                if (cards != null && cards.size()>0) {
+                    request.setAttribute("cardList", cards);
+                    int numberOfPages = (int)Math.ceil(mcAccessObject.getNumberOfResults()/mcAccessObject.getNumberPerPage());
+                    request.setAttribute("numberOfPages", numberOfPages);
+                    request.setAttribute("currentPage", mcAccessObject.getCurrentPage());
+                } else {
+                    request.setAttribute("alertType", "warning");
+                    request.setAttribute("alert", "Sorry, no cards were found.  Please try another search.");
+                }
+                //route to results page even if no results found or transaction throws exception
+                request.getRequestDispatcher("MagicResult.jsp").forward(request, response);
+                return;
+            }
+        }
+
+
+
+
         if (request.getParameter("simpleSubmit") != null || !request.getParameter("cardName").isEmpty()) {
             String[]constraints = request.getParameterValues("r1");
             String fieldText = request.getParameter("fi1") != null ? request.getParameter("fi1") : request.getParameter("cardName");
@@ -102,25 +149,8 @@ public class MagicSearchServlet extends HttpServlet {
             hql += " order by " + defaultOrderBy + " " + defaultOrder;
 
             System.out.println("\n\n\n\n\n" + hql);
-            Session session = mtgFactory.openSession();
-            Transaction tx = null;
-            try {
-                tx = session.beginTransaction();
-                Query query = session.createQuery(hql);
-                for (String s : buildableQuery.keySet()) {
-                    query.setParameter(s, buildableQuery.get(s));
-                    System.out.println(buildableQuery.get(s));
-                }
-                cards = query.list();
 
 
-                tx.commit();
-            } catch (HibernateException e) {
-                if (tx != null) tx.rollback();
-                e.printStackTrace();
-            } finally {
-                session.close();
-            }
 
         }
         else if(request.getParameter("advancedSubmit") != null) {
@@ -257,32 +287,24 @@ public class MagicSearchServlet extends HttpServlet {
             hql += " order by " + defaultOrderBy + " " + defaultOrder;
             System.out.println("\n\n\n\n\n" + hql);
 
-            Session session = mtgFactory.openSession();
-            Transaction tx = null;
-            try {
-                tx = session.beginTransaction();
-                Query query = session.createQuery(hql);
-                for (String s : buildableQuery.keySet()) {
-                    if (s.equals("cmc"))
-                        query.setParameter(s, Double.parseDouble(buildableQuery.get(s)));
-                    else
-                        query.setParameter(s, buildableQuery.get(s));
-                }
-
-                cards = query.list();
-
-                tx.commit();
-            } catch (HibernateException e) {
-                if (tx != null) tx.rollback();
-                e.printStackTrace();
-            } finally {
-                session.close();
-            }
         }
+
+        QueryObject sessionQuery = new QueryObject(buildableQuery, hql);
+
+        GenericDAO mcAccessObject = new GenericDAO();
+        HttpSession session = request.getSession();
+
+        cards = (List<MagicCard>)mcAccessObject.getResultSet(sessionQuery, page);
+
+
+        session.setAttribute("QueryObject", sessionQuery);
 
         //set search results
         if (cards != null && cards.size()>0) {
             request.setAttribute("cardList", cards);
+            int numberOfPages = (int)Math.ceil(mcAccessObject.getNumberOfResults()/mcAccessObject.getNumberPerPage());
+            request.setAttribute("numberOfPages", numberOfPages);
+            request.setAttribute("currentPage", mcAccessObject.getCurrentPage());
         } else {
             request.setAttribute("alertType", "warning");
             request.setAttribute("alert", "Sorry, no cards were found.  Please try another search.");
@@ -290,4 +312,23 @@ public class MagicSearchServlet extends HttpServlet {
         //route to results page even if no results found or transaction throws exception
         request.getRequestDispatcher("MagicResult.jsp").forward(request, response);
     }
+
+    /**Eventual code block to skip over query when page number present(for pagination)
+     *
+     if(request.getSession().getAttribute("QueryObject") != null){
+     QueryObject sessionQuery = (QueryObject)request.getSession().getAttribute("QueryObject");
+
+     GenericDAO mcAccessObject = new GenericDAO();
+     cards = (List<MagicCard>)mcAccessObject.getResultSet(sessionQuery, 1);
+     //set search results
+     if (cards != null && cards.size()>0) {
+     request.setAttribute("cardList", cards);
+     } else {
+     request.setAttribute("alertType", "warning");
+     request.setAttribute("alert", "Sorry, no cards were found.  Please try another search.");
+     }
+     //route to results page even if no results found or transaction throws exception
+     request.getRequestDispatcher("MagicResult.jsp").forward(request, response);
+     }
+     */
 }

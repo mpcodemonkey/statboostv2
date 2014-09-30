@@ -4,6 +4,8 @@ package com.statboost.controllers;
  * Created by Jon on 9/8/2014.
  */
 
+import com.statboost.models.DAO.GenericDAO;
+import com.statboost.models.DAO.QueryObject;
 import com.statboost.models.ygo.YugiohCard;
 import com.statboost.util.HibernateUtil;
 import com.statboost.util.ServletUtil;
@@ -270,35 +272,10 @@ public class YuGiOhSearchServlet extends HttpServlet {
 
 
             List<YugiohCard> cards = null;
-            Session session = ygoFactory.openSession();
-            Transaction tx = null;
-            try {
-                tx = session.beginTransaction();
-                Query query = session.createQuery(hql);
-                for(String s : buildableQuery.keySet() )
-                {
-                    switch (s){
-                        case "atk":
-                        case "def":
-                        case "scale":{
-                            query.setParameter(s, Integer.parseInt(buildableQuery.get(s)));
-                            break;
-                        }
-                        default: query.setParameter(s, buildableQuery.get(s));
-                            break;
-                    }
-                }
+            QueryObject sessionQuery = new QueryObject(buildableQuery, hql);
 
-                cards = query.list();
-
-                tx.commit();
-            } catch (HibernateException e) {
-                if (tx != null) tx.rollback();
-                e.printStackTrace();
-            } finally {
-                session.close();
-            }
-
+            GenericDAO mcAccessObject = new GenericDAO();
+            cards = (List<YugiohCard>)mcAccessObject.getResultSet(sessionQuery, 1);
 
 
 
