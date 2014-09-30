@@ -82,13 +82,13 @@ public class SetUserStatusServlet extends HttpServlet {
                 try {
                     //query by name
                     Query query = dbSession.createQuery(hqlName);
-                    query.setParameter("name", ServletUtil.sanitizeString(request.getParameter("term")));
+                    query.setParameter("name", ServletUtil.sanitizeWildcard(request.getParameter("term")));
                     query.setMaxResults(4);
                     result = query.list();
 
                     //query by email
                     Query query2 = dbSession.createQuery(hqlEmail);
-                    query2.setParameter("email", ServletUtil.sanitizeString(request.getParameter("term")));
+                    query2.setParameter("email", ServletUtil.sanitizeWildcard(request.getParameter("term")));
                     query2.setMaxResults(4);
                     result.addAll(query2.list());
                 } catch (HibernateException e) {

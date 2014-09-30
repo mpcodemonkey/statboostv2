@@ -31,7 +31,7 @@ public class AutoCompleteServlet extends HttpServlet {
         Session session = mtgFactory.openSession();
         String hql = "From MagicCard as m where m.mcrCardName like :name group by m.mcrCardName order by m.mcrMultiverseId desc";
         Query query = session.createQuery(hql);
-        query.setParameter("name", ServletUtil.sanitizeString(request.getParameter("term")));
+        query.setParameter("name", ServletUtil.sanitizeWildcard(request.getParameter("term")));
         query.setMaxResults(4);
 
         List<MagicCard> result = query.list();

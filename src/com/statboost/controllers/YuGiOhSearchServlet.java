@@ -6,6 +6,7 @@ package com.statboost.controllers;
 
 import com.statboost.models.ygo.YugiohCard;
 import com.statboost.util.HibernateUtil;
+import com.statboost.util.ServletUtil;
 import org.hibernate.*;
 
 import javax.servlet.ServletException;
@@ -51,8 +52,10 @@ public class YuGiOhSearchServlet extends HttpServlet {
             try {
                 tx = session.beginTransaction();
                 Query query = session.createQuery(hql);
-                query.setParameter("name", "%"+ygoName+"%");
-                if(!typeConstraint.equalsIgnoreCase("all"))query.setParameter("type", "%"+typeConstraint+"%");
+                query.setParameter("name", ServletUtil.sanitizeWildcard(ygoName));
+                if(!typeConstraint.equalsIgnoreCase("all")) {
+                    query.setParameter("type", ServletUtil.sanitizeWildcard(typeConstraint));
+                }
                 cards = query.list();
 
 
@@ -97,7 +100,7 @@ public class YuGiOhSearchServlet extends HttpServlet {
                 nameConstraint = "ycrName LIKE :name";
 
                 queryparams.add(nameConstraint);
-                buildableQuery.put("name", "%" + request.getParameter("nameInput") + "%");
+                buildableQuery.put("name", ServletUtil.sanitizeWildcard(request.getParameter("nameInput")));
                 prevCon = true;
             }
             if(request.getParameter("textInput") != null && !request.getParameter("textInput").equals(""))
@@ -108,7 +111,7 @@ public class YuGiOhSearchServlet extends HttpServlet {
                     textConstraint = and + textConstraint;
                 }
                 queryparams.add(textConstraint);
-                buildableQuery.put("desc", "%" + request.getParameter("textInput") + "%");
+                buildableQuery.put("desc", ServletUtil.sanitizeWildcard(request.getParameter("textInput")));
                 prevCon = true;
             }
             if(request.getParameter("effectInput") != null && !request.getParameter("effectInput").equals(""))
@@ -119,7 +122,7 @@ public class YuGiOhSearchServlet extends HttpServlet {
                     pendulumConstraint = and + pendulumConstraint;
                 }
                 queryparams.add(pendulumConstraint);
-                buildableQuery.put("pendEff", "%" + request.getParameter("effectInput") + "%");
+                buildableQuery.put("pendEff", ServletUtil.sanitizeWildcard(request.getParameter("effectInput")));
                 prevCon = true;
             }
             if(request.getParameter("atkInput") != null && !request.getParameter("atkInput").equals(""))

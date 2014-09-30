@@ -61,7 +61,7 @@ public class MagicSearchServlet extends HttpServlet {
                         nameConstraint="mcrCardName LIKE :name";
                         prevCon = true;
                         queryparams.add(nameConstraint);
-                        buildableQuery.put("name", ServletUtil.sanitizeString(fieldText));
+                        buildableQuery.put("name", ServletUtil.sanitizeWildcard(fieldText));
                         break;
                     }
                     case "cType":{
@@ -72,7 +72,7 @@ public class MagicSearchServlet extends HttpServlet {
                             typeConstraint= " mcrTypes like :type";
                         }
                         queryparams.add(typeConstraint);
-                        buildableQuery.put("type", ServletUtil.sanitizeString(fieldText));
+                        buildableQuery.put("type", ServletUtil.sanitizeWildcard(fieldText));
                         break;
                     }
                     case "cText":{
@@ -83,7 +83,7 @@ public class MagicSearchServlet extends HttpServlet {
                             rulesConstraint+= " mcrText like :text";
                         }
                         queryparams.add(rulesConstraint);
-                        buildableQuery.put("text", ServletUtil.sanitizeString(fieldText));
+                        buildableQuery.put("text", ServletUtil.sanitizeWildcard(fieldText));
                         break;
                     }
                 }
@@ -92,7 +92,7 @@ public class MagicSearchServlet extends HttpServlet {
             if(len == 0){
                 nameConstraint="mcrCardName LIKE :name";
                 queryparams.add(nameConstraint);
-                buildableQuery.put("name", ServletUtil.sanitizeString(fieldText));
+                buildableQuery.put("name", ServletUtil.sanitizeWildcard(fieldText));
             }
 
 
@@ -128,7 +128,7 @@ public class MagicSearchServlet extends HttpServlet {
                 nameConstraint = "mcrCardName LIKE :name";
 
                 queryparams.add(nameConstraint);
-                buildableQuery.put("name", ServletUtil.sanitizeString(request.getParameter("cardName")));
+                buildableQuery.put("name", ServletUtil.sanitizeWildcard(request.getParameter("cardName")));
                 prevCon = true;
             }
             if (request.getParameter("type") != null && !request.getParameter("type").equals("")) {
