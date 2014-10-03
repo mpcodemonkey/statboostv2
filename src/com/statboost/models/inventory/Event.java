@@ -1,13 +1,14 @@
 package com.statboost.models.inventory;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Jessica on 9/25/14.
  */
 public class Event {
     private int uid;
-    private Timestamp date;
+    private Date date;
     private String title;
     private String description;
     private int playerLimit;
@@ -21,12 +22,12 @@ public class Event {
         this.uid = evnUid;
     }
 
-    public Timestamp getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(Timestamp evnDate) {
-        this.date = evnDate;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getTitle() {

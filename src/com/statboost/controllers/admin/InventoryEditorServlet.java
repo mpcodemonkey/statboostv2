@@ -3,6 +3,7 @@ package com.statboost.controllers.admin;
 import com.statboost.models.inventory.Event;
 import com.statboost.models.inventory.Inventory;
 import com.statboost.models.mtg.MagicCard;
+import com.statboost.models.mtg.MagicSet;
 import com.statboost.models.ygo.YugiohCard;
 import com.statboost.util.HibernateUtil;
 import com.statboost.util.ServletUtil;
@@ -184,23 +185,33 @@ public class InventoryEditorServlet extends HttpServlet {
             //all fields required except description, atk, and def
             yugiohCard.setYcrDescription(request.getParameter(PARAM_YUGIOH_DESCRIPTION));
 
-            //todo: ask if this can be 0 or less
             if(request.getParameter(PARAM_YUGIOH_ATK) != null && !request.getParameter(PARAM_YUGIOH_ATK).equals(""))  {
-                yugiohCard.setYcrAtk(Integer.parseInt(request.getParameter(PARAM_YUGIOH_ATK)));
+                if(Integer.parseInt(request.getParameter(PARAM_YUGIOH_ATK)) >= 0)  {
+                    yugiohCard.setYcrAtk(Integer.parseInt(request.getParameter(PARAM_YUGIOH_ATK)));
+                } else  {
+                    errors.add("The ATK must be greater than or equal to zero for the Yu-gi-oh card.");
+                }
             }
 
-            //todo: ask if this can be 0 or less
             if(request.getParameter(PARAM_YUGIOH_DEF) != null && !request.getParameter(PARAM_YUGIOH_DEF).equals(""))  {
-                yugiohCard.setYcrDef(Integer.parseInt(request.getParameter(PARAM_YUGIOH_DEF)));
+                if(Integer.parseInt(request.getParameter(PARAM_YUGIOH_DEF)) >= 0)  {
+                    yugiohCard.setYcrDef(Integer.parseInt(request.getParameter(PARAM_YUGIOH_DEF)));
+                } else {
+                    errors.add("The DEF must be greater than or equal to zero for the Yu-gi-oh card.");
+                }
             }
 
-            if(request.getParameter(PARAM_YUGIOH_ATTRIBUTE) != null && !request.getParameter(PARAM_YUGIOH_ATTRIBUTE).equals(""))  {
+            if(request.getParameter(PARAM_YUGIOH_ATTRIBUTE) != null &&
+                    !request.getParameter(PARAM_YUGIOH_ATTRIBUTE).equals("") &&
+                    request.getParameter(PARAM_YUGIOH_ATTRIBUTE).length() <= 25)  {
                 yugiohCard.setYcrAttribute(request.getParameter(PARAM_YUGIOH_ATTRIBUTE));
             } else  {
                 errors.add("You must enter an attribute for the Yu-gi-oh card.");
             }
 
-            if(request.getParameter(PARAM_YUGIOH_CARD_TYPE) != null && !request.getParameter(PARAM_YUGIOH_CARD_TYPE).equals(""))  {
+            if(request.getParameter(PARAM_YUGIOH_CARD_TYPE) != null &&
+                    !request.getParameter(PARAM_YUGIOH_CARD_TYPE).equals("") &&
+                    request.getParameter(PARAM_YUGIOH_CARD_TYPE).length() <= 50)  {
                 yugiohCard.setYcrCardType(request.getParameter(PARAM_YUGIOH_CARD_TYPE));
             } else  {
                 errors.add("You must enter a card type for the Yu-gi-oh card.");
@@ -212,13 +223,15 @@ public class InventoryEditorServlet extends HttpServlet {
                 errors.add("You must enter the level for the Yu-gi-oh card.");
             }
 
-            if(request.getParameter(PARAM_YUGIOH_NAME) != null && !request.getParameter(PARAM_YUGIOH_NAME).equals(""))  {
+            if(request.getParameter(PARAM_YUGIOH_NAME) != null && !request.getParameter(PARAM_YUGIOH_NAME).equals("") &&
+                    request.getParameter(PARAM_YUGIOH_NAME).length() <=255)  {
                 yugiohCard.setYcrName(request.getParameter(PARAM_YUGIOH_NAME));
             } else  {
                 errors.add("You must enter the name for the Yu-gi-oh card.");
             }
 
-            if(request.getParameter(PARAM_YUGIOH_TYPE) != null && !request.getParameter(PARAM_YUGIOH_TYPE).equals(""))  {
+            if(request.getParameter(PARAM_YUGIOH_TYPE) != null && !request.getParameter(PARAM_YUGIOH_TYPE).equals("") &&
+                    request.getParameter(PARAM_YUGIOH_TYPE).length() <= 25)  {
                 yugiohCard.setYcrType(request.getParameter(PARAM_YUGIOH_TYPE));
             } else  {
                 errors.add("You must enter the type for the Yu-gi-oh card.");
@@ -232,12 +245,21 @@ public class InventoryEditorServlet extends HttpServlet {
                 magicCard = new MagicCard();
             }
 
-            //all fields required except flavor, rules, power, toughness
-            //todo: ask Jon about rules (not in db)
+            //all fields required except flavor, text, power, toughness, hand, life
             magicCard.setMcrFlavor(request.getParameter(PARAM_MAGIC_FLAVOR));
             magicCard.setMcrPower(request.getParameter(PARAM_MAGIC_POWER));
             magicCard.setMcrToughness(request.getParameter(PARAM_MAGIC_TOUGHNESS));
+            magicCard.setMcrText(request.getParameter(PARAM_MAGIC_TEXT));
 
+            if(request.getParameter(PARAM_MAGIC_HAND) != null && !request.getParameter(PARAM_MAGIC_HAND).equals(""))  {
+                magicCard.setMcrHand(Integer.parseInt(request.getParameter(PARAM_MAGIC_HAND)));
+            }
+
+            if(request.getParameter(PARAM_MAGIC_LIFE) != null && !request.getParameter(PARAM_MAGIC_LIFE).equals(""))  {
+                magicCard.setMcrLife(Integer.parseInt(request.getParameter(PARAM_MAGIC_LIFE)));
+            }
+
+            //required fields
             if(request.getParameter(PARAM_MAGIC_ARTIST) != null && !request.getParameter(PARAM_MAGIC_ARTIST).equals(""))  {
                 magicCard.setMcrArtist(request.getParameter(PARAM_MAGIC_ARTIST));
             } else  {
@@ -268,31 +290,20 @@ public class InventoryEditorServlet extends HttpServlet {
                 errors.add("You must enter the color of the Magic Card.");
             }
 
-            //todo: ask if hand can be 0 or less
-            if(request.getParameter(PARAM_MAGIC_HAND) != null && !request.getParameter(PARAM_MAGIC_HAND).equals(""))  {
-                magicCard.setMcrHand(Integer.parseInt(request.getParameter(PARAM_MAGIC_HAND)));
-            } else  {
-                errors.add("You must enter the hand of the Magic Card.");
-            }
-
-            //todo: discuss if we can mvoe these images to the image field in inventory
-            if(request.getParameter(PARAM_MAGIC_IMAGE_NAME) != null && !request.getParameter(PARAM_MAGIC_IMAGE_NAME).equals(""))  {
+            //todo: discuss if we can move these images to the image field in inventory
+            if(request.getParameter(PARAM_MAGIC_IMAGE_NAME) != null &&
+                    !request.getParameter(PARAM_MAGIC_IMAGE_NAME).equals("") &&
+                    request.getParameter(PARAM_MAGIC_IMAGE_NAME).length() <= 150)  {
                 magicCard.setMcrImageName(request.getParameter(PARAM_MAGIC_IMAGE_NAME));
             } else  {
                 errors.add("You must select an image for the magic card.");
             }
 
-            if(request.getParameter(PARAM_MAGIC_LAYOUT) != null && !request.getParameter(PARAM_MAGIC_LAYOUT).equals(""))  {
+            if(request.getParameter(PARAM_MAGIC_LAYOUT) != null && !request.getParameter(PARAM_MAGIC_LAYOUT).equals("") &&
+                    request.getParameter(PARAM_MAGIC_LAYOUT).length() <= 50)  {
                 magicCard.setMcrLayout(request.getParameter(PARAM_MAGIC_LAYOUT));
             } else  {
                 errors.add("You must select the layout of the Magic card.");
-            }
-
-            //todo: ask if can be 0 or less
-            if(request.getParameter(PARAM_MAGIC_LIFE) != null && !request.getParameter(PARAM_MAGIC_LIFE).equals(""))  {
-                magicCard.setMcrLife(Integer.parseInt(request.getParameter(PARAM_MAGIC_LIFE)));
-            } else  {
-                errors.add("You must select the life of the Magic card.");
             }
 
             //todo: ask if it can be 0 or less
@@ -302,40 +313,155 @@ public class InventoryEditorServlet extends HttpServlet {
                 errors.add("You must select the life of the Magic card.");
             }
 
-            if(request.getParameter(PARAM_MAGIC_MANA_COST) != null && !request.getParameter(PARAM_MAGIC_MANA_COST).equals(""))  {
+            if(request.getParameter(PARAM_MAGIC_MANA_COST) != null &&
+                    !request.getParameter(PARAM_MAGIC_MANA_COST).equals("") &&
+                    request.getParameter(PARAM_MAGIC_MANA_COST).length() <= 50)  {
                 magicCard.setMcrManaCost(request.getParameter(PARAM_MAGIC_MANA_COST));
             } else  {
                 errors.add("You must enter the mana cost of a Magic card.");
             }
 
-            //todo: can this be less than or equal to zero?
-            if(request.getParameter(PARAM_MAGIC_MULTIVERSE_ID) != null && !request.getParameter(PARAM_MAGIC_MULTIVERSE_ID).equals(""))  {
+            if(request.getParameter(PARAM_MAGIC_MULTIVERSE_ID) != null &&
+                    !request.getParameter(PARAM_MAGIC_MULTIVERSE_ID).equals("") &&
+                    Integer.parseInt(request.getParameter(PARAM_MAGIC_MULTIVERSE_ID)) >= 0)  {
                 magicCard.setMcrMultiverseId(Integer.parseInt(request.getParameter(PARAM_MAGIC_MULTIVERSE_ID)));
             } else  {
                 errors.add("You must enter the mutiverse id of the Magic card.");
             }
 
-            if(request.getParameter(PARAM_MAGIC_NAMES) != null && !request.getParameter(PARAM_MAGIC_NAMES).equals(""))  {
+            if(request.getParameter(PARAM_MAGIC_NAMES) != null && !request.getParameter(PARAM_MAGIC_NAMES).equals("") &&
+                    request.getParameter(PARAM_MAGIC_NAMES).length() <= 150)  {
                 magicCard.setMcrNames(request.getParameter(PARAM_MAGIC_NAMES));
             } else  {
                 errors.add("You must enter the names of the Magic card.");
             }
 
-            if(request.getParameter(PARAM_MAGIC_NUMBER) != null && !request.getParameter(PARAM_MAGIC_NUMBER).equals(""))  {
+            if(request.getParameter(PARAM_MAGIC_NUMBER) != null && !request.getParameter(PARAM_MAGIC_NUMBER).equals("") &&
+                    request.getParameter(PARAM_MAGIC_NUMBER).length() <= 5)  {
                 magicCard.setMcrNumber(request.getParameter(PARAM_MAGIC_NUMBER));
             } else  {
                 errors.add("You must enter the number of the Magic card.");
             }
 
-            if(request.getParameter(PARAM_MAGIC_RARITY) != null && !request.getParameter(PARAM_MAGIC_RARITY).equals(""))  {
+            if(request.getParameter(PARAM_MAGIC_RARITY) != null && !request.getParameter(PARAM_MAGIC_RARITY).equals("") &&
+                    request.getParameter(PARAM_MAGIC_RARITY).length() <= 50)  {
                 magicCard.setMcrRarity(request.getParameter(PARAM_MAGIC_RARITY));
             } else  {
                 errors.add("You must enter the rarity of the Magic card.");
             }
 
+            if(request.getParameter(PARAM_MAGIC_RELEASE_DATE) != null &&
+                    !request.getParameter(PARAM_MAGIC_RELEASE_DATE).equals("") &&
+                    request.getParameter(PARAM_MAGIC_RELEASE_DATE).length() <= 50)  {
+                magicCard.setMcrReleaseDate(request.getParameter(PARAM_MAGIC_RELEASE_DATE));
+            } else  {
+                errors.add("You must enter the release date of the magic card.");
+            }
+
+            if(request.getParameter(PARAM_MAGIC_RESERVED) != null && !request.getParameter(PARAM_MAGIC_RESERVED).equals("") &&
+                    request.getParameter(PARAM_MAGIC_RESERVED).equals("true"))  {
+                magicCard.setMcrReserved(Byte.parseByte("1"));
+            } else  {
+                magicCard.setMcrReserved(Byte.parseByte("0"));
+            }
+
+            if(request.getParameter(PARAM_MAGIC_SET_ID) != null && !request.getParameter(PARAM_MAGIC_SET_ID).equals(""))  {
+                MagicSet magicSet = (MagicSet) session.get(MagicSet.class, request.getParameter(PARAM_MAGIC_SET_ID));
+                if(magicSet != null)  {
+                    magicCard.setMagicSet(magicSet);
+                } else  {
+                    errors.add("You must select a magic set.");
+                }
+
+            } else  {
+                errors.add("You must select a magic set.");
+            }
+
+            if(request.getParameter(PARAM_MAGIC_SUB_TYPES) != null && !request.getParameter(PARAM_MAGIC_SUB_TYPES).equals("") &&
+                    request.getParameter(PARAM_MAGIC_SUB_TYPES).length() <= 100)  {
+                magicCard.setMcrSubTypes(request.getParameter(PARAM_MAGIC_SUB_TYPES));
+            } else  {
+                errors.add("You must enter a magic sub type.");
+            }
+
+            if(request.getParameter(PARAM_MAGIC_SUPER_TYPES) != null && !request.getParameter(PARAM_MAGIC_SUPER_TYPES).equals("") &&
+                    request.getParameter(PARAM_MAGIC_SUPER_TYPES).length() <= 100)  {
+                magicCard.setMcrSuperTypes(request.getParameter(PARAM_MAGIC_SUPER_TYPES));
+            }
+
+            if(request.getParameter(PARAM_MAGIC_TIMESHIFTED) != null &&
+                    request.getParameter(PARAM_MAGIC_TIMESHIFTED).equals("true"))  {
+                magicCard.setMcrTimeshifted(Byte.parseByte("1"));
+            } else  {
+                magicCard.setMcrTimeshifted(Byte.parseByte("0"));
+            }
+
+            if(request.getParameter(PARAM_MAGIC_TYPE) != null && !request.getParameter(PARAM_MAGIC_TYPE).equals("") &&
+                    request.getParameter(PARAM_MAGIC_TYPE).length() <= 500)  {
+                magicCard.setMcrType(request.getParameter(PARAM_MAGIC_TYPE));
+            } else  {
+                errors.add("You must enter the type of the magic card,");
+            }
+
+            if(request.getParameter(PARAM_MAGIC_TYPES) != null && !request.getParameter(PARAM_MAGIC_TYPES).equals("") &&
+                    request.getParameter(PARAM_MAGIC_TYPES).length() <= 100)  {
+                magicCard.setMcrTypes(request.getParameter(PARAM_MAGIC_TYPES));
+            } else  {
+                errors.add("You must enter the types of the magic card.");
+            }
+
+            if(request.getParameter(PARAM_MAGIC_VARIATIONS) != null &&
+                    !request.getParameter(PARAM_MAGIC_VARIATIONS).equals("") &&
+                    request.getParameter(PARAM_MAGIC_VARIATIONS).length() <= 100)  {
+                magicCard.setMcrVariations(request.getParameter(PARAM_MAGIC_VARIATIONS));
+            } else  {
+                errors.add("You must enter the variations of the magic card.");
+            }
+
+            if(request.getParameter(PARAM_MAGIC_WATERMARK) != null &&
+                    !request.getParameter(PARAM_MAGIC_WATERMARK).equals("") &&
+                    request.getParameter(PARAM_MAGIC_WATERMARK).length() <= 50)  {
+                magicCard.setMcrWatermark(request.getParameter(PARAM_MAGIC_WATERMARK));
+            } else  {
+                errors.add("You must enter the watermark of the magic card.");
+            }
+
             //check if it is a event, if it is validate and set the event fields
         } else if(request.getParameter(PARAM_TYPE) != null && !request.getParameter(PARAM_TYPE).equals("") &&
                 request.getParameter(PARAM_TYPE).equals("EVENT"))  {
+            if(request.getParameter(PARAM_EVENT_DATE) != null && !request.getParameter(PARAM_EVENT_DATE).equals(""))  {
+                event.setDate(ServletUtil.getDateTimeFromString(request.getParameter(PARAM_EVENT_DATE)));
+            } else  {
+                errors.add("You must select a date for the event.");
+            }
+
+            if(request.getParameter(PARAM_EVENT_DESCRIPTION) != null &&
+                    !request.getParameter(PARAM_EVENT_DESCRIPTION).equals(""))  {
+                event.setDescription(request.getParameter(PARAM_EVENT_DESCRIPTION));
+            } else  {
+                errors.add("You must enter a description for the event.");
+            }
+
+            if(request.getParameter(PARAM_EVENT_NUMBER_IN_STORE_USERS) != null &&
+                    !request.getParameter(PARAM_EVENT_NUMBER_IN_STORE_USERS).equals(""))  {
+                event.setNumberInStoreUsers(Integer.parseInt(request.getParameter(PARAM_EVENT_NUMBER_IN_STORE_USERS)));
+            } else  {
+                errors.add("You must enter the number of in store users.");
+            }
+
+            if(request.getParameter(PARAM_EVENT_PLAYER_LIMIT) != null &&
+                    !request.getParameter(PARAM_EVENT_PLAYER_LIMIT).equals(""))  {
+                event.setPlayerLimit(Integer.parseInt(request.getParameter(PARAM_EVENT_PLAYER_LIMIT)));
+            } else  {
+                errors.add("You must enter the player limit.");
+            }
+
+            if(request.getParameter(PARAM_EVENT_TITLE) != null && !request.getParameter(PARAM_EVENT_TITLE).equals("") &&
+                    request.getParameter(PARAM_EVENT_TITLE).length() <= 200)  {
+                event.setTitle(request.getParameter(PARAM_EVENT_TITLE));
+            } else  {
+                errors.add("You must enter a title for the event.");
+            }
 
         }
         //otherwise it is just a generic item

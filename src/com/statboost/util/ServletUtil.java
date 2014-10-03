@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -55,6 +57,37 @@ public class ServletUtil {
 
     public static String formatDateTime(Date date)  {
         return new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a").format(date);
+    }
+
+    //todo: needs to be tested
+    public static Date getDateFromString(String dateString)  {
+        try {
+            return new SimpleDateFormat("MM/dd/yyyy").parse(dateString);
+        } catch (ParseException e) {
+            logger.error("Could not turn the date into a string", e);
+            return null;
+        }
+    }
+
+    //todo: needs to be tested
+    public static Date getDateTimeFromString(String dateString)  {
+        try {
+            return new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a").parse(dateString);
+        } catch (ParseException e) {
+            logger.error("Could not turn the date into a string", e);
+            return null;
+        }
+    }
+
+    //todo: needs to be tested
+    public static String formatCurrency(String currency)  {
+        if(currency == null || currency.equals(""))  {
+            return null;
+        }
+
+        Double currencyDouble = Double.parseDouble(currency);
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        return formatter.format(currencyDouble);
     }
 
     /**
