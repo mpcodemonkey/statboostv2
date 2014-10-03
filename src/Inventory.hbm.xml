@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.statboost.models.inventory.Inventory" table="stt_inventory" schema="" catalog="statboost">
+        <id name="uid" column="inv_uid"/>
+        <property name="price" column="inv_price"/>
+        <property name="name" column="inv_name"/>
+        <property name="image" column="inv_image"/>
+        <property name="preOrder" column="inv_pre_order"/>
+        <property name="description" column="inv_description"/>
+        <many-to-one name="magicCard" class="com.statboost.models.mtg.MagicCard"
+                     column="inv_mcr_uid" not-null="true" insert="true" update="true"
+                     cascade="all" />
+        <many-to-one name="yugiohCard" class="com.statboost.models.ygo.YugiohCard"
+                     column="inv_ycr_uid" not-null="true" insert="true" update="true"
+                     cascade="all" />
+        <many-to-one name="event" class="com.statboost.models.inventory.Event"
+                     column="inv_evn_uid" not-null="true" insert="true" update="true"
+                     cascade="all" />
+    </class>
+</hibernate-mapping>
