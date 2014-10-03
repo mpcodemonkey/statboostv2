@@ -70,7 +70,7 @@ public class YuGiOhSearchServlet extends HttpServlet {
             }
 
             //set search results
-            if (cards != null) {
+            if (cards != null && cards.size()>0) {
                 request.setAttribute("cardList", cards);
             } else {
                 request.setAttribute("alertType", "warning");
@@ -280,7 +280,7 @@ public class YuGiOhSearchServlet extends HttpServlet {
 
 
             //set search results
-            if (cards != null) {
+            if (cards != null && cards.size()>0) {
                 request.setAttribute("cardList", cards);
             } else {
                 request.setAttribute("alertType", "warning");

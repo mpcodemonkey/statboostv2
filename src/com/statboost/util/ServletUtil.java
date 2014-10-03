@@ -2,6 +2,8 @@ package com.statboost.util;
 
 import org.apache.log4j.Logger;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -66,6 +68,18 @@ public class ServletUtil {
             clean = "%" + clean + "%";
         }
         return clean;
+    }
+
+    /**
+     * Get a thrown exception stack trace returned as a String. Can be useful for server logging or debugging purposes.
+     * @param t - Throwable
+     * @return - stack trace string
+     */
+    public static String getStackStraceString(Throwable t) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        t.printStackTrace(pw);
+        return sw.toString();
     }
 
 }

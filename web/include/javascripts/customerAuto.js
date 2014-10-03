@@ -32,11 +32,5 @@ $(function() {
             .append( "<a href=/admin/setUserStatus?customerID="+item.id+"><b><u>" + item.name + "</u></b><br><i>" + item.email + "</i></a>" )
             .appendTo(ul);
     }
-  /*  .data("ui-autocomplete")._renderItem = function(ul, item){
-    return $("<li>")
-        .append( "<a href=magicSearch?cardName="+encodeURIComponent(item.name)+"><b><u>" + item.name + "</u></b><br><i>" + item.email + "</i></a>" )
-        .appendTo(ul);
-    }*/
-
 
 });
