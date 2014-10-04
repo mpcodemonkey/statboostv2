@@ -14,7 +14,7 @@ public class LogoutServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false); //obtain the session object if exists
-        if (session != null) {
+        if (session != null && session.getAttribute("email") != null) {
             session.removeAttribute("email");
             session.invalidate();
             request.setAttribute("alertType", "info");
@@ -25,7 +25,7 @@ public class LogoutServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false); //obtain the session object if exists
-        if (session != null) {
+        if (session != null && session.getAttribute("email") != null) {
             session.removeAttribute("email");
             session.invalidate();
             request.setAttribute("alertType", "info");
