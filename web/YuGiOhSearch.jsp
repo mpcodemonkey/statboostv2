@@ -15,6 +15,7 @@
     <div class="row">
         <div class="col-md-10">
             <div class="jumbotron">
+                <h2 align="center"><img src="/include/images/yugiohlogo.png" width="180px"> Card Search</h2>
                 <div class="row">
                     <div class="tabbed-search">
                         <!-- Nav tabs -->
@@ -28,25 +29,40 @@
                         <!-- Tab panes -->
                         <div class="tab-content">
                             <div class="tab-pane active" id="simple">
-                                <div class="col-md-6">
+                                <form action="" method="post" class="form-horizontal">
                                     <div class="form-group">
-                                        <form action="" method="post">
-                                            <label class="control-label" for="fi1">Name</label>
-                                            <input type="text" class="form-control" id="fi1" name="fi1" placeholder="">
-                                            <label>Card Type:</label>
-                                            <input name="r1" type="radio" id="monster" value="monster">
-                                            <label>Monster</label>
-                                            <input name="r1" type="radio" id="spell" value="spell">
-                                            <label>Spell</label>
-                                            <input name="r1" type="radio" id="trap" value="trap">
-                                            <label>Trap</label>
-                                            <input checked="" name="r1" type="radio" id="all" value="all">
-                                            <label>All</label>
-                                            <br>
-                                            <input type="submit" name="simpleSubmit" value="Search">
-                                        </form>
+                                        <label class="col-lg-3 control-label" for="fi1">Search Text:</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" id="fi1" name="fi1" placeholder="" />
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-3 control-label">Search By:</label>
+                                        <br>
+                                        <div class="col-lg-5">
+                                            <span class="col-lg-4">
+                                                <input name="r1" type="radio" id="monster" value="monster">
+                                                <label>Monster</label>
+                                            </span>
+                                            <span class="col-lg-4">
+                                                <input name="r1" type="radio" id="spell" value="spell">
+                                                <label>Spell</label>
+                                            </span>
+                                            <span class="col-lg-4">
+                                                <input name="r1" type="radio" id="trap" value="trap">
+                                                <label>Trap</label>
+                                            </span>
+                                            <span class="col-lg-4">
+                                                <input checked="" name="r1" type="radio" id="all" value="all">
+                                                <label>All</label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="col-lg-3"></span>
+                                        <button class="col-lg-4 btn btn-primary" type="submit" name="simpleSubmit">Search</button>
+                                    </div>
+                                </form>
                             </div>
                             <div class="tab-pane" id="advanced" name="advancedSubmit">
                                 <form action="" method="post" >
