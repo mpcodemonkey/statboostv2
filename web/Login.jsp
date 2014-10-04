@@ -6,8 +6,8 @@
 
 <form method="post">
     <div class="container">
-        <div class="well well-lg">
-            <h2>Authenticate Yourself</h2>
+        <div class="well well-lg" style="max-width: 500px; margin-left: auto; margin-right: auto;">
+            <h2>Customer Login</h2>
 
             <c:if test="${requestScope.alert != null && requestScope.alertType != null}">
                 <div class="alert alert-${requestScope.alertType} fade in">
@@ -23,8 +23,15 @@
                 </div>
                 <div class="form-group">
                     <input name="password" type="password" class="form-control" placeholder="Password" required>
+                </div><!--
+                <br><br>
+                <div class="checkbox">
+                    <label class=""><input name="remember" type="checkbox" class="checkbox">&nbsp;Remember me</label>
+                </div>-->
+                <br><br>
+                <div>
+                    <button type="submit" class="btn btn-primary">Sign in</button>
                 </div>
-                <button type="submit" class="btn btn-primary">Sign in</button>
             </div>
         </div>
     </div>
