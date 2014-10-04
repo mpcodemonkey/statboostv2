@@ -28,6 +28,7 @@
     <div class="row">
         <div class="col-md-10">
             <div class="jumbotron">
+            <h2 align="center"><img src="/include/images/mtglogo.png" width="180px"> Card Search</h2>
                 <div class="row">
                     <div class="tabbed-search">
                         <!-- Nav tabs -->
@@ -43,7 +44,6 @@
                             <div class="tab-pane active fade in" id="simple" style="">
                                 <!--<div class="col-md-6">-->
                                     <form action="" method="post" id="searchFailSafe1" class="form-horizontal">
-                                        <br />
                                         <div class="form-group">
                                             <label class="col-lg-3 control-label" for="fi1">Search Text:</label>
                                             <div class="col-lg-8">
@@ -54,16 +54,16 @@
                                             <label class="col-lg-3 control-label">Search By:</label>
                                             <div class="col-lg-5">
                                                 <span class="col-lg-4">
-                                                <label>Name:</label>
-                                                <input name="r1" type="checkbox" id="cName" value="cName">
+                                                    <input name="r1" type="radio" id="cName" value="cName" checked>
+                                                    <label>Name</label>
                                                 </span>
                                                 <span class="col-lg-4">
-                                                <label>Type:</label>
-                                                <input name="r1" type="checkbox" id="cType" value="cType">
+                                                    <input name="r1" type="radio" id="cType" value="cType">
+                                                    <label>Type</label>
                                                 </span>
                                                 <span class="col-lg-4">
-                                                <label>Text:</label>
-                                                <input name="r1" type="checkbox" id="cText" value="cText">
+                                                    <input name="r1" type="radio" id="cText" value="cText">
+                                                    <label>Text</label>
                                                 </span>
                                             </div>
                                         </div>
