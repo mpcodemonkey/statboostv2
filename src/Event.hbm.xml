@@ -4,7 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.statboost.models.inventory.Event" table="stt_event" schema="" catalog="statboost">
+    <class name="com.statboost.models.inventory.Event" table="stt_event">
         <id name="uid" column="evn_uid"/>
         <property name="date" column="evn_date"/>
         <property name="title" column="evn_title"/>

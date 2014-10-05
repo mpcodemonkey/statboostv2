@@ -4,7 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.statboost.models.email.Email" table="stt_email" schema="" catalog="statboost">
+    <class name="com.statboost.models.email.Email" table="stt_email">
         <id name="uid" column="eml_uid"/>
         <property name="name" column="eml_name"/>
         <property name="subject" column="eml_subject"/>

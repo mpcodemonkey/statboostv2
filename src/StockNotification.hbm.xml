@@ -4,7 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.statboost.models.inventory.StockNotification" table="stt_stock_notification" schema="" catalog="statboost">
+    <class name="com.statboost.models.inventory.StockNotification" table="stt_stock_notification">
         <id name="uid" column="snt_uid"/>
         <property name="email" column="snt_email"/>
         <many-to-one name="inventory" class="com.statboost.models.inventory.Inventory"
