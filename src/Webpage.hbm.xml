@@ -4,7 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.statboost.models.form.Webpage" table="stt_webpage" schema="" catalog="statboost">
+    <class name="com.statboost.models.form.Webpage" table="stt_webpage">
         <id name="uid" column="wbp_uid"/>
         <property name="name" column="wbp_name"/>
         <property name="body" column="wbp_body"/>

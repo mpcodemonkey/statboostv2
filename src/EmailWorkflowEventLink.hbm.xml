@@ -4,8 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.statboost.models.email.EmailWorkflowEventLink" table="stt_email_workflow_event_link" schema=""
-           catalog="statboost">
+    <class name="com.statboost.models.email.EmailWorkflowEventLink" table="stt_email_workflow_event_link">
         <id name="uid" column="ewe_uid"/>
         <many-to-one name="email" class="com.statboost.models.email.Email"
                      column="ewe_eml_uid" not-null="true" insert="true" update="true"

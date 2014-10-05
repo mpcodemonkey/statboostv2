@@ -4,7 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.statboost.models.inventory.Order" table="stt_order" schema="" catalog="statboost">
+    <class name="com.statboost.models.inventory.Order" table="stt_order">
         <id name="uid" column="ord_uid"/>
         <property name="status" column="ord_status"/>
         <property name="shippingAddress1" column="ord_shipping_address1"/>

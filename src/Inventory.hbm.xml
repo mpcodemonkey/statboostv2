@@ -4,7 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.statboost.models.inventory.Inventory" table="stt_inventory" schema="" catalog="statboost">
+    <class name="com.statboost.models.inventory.Inventory" table="stt_inventory">
         <id name="uid" column="inv_uid"/>
         <property name="name" column="inv_name"/>
         <property name="image" column="inv_image"/>

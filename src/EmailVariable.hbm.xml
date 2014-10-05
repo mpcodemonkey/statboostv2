@@ -4,7 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.statboost.models.email.EmailVariable" table="stt_email_variable" schema="" catalog="statboost">
+    <class name="com.statboost.models.email.EmailVariable" table="stt_email_variable">
         <id name="uid" column="evr_uid"/>
         <property name="name" column="evr_name"/>
         <property name="defaultValue" column="err_default_value"/>
