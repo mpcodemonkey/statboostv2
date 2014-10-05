@@ -54,9 +54,9 @@
                     <div class="span12">
                         <div id="owl-demobanner" class="owl-carousel">
 
-                            <div class="item"><img src="include/images/MagicBanner1.jpg" alt="The Last of us"></div>
-                            <div class="item"><img src="include/images/frontitem2.jpg" alt="GTA V"></div>
-                            <div class="item"><img src="include/images/frontitem3.jpg" alt="Mirror Edge"></div>
+                            <div class="item"><img src="include/images/banner_temp_1.jpg" alt="The Last of us"></div>
+                            <div class="item"><img src="include/images/banner_temp_2.jpg" alt="GTA V"></div>
+                            <div class="item"><img src="include/images/banner_temp_3.jpg" alt="Mirror Edge"></div>
 
                         </div>
                     </div>
@@ -115,24 +115,30 @@
 <style>
     #owl-demobanner .item img{
         display: block;
-        width: 100%;
+        width: 80%;
         height: auto;
+        margin-left: auto;
+        margin-right: auto;
     }
     #owl-demo .item{
         margin: 3px;
     }
     #owl-demo .item img{
         display: block;
-        width: 100%;
+        width: 75%;
         height: auto;
+        margin-left: auto;
+        margin-right: auto;
     }
     #owl-demo2 .item{
         margin: 3px;
     }
     #owl-demo2 .item img{
         display: block;
-        width: 100%;
+        width: 75%;
         height: auto;
+        margin-left: auto;
+        margin-right: auto;
     }
 </style>
 
@@ -146,7 +152,7 @@
             paginationSpeed : 1000,
             goToFirstSpeed : 2000,
             singleItem : true,
-            autoHeight : true,
+            autoHeight : true
 
             // "singleItem:true" is a shortcut for:
             // items : 1,

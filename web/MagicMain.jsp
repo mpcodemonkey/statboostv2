@@ -22,47 +22,43 @@
     <div class="container">
         <div class="row">
             <div class="span12">
-                <h1>
-                    <img alt="" src="include/images/mtglogo.png" style="width: 1024px; height: 250px"></h1>
+                <div style="text-align: center;">
+                    <img alt="" src="include/images/mtglogo.png" style="max-height: 240px; max-width: 900px; height: auto; width:90%;">
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+<div class="col-sm-12 container row">
+    <div class="col-sm-3 container">
+        <img style="width: 80%; max-width: 240px; height:auto; float:right;" src="include/images/SarkhanSide.PNG">
+    </div>
 
-<span class="col-lg-3">
-
-<div class="item" style="float: right ;"><img src="include/images/SarkhanSide.PNG"></div>
-</span>
-
-
-
-<span class="col-lg-6">
-    <div id="demo" style="float: left;">
-        <div class="container">
-            <div class="row">
-
-                <div class="span12">
+    <div class="col-sm-6 container">
+        <div id="row">
+            <div class="span12">
                     <div id="owl-demo" class="owl-carousel">
 
-                        <div class="item"><img src="include/images/MagicBanner1.jpg" alt="The Last of us"></div>
-                        <div class="item"><img src="include/images/frontitem2.png" alt="GTA V"></div>
-                        <div class="item"><img src="include/images/frontitem3.png" alt="Mirror Edge"></div>
+                        <div class="item"><img src="include/images/banner_temp_1.jpg" alt="The Last of us"></div>
+                        <div class="item"><img src="include/images/banner_temp_2.jpg" alt="GTA V"></div>
+                        <div class="item"><img src="include/images/banner_temp_3.jpg" alt="Mirror Edge"></div>
 
                     </div>
-                </div>
             </div>
         </div>
+        <div>
+            Content and things go in here
+        </div>
     </div>
-</span>
 
-<span class="col-lg-3">
+    <div class="col-sm-3 container">
+        <img style="width: 80%; max-width: 240px; height:auto; float:left;" src="include/images/SorinSide.PNG">
+    </div>
+</div>
 
-<div class="item" style="float: left;"><img src="include/images/SorinSide.PNG"></div>
-</span>
 
-
-<div id="title">
+<!--<div id="title">
     <div class="container">
         <div class="row">
             <div class="span12">
@@ -99,12 +95,12 @@
 
 
 </div>
-</div><!--End Tab Content-->
+</div><!--End Tab Content--
 
 </div>
 </div>
 </div>
-</div>
+</div>-->
 
 
 <div id="footer">
@@ -135,8 +131,9 @@
 <style>
     #owl-demo .item img{
         display: block;
-        width: 100%;
+        width: 90%;
         height: auto;
+        margin: 0 auto;
     }
 </style>
 
