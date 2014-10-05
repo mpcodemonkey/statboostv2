@@ -158,22 +158,6 @@
 </script>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <script src="include/javascripts/bootstrap-collapse.js"></script>
 <script src="include/javascripts/bootstrap-transition.js"></script>
 <script src="include/javascripts/bootstrap-tab.js"></script>
