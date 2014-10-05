@@ -122,8 +122,6 @@
     </div>
 </div>
 
-
-
 <script src="include/javascripts/owl.carousel.min.js"></script>
 
 
