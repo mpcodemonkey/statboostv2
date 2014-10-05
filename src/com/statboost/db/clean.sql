@@ -183,7 +183,6 @@ CREATE TABLE `stt_event` (
 
 CREATE TABLE `stt_inventory` (
   `inv_uid` int(11) NOT NULL AUTO_INCREMENT,
-  `inv_price` double DEFAULT NULL,
   `inv_name` varchar(200) DEFAULT NULL,
   `inv_image` varchar(300) DEFAULT NULL,
   `inv_mcr_uid` int(11) DEFAULT NULL,
@@ -191,6 +190,18 @@ CREATE TABLE `stt_inventory` (
   `inv_evn_uid` int(11) DEFAULT NULL,
   `inv_pre_order` tinyint(1) DEFAULT NULL,
   `inv_description` text,
+  `inv_new_price` double DEFAULT NULL,
+  `inv_near_mint_price` double DEFAULT NULL,
+  `inv_lightly_played_price` double DEFAULT NULL,
+  `inv_moderately_played_price` double DEFAULT NULL,
+  `inv_heavily_played_price` double DEFAULT NULL,
+  `inv_damaged_price` double DEFAULT NULL,
+  `inv_num_new_stock` int(11) DEFAULT NULL,
+  `inv_num_lightly_played_stock` int(11) DEFAULT NULL,
+  `inv_num_moderately_played_stock` int(11) DEFAULT NULL,
+  `inv_num_heavily_played_stock` int(11) DEFAULT NULL,
+  `inv_num_damaged_stock` int(11) DEFAULT NULL,
+  `inv_num_near_mint_stock` int(11) DEFAULT NULL,
   PRIMARY KEY (`inv_uid`),
   KEY `inv_mcr_uid_fk` (`inv_mcr_uid`),
   KEY `inv_ycr_uid_fk` (`inv_ycr_uid`),
@@ -212,6 +223,7 @@ CREATE TABLE `stt_inventory_item` (
   `iit_pre_order` tinyint(1) DEFAULT NULL,
   `iit_description` text NOT NULL,
   `iit_condition` varchar(30) NOT NULL,
+  `inv_condition` enum('New','Near Mint','Lightly Played','Moderately Played','Heavily Played','Damaged') DEFAULT NULL,
   PRIMARY KEY (`iit_uid`),
   KEY `iit_ord_uid_fk` (`iit_ord_uid`),
   KEY `iit_mcr_uid_fk` (`iit_mcr_uid`),
@@ -239,25 +251,5 @@ CREATE TABLE `stt_announcement` (
   `ann_content` text,
   PRIMARY KEY (`ann_uid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-
-CREATE TABLE `stt_condition` (
-  `cnd_uid` int(11) NOT NULL AUTO_INCREMENT,
-  `cnd_name` varchar(30) NOT NULL,
-  `cnd_percent_of_price` double NOT NULL,
-  PRIMARY KEY (`cnd_uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `stt_condition_inventory_link` (
-  `cil_uid` int(11) NOT NULL AUTO_INCREMENT,
-  `cil_cnd_uid` int(11) NOT NULL,
-  `cil_inv_uid` int(11) NOT NULL,
-  `cil_number_in_stock` int(11) DEFAULT NULL,
-  PRIMARY KEY (`cil_uid`),
-  KEY `cil_cnd_uid_fk` (`cil_cnd_uid`),
-  KEY `cil_inv_uid_fk` (`cil_inv_uid`),
-  CONSTRAINT `cil_cnd_uid_fk` FOREIGN KEY (`cil_cnd_uid`) REFERENCES `stt_condition` (`cnd_uid`),
-  CONSTRAINT `cil_inv_uid_fk` FOREIGN KEY (`cil_inv_uid`) REFERENCES `stt_inventory` (`inv_uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 
