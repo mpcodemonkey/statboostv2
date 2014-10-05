@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Jessica on 9/25/14.
@@ -29,16 +30,26 @@ public class InventoryEditorServlet extends HttpServlet {
     static Logger logger = Logger.getLogger(InventoryEditorServlet.class);
     public static final String SRV_MAP = "/admin/inventoryeditor";
     public static final String PARAM_INVENTORY_UID = "inventoryUid";
-    public static final String PARAM_INVENTORY_PRICE = "inventoryPrice";
     public static final String PARAM_INVENTORY_NAME = "inventoryName";
     public static final String PARAM_INVENTORY_IMAGE = "inventoryImage";
     public static final String PARAM_INVENTORY_PRE_ORDER = "inventoryPreOrder";
     public static final String PARAM_INVENTORY_DESCRIPTION = "inventoryDescription";
-    //detemines if it is a magic card, yugioh card, event, or generic item
+    public static final String PARAM_DAMAGED_PRICE = "damagedPrice";
+    public static final String PARAM_HEAVILY_PLAYED_PRICE = "heavilyPlayedPrice";
+    public static final String PARAM_LIGHTLY_PLAYED_PRICE = "lightlyPlayedPrice";
+    public static final String PARAM_MODERATELY_PLAYED_PRICE = "moderatelyPlayedPrice";
+    public static final String PARAM_NEAR_MINT_PRICE = "nearMintPrice";
+    public static final String PARAM_NEW_PRICE = "newPrice";
+    public static final String PARAM_NUM_DAMAGED_IN_STOCK = "numDamagedInStock";
+    public static final String PARAM_NUM_HEAVILY_PLAYED_IN_STOCK = "numHeavilyDamagedInStock";
+    public static final String PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK = "numLightlyPlayedInStock";
+    public static final String PARAM_NUM_MODERATELY_PLAYED_IN_STOCK = "numModeratelyPlayedInStock";
+    public static final String PARAM_NUM_NEAR_MINT_IN_STOCK = "nearMintInStock";
+    public static final String PARAM_NUM_NEW_IN_STOCK = "numNewInStock";
+    //determines if it is a magic card, yugioh card, event, or generic item
     public static final String PARAM_TYPE = "type";
 
     public static final String ATTR_INVENTORY = "inventory";
-    public static final String ATTR_CONDITION_INVENTORY_LINKS = "conditionInventoryLinks";
     public static final String ATTR_ERRORS = "errors";
     public static final String ATTR_INFO = "info";
     public static final String ATTR_WARNING = "warning";
@@ -87,6 +98,7 @@ public class InventoryEditorServlet extends HttpServlet {
     public static final String PARAM_MAGIC_RELEASE_DATE = "magicReleaseDate";
     public static final String PARAM_MAGIC_CARD_UID = "magicCardUid";
     public static final String ATTR_MAGIC_CARD = "magicCard";
+    public static final String ATTR_MAGIC_SETS = "magicSets";
 
     //params for event
     public static final String PARAM_EVENT_DATE = "eventDate";
@@ -103,23 +115,27 @@ public class InventoryEditorServlet extends HttpServlet {
         Inventory inventory = null;
         SessionFactory sessionFactory = HibernateUtil.getDatabaseSessionFactory();
         Session session = sessionFactory.openSession();
-        ResultSet conditionInventoryLinks = null;
         MagicCard magicCard = null;
         YugiohCard yugiohCard = null;
+        ResultSet magicSets = null;
         Event event = null;
         if(request.getParameter(PARAM_INVENTORY_UID) == null || request.getParameter(PARAM_INVENTORY_UID).equals("0") ||
                 request.getParameter(PARAM_INVENTORY_UID).equals("0"))  {
             inventory = new Inventory();
         } else  {
             inventory = (Inventory) session.load(Inventory.class, Integer.parseInt(request.getParameter(PARAM_INVENTORY_UID)));
-            magicCard = (MagicCard) session.load(MagicCard.class, Integer.parseInt(request.getParameter(PARAM_MAGIC_CARD_UID)));
-            yugiohCard = (YugiohCard) session.load(YugiohCard.class, Integer.parseInt(request.getParameter(PARAM_YUGIOH_UID)));
-            event = (Event) session.load(Event.class, Integer.parseInt(request.getParameter(PARAM_EVENT_UID)));
+            if(inventory != null && inventory.getMagicCard() != null)  {
+                magicCard = (MagicCard) session.load(MagicCard.class, Integer.parseInt(request.getParameter(PARAM_MAGIC_CARD_UID)));
+            } else if(inventory != null && inventory.getYugiohCard() != null)  {
+                yugiohCard = (YugiohCard) session.load(YugiohCard.class, Integer.parseInt(request.getParameter(PARAM_YUGIOH_UID)));
+            } else if(inventory != null && inventory.getEvent() != null)  {
+                event = (Event) session.load(Event.class, Integer.parseInt(request.getParameter(PARAM_EVENT_UID)));
+            }
+
+            magicSets = ServletUtil.getResultSetFromSql("select * from stt_magic_set");
         }
 
-        ResultSet conditions = ServletUtil.getResultSetFromSql("select * from stt_condition left join stt_condition_inventory_link on cnd_uid = cil_cnd_uid");
-
-        forwardToEditor(request, response, null, "", conditions, inventory, magicCard, event, yugiohCard, "");
+        forwardToEditor(request, response, null, "", inventory, magicCard, event, yugiohCard, "");
         session.close();
     }
 
@@ -127,7 +143,6 @@ public class InventoryEditorServlet extends HttpServlet {
         Inventory inventory = null;
         SessionFactory sessionFactory = HibernateUtil.getDatabaseSessionFactory();
         Session session = sessionFactory.openSession();
-        ResultSet conditionInventoryLinks = null;
         MagicCard magicCard = null;
         YugiohCard yugiohCard = null;
         Event event = null;
@@ -140,9 +155,6 @@ public class InventoryEditorServlet extends HttpServlet {
             yugiohCard = (YugiohCard) session.load(YugiohCard.class, Integer.parseInt(request.getParameter(PARAM_YUGIOH_UID)));
             event = (Event) session.load(Event.class, Integer.parseInt(request.getParameter(PARAM_EVENT_UID)));
         }
-
-        ResultSet conditions = ServletUtil.getResultSetFromSql("select * from stt_condition left join " +
-                "stt_condition_inventory_link on cnd_uid = cil_cnd_uid");
 
         ArrayList<String> errors = new ArrayList<String>();
         String warning = "";
@@ -161,18 +173,63 @@ public class InventoryEditorServlet extends HttpServlet {
             errors.add("You must enter the name of the inventory.");
         }
 
-        if(request.getParameter(PARAM_INVENTORY_PRICE) != null && !request.getParameter(PARAM_INVENTORY_PRICE).equals("") &&
-                !request.getParameter(PARAM_INVENTORY_PRICE).equals("0"))  {
-          inventory.setPrice(Double.parseDouble(request.getParameter(PARAM_INVENTORY_PRICE)));
-        } else  {
-            warning = "You did not enter a price.";
-        }
-
+        //fields not requred
         inventory.setDescription(request.getParameter(PARAM_INVENTORY_DESCRIPTION));
         inventory.setEvent(event);
+        //todo change how image works
         inventory.setImage(request.getParameter(PARAM_INVENTORY_IMAGE));
         inventory.setMagicCard(magicCard);
         inventory.setYugiohCard(yugiohCard);
+
+        if(request.getParameter(PARAM_NUM_DAMAGED_IN_STOCK) != null && !request.getParameter(PARAM_NUM_DAMAGED_IN_STOCK).equals(""))  {
+            inventory.setDamagedInStock(Integer.parseInt(request.getParameter(PARAM_NUM_DAMAGED_IN_STOCK)));
+        }
+
+        if(request.getParameter(PARAM_NUM_HEAVILY_PLAYED_IN_STOCK) != null && !request.getParameter(PARAM_NUM_HEAVILY_PLAYED_IN_STOCK).equals(""))  {
+            inventory.setHeavilyPlayedInStock(Integer.parseInt(request.getParameter(PARAM_NUM_HEAVILY_PLAYED_IN_STOCK)));
+        }
+
+        if(request.getParameter(PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK) != null && !request.getParameter(PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK).equals(""))  {
+            inventory.setLightlyPlayedInStock(Integer.parseInt(request.getParameter(PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK)));
+        }
+
+        if(request.getParameter(PARAM_NUM_MODERATELY_PLAYED_IN_STOCK) != null && !request.getParameter(PARAM_NUM_MODERATELY_PLAYED_IN_STOCK).equals(""))  {
+            inventory.setModeratelyPlayedInStock(Integer.parseInt(request.getParameter(PARAM_NUM_MODERATELY_PLAYED_IN_STOCK)));
+        }
+
+        if(request.getParameter(PARAM_NUM_NEAR_MINT_IN_STOCK) != null && !request.getParameter(PARAM_NUM_NEAR_MINT_IN_STOCK).equals(""))  {
+            inventory.setNearMintInStock(Integer.parseInt(request.getParameter(PARAM_NUM_NEAR_MINT_IN_STOCK)));
+        }
+
+        if(request.getParameter(PARAM_NUM_NEW_IN_STOCK) != null && !request.getParameter(PARAM_NUM_NEW_IN_STOCK).equals(""))  {
+            inventory.setNumNewInStock(Integer.parseInt(request.getParameter(PARAM_NUM_NEW_IN_STOCK)));
+        }
+
+        if(request.getParameter(PARAM_DAMAGED_PRICE) != null && !request.getParameter(PARAM_DAMAGED_PRICE).equals(""))  {
+            inventory.setDamagedPrice(Double.parseDouble(request.getParameter(PARAM_DAMAGED_PRICE)));
+        }
+
+        if(request.getParameter(PARAM_NEW_PRICE) != null && !request.getParameter(PARAM_NEW_PRICE).equals(""))  {
+            inventory.setNewPrice(Double.parseDouble(request.getParameter(PARAM_NEW_PRICE)));
+        }
+
+        if(request.getParameter(PARAM_HEAVILY_PLAYED_PRICE) != null && !request.getParameter(PARAM_HEAVILY_PLAYED_PRICE).equals(""))  {
+            inventory.setHeavilyPlayedPrice(Double.parseDouble(request.getParameter(PARAM_HEAVILY_PLAYED_PRICE)));
+        }
+
+        if(request.getParameter(PARAM_LIGHTLY_PLAYED_PRICE) != null && !request.getParameter(PARAM_LIGHTLY_PLAYED_PRICE).equals(""))  {
+            inventory.setLightlyPlayedPrice(Double.parseDouble(request.getParameter(PARAM_LIGHTLY_PLAYED_PRICE)));
+        }
+
+        if(request.getParameter(PARAM_MODERATELY_PLAYED_PRICE) != null && !request.getParameter(PARAM_MODERATELY_PLAYED_PRICE).equals(""))  {
+            inventory.setModeratelyPlayedPrice(Double.parseDouble(request.getParameter(PARAM_MODERATELY_PLAYED_PRICE)));
+        }
+
+        if(request.getParameter(PARAM_NEAR_MINT_PRICE) != null && !request.getParameter(PARAM_NEAR_MINT_PRICE).equals(""))  {
+            inventory.setNearMintPrice(Double.parseDouble(request.getParameter(PARAM_NEAR_MINT_PRICE)));
+        }
+
+        //not going to make the price required since some they will not have inventory for
 
         //check if it is a yugioh card, if it is validate and set the yugioh fields
         if(request.getParameter(PARAM_TYPE) != null && !request.getParameter(PARAM_TYPE).equals("") &&
@@ -471,33 +528,44 @@ public class InventoryEditorServlet extends HttpServlet {
             //must save dependent objects first
             if(yugiohCard != null)  {
                 session.save(yugiohCard);
+                inventory.setYugiohCard(yugiohCard);
+                //set the others to nulll just in case they changed the type
+                inventory.setEvent(null);
+                inventory.setMagicCard(null);
             }
 
             if(magicCard != null)  {
                 session.save(magicCard);
+                inventory.setMagicCard(magicCard);
+                //set the others to nulll just in case they changed the type
+                inventory.setYugiohCard(null);
+                inventory.setEvent(null);
             }
 
             if(event != null)  {
                 session.save(event);
+                inventory.setEvent(event);
+                //set the others to nulll just in case they changed the type
+                inventory.setMagicCard(null);
+                inventory.setYugiohCard(null);
             }
 
             session.save(inventory);
 
             session.getTransaction().commit();
-            forwardToEditor(request, response, null, "The transaction was saved successfully", conditions, inventory,
+            forwardToEditor(request, response, null, "The transaction was saved successfully", inventory,
                     magicCard, event, yugiohCard, warning);
         }  else  {
-            forwardToEditor(request, response, errors, "", conditions, inventory, magicCard, event, yugiohCard, "");
+            forwardToEditor(request, response, errors, "", inventory, magicCard, event, yugiohCard, "");
         }
 
         session.close();
     }
 
     private static void forwardToEditor(HttpServletRequest request, HttpServletResponse response,ArrayList<String> errors,
-                                        String info, ResultSet conditions, Inventory inventory, MagicCard magicCard,
+                                        String info, Inventory inventory, MagicCard magicCard,
                                         Event event, YugiohCard yugiohCard, String warning) throws IOException,
             ServletException {
-        request.setAttribute(ATTR_CONDITION_INVENTORY_LINKS, conditions);
         request.setAttribute(ATTR_ERRORS, errors);
         request.setAttribute(ATTR_INFO, info);
         request.setAttribute(ATTR_EVENT, event);

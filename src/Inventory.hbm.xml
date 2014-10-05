@@ -6,7 +6,6 @@
 
     <class name="com.statboost.models.inventory.Inventory" table="stt_inventory" schema="" catalog="statboost">
         <id name="uid" column="inv_uid"/>
-        <property name="price" column="inv_price"/>
         <property name="name" column="inv_name"/>
         <property name="image" column="inv_image"/>
         <property name="preOrder" column="inv_pre_order"/>
@@ -20,5 +19,18 @@
         <many-to-one name="event" class="com.statboost.models.inventory.Event"
                      column="inv_evn_uid" not-null="true" insert="true" update="true"
                      cascade="all" />
+        <property name="newPrice" column="inv_new_price"/>
+        <property name="numNewInStock" column="inv_num_new_stock"/>
+        <property name="nearMintPrice" column="inv_near_mint_price"/>
+        <property name="nearMintInStock" column="inv_num_near_mint_stock"/>
+        <property name="lightlyPlayedInStock" column="inv_num_lightly_played_stock"/>
+        <property name="lightlyPlayedPrice" column="inv_lightly_played_price"/>
+        <property name="moderatelyPlayedInStock" column="inv_num_moderately_played_stock"/>
+        <property name="moderatelyPlayedPrice" column="inv_moderately_played_price"/>
+        <property name="heavilyPlayedPrice" column="inv_heavily_played_price"/>
+        <property name="heavilyPlayedInStock" column="inv_num_heavily_played_stock"/>
+        <property name="damagedPrice" column="inv_damaged_price"/>
+        <property name="damagedInStock" column="inv_num_damaged_stock"/>
+
     </class>
 </hibernate-mapping>
