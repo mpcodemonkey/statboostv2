@@ -139,6 +139,7 @@
 
         </c:forEach>
 
+
         <ul class="pagination">
             <c:if test="${currentPage != 1}">
                 <li><a href="magicSearch?page=${currentPage - 1}">Previous</a></li>
