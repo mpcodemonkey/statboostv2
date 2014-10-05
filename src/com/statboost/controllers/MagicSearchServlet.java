@@ -15,9 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Sam Kerr
@@ -48,8 +46,8 @@ public class MagicSearchServlet extends HttpServlet {
         HashMap<String, String> buildableQuery = new HashMap<>();
         boolean prevCon = false;
         String and = " and";
-        String defaultOrderBy = "mcrMultiverseId";
-        String defaultOrder = "desc";
+        String defaultOrderBy = "mcrCardName, mcrSetId";
+        String defaultOrder = "asc";
         List<MagicCard> cards = null;
         int page = 1;
         SessionFactory mtgFactory = HibernateUtil.getDatabaseSessionFactory();
@@ -144,6 +142,7 @@ public class MagicSearchServlet extends HttpServlet {
             }
 
 
+            LinkedList<MagicCard> holder = null;
             for (String s : queryparams) {
                 hql += s;
             }

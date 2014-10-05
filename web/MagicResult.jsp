@@ -130,6 +130,7 @@
                             </td>
                             <td>
                                 <img src="http://mtgimage.com/symbol/set/${card.mcrSetId}/${card.mcrRarity}/64&#46;png" align="right" style="margin-top: -7px;max-height: 32px;">
+                                <!--${card.mcrSetId}-->
                             </td>
                         </tr>
                     </table>
@@ -138,32 +139,25 @@
 
         </c:forEach>
 
-        <%--For displaying Previous link except for the 1st page --%>
-        <c:if test="${currentPage != 1}">
-            <td><a href="magicSearch?page=${currentPage - 1}">Previous</a></td>
-        </c:if>
+        <ul class="pagination">
+            <c:if test="${currentPage != 1}">
+                <li><a href="magicSearch?page=${currentPage - 1}">Previous</a></li>
+            </c:if>
+            <c:forEach begin="1" end="${numberOfPages}" var="i">
+                <c:choose>
+                    <c:when test="${currentPage eq i}">
+                        <li class="active"><a href="#">${i}</a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li><a href="magicSearch?page=${i}">${i}</a></li>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+            <c:if test="${currentPage lt numberOfPages}">
+                <li><a href="magicSearch?page=${currentPage + 1}">Next</a></li>
+            </c:if>
+        </ul>
 
-        <%--For displaying Page numbers.
-        The when condition does not display a link for the current page--%>
-        <table border="1" cellpadding="5" cellspacing="5">
-            <tr>
-                <c:forEach begin="1" end="${numberOfPages}" var="i">
-                    <c:choose>
-                        <c:when test="${currentPage eq i}">
-                            <td>${i}</td>
-                        </c:when>
-                        <c:otherwise>
-                            <td><a href="magicSearch?page=${i}">${i}</a></td>
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
-            </tr>
-        </table>
-
-        <%--For displaying Next link --%>
-        <c:if test="${currentPage lt numberOfPages}">
-            <td><a href="magicSearch?page=${currentPage + 1}">Next</a></td>
-        </c:if>
     </div>
 
 
