@@ -29,7 +29,7 @@ public class AutoCompleteServlet extends HttpServlet {
         System.out.println("I did something!");
         SessionFactory mtgFactory = HibernateUtil.getDatabaseSessionFactory();
         Session session = mtgFactory.openSession();
-        String hql = "From MagicCard as m where m.mcrCardName like :name group by m.mcrCardName order by m.mcrMultiverseId desc";
+        String hql = "Select DISTINCT m From MagicCard as m where m.mcrCardName like :name group by m.mcrCardName";
         Query query = session.createQuery(hql);
         query.setParameter("name", ServletUtil.sanitizeWildcard(request.getParameter("term")));
         query.setMaxResults(4);
