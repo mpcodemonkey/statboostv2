@@ -69,7 +69,7 @@
                                         </div>
                                         <div class="form-group">
                                             <span class="col-lg-3"></span>
-                                            <input class="col-lg-4 btn btn-primary" type="submit" name="simpleSubmit" value="Search">
+                                            <input class="col-lg-4 btn btn-primary" type="submit" name="simpleSubmit" id="simpleSubmit" value="Search">
                                         </div>
                                     </form>
                                 <!--</div>-->
@@ -392,6 +392,8 @@
                     }
                 }
             }
+        }).on('success.form.bv', function(e) {
+            $("#simpleSubmit").click();
         });
     });
 </script>
