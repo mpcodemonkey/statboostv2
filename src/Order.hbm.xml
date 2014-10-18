@@ -19,5 +19,9 @@
         <many-to-one name="user" class="com.statboost.models.actor.User"
                      column="ord_usr_uid" not-null="true" insert="true" update="true"
                      cascade="all" />
+        <set name="inventoryItems" table="stt_inventory_item" cascade="all" inverse="true">
+            <key column="iit_uid" not-null="true"></key>
+            <one-to-many class="com.statboost.models.inventory.InventoryItem"/>
+        </set>
     </class>
 </hibernate-mapping>

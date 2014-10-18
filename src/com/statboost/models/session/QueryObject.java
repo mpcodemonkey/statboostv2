@@ -1,4 +1,4 @@
-package com.statboost.models.DAO;
+package com.statboost.models.session;
 
 import java.util.HashMap;
 

@@ -5,7 +5,7 @@ package com.statboost.controllers;
  */
 
 import com.statboost.models.DAO.GenericDAO;
-import com.statboost.models.DAO.QueryObject;
+import com.statboost.models.session.QueryObject;
 import com.statboost.models.ygo.YugiohCard;
 import com.statboost.util.HibernateUtil;
 import com.statboost.util.ServletUtil;

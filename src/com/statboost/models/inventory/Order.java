@@ -2,6 +2,10 @@ package com.statboost.models.inventory;
 
 import com.statboost.models.actor.User;
 
+import javax.persistence.OneToMany;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by Jessica on 9/25/14.
  */
@@ -19,6 +23,8 @@ public class Order {
     private boolean paid;
     private User user;
 
+    @OneToMany
+    private Set<InventoryItem> inventoryItems  = new HashSet<>();
 
     public int getUid() {
         return uid;
@@ -114,5 +120,13 @@ public class Order {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Set<InventoryItem> getInventoryItems() {
+        return inventoryItems;
+    }
+
+    public void setInventoryItems(Set<InventoryItem> inventoryItems) {
+        this.inventoryItems = inventoryItems;
     }
 }
