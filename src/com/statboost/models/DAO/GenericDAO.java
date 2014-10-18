@@ -1,5 +1,6 @@
 package com.statboost.models.DAO;
 
+import com.statboost.models.session.QueryObject;
 import com.statboost.util.HibernateUtil;
 import org.hibernate.*;
 

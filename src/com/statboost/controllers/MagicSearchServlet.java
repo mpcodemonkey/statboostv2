@@ -2,8 +2,8 @@ package com.statboost.controllers;
 
 
 import com.statboost.models.DAO.GenericDAO;
-import com.statboost.models.DAO.QueryObject;
 import com.statboost.models.mtg.MagicCard;
+import com.statboost.models.session.QueryObject;
 import com.statboost.util.HibernateUtil;
 import com.statboost.util.ServletUtil;
 import org.hibernate.SessionFactory;
@@ -15,7 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Sam Kerr
