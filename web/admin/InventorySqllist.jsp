@@ -21,6 +21,9 @@
 <table>
     <%--todo: pagination--%>
     <tr>
+        <td><a href="<%=InventoryEditorServlet.SRV_MAP%>">New Inventory</a></td>
+    </tr>
+    <tr>
         <td>Name</td>
         <td>Subject</td>
     </tr>

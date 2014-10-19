@@ -39,7 +39,7 @@ public class ServletUtil {
 
     //checks if a string is null and if it is replaces it with a blank string so null isn't shown to the user
     public static String hideNulls(String stringToCheck)  {
-        if(stringToCheck == null)  {
+        if(stringToCheck == null || stringToCheck.equals("null"))  {
             return "";
         }
 

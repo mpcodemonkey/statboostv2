@@ -122,6 +122,9 @@ public class InventoryEditorServlet extends HttpServlet {
         if(request.getParameter(PARAM_INVENTORY_UID) == null || request.getParameter(PARAM_INVENTORY_UID).equals("0") ||
                 request.getParameter(PARAM_INVENTORY_UID).equals("0"))  {
             inventory = new Inventory();
+            magicCard = new MagicCard();
+            yugiohCard = new YugiohCard();
+            event = new Event();
         } else  {
             inventory = (Inventory) session.load(Inventory.class, Integer.parseInt(request.getParameter(PARAM_INVENTORY_UID)));
             if(inventory != null && inventory.getMagicCard() != null)  {
@@ -131,11 +134,11 @@ public class InventoryEditorServlet extends HttpServlet {
             } else if(inventory != null && inventory.getEvent() != null)  {
                 event = (Event) session.load(Event.class, Integer.parseInt(request.getParameter(PARAM_EVENT_UID)));
             }
-
-            magicSets = ServletUtil.getResultSetFromSql("select * from stt_magic_set");
         }
 
-        forwardToEditor(request, response, null, "", inventory, magicCard, event, yugiohCard, "");
+        magicSets = ServletUtil.getResultSetFromSql("select * from stt_magic_set");
+
+        forwardToEditor(request, response, null, "", inventory, magicCard, event, yugiohCard, "", magicSets);
         session.close();
     }
 
@@ -146,15 +149,28 @@ public class InventoryEditorServlet extends HttpServlet {
         MagicCard magicCard = null;
         YugiohCard yugiohCard = null;
         Event event = null;
+        ResultSet magicSets = null;
         if(request.getParameter(PARAM_INVENTORY_UID) == null || request.getParameter(PARAM_INVENTORY_UID).equals("0") ||
                 request.getParameter(PARAM_INVENTORY_UID).equals("0"))  {
             inventory = new Inventory();
+            magicCard = new MagicCard();
+            yugiohCard = new YugiohCard();
+            event = new Event();
         } else  {
             inventory = (Inventory) session.load(Inventory.class, Integer.parseInt(request.getParameter(PARAM_INVENTORY_UID)));
-            magicCard = (MagicCard) session.load(MagicCard.class, Integer.parseInt(request.getParameter(PARAM_MAGIC_CARD_UID)));
-            yugiohCard = (YugiohCard) session.load(YugiohCard.class, Integer.parseInt(request.getParameter(PARAM_YUGIOH_UID)));
-            event = (Event) session.load(Event.class, Integer.parseInt(request.getParameter(PARAM_EVENT_UID)));
+            if(request.getParameter(PARAM_MAGIC_CARD_UID) != null && ! request.getParameter(PARAM_MAGIC_CARD_UID).equals("0") &&
+                    ! request.getParameter(PARAM_MAGIC_CARD_UID).equals(""))  {
+                magicCard = (MagicCard) session.load(MagicCard.class, Integer.parseInt(request.getParameter(PARAM_MAGIC_CARD_UID)));
+            } else if(request.getParameter(PARAM_YUGIOH_UID) != null && !request.getParameter(PARAM_YUGIOH_UID).equals("") &&
+                    !request.getParameter(PARAM_YUGIOH_UID).equals("0"))  {
+                yugiohCard = (YugiohCard) session.load(YugiohCard.class, Integer.parseInt(request.getParameter(PARAM_YUGIOH_UID)));
+            } else if(request.getParameter(PARAM_EVENT_UID) != null && !request.getParameter(PARAM_EVENT_UID).equals("")  &&
+                    !request.getParameter(PARAM_EVENT_UID).equals("0"))  {
+                event = (Event) session.load(Event.class, Integer.parseInt(request.getParameter(PARAM_EVENT_UID)));
+            }
         }
+
+        magicSets = ServletUtil.getResultSetFromSql("select * from stt_magic_set");
 
         ArrayList<String> errors = new ArrayList<String>();
         String warning = "";
@@ -173,7 +189,7 @@ public class InventoryEditorServlet extends HttpServlet {
             errors.add("You must enter the name of the inventory.");
         }
 
-        //fields not requred
+        //fields not required
         inventory.setDescription(request.getParameter(PARAM_INVENTORY_DESCRIPTION));
         inventory.setEvent(event);
         //todo change how image works
@@ -554,9 +570,9 @@ public class InventoryEditorServlet extends HttpServlet {
 
             session.getTransaction().commit();
             forwardToEditor(request, response, null, "The transaction was saved successfully", inventory,
-                    magicCard, event, yugiohCard, warning);
+                    magicCard, event, yugiohCard, warning, magicSets);
         }  else  {
-            forwardToEditor(request, response, errors, "", inventory, magicCard, event, yugiohCard, "");
+            forwardToEditor(request, response, errors, "", inventory, magicCard, event, yugiohCard, "", magicSets);
         }
 
         session.close();
@@ -564,7 +580,7 @@ public class InventoryEditorServlet extends HttpServlet {
 
     private static void forwardToEditor(HttpServletRequest request, HttpServletResponse response,ArrayList<String> errors,
                                         String info, Inventory inventory, MagicCard magicCard,
-                                        Event event, YugiohCard yugiohCard, String warning) throws IOException,
+                                        Event event, YugiohCard yugiohCard, String warning, ResultSet magicSets) throws IOException,
             ServletException {
         request.setAttribute(ATTR_ERRORS, errors);
         request.setAttribute(ATTR_INFO, info);
@@ -573,6 +589,7 @@ public class InventoryEditorServlet extends HttpServlet {
         request.setAttribute(ATTR_MAGIC_CARD, magicCard);
         request.setAttribute(ATTR_YUGIOH_CARD, yugiohCard);
         request.setAttribute(ATTR_WARNING, warning);
+        request.setAttribute(ATTR_MAGIC_SETS, magicSets);
         request.getRequestDispatcher("/admin/InventoryEditor.jsp").forward(request, response);
     }
 

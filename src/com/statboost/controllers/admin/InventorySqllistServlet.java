@@ -32,6 +32,6 @@ public class InventorySqllistServlet extends HttpServlet {
     private static void forwardToSqllist(HttpServletRequest request, HttpServletResponse response, ResultSet inventory)
             throws IOException, ServletException {
         request.setAttribute(ATTR_INVENTORY, inventory);
-        request.getRequestDispatcher("/InventorySqllist.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin/InventorySqllist.jsp").forward(request, response);
     }
 }
