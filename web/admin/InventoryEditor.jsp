@@ -92,17 +92,6 @@
     </script>
 </head>
 <body>
-<form action="<%=MediaUploaderServlet.SRV_MAP%>" enctype="multipart/form-data">
-    <table cellpadding="0" cellspacing="0" border="0">
-        <tr>
-            <td>Image</td>
-            <td><input type="file" name="<%=MediaUploaderServlet.PARAM_IMAGE_TO_UPLOAD%>"></td>
-        </tr>
-        <tr>
-            <td><input type="submit" value="Upload Image"/></td>
-        </tr>
-    </table>
-</form>
 <form method="post" action="<%=InventoryEditorServlet.SRV_MAP%>">
 <table>
     <input type="hidden" name="<%=InventoryEditorServlet.PARAM_INVENTORY_UID%>" value="<%=inventory.getUid()%>">
