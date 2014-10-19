@@ -11,13 +11,13 @@
         <property name="preOrder" column="inv_pre_order"/>
         <property name="description" column="inv_description"/>
         <many-to-one name="magicCard" class="com.statboost.models.mtg.MagicCard"
-                     column="inv_mcr_uid" not-null="true" insert="true" update="true"
+                     column="inv_mcr_uid" not-null="false" insert="true" update="true"
                      cascade="all" />
         <many-to-one name="yugiohCard" class="com.statboost.models.ygo.YugiohCard"
-                     column="inv_ycr_uid" not-null="true" insert="true" update="true"
+                     column="inv_ycr_uid" not-null="false" insert="true" update="true"
                      cascade="all" />
         <many-to-one name="event" class="com.statboost.models.inventory.Event"
-                     column="inv_evn_uid" not-null="true" insert="true" update="true"
+                     column="inv_evn_uid" not-null="false" insert="true" update="true"
                      cascade="all" />
         <property name="newPrice" column="inv_new_price"/>
         <property name="numNewInStock" column="inv_num_new_stock"/>
