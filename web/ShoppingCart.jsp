@@ -22,8 +22,8 @@
 
 
 <div class="container">
-    <div class="well well-lg">
-        <h2 align="center">Shopping Cart</h2>
+    <div class="well well-lg" style="min-width: 600px;">
+        <h2 align="center"><span class="glyphicon glyphicon-shopping-cart"></span> Shopping Cart</h2>
         <c:if test="${requestScope.alert != null && requestScope.alertType != null}">
             <div class="alert alert-${requestScope.alertType} fade in">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -38,34 +38,59 @@
                     <th>Quantity</th>
                     <th>Price</th>
                     <th>Total</th>
+                    <th>Remove</th>
                 </tr>
             </thead>
             <tbody>
                 <!--Begin test rows -->
                 <tr>
                     <td>1</td>
-                    <td>Red-Eyes Black Dragon</td>
+                    <td>
+                        <div class="col-lg-10">
+                            Red-Eyes Black Dragon - Item description will be here..
+                        </div>
+                        <div class="col-sm-2">
+                            <img src="http://placehold.it/100X100" class="img-rounded">
+                        </div>
+                    </td>
                     <td class="col-sm-1"><input name="qty" type="text" class="form-control" placeholder="QTY" value="2" maxlength="2" size="2"></td>
                     <td>$12.99</td>
                     <td>$25.98</td>
+                    <td><button class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove"></span></button></td>
                 </tr>
 
                 <tr>
                     <td>2</td>
-                    <td>Blue-Eyes White Dragon</td>
+                    <td>
+                        <div class="col-lg-10">
+                            Blue-Eyes White Dragon - Item description will be here..
+                        </div>
+                        <div class="col-sm-2">
+                            <img src="http://placehold.it/100X100" class="img-rounded">
+                        </div>
+                    </td>
                     <td class="col-sm-1"><input name="qty" type="text" class="form-control" placeholder="QTY" value="1" maxlength="2" size="2"></td>
                     <td>$14.99</td>
                     <td>$14.99</td>
+                    <td><button class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove"></span></button></td>
                 </tr>
                 <!--End test rows -->
 
                 <c:forEach items="${requestScope.itemsInCart}" var="cartItem" varStatus="status">
                     <tr>
                         <td>${status.count}</td>
-                        <td>${cartItem.description}</td>
+                        <td>
+                            <div class="col-lg-10">
+                                    ${cartItem.description}
+                            </div>
+                            <div class="col-sm-2">
+                                <img src="http://placehold.it/100X100" class="img-rounded">
+                            </div>
+                        </td>
                         <td class="col-sm-1"><input name="qty" type="text" class="form-control" placeholder="QTY" value="${cartItem.quantity}" maxlength="2" size="2"></td>
                         <td>${cartItem.price}</td>
                         <td>${cartItem.total}</td>
+                        <td><button class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove"></span></button></td>
                     </tr>
                 </c:forEach>
 
@@ -73,18 +98,33 @@
         </table>
 
         <div class="row">
-            <div class="col-md-3 col-md-pull-9"></div>
-            <div class="col-md-9 col-md-push-3">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>In Store Pickup?</label><br>
+                    <select class="form-control col-sm-3">
+                        <option>2920 Arden Way, Sacramento CA</option>
+                        <option selected>No</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-9 col-md-push-4">
                 <div>
-                    Calculate shipping rates: TODO
+                    Calculate shipping rates: null
                 </div>
                 <div>
-                    Subtotal: TODO<br>
-                    Tax: TODO<br>
-                    Order Total: TODO<br>
+                    Subtotal: null<br>
+                    Tax: null<br>
+                    <h2 style="color: darkred;">Order Total: null</h2><br>
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-lg-1 col-lg-push-10">
+                <button class="btn btn-lg btn-primary">Checkout</button>
+            </div>
+        </div>
+
     </div>
 </div>
 
