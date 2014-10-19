@@ -285,7 +285,7 @@
                     </tr>
                     <tr>
                         <td>Super Types</td>
-                        <td><input type="text" name="<%=PARAM_MAGIC_TYPES%>" value="<%=ServletUtil.hideNulls(magicCard.getMcrTypes())%>"></td>
+                        <td><input type="text" name="<%=PARAM_MAGIC_SUPER_TYPES%>" value="<%=ServletUtil.hideNulls(magicCard.getMcrSuperTypes())%>"></td>
                     </tr>
                     <tr>
                         <td>Sub Types</td>
