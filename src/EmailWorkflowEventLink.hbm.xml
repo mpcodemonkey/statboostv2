@@ -5,7 +5,9 @@
 <hibernate-mapping>
 
     <class name="com.statboost.models.email.EmailWorkflowEventLink" table="stt_email_workflow_event_link">
-        <id name="uid" column="ewe_uid"/>
+        <id name="uid" column="ewe_uid">
+            <generator class="identity"/>
+        </id>
         <many-to-one name="email" class="com.statboost.models.email.Email"
                      column="ewe_eml_uid" not-null="true" insert="true" update="true"
                      cascade="all" />

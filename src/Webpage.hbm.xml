@@ -5,7 +5,9 @@
 <hibernate-mapping>
 
     <class name="com.statboost.models.form.Webpage" table="stt_webpage">
-        <id name="uid" column="wbp_uid"/>
+        <id name="uid" column="wbp_uid">
+            <generator class="identity"/>
+        </id>
         <property name="name" column="wbp_name"/>
         <property name="body" column="wbp_body"/>
         <property name="code" column="wbp_code"/>

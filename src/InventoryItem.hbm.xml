@@ -5,7 +5,9 @@
 <hibernate-mapping>
 
     <class name="com.statboost.models.inventory.InventoryItem" table="stt_inventory_item">
-        <id name="uid" column="iit_uid"/>
+        <id name="uid" column="iit_uid">
+            <generator class="identity"/>
+        </id>
         <property name="price" column="iit_price"/>
         <property name="name" column="iit_name"/>
         <property name="image" column="iit_image"/>

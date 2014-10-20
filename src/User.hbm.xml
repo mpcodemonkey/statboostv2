@@ -5,7 +5,9 @@
 
 <hibernate-mapping>
     <class name="com.statboost.models.actor.User" table="stt_user">
-        <id name="usrUid" column="usr_uid"/>
+        <id name="usrUid" column="usr_uid">
+            <generator class="identity"/>
+        </id>
         <property name="usrFirstName" column="usr_first_name"/>
         <property name="usrLastName" column="usr_last_name"/>
         <property name="usrEmail" column="usr_email"/>

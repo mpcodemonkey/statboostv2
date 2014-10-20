@@ -5,7 +5,9 @@
 <hibernate-mapping>
 
     <class name="com.statboost.models.email.Email" table="stt_email">
-        <id name="uid" column="eml_uid"/>
+        <id name="uid" column="eml_uid">
+            <generator class="identity"/>
+        </id>
         <property name="name" column="eml_name"/>
         <property name="subject" column="eml_subject"/>
         <property name="from" column="eml_from"/>

@@ -5,7 +5,9 @@
 <hibernate-mapping>
 
     <class name="com.statboost.models.inventory.Order" table="stt_order">
-        <id name="uid" column="ord_uid"/>
+        <id name="uid" column="ord_uid">
+            <generator class="identity"/>
+        </id>
         <property name="status" column="ord_status"/>
         <property name="shippingAddress1" column="ord_shipping_address1"/>
         <property name="shippingAddress2" column="ord_shipping_address2"/>
