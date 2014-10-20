@@ -5,7 +5,9 @@
 <hibernate-mapping>
 
     <class name="com.statboost.models.form.Announcement" table="stt_announcement">
-        <id name="uid" column="ann_uid"/>
+        <id name="uid" column="ann_uid">
+            <generator class="identity"/>
+        </id>
         <property name="created" column="ann_created"/>
         <property name="title" column="ann_title"/>
         <property name="content" column="ann_content"/>

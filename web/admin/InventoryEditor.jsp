@@ -26,6 +26,7 @@
         YugiohCard yugiohCard = (YugiohCard) request.getAttribute(InventoryEditorServlet.ATTR_YUGIOH_CARD);
         Event event = (Event) request.getAttribute(InventoryEditorServlet.ATTR_EVENT);
         ResultSet magicSets = (ResultSet) request.getAttribute(InventoryEditorServlet.ATTR_MAGIC_SETS);
+        String type = (String) request.getAttribute(InventoryEditorServlet.ATTR_TYPE);
     %>
     <jsp:include page="/include/HeadTags.jsp"/>
     <link rel="stylesheet" href="/include/stylesheets/jquery-ui.css">
@@ -34,7 +35,7 @@
             jQuery('.datePicker').datepicker();
 
             <%
-                if(request.getParameter(PARAM_TYPE) != null && request.getParameter(PARAM_TYPE).equals("Magic"))  {
+                if(type != null && type.equals("MAGIC"))  {
             %>
                 jQuery('#yugiohDiv').hide();
                 jQuery('#magicDiv').show();
@@ -42,14 +43,14 @@
                 $('input[name="<%=PARAM_TYPE%>"][value="MAGIC"]').prop('checked', true);
 
             <%
-               } else if(request.getParameter(PARAM_TYPE) != null && request.getParameter(PARAM_TYPE).equals("Yugioh"))  {
+               } else if(type != null && type.equals("YUGIOH"))  {
             %>
                 jQuery('#yugiohDiv').show();
                 jQuery('#magicDiv').hide();
                 jQuery('#eventDiv').hide();
                 $('input[name="<%=PARAM_TYPE%>"][value="YUGIOH"]').prop('checked', true);
             <%
-                } else if(request.getParameter(PARAM_TYPE) != null && request.getParameter(PARAM_TYPE).equals("Event"))  {
+                } else if(type != null && type.equals("EVENT"))  {
             %>
                 jQuery('#yugiohDiv').hide();
                 jQuery('#magicDiv').hide();
@@ -237,10 +238,12 @@
                             <select id="magicSet" name="<%=PARAM_MAGIC_SET_ID%>">
                                 <option value="">Select One</option>
                                 <%
-                                    if(magicSets != null && magicSets.next())  {
+                                    if(magicSets != null)  {
+                                        while(magicSets.next())  {
                                 %>
                                 <option value="<%=magicSets.getString("mst_uid")%>"><%=magicSets.getString("mst_name")%></option>
                                 <%
+                                        }
                                     }
                                 %>
                             </select>

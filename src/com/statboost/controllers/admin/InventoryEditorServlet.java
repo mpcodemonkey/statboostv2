@@ -49,6 +49,7 @@ public class InventoryEditorServlet extends HttpServlet {
     public static final String PARAM_NUM_NEW_IN_STOCK = "numNewInStock";
     //determines if it is a magic card, yugioh card, event, or generic item
     public static final String PARAM_TYPE = "type";
+    public static final String ATTR_TYPE = "attrtype";
 
     public static final String ATTR_INVENTORY = "inventory";
     public static final String ATTR_ERRORS = "errors";
@@ -120,6 +121,7 @@ public class InventoryEditorServlet extends HttpServlet {
         YugiohCard yugiohCard = null;
         ResultSet magicSets = null;
         Event event = null;
+        String typeToPass = "GENERIC";
         if(request.getParameter(PARAM_INVENTORY_UID) == null || request.getParameter(PARAM_INVENTORY_UID).equals("0") ||
                 request.getParameter(PARAM_INVENTORY_UID).equals("0"))  {
             inventory = new Inventory();
@@ -131,19 +133,22 @@ public class InventoryEditorServlet extends HttpServlet {
             //check if it has the item if it does not initialize it to a new item so that we aren't throwing nulls in
             // the jsp and they can switch the type
             if(inventory != null && inventory.getMagicCard() != null)  {
-                magicCard = (MagicCard) session.load(MagicCard.class, Integer.parseInt(request.getParameter(PARAM_MAGIC_CARD_UID)));
+                magicCard = (MagicCard) session.load(MagicCard.class, inventory.getMagicCard().getMcrUid());
+                typeToPass = "MAGIC";
             } else  {
                 magicCard = new MagicCard();
             }
 
             if(inventory != null && inventory.getYugiohCard() != null)  {
-                yugiohCard = (YugiohCard) session.load(YugiohCard.class, Integer.parseInt(request.getParameter(PARAM_YUGIOH_UID)));
+                yugiohCard = (YugiohCard) session.load(YugiohCard.class, inventory.getYugiohCard().getYcrUid());
+                typeToPass = "YUGIOH";
             } else  {
                 yugiohCard = new YugiohCard();
             }
 
             if(inventory != null && inventory.getEvent() != null)  {
-                event = (Event) session.load(Event.class, Integer.parseInt(request.getParameter(PARAM_EVENT_UID)));
+                event = (Event) session.load(Event.class, inventory.getEvent().getUid());
+                typeToPass = "EVENT";
             } else  {
                 event = new Event();
             }
@@ -151,7 +156,7 @@ public class InventoryEditorServlet extends HttpServlet {
 
         magicSets = ServletUtil.getResultSetFromSql("select * from stt_magic_set");
 
-        forwardToEditor(request, response, null, "", inventory, magicCard, event, yugiohCard, "", magicSets);
+        forwardToEditor(request, response, null, "", inventory, magicCard, event, yugiohCard, "", magicSets, typeToPass);
         session.close();
     }
 
@@ -567,7 +572,7 @@ public class InventoryEditorServlet extends HttpServlet {
 
             session.getTransaction().commit();
             forwardToEditor(request, response, null, "The transaction was saved successfully", inventory,
-                    magicCard, event, yugiohCard, warning, magicSets);
+                    magicCard, event, yugiohCard, warning, magicSets, request.getParameter(PARAM_TYPE));
         }  else  {
             if(magicCard == null)  {
                 magicCard = new MagicCard();
@@ -580,7 +585,8 @@ public class InventoryEditorServlet extends HttpServlet {
             if(event == null)  {
                 event = new Event();
             }
-            forwardToEditor(request, response, errors, "", inventory, magicCard, event, yugiohCard, "", magicSets);
+            forwardToEditor(request, response, errors, "", inventory, magicCard, event, yugiohCard, "", magicSets,
+                    request.getParameter(PARAM_TYPE));
         }
 
         session.close();
@@ -588,7 +594,8 @@ public class InventoryEditorServlet extends HttpServlet {
 
     private static void forwardToEditor(HttpServletRequest request, HttpServletResponse response,ArrayList<String> errors,
                                         String info, Inventory inventory, MagicCard magicCard,
-                                        Event event, YugiohCard yugiohCard, String warning, ResultSet magicSets) throws IOException,
+                                        Event event, YugiohCard yugiohCard, String warning, ResultSet magicSets,
+                                        String type) throws IOException,
             ServletException {
         request.setAttribute(ATTR_ERRORS, errors);
         request.setAttribute(ATTR_INFO, info);
@@ -598,6 +605,7 @@ public class InventoryEditorServlet extends HttpServlet {
         request.setAttribute(ATTR_YUGIOH_CARD, yugiohCard);
         request.setAttribute(ATTR_WARNING, warning);
         request.setAttribute(ATTR_MAGIC_SETS, magicSets);
+        request.setAttribute(ATTR_TYPE, type);
         request.getRequestDispatcher("/admin/InventoryEditor.jsp").forward(request, response);
     }
 

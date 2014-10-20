@@ -5,7 +5,9 @@
 <hibernate-mapping>
 
     <class name="com.statboost.models.email.WorkflowEvent" table="stt_workflow_event">
-        <id name="uid" column="wev_uid"/>
+        <id name="uid" column="wev_uid">
+            <generator class="identity"/>
+        </id>
         <property name="name" column="wev_name"/>
         <property name="description" column="wev_description"/>
         <property name="code" column="wev_code"/>
