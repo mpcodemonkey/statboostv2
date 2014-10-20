@@ -5,7 +5,9 @@
 <hibernate-mapping>
 
     <class name="com.statboost.models.ygo.YugiohCard" table="stt_yugioh_card">
-        <id name="ycrUid" column="ycr_uid"/>
+        <id name="ycrUid" column="ycr_uid">
+            <generator class="identity"/>
+        </id>
         <property name="ycrName" column="ycr_name"/>
         <property name="ycrCardType" column="ycr_card_type"/>
         <property name="ycrAttribute" column="ycr_attribute"/>

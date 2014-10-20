@@ -5,7 +5,9 @@
 <hibernate-mapping>
 
     <class name="com.statboost.models.inventory.Event" table="stt_event">
-        <id name="uid" column="evn_uid"/>
+        <id name="uid" column="evn_uid">
+            <generator class="identity"/>
+        </id>
         <property name="date" column="evn_date"/>
         <property name="title" column="evn_title"/>
         <property name="description" column="evn_description"/>
