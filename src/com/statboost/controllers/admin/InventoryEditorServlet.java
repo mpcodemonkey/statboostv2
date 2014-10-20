@@ -495,8 +495,11 @@ public class InventoryEditorServlet extends HttpServlet {
         } else if(request.getParameter(PARAM_TYPE) != null && !request.getParameter(PARAM_TYPE).equals("") &&
                 request.getParameter(PARAM_TYPE).equals("EVENT"))  {
 
+            event = new Event();
+
+            //todo: add time part to event date
             if(request.getParameter(PARAM_EVENT_DATE) != null && !request.getParameter(PARAM_EVENT_DATE).equals(""))  {
-                event.setDate(ServletUtil.getDateTimeFromString(request.getParameter(PARAM_EVENT_DATE)));
+                event.setDate(ServletUtil.getDateFromString(request.getParameter(PARAM_EVENT_DATE)));
             } else  {
                 errors.add("You must select a date for the event.");
             }
@@ -533,9 +536,7 @@ public class InventoryEditorServlet extends HttpServlet {
 
         if(errors.size() == 0)  {
             //no errors so save the object and forward back to the editor with a save message
-            //must save dependent objects first
             if(yugiohCard != null)  {
-                session.save(yugiohCard);
                 inventory.setYugiohCard(yugiohCard);
                 //set the others to null just in case they changed the type
                 inventory.setEvent(null);
@@ -545,9 +546,8 @@ public class InventoryEditorServlet extends HttpServlet {
             }
 
             if(magicCard != null)  {
-                session.save(magicCard);
                 inventory.setMagicCard(magicCard);
-                //set the others to nulll just in case they changed the type
+                //set the others to null just in case they changed the type
                 inventory.setYugiohCard(null);
                 inventory.setEvent(null);
             } else  {
@@ -555,9 +555,8 @@ public class InventoryEditorServlet extends HttpServlet {
             }
 
             if(event != null)  {
-                session.save(event);
                 inventory.setEvent(event);
-                //set the others to nulll just in case they changed the type
+                //set the others to null just in case they changed the type
                 inventory.setMagicCard(null);
                 inventory.setYugiohCard(null);
             } else  {
