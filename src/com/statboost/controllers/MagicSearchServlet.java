@@ -99,7 +99,7 @@ public class MagicSearchServlet extends HttpServlet {
 
 
 
-        if (request.getParameter("simpleSubmit") != null || !request.getParameter("cardName").isEmpty()) {
+        if (request.getParameter("simpleSubmit") != null || (request.getParameter("cardName") != null && !request.getParameter("cardName").isEmpty())) {
             String[]constraints = request.getParameterValues("r1");
             String fieldText = request.getParameter("fi1") != null ? request.getParameter("fi1") : request.getParameter("cardName");
             int len = constraints == null ? 0 : constraints.length;
