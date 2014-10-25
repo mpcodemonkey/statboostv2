@@ -23,7 +23,7 @@ public class ServletUtil {
         Properties connectionProperties = new Properties();
         ResultSet rs = null;
         try   {
-            connection = DriverManager.getConnection("jdbc:mysql://107.138.64.59:3306/statboost?characterEncoding=UTF-8", "generic", "generic11PASSWORD");
+            connection = DriverManager.getConnection("jdbc:mysql://107.138.65.186:3306/statboost?characterEncoding=UTF-8", "generic", "generic11PASSWORD");
             Statement statement = connection.createStatement();
             rs = statement.executeQuery(sql);
             return rs;
