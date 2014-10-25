@@ -12,6 +12,7 @@ import org.hibernate.Transaction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Sam Kerr on 10/18/2014.
@@ -81,9 +82,9 @@ public class OrderManager {
     private List<InventoryItem> createInventoryItems(ShoppingCartSessionObject sessionObject) {
         List<InventoryItem> items = null;
         List<Inventory> inventoryList;
-        List<Integer> item_uids = sessionObject.getCartItems();
+        Map<Integer, Integer> cartItemMap = sessionObject.getCartItems();
 
-        inventoryList = getMatchingInventory(item_uids);
+        inventoryList = getMatchingInventory(cartItemMap.keySet());
 
         //create inventory items for the order and copy over all inventory item information
         if (inventoryList.size() > 0) {
@@ -91,13 +92,12 @@ public class OrderManager {
                 InventoryItem inventoryItem = new InventoryItem();
                 inventoryItem.setName(inv.getName());
                 inventoryItem.setDescription(inv.getDescription());
-               // inventoryItem.setPrice(inv.getNewPrice()); TODO: figure out proper price based on condition?
+               // inventoryItem.setPrice(inv.getNewPrice()); //TODO: figure out proper price based on condition?
+                //inventoryItem.setQuantity(cartItemMap.get(inv.getUid()));
                 inventoryItem.setImage(inv.getImage());
                 inventoryItem.setEvent(inv.getEvent());
                 inventoryItem.setMagicCard(inv.getMagicCard());
                 inventoryItem.setYugiohCard(inv.getYugiohCard());
-
-                items.add(inventoryItem);
             }
         }
 
@@ -106,9 +106,9 @@ public class OrderManager {
 
     /**
      * @param inventoryUIDList
-     * @return - A list of Inventory objects from the provided list of Inventory UID's
+     * @return - A set of Inventory objects from the provided list of Inventory UID's
      */
-    public static List<Inventory> getMatchingInventory(List<Integer> inventoryUIDList) {
+    public static List<Inventory> getMatchingInventory(Set<Integer> inventoryUIDList) {
         List<Inventory> inventoryList = new ArrayList<>();
         Session session = HibernateUtil.getDatabaseSessionFactory().openSession();
         Transaction tx = null;
@@ -130,6 +130,15 @@ public class OrderManager {
         }
 
         return inventoryList;
+    }
+
+    public static double getInventoryPrice() {
+        Double price = null;
+
+
+
+
+        return price;
     }
 
 

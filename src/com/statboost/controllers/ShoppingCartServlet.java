@@ -20,32 +20,21 @@ import java.util.List;
 @WebServlet("/cart")
 public class ShoppingCartServlet extends HttpServlet {
 
-    //inner class used by JSP
-    private class ShoppingCartItem {
-        public int quantity;
-        public double price;
-        public double total;
-        public String name;
-        public String description;
-        public String imageLink;
-
-    }
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(); //obtain the session object if exists
 
         //get user's shopping cart if it exists
         ShoppingCartSessionObject shoppingCart = (ShoppingCartSessionObject) session.getAttribute("shoppingCart");
         if (shoppingCart != null) {
-            List<Inventory> inventoryInCart = OrderManager.getMatchingInventory(shoppingCart.getCartItems());
+            List<Inventory> inventoryInCart = OrderManager.getMatchingInventory(shoppingCart.getCartItems().keySet());
             List<ShoppingCartItem> itemsInCart = new ArrayList<>();
             for (Inventory i : inventoryInCart) {
                 ShoppingCartItem cartItem = new ShoppingCartItem();
                 cartItem.name = i.getName();
                 cartItem.description = i.getDescription();
-                cartItem.imageLink = i.getImage();
-                cartItem.price = 1.99;//i.getNewPrice();
-                cartItem.quantity = 2; //TODO: need to obtain
+                cartItem.imageName = i.getImage();
+                cartItem.price = i.getNewPrice(); //TODO: determine real price from condition
+                cartItem.quantity = shoppingCart.getCartItems().get(i.getUid());
                 cartItem.total = cartItem.price * cartItem.quantity;
 
                 itemsInCart.add(cartItem);
@@ -54,6 +43,18 @@ public class ShoppingCartServlet extends HttpServlet {
             request.setAttribute("itemsInCart", itemsInCart);
         } else {
             //TODO: what to do when cart is empty?
+            /**
+             * THIS SECTION WILL BE REMOVED
+             * Create test cart session to mimic a shopping cart the user made. For test purposes
+             */
+            ShoppingCartSessionObject fakeShoppingCart = new ShoppingCartSessionObject();
+            int invUID = 15; //the inventory UID
+            fakeShoppingCart.addCartItem(invUID, 3); //3 items wanted
+
+            session.setAttribute("shoppingCart", fakeShoppingCart);
+            /**
+             * End test cart creation
+             */
         }
 
 
@@ -68,4 +69,38 @@ public class ShoppingCartServlet extends HttpServlet {
         request.getRequestDispatcher("ShoppingCart.jsp").forward(request, response);
     }
     */
+
+    //inner class used by JSP
+    public class ShoppingCartItem {
+        private int quantity;
+        private double price;
+        private double total;
+        private String name;
+        private String description;
+        private String imageName;
+
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public double getPrice() {
+            return price;
+        }
+
+        public double getTotal() {
+            return total;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public String getImageName() {
+            return imageName;
+        }
+    }
 }

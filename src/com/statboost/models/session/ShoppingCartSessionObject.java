@@ -1,9 +1,7 @@
 package com.statboost.models.session;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 /**
  * Created by Sam Kerr on 10/18/2014.
@@ -13,35 +11,34 @@ import java.util.Vector;
  */
 public class ShoppingCartSessionObject {
 
-    private List<Integer> cartItems;
-    private Map<Integer, Integer> indexToQuantity;
+    private Map<Integer, Integer> uidToQuantity;
 
     public ShoppingCartSessionObject() {
-        cartItems = new Vector<>();
-        indexToQuantity = new HashMap<>();
+        uidToQuantity = new HashMap<>();
     }
 
     /**
      * Add a inventory uid to the shopping cart.  The list of inventory uids will
      * be used to create the collection of inventory items pertaining to the customer's order.
-     * @param itemUID - uid of product inventory from database
+     * @param inventoryUID - uid of product inventory from database
      * @param quantity - number of items requested by user
      */
-    public void addCartItem(Integer itemUID, int quantity) {
-        cartItems.add(itemUID);
-        indexToQuantity.put(cartItems.indexOf(itemUID), quantity);
+    public void addCartItem(Integer inventoryUID, int quantity) {
+        uidToQuantity.put(inventoryUID, quantity);
     }
 
     /**
      * Remove an inventory uid from the shopping cart.
-     * @param itemIndex
+     * @param uid - Inventory uid to remove from shopping cart
      */
-    public void removeCartItem(int itemIndex) {
-        cartItems.remove(itemIndex);
-        indexToQuantity.remove(itemIndex);
+    public void removeCartItem(int uid) {
+        uidToQuantity.remove(uid);
     }
 
-    public List<Integer> getCartItems() {
-        return cartItems;
+    /**
+     * @return - returns a map of inventory uid's to quantity of that inventory which is requested for purchase.
+     */
+    public Map<Integer, Integer> getCartItems() {
+        return uidToQuantity;
     }
 }

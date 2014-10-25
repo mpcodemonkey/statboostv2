@@ -81,10 +81,11 @@
                         <td>${status.count}</td>
                         <td>
                             <div class="col-lg-10">
-                                    ${cartItem.description}
+                                ${cartItem.name}: ${cartItem.description}
                             </div>
                             <div class="col-sm-2">
                                 <img src="http://placehold.it/100X100" class="img-rounded">
+                                ${cartItem.imageName}
                             </div>
                         </td>
                         <td class="col-sm-1"><input name="qty" type="text" class="form-control" placeholder="QTY" value="${cartItem.quantity}" maxlength="2" size="2"></td>
@@ -97,17 +98,17 @@
             </tbody>
         </table>
 
-        <div class="row">
-            <div class="col-md-3">
+        <div class="row" style="min-width:300px;max-width:300px;">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label>In Store Pickup?</label><br>
-                    <select class="form-control col-sm-3">
+                    <select class="form-control">
                         <option>2920 Arden Way, Sacramento CA</option>
                         <option selected>No</option>
                     </select>
                 </div>
             </div>
-            <div class="col-md-9 col-md-push-4">
+            <div class="col-md-4 col-md-push-2">
                 <div>
                     Calculate shipping rates: null
                 </div>
