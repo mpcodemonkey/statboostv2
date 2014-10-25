@@ -1,3 +1,13 @@
+CREATE TABLE `stt_magic_set` (
+  `mst_name` varchar(100) DEFAULT NULL,
+  `mst_uid` char(4) NOT NULL DEFAULT '',
+  `mst_release_date` varchar(50) DEFAULT NULL,
+  `mst_border` varchar(20) DEFAULT NULL,
+  `mst_type` varchar(50) DEFAULT NULL,
+  `mst_block` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`mst_uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `stt_magic_card` (
   `mcr_card_name` varchar(150) DEFAULT NULL,
   `mcr_names` varchar(150) DEFAULT NULL,
@@ -33,16 +43,6 @@ CREATE TABLE `stt_magic_card` (
   KEY `stt_magic_card` (`mcr_set_id`),
   CONSTRAINT `stt_magic_card` FOREIGN KEY (`mcr_set_id`) REFERENCES `stt_magic_set` (`mst_uid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=25952 DEFAULT CHARSET=utf8;
-
-CREATE TABLE `stt_magic_set` (
-  `mst_name` varchar(100) DEFAULT NULL,
-  `mst_uid` char(4) NOT NULL DEFAULT '',
-  `mst_release_date` varchar(50) DEFAULT NULL,
-  `mst_border` varchar(20) DEFAULT NULL,
-  `mst_type` varchar(50) DEFAULT NULL,
-  `mst_block` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`mst_uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `stt_user` (
   `usr_first_name` varchar(50) DEFAULT NULL,
@@ -145,14 +145,6 @@ CREATE TABLE `stt_webpage` (
   PRIMARY KEY (`wbp_uid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
-CREATE TABLE `stt_workflow_event` (
-  `wev_uid` int(11) NOT NULL AUTO_INCREMENT,
-  `wev_name` varchar(100) NOT NULL,
-  `wev_description` varchar(1000) DEFAULT NULL,
-  `wev_code` varchar(100) NOT NULL,
-  PRIMARY KEY (`wev_uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
 CREATE TABLE `stt_order` (
   `ord_uid` int(11) NOT NULL AUTO_INCREMENT,
   `ord_usr_uid` int(11) NOT NULL,
@@ -173,11 +165,12 @@ CREATE TABLE `stt_order` (
 
 CREATE TABLE `stt_event` (
   `evn_uid` int(11) NOT NULL AUTO_INCREMENT,
-  `evn_date` datetime NOT NULL,
   `evn_title` varchar(200) DEFAULT NULL,
   `evn_description` text,
   `evn_player_limit` int(11) DEFAULT NULL,
   `evn_number_in_store_users` int(11) DEFAULT NULL,
+  `evn_from_date` datetime DEFAULT NULL,
+  `evn_to_date` datetime DEFAULT NULL,
   PRIMARY KEY (`evn_uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

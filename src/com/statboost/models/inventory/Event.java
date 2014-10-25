@@ -8,7 +8,8 @@ import java.util.Date;
  */
 public class Event {
     private int uid;
-    private Date date;
+    private Date fromDate;
+    private Date toDate;
     private String title;
     private String description;
     private int playerLimit;
@@ -22,12 +23,20 @@ public class Event {
         this.uid = evnUid;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getFromDate() {
+        return fromDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public Date getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(Date toDate) {
+        this.toDate = toDate;
     }
 
     public String getTitle() {

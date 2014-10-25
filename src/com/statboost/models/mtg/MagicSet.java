@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,7 +30,7 @@ public class MagicSet implements Serializable {
     @Id
     private String mstUid;
     private String mstName;
-    private java.sql.Date mstReleaseDate;
+    private Date mstReleaseDate;
     private String mstBorder;
     private String mstType;
     private String mstBlock;
@@ -75,11 +76,11 @@ public class MagicSet implements Serializable {
         this.mstUid = mstUid;
     }
 
-    public java.sql.Date getMstReleaseDate() {
+    public Date getMstReleaseDate() {
         return mstReleaseDate;
     }
 
-    public void setMstReleaseDate(java.sql.Date mstReleaseDate) {
+    public void setMstReleaseDate(Date mstReleaseDate) {
         this.mstReleaseDate = mstReleaseDate;
     }
 

@@ -9,8 +9,8 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.statboost.controllers.admin.InventorySqllistServlet" %>
 <%@ page import="com.statboost.util.ServletUtil" %>
-<%@ page import="com.statboost.models.mtg.MagicSet" %>
-<%@ page import="com.statboost.controllers.admin.MediaUploaderServlet" %>
+<%@ page import="java.util.Calendar" %>
+<%@ page import="net.authorize.util.DateUtil" %>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -29,7 +29,6 @@
         String type = (String) request.getAttribute(InventoryEditorServlet.ATTR_TYPE);
     %>
     <jsp:include page="/include/HeadTags.jsp"/>
-    <link rel="stylesheet" href="/include/stylesheets/jquery-ui.css">
     <script type="text/javascript">
         jQuery(document).ready(function()  {
             jQuery('.datePicker').datepicker();
@@ -417,9 +416,143 @@
             <table cellpadding="0 "cellspacing="0" border="0">
                 <%--todo: give them a calendar object to select from that will auto populate this field.--%>
                 <tr>
-                    <td>Date</td>
-                    <td><input class="datePicker" type="text" name="<%=PARAM_EVENT_DATE%>" value="<%=event.getDate() == null? "" : event.getDate()%>"></td>
+                    <td>Start Date</td>
+                    <td><input class="datePicker" type="text" name="<%=PARAM_FROM_EVENT_DATE%>" value="<%=event.getFromDate() == null? "" : DateUtil.getFormattedDate(event.getFromDate(), "MM/dd/yy")%>">
+                        <select id="startHour" name="<%=PARAM_FROM_EVENT_HOUR%>">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="0">12</option>
+                        </select>
+                        <%
+                            if(event != null && event.getFromDate() != null)  {
+                                Calendar fromDate = Calendar.getInstance();
+                                fromDate.setTime(event.getFromDate());
+                        %>
+
+                        <script type="text/javascript">
+                            document.getElementById('startHour').value = '<%=fromDate.get(Calendar.HOUR)%>';
+                        </script>
+                        <%
+                            }
+                        %>
+                        :
+                        <select id="startMinute" name="<%=PARAM_FROM_EVENT_MIN%>">
+                            <%
+                                for(int i = 0; i<60; i++)  {
+                            %>
+                            <option value="<%=i%>"><%= i < 10 ? "0" + i : i%></option>
+                            <%
+                                }
+                            %>
+                        </select>
+                        <%
+                            if(event != null && event.getFromDate() != null)  {
+                                Calendar fromDate = Calendar.getInstance();
+                                fromDate.setTime(event.getFromDate());
+                        %>
+
+                        <script type="text/javascript">
+                            document.getElementById('startHour').value = '<%=fromDate.get(Calendar.MINUTE)%>';
+                        </script>
+                        <%
+                            }
+                        %>
+                        <select id="startAmPM" name="<%=PARAM_FROM_EVENT_AM_PM%>">
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
+                        <%
+                            if(event != null && event.getFromDate() != null)  {
+                                Calendar fromDate = Calendar.getInstance();
+                                fromDate.setTime(event.getFromDate());
+                        %>
+
+                        <script type="text/javascript">
+                            document.getElementById('startAMPM').value = '<%=fromDate.get(Calendar.AM_PM) == Calendar.AM? "AM" : "PM"%>';
+                        </script>
+                        <%
+                            }
+                        %>
+                    </td>
                 </tr>
+                    <tr>
+                        <td>End Date</td>
+                        <td><input class="datePicker" type="text" name="<%=PARAM_TO_EVENT_DATE%>" value="<%=event.getFromDate() == null? "" : DateUtil.getFormattedDate(event.getFromDate(), "MM/dd/yy")%>">
+                            <select id="endHour" name="<%=PARAM_TO_EVENT_HOUR%>">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="0">12</option>
+                            </select>
+                            <%
+                                if(event != null && event.getToDate() != null)  {
+                                    Calendar toDate = Calendar.getInstance();
+                                    toDate.setTime(event.getToDate());
+                            %>
+
+                            <script type="text/javascript">
+                                document.getElementById('endHour').value = '<%=toDate.get(Calendar.HOUR)%>';
+                            </script>
+                            <%
+                                }
+                            %>
+                            :
+                            <select id="endMinute" name="<%=PARAM_TO_EVENT_MIN%>">
+                                <%
+                                    for(int i = 0; i<60; i++)  {
+                                %>
+                                <option value="<%=i%>"><%= i < 10 ? "0" + i : i%></option>
+                                <%
+                                    }
+                                %>
+                            </select>
+                            <%
+                                if(event != null && event.getToDate() != null)  {
+                                    Calendar toDate = Calendar.getInstance();
+                                    toDate.setTime(event.getToDate());
+                            %>
+
+                            <script type="text/javascript">
+                                document.getElementById('endHour').value = '<%=toDate.get(Calendar.MINUTE)%>';
+                            </script>
+                            <%
+                                }
+                            %>
+                            <select id="endAmPM" name="<%=PARAM_TO_EVENT_AM_PM%>">
+                                <option value="AM">AM</option>
+                                <option value="PM">PM</option>
+                            </select>
+                            <%
+                                if(event != null && event.getToDate() != null)  {
+                                    Calendar toDate = Calendar.getInstance();
+                                    toDate.setTime(event.getToDate());
+                            %>
+
+                            <script type="text/javascript">
+                                document.getElementById('endAMPM').value = '<%=toDate.get(Calendar.AM_PM) == Calendar.AM? "AM" : "PM"%>';
+                            </script>
+                            <%
+                                }
+                            %>
+                        </td>
+                    </tr>
                 <tr>
                     <td>Title</td>
                     <td>
