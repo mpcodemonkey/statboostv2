@@ -24,6 +24,9 @@
 <body>
 <table>
     <tr>
+        <td><a href="<%=MagicSetEditorServlet.SRV_MAP%>">New</a></td>
+    </tr>
+    <tr>
         <td>Name</td>
     </tr>
     <%
@@ -32,12 +35,12 @@
                 while(magicSets.next())  {
     %>
     <tr>
-        <td><a href="<%=MagicSetEditorServlet.getEditUrl(magicSets.getInt("mst_uid"))%>"><%=webpages.getString("wbp_name")%></a></td>
+        <td><a href="<%=MagicSetEditorServlet.getEditUrl(magicSets.getString("mst_uid"))%>"><%=magicSets.getString("mst_name")%></a></td>
     </tr>
     <%
                 }
             } catch (Exception e)  {
-                logger.error("Could not loop through the webpages.", e);
+                logger.error("Could not loop through the magic sets.", e);
             }
         }
     %>

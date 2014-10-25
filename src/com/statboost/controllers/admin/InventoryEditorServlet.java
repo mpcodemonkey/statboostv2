@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -47,6 +48,7 @@ public class InventoryEditorServlet extends HttpServlet {
     public static final String PARAM_NUM_MODERATELY_PLAYED_IN_STOCK = "numModeratelyPlayedInStock";
     public static final String PARAM_NUM_NEAR_MINT_IN_STOCK = "nearMintInStock";
     public static final String PARAM_NUM_NEW_IN_STOCK = "numNewInStock";
+
     //determines if it is a magic card, yugioh card, event, or generic item
     public static final String PARAM_TYPE = "type";
     public static final String ATTR_TYPE = "attrtype";
@@ -103,13 +105,20 @@ public class InventoryEditorServlet extends HttpServlet {
     public static final String ATTR_MAGIC_SETS = "magicSets";
 
     //params for event
-    public static final String PARAM_EVENT_DATE = "eventDate";
     public static final String PARAM_EVENT_TITLE = "eventTitle";
     public static final String PARAM_EVENT_DESCRIPTION = "eventDescription";
     public static final String PARAM_EVENT_PLAYER_LIMIT = "eventPlayerLimit";
     public static final String PARAM_EVENT_NUMBER_IN_STORE_USERS = "eventNumberInStoreUsers";
     public static final String PARAM_EVENT_UID = "eventUid";
     public static final String ATTR_EVENT = "event";
+    public static final String PARAM_FROM_EVENT_HOUR = "fromEventHour";
+    public static final String PARAM_FROM_EVENT_MIN = "fromEventMin";
+    public static final String PARAM_FROM_EVENT_AM_PM = "fromEventAMPM";
+    public static final String PARAM_FROM_EVENT_DATE = "fromEventDate";
+    public static final String PARAM_TO_EVENT_HOUR = "toEventHour";
+    public static final String PARAM_TO_EVENT_MIN = "toEventMin";
+    public static final String PARAM_TO_EVENT_AM_PM = "toEventAMPM";
+    public static final String PARAM_TO_EVENT_DATE = "toEventDate";
 
 
 
@@ -503,12 +512,57 @@ public class InventoryEditorServlet extends HttpServlet {
             event = new Event();
 
             //todo: add time part to event date
-            if(request.getParameter(PARAM_EVENT_DATE) != null && !request.getParameter(PARAM_EVENT_DATE).equals(""))  {
-                event.setDate(ServletUtil.getDateFromString(request.getParameter(PARAM_EVENT_DATE)));
+            Calendar fromDate = Calendar.getInstance();
+            if(request.getParameter(PARAM_FROM_EVENT_DATE) != null && !request.getParameter(PARAM_FROM_EVENT_DATE).equals(""))  {
+                fromDate.setTime(ServletUtil.getDateFromString(request.getParameter(PARAM_FROM_EVENT_DATE)));
             } else  {
-                errors.add("You must select a date for the event.");
+                errors.add("You must select a start date for the event.");
             }
 
+            if(request.getParameter(PARAM_FROM_EVENT_HOUR) != null && !request.getParameter(PARAM_FROM_EVENT_HOUR).equals(""))  {
+                //sets it on a 12 hr basis
+                fromDate.set(Calendar.HOUR, Integer.parseInt(request.getParameter(PARAM_FROM_EVENT_HOUR)));
+            }
+
+            if(request.getParameter(PARAM_FROM_EVENT_MIN) != null && !request.getParameter(PARAM_FROM_EVENT_MIN).equals(""))  {
+                fromDate.set(Calendar.MINUTE, Integer.parseInt(request.getParameter(PARAM_FROM_EVENT_MIN)));
+            }
+
+            if(request.getParameter(PARAM_FROM_EVENT_AM_PM) != null && !request.getParameter(PARAM_FROM_EVENT_AM_PM).equals(""))  {
+                if(request.getParameter(PARAM_FROM_EVENT_AM_PM).equalsIgnoreCase("AM"))  {
+                    fromDate.set(Calendar.AM_PM, Calendar.AM);
+                } else  {
+                    fromDate.set(Calendar.AM_PM, Calendar.PM);
+                }
+            }
+
+            event.setFromDate(fromDate.getTime());
+
+            Calendar toDate = Calendar.getInstance();
+            if(request.getParameter(PARAM_TO_EVENT_DATE) != null && !request.getParameter(PARAM_TO_EVENT_DATE).equals(""))  {
+                toDate.setTime(ServletUtil.getDateFromString(request.getParameter(PARAM_TO_EVENT_DATE)));
+            } else  {
+                errors.add("You must select an end date for the event.");
+            }
+
+            if(request.getParameter(PARAM_TO_EVENT_HOUR) != null && !request.getParameter(PARAM_TO_EVENT_HOUR).equals(""))  {
+                //sets it on a 12 hr basis
+                toDate.set(Calendar.HOUR, Integer.parseInt(request.getParameter(PARAM_TO_EVENT_HOUR)));
+            }
+
+            if(request.getParameter(PARAM_TO_EVENT_MIN) != null && !request.getParameter(PARAM_TO_EVENT_MIN).equals(""))  {
+                toDate.set(Calendar.MINUTE, Integer.parseInt(request.getParameter(PARAM_TO_EVENT_MIN)));
+            }
+
+            if(request.getParameter(PARAM_TO_EVENT_AM_PM) != null && !request.getParameter(PARAM_TO_EVENT_AM_PM).equals(""))  {
+                if(request.getParameter(PARAM_TO_EVENT_AM_PM).equalsIgnoreCase("AM"))  {
+                    toDate.set(Calendar.AM_PM, Calendar.AM);
+                } else  {
+                    toDate.set(Calendar.AM_PM, Calendar.PM);
+                }
+            }
+
+            event.setToDate(toDate.getTime());
 
             event.setDescription(request.getParameter(PARAM_EVENT_DESCRIPTION));
             if(request.getParameter(PARAM_EVENT_DESCRIPTION) == null ||

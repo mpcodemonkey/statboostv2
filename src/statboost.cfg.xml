@@ -10,8 +10,8 @@
         <property name="connection.autoReconnectForPools">true</property>
         <property name="connection.is-connection-validation-required">true</property>
 
-        <!-- Dev Connection -->
-        <property name="hibernate.connection.url">jdbc:mysql://107.138.64.59:3306/statboost?characterEncoding=UTF-8</property>
+         <!--Dev Connection-->
+        <property name="hibernate.connection.url">jdbc:mysql://107.138.65.186:3306/statboost?characterEncoding=UTF-8</property>
         <property name="hibernate.connection.username">generic</property>
         <property name="hibernate.connection.password">generic11PASSWORD</property>
 

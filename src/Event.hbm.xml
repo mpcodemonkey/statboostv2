@@ -8,7 +8,8 @@
         <id name="uid" column="evn_uid">
             <generator class="identity"/>
         </id>
-        <property name="date" column="evn_date"/>
+        <property name="fromDate" column="evn_from_date"/>
+        <property name="toDate" column="evn_to_date"/>
         <property name="title" column="evn_title"/>
         <property name="description" column="evn_description"/>
         <property name="playerLimit" column="evn_player_limit"/>
