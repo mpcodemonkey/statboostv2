@@ -461,7 +461,7 @@
                         %>
 
                         <script type="text/javascript">
-                            document.getElementById('startHour').value = '<%=fromDate.get(Calendar.MINUTE)%>';
+                            document.getElementById('startMinute').value = '<%=fromDate.get(Calendar.MINUTE)%>';
                         </script>
                         <%
                             }
@@ -530,7 +530,7 @@
                             %>
 
                             <script type="text/javascript">
-                                document.getElementById('endHour').value = '<%=toDate.get(Calendar.MINUTE)%>';
+                                document.getElementById('endMinute').value = '<%=toDate.get(Calendar.MINUTE)%>';
                             </script>
                             <%
                                 }
