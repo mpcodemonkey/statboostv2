@@ -1,8 +1,10 @@
 package com.statboost.controllers;
 
+import com.statboost.models.inventory.Cost;
 import com.statboost.models.inventory.Inventory;
 import com.statboost.models.session.ShoppingCartSessionObject;
-import com.statboost.util.OrderManager;
+import com.statboost.util.CartManager;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,26 +21,42 @@ import java.util.List;
  */
 @WebServlet("/cart")
 public class ShoppingCartServlet extends HttpServlet {
+    Logger logger = Logger.getLogger(ShoppingCartServlet.class);
+
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         HttpSession session = request.getSession(); //obtain the session object if exists
 
         //get user's shopping cart if it exists
         ShoppingCartSessionObject shoppingCart = (ShoppingCartSessionObject) session.getAttribute("shoppingCart");
+
+
         if (shoppingCart != null) {
-            List<Inventory> inventoryInCart = OrderManager.getMatchingInventory(shoppingCart.getCartItems().keySet());
+            CartManager cartManager = new CartManager();
+            cartManager.buildCartDataCollection(shoppingCart.getCartItems());
+            List<CartManager.ItemDataObject> cartObjects = cartManager.getCartDataObjects();
+
+
             List<ShoppingCartItem> itemsInCart = new ArrayList<>();
-            for (Inventory i : inventoryInCart) {
+
+            for (CartManager.ItemDataObject cartObject : cartObjects) {
                 ShoppingCartItem cartItem = new ShoppingCartItem();
-                cartItem.name = i.getName();
-                cartItem.description = i.getDescription();
-                cartItem.imageName = i.getImage();
-                cartItem.price = i.getNewPrice(); //TODO: determine real price from condition
-                cartItem.quantity = shoppingCart.getCartItems().get(i.getUid());
+                Inventory inv = cartObject.getInventory();
+                Cost cost = cartObject.getCost();
+
+                //build cart item to be displayed on JSP
+                cartItem.name = inv.getName();
+                cartItem.description = inv.getDescription();
+                cartItem.imageName = inv.getImage();
+                cartItem.price = cost.getCstItemPrice();
+                cartItem.condition = cost.getCstItemCondition();
+                cartItem.quantity = cartObject.getQuantity();
                 cartItem.total = cartItem.price * cartItem.quantity;
 
                 itemsInCart.add(cartItem);
             }
+
 
             request.setAttribute("itemsInCart", itemsInCart);
         } else {
@@ -49,8 +67,8 @@ public class ShoppingCartServlet extends HttpServlet {
              */
             ShoppingCartSessionObject fakeShoppingCart = new ShoppingCartSessionObject();
             int invUID = 15; //the inventory UID
-            fakeShoppingCart.addCartItem(invUID, 3); //3 items wanted
-
+            fakeShoppingCart.addCartItem(invUID, 3, Cost.ItemCondition.NEW); //3 items wanted of new condition
+            fakeShoppingCart.addCartItem(invUID, 2, Cost.ItemCondition.MODERATELY_PLAYED); //3 items wanted of moderately played
             session.setAttribute("shoppingCart", fakeShoppingCart);
             /**
              * End test cart creation
@@ -60,7 +78,6 @@ public class ShoppingCartServlet extends HttpServlet {
 
         request.getRequestDispatcher("ShoppingCart.jsp").forward(request, response);
     }
-
 
 /*
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -78,18 +95,15 @@ public class ShoppingCartServlet extends HttpServlet {
         private String name;
         private String description;
         private String imageName;
+        private String condition;
 
         public int getQuantity() {
             return quantity;
         }
 
-        public double getPrice() {
-            return price;
-        }
+        public Double getPrice() { return price; }
 
-        public double getTotal() {
-            return total;
-        }
+        public Double getTotal() { return total; }
 
         public String getName() {
             return name;
@@ -102,5 +116,7 @@ public class ShoppingCartServlet extends HttpServlet {
         public String getImageName() {
             return imageName;
         }
+
+        public String getCondition() { return condition; }
     }
 }
