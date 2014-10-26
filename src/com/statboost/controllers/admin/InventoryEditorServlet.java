@@ -396,9 +396,9 @@ public class InventoryEditorServlet extends HttpServlet {
                 errors.add("You must select the layout of the Magic card.");
             }
 
-            //todo: ask if it can be 0 or less
             magicCard.setMcrLoyalty(Integer.parseInt(request.getParameter(PARAM_MAGIC_LOYALTY)));
-            if(request.getParameter(PARAM_MAGIC_LOYALTY) == null || request.getParameter(PARAM_MAGIC_LOYALTY).equals(""))  {
+            if(request.getParameter(PARAM_MAGIC_LOYALTY) == null || request.getParameter(PARAM_MAGIC_LOYALTY).equals("")
+                    || Integer.parseInt(request.getParameter(PARAM_MAGIC_LOYALTY)) < 0)  {
                 errors.add("You must select the life of the Magic card.");
             }
 
@@ -511,7 +511,6 @@ public class InventoryEditorServlet extends HttpServlet {
 
             event = new Event();
 
-            //todo: add time part to event date
             Calendar fromDate = Calendar.getInstance();
             if(request.getParameter(PARAM_FROM_EVENT_DATE) != null && !request.getParameter(PARAM_FROM_EVENT_DATE).equals(""))  {
                 fromDate.setTime(ServletUtil.getDateFromString(request.getParameter(PARAM_FROM_EVENT_DATE)));
@@ -563,6 +562,10 @@ public class InventoryEditorServlet extends HttpServlet {
             }
 
             event.setToDate(toDate.getTime());
+
+            if(event.getFromDate() != null && event.getToDate() != null && event.getFromDate().after(event.getToDate()))  {
+                errors.add("The start date must fall before the end date.");
+            }
 
             event.setDescription(request.getParameter(PARAM_EVENT_DESCRIPTION));
             if(request.getParameter(PARAM_EVENT_DESCRIPTION) == null ||
