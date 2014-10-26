@@ -54,12 +54,13 @@ public class MagicSetEditorServlet extends HttpServlet {
         MagicSet magicSet = null;
         SessionFactory sessionFactory = HibernateUtil.getDatabaseSessionFactory();
         Session session = sessionFactory.openSession();
+        session.getTransaction().begin();
 
         if(request.getParameter(PARAM_MAGIC_SET_UID) == null || request.getParameter(PARAM_MAGIC_SET_UID).equals("")  ||
-                request.getParameter(PARAM_MAGIC_SET_UID).equals("0"))  {
+                request.getParameter(PARAM_MAGIC_SET_UID).equals("0") || request.getParameter(PARAM_MAGIC_SET_UID).equals("null"))  {
             magicSet = new MagicSet();
         } else  {
-            magicSet = (MagicSet) session.load(MagicSet.class, Integer.parseInt(request.getParameter(PARAM_MAGIC_SET_UID)));
+            magicSet = (MagicSet) session.load(MagicSet.class, request.getParameter(PARAM_MAGIC_SET_UID));
         }
 
         magicSet.setMstBlock(request.getParameter(PARAM_BLOCK));
@@ -67,12 +68,32 @@ public class MagicSetEditorServlet extends HttpServlet {
         magicSet.setMstName(request.getParameter(PARAM_NAME));
         magicSet.setMstReleaseDate(ServletUtil.getDateFromString(request.getParameter(PARAM_RELEASE_DATE)));
         magicSet.setMstType(request.getParameter(PARAM_TYPE));
+        magicSet.setMstUid(request.getParameter(PARAM_MAGIC_SET_UID));
 
         ArrayList<String> errors = new ArrayList<String>();
 
-        //todo: figure out what fields are required
-        if(magicSet.getMstName() == null || magicSet.getMstName().equals(""))  {
-            errors.add("You must enter the name of the set");
+        if(magicSet.getMstName() == null || magicSet.getMstName().equals("") || magicSet.getMstName().length() > 100)  {
+            errors.add("You must enter the name of the set. (Must be less than 100 characters)");
+        }
+
+        if(magicSet.getMstBorder() == null || magicSet.getMstBorder().equals("") || magicSet.getMstBorder().length() > 20)  {
+            errors.add("You must enter the border of the set. (Must be less than 20 characters)");
+        }
+
+        if(magicSet.getMstReleaseDate() == null)  {
+            errors.add("You must enter the release date fo the set");
+        }
+
+        if(magicSet.getMstType() == null || magicSet.getMstType().equals("") || magicSet.getMstType().length() > 50)  {
+            errors.add("You must enter the type of the set. (Must be less than 50 characters)");
+        }
+
+        if(magicSet.getMstBlock() != null && magicSet.getMstBlock().length() > 50)  {
+            errors.add("Block must be less than 50 characters long.");
+        }
+
+        if(magicSet.getMstUid() == null || magicSet.getMstUid().equals("")  || magicSet.getMstUid().length() > 4)  {
+            errors.add("You must enter the id of the magic card (4 characters or less)");
         }
 
         if(errors.size() == 0)  {

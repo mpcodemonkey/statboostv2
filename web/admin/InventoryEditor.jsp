@@ -535,7 +535,7 @@
                             <%
                                 }
                             %>
-                            <select id="endAmPM" name="<%=PARAM_TO_EVENT_AM_PM%>">
+                            <select id="endAMPM" name="<%=PARAM_TO_EVENT_AM_PM%>">
                                 <option value="AM">AM</option>
                                 <option value="PM">PM</option>
                             </select>

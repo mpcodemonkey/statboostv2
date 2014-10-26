@@ -63,6 +63,10 @@
                 <td><a href="<%=MagicSetSqllistServlet.SRV_MAP%>">Close</a></td>
             </tr>
             <tr>
+                <td>Set ID</td>
+                <td><input type="text" name="<%=MagicSetEditorServlet.PARAM_MAGIC_SET_UID%>" value="<%=ServletUtil.hideNulls(magicSet.getMstUid())%>"></td>
+            </tr>
+            <tr>
                 <td class="leftNav">Name</td>
                 <td><input type="text" name="<%=MagicSetEditorServlet.PARAM_NAME%>" value="<%=ServletUtil.hideNulls(magicSet.getMstName())%>"/></td>
             </tr>

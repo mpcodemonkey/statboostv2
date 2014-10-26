@@ -5,9 +5,7 @@
 
 <hibernate-mapping>
     <class name="com.statboost.models.mtg.MagicSet" table="stt_magic_set">
-        <id name="mstUid" column="mst_uid">
-            <generator class="identity"/>
-        </id>
+        <id name="mstUid" column="mst_uid"/>
 
         <set name="magicCardList" table="stt_magic_card" cascade="all" inverse="true">
             <key column="mcr_uid" not-null="true"></key>
