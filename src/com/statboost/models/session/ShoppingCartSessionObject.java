@@ -1,7 +1,9 @@
 package com.statboost.models.session;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.statboost.models.inventory.Cost;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Sam Kerr on 10/18/2014.
@@ -11,10 +13,35 @@ import java.util.Map;
  */
 public class ShoppingCartSessionObject {
 
-    private Map<Integer, Integer> uidToQuantity;
+    public class RequestedItem {
+        private int inv_uid;
+        private int quantity;
+        private Cost.ItemCondition condition;
+
+        private RequestedItem(int inv_uid, int quantity, Cost.ItemCondition condition) {
+            this.inv_uid = inv_uid;
+            this.quantity = quantity;
+            this.condition = condition;
+        }
+
+        public int getInvUid() {
+            return  inv_uid;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public Cost.ItemCondition getCondition() {
+            return condition;
+        }
+    }
+
+    private List<RequestedItem> cartList;
+
 
     public ShoppingCartSessionObject() {
-        uidToQuantity = new HashMap<>();
+        cartList = new ArrayList<>();
     }
 
     /**
@@ -23,22 +50,23 @@ public class ShoppingCartSessionObject {
      * @param inventoryUID - uid of product inventory from database
      * @param quantity - number of items requested by user
      */
-    public void addCartItem(Integer inventoryUID, int quantity) {
-        uidToQuantity.put(inventoryUID, quantity);
+    public void addCartItem(Integer inventoryUID, int quantity, Cost.ItemCondition condition) {
+        RequestedItem requestedItem = new RequestedItem(inventoryUID, quantity, condition);
+        cartList.add(requestedItem);
     }
 
     /**
      * Remove an inventory uid from the shopping cart.
-     * @param uid - Inventory uid to remove from shopping cart
+     * @param index - item index to remove item from shopping cart
      */
-    public void removeCartItem(int uid) {
-        uidToQuantity.remove(uid);
+    public void removeCartItem(int index) {
+        cartList.remove(index);
     }
 
     /**
-     * @return - returns a map of inventory uid's to quantity of that inventory which is requested for purchase.
+     * @return - list of requested items contained in the shopping cart
      */
-    public Map<Integer, Integer> getCartItems() {
-        return uidToQuantity;
+    public List<RequestedItem> getCartItems() {
+        return cartList;
     }
 }

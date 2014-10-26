@@ -1,6 +1,7 @@
 package com.statboost.util;
 
 import com.statboost.models.actor.User;
+import com.statboost.models.inventory.Cost;
 import com.statboost.models.inventory.Inventory;
 import com.statboost.models.inventory.InventoryItem;
 import com.statboost.models.inventory.Order;
@@ -9,10 +10,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Sam Kerr on 10/18/2014.
@@ -81,65 +80,34 @@ public class OrderManager {
      */
     private List<InventoryItem> createInventoryItems(ShoppingCartSessionObject sessionObject) {
         List<InventoryItem> items = null;
-        List<Inventory> inventoryList;
-        Map<Integer, Integer> cartItemMap = sessionObject.getCartItems();
+        List<CartManager.ItemDataObject> itemObjectList;
 
-        inventoryList = getMatchingInventory(cartItemMap.keySet());
+        CartManager cartManager = new CartManager();
+        cartManager.buildCartDataCollection(sessionObject.getCartItems());
+        itemObjectList = cartManager.getCartDataObjects();
 
         //create inventory items for the order and copy over all inventory item information
-        if (inventoryList.size() > 0) {
-            for (Inventory inv : inventoryList) {
+        if (itemObjectList.size() > 0) {
+            for (CartManager.ItemDataObject itemObject : itemObjectList) {
                 InventoryItem inventoryItem = new InventoryItem();
+                Inventory inv = itemObject.getInventory();
+                Cost cost = itemObject.getCost();
+
+
                 inventoryItem.setName(inv.getName());
                 inventoryItem.setDescription(inv.getDescription());
-               // inventoryItem.setPrice(inv.getNewPrice()); //TODO: figure out proper price based on condition?
-                //inventoryItem.setQuantity(cartItemMap.get(inv.getUid()));
+                inventoryItem.setPrice(cost.getCstItemPrice());
+               // inventoryItem.setQuantity();
                 inventoryItem.setImage(inv.getImage());
                 inventoryItem.setEvent(inv.getEvent());
                 inventoryItem.setMagicCard(inv.getMagicCard());
                 inventoryItem.setYugiohCard(inv.getYugiohCard());
+
+                items.add(inventoryItem);
             }
         }
 
         return items;
     }
-
-    /**
-     * @param inventoryUIDList
-     * @return - A set of Inventory objects from the provided list of Inventory UID's
-     */
-    public static List<Inventory> getMatchingInventory(Set<Integer> inventoryUIDList) {
-        List<Inventory> inventoryList = new ArrayList<>();
-        Session session = HibernateUtil.getDatabaseSessionFactory().openSession();
-        Transaction tx = null;
-        try {
-            tx = session.beginTransaction();
-            //retrieve inventory objects from database and build a collection
-            for (int uid : inventoryUIDList) {
-                Inventory inv_item = (Inventory) session.get(Inventory.class, uid);
-                if (inv_item != null) {
-                    inventoryList.add(inv_item);
-                }
-            }
-            tx.commit();
-        } catch (HibernateException e) {
-            if (tx != null) tx.rollback();
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-
-        return inventoryList;
-    }
-
-    public static double getInventoryPrice() {
-        Double price = null;
-
-
-
-
-        return price;
-    }
-
 
 }
