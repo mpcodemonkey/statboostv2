@@ -6,12 +6,11 @@
   Time: 10:23 PM
 --%>
 
-
-<script type="text/css">
-    ul.nav li.dropdown:hover ul.dropdown-menu{
+<style type="text/css">
+    .dropdown:hover .dropdown-menu {
         display: block;
     }
-</script>
+</style>
 
 <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
     <div class="container">
@@ -26,14 +25,16 @@
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-
                 <li><a href="/">Home</a></li>
                 <li><a href="/events">Events</a></li>
                 <li><a href="#store">Store</a></li>
-                <li class="dropdown"><a href="/Games.jsp">Games</a>
+                <li class="dropdown"><!--"/Games.jsp"-->
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        Games
+                    </a>
                         <ul class="dropdown-menu">
-                        <li><a href="/MagicMain.jsp">Magic: The Gathering</a></li>
-                        <li><a href="/YugiohMain.jsp">Yu Gi Oh</a></li>
+                            <li><a href="/MagicMain.jsp">Magic: The Gathering</a></li>
+                            <li><a href="/YugiohMain.jsp">Yu Gi Oh</a></li>
                         </ul>
                 </li>
                 <li><a href="/AboutUs.jsp">Contact Us</a></li>
