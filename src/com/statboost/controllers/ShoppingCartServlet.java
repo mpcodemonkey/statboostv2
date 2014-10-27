@@ -50,7 +50,7 @@ public class ShoppingCartServlet extends HttpServlet {
                 cartItem.description = inv.getDescription();
                 cartItem.imageName = inv.getImage();
                 cartItem.price = cost.getCstItemPrice();
-                cartItem.condition = cost.getCstItemCondition();
+                cartItem.condition = Cost.getConditionStringPretty(cost.getCstItemCondition());
                 cartItem.quantity = cartObject.getQuantity();
                 cartItem.total = cartItem.price * cartItem.quantity;
 
