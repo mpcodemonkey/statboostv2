@@ -13,12 +13,12 @@
     <title></title>
 </head>
 <body>
-div class="container">
+<div class="container">
 
 <!-- Heading Row -->
 <div class="row">
     <div class="col-md-8">
-        <img src="" alt="/include/images/storefront.jpg" height="400" width="533">
+        <img src="/include/images/storefront.png" alt="/include/images/storefront.png" height="400" width="533">
     </div>
     <!-- /.col-md-8 -->
     <div class="col-md-4">
@@ -26,9 +26,15 @@ div class="container">
         <p class="MsoNormal"><span>Mage&#39;s Realm is a fun and friendly
 				place to game. We welcome everyone to come and enjoy themselves.
 				Be sure to check out our weekly tournaments for Magic: The
-				Gathering, Yu-Gi-Oh, and WeiB Schwarz!</span><span class="apple-converted-space"><b><span><o:p></o:p></span></b></span></p>
+				Gathering, Yu-Gi-Oh, and WeiB Schwarz!<br><br><br>
+
+                Phone: (916) 993-8461
+                Address: 2920 Arden Way #1, Sacramento, CA 95825
+                <br>
+        </span><span class="apple-converted-space"><b><span><o:p></o:p></span></b></span></p>
         <p>&nbsp;</p>
-        <a class="btn btn-primary btn-lg" href="#">Call to Action!</a>
+
+        <a class="btn btn-primary btn-lg" href="https://www.google.com/maps/dir/''/mages+realm/data=!4m5!4m4!1m0!1m2!1m1!1s0x809adbb58d2466b5:0x77a7f6e76074745a">Get Directions</a>
     </div>
     <!-- /.col-md-4 -->
 </div>
@@ -41,10 +47,12 @@ div class="container">
     <div class="col-lg-12">
         <div class="well text-center">
             <div>
-                <p class="MsoNormal"><![if !supportLists]><span>Ã‚Â·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 						</span><![endif]><span>The Mage&#39;s Realm is Sacramento&#39;s
+                <p class="MsoNormal"><![if !supportLists]><span><br>
+                </span><![endif]><span>
+                        The Mage's Realm is Sacramento's
 						Premier Gaming Destination. We feature a wide space and
 						an atmosphere welcoming all varieties of tabletop games.
-						We host and support WeiÃŽÂ² Shwarz, Yu-gi-oh!, Magic the
+						We host and support Weiss Schwarz, Yu-gi-oh!, Magic the
 						Gathering, Pathfinder, Dungeons and Dragons, Warmachine,
 						DUST, and many more. Open 7 days a week<o:p></o:p></span></p>
             </div>
@@ -119,28 +127,32 @@ div class="container">
             </tr>
         </table>
         </p>
-        <a class="btn btn-default" href="#">More Info</a>
+
     </div>
     <!-- /.col-md-4 -->
     <div class="col-md-4">
-        <h2>Heading 2</h2>
+        <h2>More Info</h2>
         <p class="MsoNormal"><span>Mage&#39;s Realm is a fun and friendly
 				place to game. We welcome everyone to come and enjoy themselves.
 				Be sure to check out our weekly tournaments for Magic: The
 				Gathering, Yu-Gi-Oh, and WeiB Schwarz!</span><span class="apple-converted-space"><b><span><o:p></o:p></span></b></span></p>
         <p>&nbsp;</p>
-        <a class="btn btn-default" href="#">More Info</a>
+
     </div>
     <!-- /.col-md-4 -->
     <div class="col-md-4">
         <h2>Social Media</h2>
-        <p><a href="https://www.facebook.com/groups/MagesMTG/">
-            https://www.facebook.com/groups/MagesMTG/</a></p>
-        <p>
-            <a href="http://www.yelp.com/biz/the-mages-realm-sacramentohttp://www.yelp.com/biz/the-mages-realm-sacramento">
-                http://www.yelp.com/biz/the-mages-realm-sacramento</a></p>
-        <p><br></p>
-        <a class="btn btn-default" href="#">More Info</a>
+
+        <div class="col-sm-6">
+            <a href="https://www.facebook.com/profile.php?id=100003578735222&fref=nf" ><img src="/include/images/facebook.jpg" alt="" height="50" width="150"></a>
+
+        </div>
+
+
+        <div class="col-sm-5 col-sm-offset-1">
+           <a href="http://www.yelp.com/biz/the-mages-realm-sacramento" ><img src="/include/images/yelp.png" alt="" height="75" width="75"></a>
+        </div>
+
     </div>
     <!-- /.col-md-4 -->
 </div>
