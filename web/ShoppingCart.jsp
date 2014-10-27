@@ -10,6 +10,7 @@
 
 <jsp:include page="/include/Header.jsp"/>
 <jsp:include page="/include/Navbar.jsp"/>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <script src="/include/javascripts/jquery.maskedinput.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -45,27 +46,40 @@
             </thead>
             <tbody>
 
-                <c:forEach items="${requestScope.itemsInCart}" var="cartItem" varStatus="status">
-                    <tr>
-                        <td>${status.count}</td>
-                        <td>
-                            <div class="col-lg-10">
-                                    ${cartItem.name}:
-                                    ${cartItem.description}
-                            </div>
-                            <div class="col-lg-2">
-                                <img src="http://placehold.it/75X75" class="img-rounded">
-                                ${cartItem.imageName}
-                            </div>
+                <c:choose>
+                    <c:when test="${fn:length(requestScope.itemsInCart) gt 0}">
+                        <c:forEach items="${requestScope.itemsInCart}" var="cartItem" varStatus="status">
+                            <tr>
+                                <td>${status.count}</td>
+                                <td>
+                                    <div class="col-lg-10">
+                                            ${cartItem.name}:
+                                            ${cartItem.description}
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <img src="http://placehold.it/75X75" class="img-rounded">
+                                            ${cartItem.imageName}
+                                    </div>
 
-                        </td>
-                        <td>${cartItem.condition}</td>
-                        <td class="col-sm-1"><input name="qty" type="text" class="form-control" placeholder="QTY" value="${cartItem.quantity}" maxlength="2" size="2"></td>
-                        <td><fmt:formatNumber value="${cartItem.price}" type="currency"/></td>
-                        <td><fmt:formatNumber value="${cartItem.total}" type="currency"/></td>
-                        <td><button class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove"></span></button></td>
-                    </tr>
-                </c:forEach>
+                                </td>
+                                <td>${cartItem.condition}</td>
+                                <td class="col-sm-1"><input name="qty" type="text" class="form-control" placeholder="QTY" value="${cartItem.quantity}" maxlength="2" size="2"></td>
+                                <td><fmt:formatNumber value="${cartItem.price}" type="currency"/></td>
+                                <td><fmt:formatNumber value="${cartItem.total}" type="currency"/></td>
+                                <td><button class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove"></span></button></td>
+                            </tr>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+
+                        <div>
+                            <h2>There seems to be no items in your shopping cart.</h2>
+                        </div>
+
+                    </c:otherwise>
+                </c:choose>
+
+
 
             </tbody>
         </table>

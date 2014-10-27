@@ -27,6 +27,18 @@ public class Cost {
         DAMAGED
     }
 
+    public static String getConditionStringPretty(String condition) {
+        switch (condition) {
+            case "NEW": return "New";
+            case "NEAR_MINT": return "Near Mint";
+            case "LIGHTLY_PLAYED": return "Lightly Played";
+            case "MODERATELY_PLAYED": return "Moderately Played";
+            case "HEAVILY_PLAYED": return "Heavily Played";
+            case "DAMAGED": return "Damaged";
+            default: return "";
+        }
+    }
+
     public int getCstUid() {
         return cstUid;
     }
