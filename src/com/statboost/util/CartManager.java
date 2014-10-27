@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Sam Kerr on 10/18/2014.
+ * Created by Sam Kerr on 10/25/2014.
  */
 
 public class CartManager {
@@ -55,13 +55,13 @@ public class CartManager {
             System.out.println("Retrieving cart item data from database:");
             for (ShoppingCartSessionObject.RequestedItem requestedItem : sessionItems) {
 
-                Cost cost = (Cost) session.createQuery("FROM Cost WHERE cstItemCondition='" + requestedItem.getCondition() + "' AND cstInvUid=" + requestedItem.getInvUid()).uniqueResult();
+                Cost cost = (Cost) session.createQuery("FROM Cost WHERE itemCondition='" + requestedItem.getCondition() + "' AND invUid=" + requestedItem.getInvUid()).uniqueResult();
                 Inventory inv_item = cost.getInventory();
 
                 if (inv_item != null && cost != null) {
                     ItemDataObject dataObject = new ItemDataObject(inv_item, cost, requestedItem.getQuantity());
                     cartDataObjects.add(dataObject);
-                    System.out.println("\tAdded Inventory UID: " + inv_item.getUid() + " - Added Cost UID: " + cost.getCstUid());
+                    System.out.println("\tAdded Inventory UID: " + inv_item.getUid() + " - Added Cost UID: " + cost.getCostUid());
                 } else {
 
                     System.err.println("Something terrible happened");

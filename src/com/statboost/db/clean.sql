@@ -149,6 +149,12 @@ CREATE TABLE `stt_order` (
   `ord_uid` int(11) NOT NULL AUTO_INCREMENT,
   `ord_usr_uid` int(11) NOT NULL,
   `ord_status` enum('PLACED','SHIPPED','RETURNED','READY_FOR_PICKUP','CANCELLED','DELIVERED') DEFAULT NULL,
+  `ord_total` DECIMAL(7, 2) NOT NULL,
+  `ord_tax_total` DECIMAL(7, 2) NOT NULL,
+  `ord_shipping_total` DECIMAL(7, 2) NOT NULL,
+  `ord_shipping_method` varchar(50) DEFAULT NULL,
+  `ord_date_submitted` datetime NOT NULL,
+  `ord_date_paid` datetime DEFAULT NULL,
   `ord_shipping_address1` varchar(150) DEFAULT NULL,
   `ord_shipping_address2` varchar(100) DEFAULT NULL,
   `ord_shipping_city` varchar(100) DEFAULT NULL,
@@ -183,18 +189,6 @@ CREATE TABLE `stt_inventory` (
   `inv_evn_uid` int(11) DEFAULT NULL,
   `inv_pre_order` tinyint(1) DEFAULT NULL,
   `inv_description` text,
-  `inv_new_price` double DEFAULT NULL,
-  `inv_near_mint_price` double DEFAULT NULL,
-  `inv_lightly_played_price` double DEFAULT NULL,
-  `inv_moderately_played_price` double DEFAULT NULL,
-  `inv_heavily_played_price` double DEFAULT NULL,
-  `inv_damaged_price` double DEFAULT NULL,
-  `inv_num_new_stock` int(11) DEFAULT NULL,
-  `inv_num_lightly_played_stock` int(11) DEFAULT NULL,
-  `inv_num_moderately_played_stock` int(11) DEFAULT NULL,
-  `inv_num_heavily_played_stock` int(11) DEFAULT NULL,
-  `inv_num_damaged_stock` int(11) DEFAULT NULL,
-  `inv_num_near_mint_stock` int(11) DEFAULT NULL,
   PRIMARY KEY (`inv_uid`),
   KEY `inv_mcr_uid_fk` (`inv_mcr_uid`),
   KEY `inv_ycr_uid_fk` (`inv_ycr_uid`),
@@ -207,7 +201,8 @@ CREATE TABLE `stt_inventory` (
 CREATE TABLE `stt_inventory_item` (
   `iit_uid` int(11) NOT NULL AUTO_INCREMENT,
   `iit_ord_uid` int(11) NOT NULL,
-  `iit_price` double NOT NULL,
+  `iit_price` DECIMAL(7, 2) NOT NULL,
+  `iit_quantity` int(8) NOT NULL DEFAULT 1,
   `iit_name` varchar(200) NOT NULL,
   `iit_image` varchar(300) NOT NULL,
   `iit_mcr_uid` int(11) DEFAULT NULL,
@@ -216,7 +211,6 @@ CREATE TABLE `stt_inventory_item` (
   `iit_pre_order` tinyint(1) DEFAULT NULL,
   `iit_description` text NOT NULL,
   `iit_condition` varchar(30) NOT NULL,
-  `inv_condition` enum('New','Near Mint','Lightly Played','Moderately Played','Heavily Played','Damaged') DEFAULT NULL,
   PRIMARY KEY (`iit_uid`),
   KEY `iit_ord_uid_fk` (`iit_ord_uid`),
   KEY `iit_mcr_uid_fk` (`iit_mcr_uid`),
@@ -244,5 +238,16 @@ CREATE TABLE `stt_announcement` (
   `ann_content` text,
   PRIMARY KEY (`ann_uid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+CREATE TABLE stt_cost (
+  cst_uid int(11) NOT NULL AUTO_INCREMENT,
+  cst_item_condition ENUM('NEW','NEAR_MINT', 'LIGHTLY_PLAYED', 'MODERATELY_PLAYED', 'HEAVILY_PLAYED', 'DAMAGED')
+                      NOT NULL DEFAULT 'NEW',
+  cst_item_price DECIMAL(7, 2) NOT NULL,
+  cst_item_quantity int(8) DEFAULT NULL,
+  cst_inv_uid int(11) NOT NULL,
+  FOREIGN KEY (cst_inv_uid) REFERENCES stt_inventory(inv_uid),
+  PRIMARY KEY (cst_uid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

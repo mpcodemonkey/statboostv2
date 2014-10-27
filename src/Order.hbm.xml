@@ -8,7 +8,18 @@
         <id name="uid" column="ord_uid">
             <generator class="identity"/>
         </id>
-        <property name="status" column="ord_status"/>
+        <property name="status" column="ord_status">
+            <type name="com.statboost.models.enumType.HibernateVarCharEnum">
+                <param name="enumClass">com.statboost.models.enumType.OrderStatus</param>
+                <param name="type">12</param>
+            </type>
+        </property>
+        <property name="shippingTotal" column="ord_shipping_total"/>
+        <property name="orderTotal" column="ord_total"/>
+        <property name="taxTotal" column="ord_tax_total"/>
+        <property name="dateSubmitted" column="ord_date_submitted"/>
+        <property name="datePaid" column="ord_date_paid"/>
+        <property name="shippingMethod" column="ord_shipping_method"/>
         <property name="shippingAddress1" column="ord_shipping_address1"/>
         <property name="shippingAddress2" column="ord_shipping_address2"/>
         <property name="shippingCity" column="ord_shipping_city"/>

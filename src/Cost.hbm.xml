@@ -5,11 +5,16 @@
 <hibernate-mapping>
 
     <class name="com.statboost.models.inventory.Cost" table="stt_cost">
-        <id name="cstUid" column="cst_uid"/>
-        <property name="cstItemCondition" column="cst_item_condition"/>
-        <property name="cstItemPrice" column="cst_item_price"/>
-        <property name="cstItemQuantity" column="cst_item_quantity"/>
-        <property name="cstInvUid" column="cst_inv_uid"/>
+        <id name="costUid" column="cst_uid"/>
+        <property name="itemCondition" column="cst_item_condition">
+            <type name="com.statboost.models.enumType.HibernateVarCharEnum">
+                <param name="enumClass">com.statboost.models.enumType.ItemCondition</param>
+                <param name="type">12</param>
+            </type>
+        </property>
+        <property name="itemPrice" column="cst_item_price"/>
+        <property name="itemQuantity" column="cst_item_quantity"/>
+        <property name="invUid" column="cst_inv_uid"/>
 
         <many-to-one name="inventory"
                      column="cst_inv_uid"

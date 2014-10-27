@@ -9,6 +9,7 @@
             <generator class="identity"/>
         </id>
         <property name="price" column="iit_price"/>
+        <property name="quantity" column="iit_quantity"/>
         <property name="name" column="iit_name"/>
         <property name="image" column="iit_image"/>
         <property name="preOrder" column="iit_pre_order"/>

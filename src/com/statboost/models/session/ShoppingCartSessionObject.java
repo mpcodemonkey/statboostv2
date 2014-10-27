@@ -1,6 +1,6 @@
 package com.statboost.models.session;
 
-import com.statboost.models.inventory.Cost;
+import com.statboost.models.enumType.ItemCondition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +16,9 @@ public class ShoppingCartSessionObject {
     public class RequestedItem {
         private int inv_uid;
         private int quantity;
-        private Cost.ItemCondition condition;
+        private ItemCondition condition;
 
-        private RequestedItem(int inv_uid, int quantity, Cost.ItemCondition condition) {
+        private RequestedItem(int inv_uid, int quantity, ItemCondition condition) {
             this.inv_uid = inv_uid;
             this.quantity = quantity;
             this.condition = condition;
@@ -32,7 +32,7 @@ public class ShoppingCartSessionObject {
             return quantity;
         }
 
-        public Cost.ItemCondition getCondition() {
+        public ItemCondition getCondition() {
             return condition;
         }
     }
@@ -50,7 +50,7 @@ public class ShoppingCartSessionObject {
      * @param inventoryUID - uid of product inventory from database
      * @param quantity - number of items requested by user
      */
-    public void addCartItem(Integer inventoryUID, int quantity, Cost.ItemCondition condition) {
+    public void addCartItem(Integer inventoryUID, int quantity, ItemCondition condition) {
         RequestedItem requestedItem = new RequestedItem(inventoryUID, quantity, condition);
         cartList.add(requestedItem);
     }
