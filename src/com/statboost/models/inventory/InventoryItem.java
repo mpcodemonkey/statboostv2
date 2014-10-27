@@ -9,6 +9,7 @@ import com.statboost.models.ygo.YugiohCard;
 public class InventoryItem {
     private int uid;
     private double price;
+    private int quantity;
     private String name;
     private String image;
     private boolean preOrder;
@@ -105,5 +106,13 @@ public class InventoryItem {
 
     public void setCondition(String condition) {
         this.condition = condition;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

@@ -1,6 +1,7 @@
 package com.statboost.util;
 
 import com.statboost.models.actor.User;
+import com.statboost.models.enumType.OrderStatus;
 import com.statboost.models.inventory.Cost;
 import com.statboost.models.inventory.Inventory;
 import com.statboost.models.inventory.InventoryItem;
@@ -32,7 +33,7 @@ public class OrderManager {
         Order order = new Order();
         order.setUser(user);
         order.setPaid(false);
-        order.setStatus("NEW");
+        order.setStatus(OrderStatus.PLACED);
 
         //TODO: set order total, tax total, shipping method, shipping total
 
@@ -96,8 +97,8 @@ public class OrderManager {
 
                 inventoryItem.setName(inv.getName());
                 inventoryItem.setDescription(inv.getDescription());
-                inventoryItem.setPrice(cost.getCstItemPrice());
-               // inventoryItem.setQuantity();
+                inventoryItem.setPrice(cost.getItemPrice());
+                inventoryItem.setQuantity(cost.getItemQuantity());
                 inventoryItem.setImage(inv.getImage());
                 inventoryItem.setEvent(inv.getEvent());
                 inventoryItem.setMagicCard(inv.getMagicCard());

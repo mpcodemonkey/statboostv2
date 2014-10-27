@@ -1,5 +1,6 @@
 package com.statboost.controllers;
 
+import com.statboost.models.enumType.ItemCondition;
 import com.statboost.models.inventory.Cost;
 import com.statboost.models.inventory.Inventory;
 import com.statboost.models.session.ShoppingCartSessionObject;
@@ -49,8 +50,8 @@ public class ShoppingCartServlet extends HttpServlet {
                 cartItem.name = inv.getName();
                 cartItem.description = inv.getDescription();
                 cartItem.imageName = inv.getImage();
-                cartItem.price = cost.getCstItemPrice();
-                cartItem.condition = Cost.getConditionStringPretty(cost.getCstItemCondition());
+                cartItem.price = cost.getItemPrice();
+                cartItem.condition = Cost.getConditionString(cost.getItemCondition());
                 cartItem.quantity = cartObject.getQuantity();
                 cartItem.total = cartItem.price * cartItem.quantity;
 
@@ -67,8 +68,8 @@ public class ShoppingCartServlet extends HttpServlet {
              */
             ShoppingCartSessionObject fakeShoppingCart = new ShoppingCartSessionObject();
             int invUID = 15; //the inventory UID
-            fakeShoppingCart.addCartItem(invUID, 3, Cost.ItemCondition.NEW); //3 items wanted of new condition
-            fakeShoppingCart.addCartItem(invUID, 2, Cost.ItemCondition.MODERATELY_PLAYED); //3 items wanted of moderately played
+            fakeShoppingCart.addCartItem(invUID, 3, ItemCondition.NEW); //3 items wanted of new condition
+            fakeShoppingCart.addCartItem(invUID, 2, ItemCondition.MODERATELY_PLAYED); //3 items wanted of moderately played
             session.setAttribute("shoppingCart", fakeShoppingCart);
             /**
              * End test cart creation

@@ -1,82 +1,72 @@
 package com.statboost.models.inventory;
 
+import com.statboost.models.enumType.ItemCondition;
+
 import javax.persistence.ManyToOne;
 
 /**
  * Created by Sam Kerr on 10/25/2014.
  */
 public class Cost {
-    private int cstUid;
-    private String cstItemCondition;
-    private Double cstItemPrice;
-    private Integer cstItemQuantity;
-    private int cstInvUid;
+    private int costUid;
+    private ItemCondition itemCondition;
+    private Double itemPrice;
+    private Integer itemQuantity;
+    private int invUid;
 
     @ManyToOne
     private Inventory inventory;
 
-    /**
-     * Item condition values used for inserting items into the cost table.
-     */
-    public enum ItemCondition {
-        NEW,
-        NEAR_MINT,
-        LIGHTLY_PLAYED,
-        MODERATELY_PLAYED,
-        HEAVILY_PLAYED,
-        DAMAGED
-    }
-
-    public static String getConditionStringPretty(String condition) {
+    public static String getConditionString(ItemCondition condition) {
         switch (condition) {
-            case "NEW": return "New";
-            case "NEAR_MINT": return "Near Mint";
-            case "LIGHTLY_PLAYED": return "Lightly Played";
-            case "MODERATELY_PLAYED": return "Moderately Played";
-            case "HEAVILY_PLAYED": return "Heavily Played";
-            case "DAMAGED": return "Damaged";
+            case NEW: return "New";
+            case NEAR_MINT: return "Near Mint";
+            case LIGHTLY_PLAYED: return "Lightly Played";
+            case MODERATELY_PLAYED: return "Moderately Played";
+            case HEAVILY_PLAYED: return "Heavily Played";
+            case DAMAGED: return "Damaged";
             default: return "";
         }
     }
 
-    public int getCstUid() {
-        return cstUid;
+    public int getCostUid() {
+        return costUid;
     }
 
-    public void setCstUid(int cstUid) {
-        this.cstUid = cstUid;
+    public void setCostUid(int costUid) {
+        this.costUid = costUid;
     }
 
-    public String getCstItemCondition() {
-        return cstItemCondition;
+    public ItemCondition getItemCondition() {
+        return itemCondition;
     }
 
-    public void setCstItemCondition(String cstItemCondition) {
-        this.cstItemCondition = cstItemCondition;
+    public void setItemCondition(ItemCondition itemCondition) {
+        this.itemCondition = itemCondition;
     }
 
-    public Double getCstItemPrice() {
-        return cstItemPrice;
+    public Double getItemPrice() {
+        return itemPrice;
     }
 
-    public void setCstItemPrice(Double cstItemPrice) {
-        this.cstItemPrice = cstItemPrice;
+    public void setItemPrice(Double itemPrice) {
+        this.itemPrice = itemPrice;
     }
 
-    public Integer getCstItemQuantity() {
-        return cstItemQuantity;
+    public Integer getItemQuantity() {
+        return itemQuantity;
     }
 
-    public void setCstItemQuantity(Integer cstItemQuantity) {
-        this.cstItemQuantity = cstItemQuantity;
+    public void setItemQuantity(Integer itemQuantity) {
+        this.itemQuantity = itemQuantity;
     }
 
-    public int getCstInvUid() {
-        return cstInvUid;
+    public int getInvUid() {
+        return invUid;
     }
 
-    public void setCstInvUid(int cstInvUid) {
-        this.cstInvUid = cstInvUid;
+    public void setInvUid(int invUid) {
+        this.invUid = invUid;
     }
 
     public Inventory getInventory() {
@@ -94,12 +84,12 @@ public class Cost {
 
         Cost that = (Cost) o;
 
-        if (cstInvUid != that.cstInvUid) return false;
-        if (cstUid != that.cstUid) return false;
-        if (cstItemCondition != null ? !cstItemCondition.equals(that.cstItemCondition) : that.cstItemCondition != null)
+        if (invUid != that.invUid) return false;
+        if (costUid != that.costUid) return false;
+        if (itemCondition != null ? !itemCondition.equals(that.itemCondition) : that.itemCondition != null)
             return false;
-        if (cstItemPrice != null ? !cstItemPrice.equals(that.cstItemPrice) : that.cstItemPrice != null) return false;
-        if (cstItemQuantity != null ? !cstItemQuantity.equals(that.cstItemQuantity) : that.cstItemQuantity != null)
+        if (itemPrice != null ? !itemPrice.equals(that.itemPrice) : that.itemPrice != null) return false;
+        if (itemQuantity != null ? !itemQuantity.equals(that.itemQuantity) : that.itemQuantity != null)
             return false;
 
         return true;
@@ -107,11 +97,11 @@ public class Cost {
 
     @Override
     public int hashCode() {
-        int result = cstUid;
-        result = 31 * result + (cstItemCondition != null ? cstItemCondition.hashCode() : 0);
-        result = 31 * result + (cstItemPrice != null ? cstItemPrice.hashCode() : 0);
-        result = 31 * result + (cstItemQuantity != null ? cstItemQuantity.hashCode() : 0);
-        result = 31 * result + cstInvUid;
+        int result = costUid;
+        result = 31 * result + (itemCondition != null ? itemCondition.hashCode() : 0);
+        result = 31 * result + (itemPrice != null ? itemPrice.hashCode() : 0);
+        result = 31 * result + (itemQuantity != null ? itemQuantity.hashCode() : 0);
+        result = 31 * result + invUid;
         return result;
     }
 }

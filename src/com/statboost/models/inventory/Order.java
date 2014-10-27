@@ -1,8 +1,10 @@
 package com.statboost.models.inventory;
 
 import com.statboost.models.actor.User;
+import com.statboost.models.enumType.OrderStatus;
 
 import javax.persistence.OneToMany;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,7 +13,13 @@ import java.util.Set;
  */
 public class Order {
     private int uid;
-    private String status;
+    private OrderStatus status;
+    private double orderTotal;
+    private double taxTotal;
+    private double shippingTotal;
+    private Date dateSubmitted;
+    private Date datePaid;
+    private String shippingMethod;
     private String shippingAddress1;
     private String shippingAddress2;
     private String shippingCity;
@@ -34,11 +42,11 @@ public class Order {
         this.uid = ordUid;
     }
 
-    public String getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String ordStatus) {
+    public void setStatus(OrderStatus ordStatus) {
         this.status = ordStatus;
     }
 
@@ -112,6 +120,54 @@ public class Order {
 
     public void setPaid(boolean paid) {
         this.paid = paid;
+    }
+
+    public double getOrderTotal() {
+        return orderTotal;
+    }
+
+    public void setOrderTotal(double orderTotal) {
+        this.orderTotal = orderTotal;
+    }
+
+    public double getTaxTotal() {
+        return taxTotal;
+    }
+
+    public void setTaxTotal(double taxTotal) {
+        this.taxTotal = taxTotal;
+    }
+
+    public double getShippingTotal() {
+        return shippingTotal;
+    }
+
+    public void setShippingTotal(double shippingTotal) {
+        this.shippingTotal = shippingTotal;
+    }
+
+    public Date getDateSubmitted() {
+        return dateSubmitted;
+    }
+
+    public void setDateSubmitted(Date dateSubmitted) {
+        this.dateSubmitted = dateSubmitted;
+    }
+
+    public Date getDatePaid() {
+        return datePaid;
+    }
+
+    public void setDatePaid(Date datePaid) {
+        this.datePaid = datePaid;
+    }
+
+    public String getShippingMethod() {
+        return shippingMethod;
+    }
+
+    public void setShippingMethod(String shippingMethod) {
+        this.shippingMethod = shippingMethod;
     }
 
     public User getUser() {
