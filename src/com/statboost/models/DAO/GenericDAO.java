@@ -54,7 +54,6 @@ public class GenericDAO{
 
             resultSet = query.list();
 
-
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
@@ -89,6 +88,7 @@ public class GenericDAO{
             e.printStackTrace();
         } finally {
             session.close();
+            genericQueryFactory.close();
         }
 
         return resultSet;

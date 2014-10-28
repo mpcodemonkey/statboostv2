@@ -9,6 +9,7 @@
         <property name="connection.autoReconnect">true</property>
         <property name="connection.autoReconnectForPools">true</property>
         <property name="connection.is-connection-validation-required">true</property>
+        <property name="hibernate.connection.release_mode">after_transaction</property>
 
          <!--Dev Connection-->
         <property name="hibernate.connection.url">jdbc:mysql://107.138.65.186:3306/statboost?characterEncoding=UTF-8</property>
