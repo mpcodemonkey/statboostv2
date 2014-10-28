@@ -7,7 +7,6 @@ import com.statboost.models.mtg.MagicSet;
 import com.statboost.models.ygo.YugiohCard;
 import com.statboost.util.HibernateUtil;
 import com.statboost.util.ServletUtil;
-import com.sun.tools.classfile.StackMap_attribute;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -21,7 +20,6 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * Created by Jessica on 9/25/14.
@@ -221,7 +219,7 @@ public class InventoryEditorServlet extends HttpServlet {
         inventory.setImage(request.getParameter(PARAM_INVENTORY_IMAGE));
         inventory.setMagicCard(magicCard);
         inventory.setYugiohCard(yugiohCard);
-
+/* COMMENTED OUT BECAUSE FIELDS HAVE CHANGED AND BROKEN
         if(request.getParameter(PARAM_NUM_DAMAGED_IN_STOCK) != null && !request.getParameter(PARAM_NUM_DAMAGED_IN_STOCK).equals(""))  {
             inventory.setDamagedInStock(Integer.parseInt(request.getParameter(PARAM_NUM_DAMAGED_IN_STOCK)));
         }
@@ -269,7 +267,7 @@ public class InventoryEditorServlet extends HttpServlet {
         if(request.getParameter(PARAM_NEAR_MINT_PRICE) != null && !request.getParameter(PARAM_NEAR_MINT_PRICE).equals(""))  {
             inventory.setNearMintPrice(Double.parseDouble(request.getParameter(PARAM_NEAR_MINT_PRICE)));
         }
-
+*/
         //not going to make the price required since some they will not have inventory for
 
         //check if it is a yugioh card, if it is validate and set the yugioh fields

@@ -15,18 +15,7 @@ public class Inventory {
     private Event event;
     private boolean preOrder;
     private String description;
-    private double newPrice;
-    private double nearMintPrice;
-    private double lightlyPlayedPrice;
-    private double moderatelyPlayedPrice;
-    private double heavilyPlayedPrice;
-    private double damagedPrice;
-    private int numNewInStock;
-    private int lightlyPlayedInStock;
-    private int moderatelyPlayedInStock;
-    private int heavilyPlayedInStock;
-    private int nearMintInStock;
-    private int damagedInStock;
+
 
     public int getUid() {
         return uid;
@@ -92,99 +81,4 @@ public class Inventory {
         this.preOrder = preOrder;
     }
 
-    public double getNewPrice() {
-        return newPrice;
-    }
-
-    public void setNewPrice(double newPrice) {
-        this.newPrice = newPrice;
-    }
-
-    public double getNearMintPrice() {
-        return nearMintPrice;
-    }
-
-    public void setNearMintPrice(double nearMintPrice) {
-        this.nearMintPrice = nearMintPrice;
-    }
-
-    public double getLightlyPlayedPrice() {
-        return lightlyPlayedPrice;
-    }
-
-    public void setLightlyPlayedPrice(double lightlyPlayedPrice) {
-        this.lightlyPlayedPrice = lightlyPlayedPrice;
-    }
-
-    public double getModeratelyPlayedPrice() {
-        return moderatelyPlayedPrice;
-    }
-
-    public void setModeratelyPlayedPrice(double moderatelyPlayedPrice) {
-        this.moderatelyPlayedPrice = moderatelyPlayedPrice;
-    }
-
-    public double getHeavilyPlayedPrice() {
-        return heavilyPlayedPrice;
-    }
-
-    public void setHeavilyPlayedPrice(double heavilyPlayedPrice) {
-        this.heavilyPlayedPrice = heavilyPlayedPrice;
-    }
-
-    public double getDamagedPrice() {
-        return damagedPrice;
-    }
-
-    public void setDamagedPrice(double damagedPrice) {
-        this.damagedPrice = damagedPrice;
-    }
-
-    public int getNumNewInStock() {
-        return numNewInStock;
-    }
-
-    public void setNumNewInStock(int numNewInStock) {
-        this.numNewInStock = numNewInStock;
-    }
-
-    public int getLightlyPlayedInStock() {
-        return lightlyPlayedInStock;
-    }
-
-    public void setLightlyPlayedInStock(int lightlyPlayedInStock) {
-        this.lightlyPlayedInStock = lightlyPlayedInStock;
-    }
-
-    public int getModeratelyPlayedInStock() {
-        return moderatelyPlayedInStock;
-    }
-
-    public void setModeratelyPlayedInStock(int moderatelyPlayedInStock) {
-        this.moderatelyPlayedInStock = moderatelyPlayedInStock;
-    }
-
-    public int getHeavilyPlayedInStock() {
-        return heavilyPlayedInStock;
-    }
-
-    public void setHeavilyPlayedInStock(int heavilyPlayedInStock) {
-        this.heavilyPlayedInStock = heavilyPlayedInStock;
-    }
-
-    public int getNearMintInStock() {
-        return nearMintInStock;
-    }
-
-    public void setNearMintInStock(int nearMintInStock) {
-        this.nearMintInStock = nearMintInStock;
-    }
-
-    public int getDamagedInStock() {
-        return damagedInStock;
-    }
-
-    public void setDamagedInStock(int damagedInStock) {
-        this.damagedInStock = damagedInStock;
-    }
 }
