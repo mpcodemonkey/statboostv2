@@ -22,19 +22,22 @@
     </div>
     <!-- /.col-md-8 -->
     <div class="col-md-4">
-        <h1>EXP: Level Up!</h1>
-        <p class="MsoNormal"><span>Mage&#39;s Realm is a fun and friendly
-				place to game. We welcome everyone to come and enjoy themselves.
-				Be sure to check out our weekly tournaments for Magic: The
-				Gathering, Yu-Gi-Oh, and WeiB Schwarz!<br><br><br>
+        <div class="well">
+            <h1>EXP: Level Up!</h1>
+            <p class="MsoNormal"><span>Mage&#39;s Realm is a fun and friendly
+                    place to game. We welcome everyone to come and enjoy themselves.
+                    Be sure to check out our weekly tournaments for Magic: The
+                    Gathering, Yu-Gi-Oh, and WeiB Schwarz!<br><br><br>
 
-                Phone: (916) 993-8461
-                Address: 2920 Arden Way #1, Sacramento, CA 95825
-                <br>
-        </span><span class="apple-converted-space"><b><span><o:p></o:p></span></b></span></p>
-        <p>&nbsp;</p>
+                    Phone: (916) 993-8461
+                    Address: 2920 Arden Way #1, Sacramento, CA 95825
+                    <br>
+            </span><span class="apple-converted-space"><b><span><o:p></o:p></span></b></span></p>
+            <p>&nbsp;</p>
 
-        <a class="btn btn-primary btn-lg" href="https://www.google.com/maps/dir/''/mages+realm/data=!4m5!4m4!1m0!1m2!1m1!1s0x809adbb58d2466b5:0x77a7f6e76074745a">Get Directions</a>
+            <a class="btn btn-primary btn-lg" href="https://www.google.com/maps/dir/''/mages+realm/data=!4m5!4m4!1m0!1m2!1m1!1s0x809adbb58d2466b5:0x77a7f6e76074745a">Get Directions</a>
+
+        </div>
     </div>
     <!-- /.col-md-4 -->
 </div>
@@ -65,79 +68,81 @@
 <!-- Content Row -->
 <div class="row">
     <div class="col-md-4">
-        <h2>Hours</h2>
-        <p>
-        <table border="0" cellpadding="0" cellspacing="0" class="MsoNormalTable" style="width:0in;border-collapse:collapse;mso-yfti-tbllook:1184;mso-padding-alt:
- 0in 0in 0in 0in" width="0">
-            <tr>
-                <td valign="bottom">
-                    <p class="MsoNormal"><b><span>Mon<o:p></o:p></span></b></p>
-                </td>
-                <td valign="bottom">
-                    <p class="MsoNormal"><span>12:00 pm&nbsp;-&nbsp;10:00 pm<o:p></o:p></span></p>
-                </td>
-            </tr>
-            <tr>
-                <td valign="bottom">
-                    <p class="MsoNormal"><b><span>Tue<o:p></o:p></span></b></p>
-                </td>
-                <td valign="bottom">
-                    <p class="MsoNormal"><span>12:00 pm&nbsp;-&nbsp;10:00 pm<o:p></o:p></span></p>
-                </td>
-            </tr>
-            <tr>
-                <td valign="bottom">
-                    <p class="MsoNormal"><b><span>Wed<o:p></o:p></span></b></p>
-                </td>
-                <td valign="bottom">
-                    <p class="MsoNormal"><span>12:00 pm&nbsp;-&nbsp;10:00 pm<o:p></o:p></span></p>
-                </td>
-            </tr>
-            <tr>
-                <td valign="bottom">
-                    <p class="MsoNormal"><b><span>Thu<o:p></o:p></span></b></p>
-                </td>
-                <td valign="bottom">
-                    <p class="MsoNormal"><span>12:00 pm&nbsp;-&nbsp;10:00 pm<o:p></o:p></span></p>
-                </td>
-            </tr>
-            <tr>
-                <td valign="bottom">
-                    <p class="MsoNormal"><b><span>Fri<o:p></o:p></span></b></p>
-                </td>
-                <td valign="bottom">
-                    <p class="MsoNormal"><span>12:00 pm&nbsp;-&nbsp;12:00 am<o:p></o:p></span></p>
-                </td>
-            </tr>
-            <tr>
-                <td valign="bottom">
-                    <p class="MsoNormal"><b><span>Sat<o:p></o:p></span></b></p>
-                </td>
-                <td valign="bottom">
-                    <p class="MsoNormal"><span>12:00 pm&nbsp;-&nbsp;10:00 pm<o:p></o:p></span></p>
-                </td>
-            </tr>
-            <tr>
-                <td valign="bottom">
-                    <p class="MsoNormal"><b><span>Sun<o:p></o:p></span></b></p>
-                </td>
-                <td valign="bottom">
-                    <p class="MsoNormal"><span>12:00 pm&nbsp;-&nbsp;10:00 pm<o:p></o:p></span></p>
-                </td>
-            </tr>
-        </table>
-        </p>
-
+        <div class="well">
+            <h2>Hours</h2>
+            <p>
+            <table border="0" cellpadding="0" cellspacing="0" class="MsoNormalTable" style="width:0in;border-collapse:collapse;mso-yfti-tbllook:1184;mso-padding-alt:
+     0in 0in 0in 0in" width="0">
+                <tr>
+                    <td valign="bottom">
+                        <p class="MsoNormal"><b><span>Mon<o:p></o:p></span></b></p>
+                    </td>
+                    <td valign="bottom">
+                        <p class="MsoNormal"><span>12:00 pm&nbsp;-&nbsp;10:00 pm<o:p></o:p></span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="bottom">
+                        <p class="MsoNormal"><b><span>Tue<o:p></o:p></span></b></p>
+                    </td>
+                    <td valign="bottom">
+                        <p class="MsoNormal"><span>12:00 pm&nbsp;-&nbsp;10:00 pm<o:p></o:p></span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="bottom">
+                        <p class="MsoNormal"><b><span>Wed<o:p></o:p></span></b></p>
+                    </td>
+                    <td valign="bottom">
+                        <p class="MsoNormal"><span>12:00 pm&nbsp;-&nbsp;10:00 pm<o:p></o:p></span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="bottom">
+                        <p class="MsoNormal"><b><span>Thu<o:p></o:p></span></b></p>
+                    </td>
+                    <td valign="bottom">
+                        <p class="MsoNormal"><span>12:00 pm&nbsp;-&nbsp;10:00 pm<o:p></o:p></span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="bottom">
+                        <p class="MsoNormal"><b><span>Fri<o:p></o:p></span></b></p>
+                    </td>
+                    <td valign="bottom">
+                        <p class="MsoNormal"><span>12:00 pm&nbsp;-&nbsp;12:00 am<o:p></o:p></span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="bottom">
+                        <p class="MsoNormal"><b><span>Sat<o:p></o:p></span></b></p>
+                    </td>
+                    <td valign="bottom">
+                        <p class="MsoNormal"><span>12:00 pm&nbsp;-&nbsp;10:00 pm<o:p></o:p></span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="bottom">
+                        <p class="MsoNormal"><b><span>Sun<o:p></o:p></span></b></p>
+                    </td>
+                    <td valign="bottom">
+                        <p class="MsoNormal"><span>12:00 pm&nbsp;-&nbsp;10:00 pm<o:p></o:p></span></p>
+                    </td>
+                </tr>
+            </table>
+            </p>
+        </div>
     </div>
     <!-- /.col-md-4 -->
     <div class="col-md-4">
-        <h2>More Info</h2>
-        <p class="MsoNormal"><span>Mage&#39;s Realm is a fun and friendly
-				place to game. We welcome everyone to come and enjoy themselves.
-				Be sure to check out our weekly tournaments for Magic: The
-				Gathering, Yu-Gi-Oh, and WeiB Schwarz!</span><span class="apple-converted-space"><b><span><o:p></o:p></span></b></span></p>
-        <p>&nbsp;</p>
-
+        <div class="well">
+            <h2>More Info</h2>
+            <p class="MsoNormal"><span>Mage&#39;s Realm is a fun and friendly
+                    place to game. We welcome everyone to come and enjoy themselves.
+                    Be sure to check out our weekly tournaments for Magic: The
+                    Gathering, Yu-Gi-Oh, and WeiB Schwarz!</span><span class="apple-converted-space"><b><span><o:p></o:p></span></b></span></p>
+            <p>&nbsp;</p>
+        </div>>
     </div>
     <!-- /.col-md-4 -->
     <div class="col-md-4">
