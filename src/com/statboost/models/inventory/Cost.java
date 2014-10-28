@@ -2,6 +2,8 @@ package com.statboost.models.inventory;
 
 import com.statboost.models.enumType.ItemCondition;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 
 /**
@@ -9,6 +11,7 @@ import javax.persistence.ManyToOne;
  */
 public class Cost {
     private int costUid;
+
     private ItemCondition itemCondition;
     private Double itemPrice;
     private Integer itemQuantity;
@@ -37,6 +40,7 @@ public class Cost {
         this.costUid = costUid;
     }
 
+    @Enumerated(EnumType.STRING)
     public ItemCondition getItemCondition() {
         return itemCondition;
     }

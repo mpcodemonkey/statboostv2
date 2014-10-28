@@ -4,9 +4,7 @@ package com.statboost.controllers;
 import com.statboost.models.DAO.GenericDAO;
 import com.statboost.models.mtg.MagicCard;
 import com.statboost.models.session.QueryObject;
-import com.statboost.util.HibernateUtil;
 import com.statboost.util.ServletUtil;
-import org.hibernate.SessionFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -53,7 +51,6 @@ public class MagicSearchServlet extends HttpServlet {
         String defaultOrder = "asc";
         List<MagicCard> cards = null;
         int page = 1;
-        SessionFactory mtgFactory = HibernateUtil.getDatabaseSessionFactory();
 
         //query
         String hql = "From MagicCard where ";
