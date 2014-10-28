@@ -4,6 +4,7 @@ import com.statboost.models.enumType.ItemCondition;
 import com.statboost.models.inventory.Cost;
 import com.statboost.models.inventory.Inventory;
 import com.statboost.models.mtg.MagicCard;
+import com.statboost.models.ygo.YugiohCard;
 import com.statboost.util.HibernateUtil;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -67,6 +68,40 @@ public class DBModServlet extends HttpServlet {
                 logger.error("Could not loop through the magic cards.");
             }
         }
+
+            session = sessionFactory.openSession();
+            List<YugiohCard> ySet = null;
+
+            try {
+                tx = session.beginTransaction();
+                Query q = session.createQuery("FROM YugiohCard");
+                ySet = q.list();
+            } catch (Exception e) {
+                logger.error("Could not get the result set.", e);
+            }
+
+            if (resultSet != null) {
+
+                try {
+                    Random r = new Random();
+                    for (int j = 0; j < ySet.size(); j++) {
+                        Inventory inventory = new Inventory();
+                        inventory.setName(ySet.get(j).getYcrName());
+                        inventory.setImage(ySet.get(j).getYcrName());
+                        //generate random card costs
+
+                        inventory.setYugiohCard(ySet.get(j));
+
+                        session.save(inventory);
+
+                        System.out.println("Inserted " + inventory.getName() + " into db");
+                    }
+                    tx.commit();
+                    session.close();
+                } catch (Exception e) {
+                    logger.error("Could not loop through the magic cards.");
+                }
+            }
 
         session = sessionFactory.openSession();
         List<Inventory> iSet = null;
@@ -138,9 +173,6 @@ public class DBModServlet extends HttpServlet {
             } catch (Exception e) {
                 logger.error("Could not loop through the magic cards.");
             }
-
-
-            //todo: repeat but for Yo-ug-ioh
         }
     }
 }

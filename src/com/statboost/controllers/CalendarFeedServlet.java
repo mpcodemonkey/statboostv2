@@ -26,7 +26,8 @@ public class CalendarFeedServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         //query
-        List<Event> monthEvents = getCurrentSelectedMonthEvents();
+        Calendar cal = Calendar.getInstance();
+        List<Event> monthEvents = getCurrentSelectedMonthEvents(cal.get(cal.MONTH)+1);
 
         for(Event e: monthEvents){
             System.out.println(e.getTitle());
@@ -48,7 +49,7 @@ public class CalendarFeedServlet extends HttpServlet {
 
     }
 
-    private List<Event> getCurrentSelectedMonthEvents(){
+    private List<Event> getCurrentSelectedMonthEvents(int month){
 
 
         HashMap<String, String> buildableQuery = new HashMap<>();
@@ -61,6 +62,7 @@ public class CalendarFeedServlet extends HttpServlet {
         Calendar cal = Calendar.getInstance();
         cal.setTime(today);
         cal.set(Calendar.DAY_OF_MONTH, 1);
+        cal.set(Calendar.MONTH, month - 1 );
 
         first = cal.getTime();
 
