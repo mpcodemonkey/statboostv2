@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.statboost.models.inventory.Order" table="stt_order">
+        <id name="uid" column="ord_uid">
+            <generator class="identity"/>
+        </id>
+        <property name="status" column="ord_status">
+            <type name="com.statboost.models.enumType.HibernateVarCharEnum">
+                <param name="enumClass">com.statboost.models.enumType.OrderStatus</param>
+                <param name="type">12</param>
+            </type>
+        </property>
+        <property name="shippingTotal" column="ord_shipping_total"/>
+        <property name="orderTotal" column="ord_total"/>
+        <property name="taxTotal" column="ord_tax_total"/>
+        <property name="dateSubmitted" column="ord_date_submitted"/>
+        <property name="datePaid" column="ord_date_paid"/>
+        <property name="shippingMethod" column="ord_shipping_method"/>
+        <property name="shippingAddress1" column="ord_shipping_address1"/>
+        <property name="shippingAddress2" column="ord_shipping_address2"/>
+        <property name="shippingCity" column="ord_shipping_city"/>
+        <property name="shippingState" column="ord_shipping_state"/>
+        <property name="shippingZip" column="ord_shipping_zip"/>
+        <property name="transactionId" column="ord_transaction_id"/>
+        <property name="trackingNumber" column="ord_tracking_number"/>
+        <property name="inStorePickup" column="ord_in_store_pickup"/>
+        <property name="paid" column="ord_paid"/>
+        <many-to-one name="user" class="com.statboost.models.actor.User"
+                     column="ord_usr_uid" not-null="true" insert="true" update="true"
+                     cascade="all" />
+        <set name="inventoryItems" table="stt_inventory_item" cascade="all" inverse="true">
+            <key column="iit_uid" not-null="true"></key>
+            <one-to-many class="com.statboost.models.inventory.InventoryItem"/>
+        </set>
+    </class>
+</hibernate-mapping>
