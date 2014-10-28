@@ -34,6 +34,8 @@ public class ShoppingCartServlet extends HttpServlet {
 
 
         if (shoppingCart != null) {
+
+
             CartManager cartManager = new CartManager();
             cartManager.buildCartDataCollection(shoppingCart.getCartItems());
             List<CartManager.ItemDataObject> cartObjects = cartManager.getCartDataObjects();
@@ -80,13 +82,32 @@ public class ShoppingCartServlet extends HttpServlet {
         request.getRequestDispatcher("ShoppingCart.jsp").forward(request, response);
     }
 
-/*
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(); //obtain the session object if exists
 
+        //get user's shopping cart if it exists
+        ShoppingCartSessionObject shoppingCart = (ShoppingCartSessionObject) session.getAttribute("shoppingCart");
 
-        request.getRequestDispatcher("ShoppingCart.jsp").forward(request, response);
+        //handle item removal via ajax/rest call
+        if (request.getParameter("removeItem") != null) {
+            int itemIndex;
+            try {
+                itemIndex = Integer.parseInt(request.getParameter("removeItem")) - 1;
+            } catch (NumberFormatException e) {
+                itemIndex = -1;
+            }
+            if (itemIndex > -1 && itemIndex < shoppingCart.getCartItems().size()) {
+                shoppingCart.removeCartItem(itemIndex);
+                response.sendRedirect("/");
+            }
+        }
+
+        //handle item quantity update via ajax/rest call
+        //TODO: handle item quantity update via ajax/rest call
+
     }
-    */
+
 
     //inner class used by JSP
     public class ShoppingCartItem {
