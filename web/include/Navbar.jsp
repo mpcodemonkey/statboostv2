@@ -1,4 +1,6 @@
+<%@ page import="com.statboost.models.session.ShoppingCartSessionObject" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%--
   Created by IntelliJ IDEA.
   User: Sam
@@ -47,9 +49,19 @@
                 &nbsp;<span class="glyphicon glyphicon-search" style="color:white" title="Type a card name to search for."></span>
             </form>
 
+            <c:if test="${sessionScope.shoppingCart != null}">
+                <%
+                    int cartSize = ((ShoppingCartSessionObject)session.getAttribute("shoppingCart")).getCartItems().size();
+                    session.setAttribute("cartSize", cartSize);
+                %>
+                <div class="">
+                    <button class="btn btn-sm navbar-btn" onclick="window.location='/cart'"><span class="glyphicon glyphicon-shopping-cart"></span> Cart &nbsp;<span class="badge">${cartSize}</span></button>
+                </div>
+            </c:if>
+
             <c:if test="${sessionScope.email != null}">
                 <div class="btn-group">
-                    <button type="button" class="btn navbar-btn navbar-right btn-success dropdown-toggle" data-toggle="dropdown">
+                    <button type="button" class="btn navbar-btn btn-success dropdown-toggle" data-toggle="dropdown">
                         <c:out value="${sessionScope.email}"/>&nbsp;<span class="glyphicon glyphicon-user"></span>
                     </button>
                     <ul class="dropdown-menu">

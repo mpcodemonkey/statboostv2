@@ -11,6 +11,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -30,27 +31,35 @@ public class OrderManager {
     public boolean createOrder(User user, ShoppingCartSessionObject shoppingCart, Map<String, String> orderParams) {
         boolean result = false;
 
+        //init new order object
         Order order = new Order();
         order.setUser(user);
         order.setPaid(false);
         order.setStatus(OrderStatus.PLACED);
 
-        //TODO: set order total, tax total, shipping method, shipping total
+        //set order totals
+        order.setShippingTotal(Double.parseDouble(orderParams.get("shippingTotal")));
+        order.setTaxTotal(Double.parseDouble(orderParams.get("taxTotal")));
+        order.setOrderTotal(Double.parseDouble(orderParams.get("orderTotal")));
 
         //set order shipping details
         order.setInStorePickup(Boolean.parseBoolean(orderParams.get("inStorePickup")));
+        order.setShippingMethod(orderParams.get("shippingMethod"));
         order.setShippingAddress1(orderParams.get("shippingAddress1"));
         order.setShippingAddress1(orderParams.get("shippingAddress2"));
         order.setShippingCity(orderParams.get("shippingCity"));
         order.setShippingState(orderParams.get("shippingState"));
         order.setShippingZip(orderParams.get("shippingZip"));
 
+        //set date time to now
+        order.setDateSubmitted(new Date());
+
 
         Session session = HibernateUtil.getDatabaseSessionFactory().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            //insert the order record to the database
+            //insert the order record into the database
             int orderID = (Integer) session.save(order);
 
             //create the inventory items and link them to the order

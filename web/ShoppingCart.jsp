@@ -15,11 +15,8 @@
 <script>
     $(document).ready(function () {
         //init input masks
-        $('#zip').mask('99999?-9999', {placeholder: "-"});
-
-
+        $('.qty').mask('9?9', {placeholder: ""});
     });
-
 </script>
 
 
@@ -32,88 +29,89 @@
                 <strong>Alert:</strong> <c:out value="${requestScope.alert}" />
             </div>
         </c:if>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Item Description</th>
-                    <th>Condition</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Total</th>
-                    <th>Remove</th>
-                </tr>
-            </thead>
-            <tbody>
-
-                <c:choose>
-                    <c:when test="${fn:length(requestScope.itemsInCart) gt 0}">
+        <c:choose>
+            <c:when test="${fn:length(requestScope.itemsInCart) gt 0}">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Item Description</th>
+                            <th>Condition</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         <c:forEach items="${requestScope.itemsInCart}" var="cartItem" varStatus="status">
                             <tr>
                                 <td>${status.count}</td>
                                 <td>
                                     <div class="col-lg-10">
-                                            ${cartItem.name}:
-                                            ${cartItem.description}
+                                        ${cartItem.name}:
+                                        ${cartItem.description}
                                     </div>
                                     <div class="col-lg-2">
                                         <img src="http://placehold.it/75X75" class="img-rounded">
-                                            ${cartItem.imageName}
+                                         ${cartItem.imageName}
                                     </div>
-
                                 </td>
                                 <td>${cartItem.condition}</td>
-                                <td class="col-sm-1"><input name="qty" type="text" class="form-control" placeholder="QTY" value="${cartItem.quantity}" maxlength="2" size="2"></td>
+                                <td class="col-sm-1"><input name="qty" type="text" class="form-control qty" placeholder="QTY" value="${cartItem.quantity}" maxlength="2" size="2"></td>
                                 <td><fmt:formatNumber value="${cartItem.price}" type="currency"/></td>
                                 <td><fmt:formatNumber value="${cartItem.total}" type="currency"/></td>
-                                <td><button class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove"></span></button></td>
+                                <td><button class="btn btn-sm btn-danger" onclick="removeItem(${status.count})"><span class="glyphicon glyphicon-remove"></span></button></td>
                             </tr>
                         </c:forEach>
-                    </c:when>
-                    <c:otherwise>
+                    </tbody>
+                </table>
 
-                        <div>
-                            <h2>There seems to be no items in your shopping cart.</h2>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>In Store Pickup?</label><br>
+                            <select class="form-control">
+                                <option>2920 Arden Way, Sacramento CA</option>
+                                <option selected>No</option>
+                            </select>
                         </div>
-
-                    </c:otherwise>
-                </c:choose>
-
-
-
-            </tbody>
-        </table>
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label>In Store Pickup?</label><br>
-                    <select class="form-control">
-                        <option>2920 Arden Way, Sacramento CA</option>
-                        <option selected>No</option>
-                    </select>
+                    </div>
+                    <div class="col-md-4 col-md-push-2">
+                        <div>
+                            Calculate shipping rates: null
+                        </div>
+                        <div>
+                            Subtotal: null<br>
+                            Tax: null<br>
+                            <h2 style="color: darkred;">Order Total: null</h2><br>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4 col-md-push-2">
+
+                <div class="row">
+                    <div class="col-lg-1 col-lg-push-10">
+                        <button class="btn btn-lg btn-primary">Checkout</button>
+                    </div>
+                </div>
+
+            </c:when>
+            <c:otherwise>
                 <div>
-                    Calculate shipping rates: null
+                    <h2 align="center">There seems to be no items in your shopping cart.</h2>
                 </div>
-                <div>
-                    Subtotal: null<br>
-                    Tax: null<br>
-                    <h2 style="color: darkred;">Order Total: null</h2><br>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-1 col-lg-push-10">
-                <button class="btn btn-lg btn-primary">Checkout</button>
-            </div>
-        </div>
+            </c:otherwise>
+        </c:choose>
 
     </div>
 </div>
+
+<script>
+    function removeItem(elmnt) {
+        $.post("/cart", 'removeItem='+elmnt);
+        setTimeout(function() {window.location='/cart';}, 500);
+    }
+</script>
 
 
 <jsp:include page="/include/Footer.jsp"/>
