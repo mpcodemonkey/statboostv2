@@ -11,11 +11,9 @@
 
 <link rel="stylesheet" href="/include/stylesheets/bootstrap-multiselect.css">
 <link rel="stylesheet" href="/include/stylesheets/bootstrap-select.min.css">
-<link rel="stylesheet" href="/include/stylesheets/bootstrap.css">
 
 <script src="/include/javascripts/bootstrap-multiselect.js"></script>
 <script src="/include/javascripts/bootstrap-select.min.js"></script>
-<script src="/include/javascripts/bootstrap.js"></script>
 
 <c:if test="${requestScope.card != null}">
     <div class="alert alert-info fade in">
