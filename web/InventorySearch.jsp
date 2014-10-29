@@ -24,12 +24,12 @@
                     </div>
                     <div class="form-group">
                         <select name="condPicker" id="condPicker" class="selectpicker" data-width="auto">
-                            <option value="=">New</option>
-                            <option value="<">Near Mint</option>
-                            <option value=">">Lightly Played</option>
-                            <option value="<=">Moderately Played</option>
-                            <option value=">=">Heavily Played</option>
-                            <option value="!=">Damaged</option>
+                            <option value="New">New</option>
+                            <option value="Near Mint">Near Mint</option>
+                            <option value="Lightly Played">Lightly Played</option>
+                            <option value="Moderately Played">Moderately Played</option>
+                            <option value="Heavily Played">Heavily Played</option>
+                            <option value="Damaged">Damaged</option>
                         </select>
                     </div>
                     <div class="form-group">

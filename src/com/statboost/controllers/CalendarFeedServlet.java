@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,7 +29,11 @@ public class CalendarFeedServlet extends HttpServlet {
 
         //query
         Calendar cal = Calendar.getInstance();
-        List<Event> monthEvents = getCurrentSelectedMonthEvents(cal.get(cal.MONTH)+1);
+
+        String start = request.getParameter("start");
+        String end = request.getParameter("end");
+        System.out.println(start);
+        List<Event> monthEvents = getCurrentSelectedMonthEvents(start, end);
 
         for(Event e: monthEvents){
             System.out.println(e.getTitle());
@@ -49,7 +55,7 @@ public class CalendarFeedServlet extends HttpServlet {
 
     }
 
-    private List<Event> getCurrentSelectedMonthEvents(int month){
+    private List<Event> getCurrentSelectedMonthEvents(String start, String end){
 
 
         HashMap<String, String> buildableQuery = new HashMap<>();
@@ -58,17 +64,17 @@ public class CalendarFeedServlet extends HttpServlet {
 
         String hql = "From Event where";
 
-        Date first = null, last = null, today = new Date();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(today);
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-        cal.set(Calendar.MONTH, month - 1 );
+        Date first = null, last = null;
 
-        first = cal.getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(cal.DAY_OF_MONTH));
+        try{
+            first = formatter.parse(start);
+            last = formatter.parse(end);
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
 
-        last = cal.getTime();
 
 
         monthConstraint = " fromDate >= :startD";
