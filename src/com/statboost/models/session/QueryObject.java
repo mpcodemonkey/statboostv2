@@ -7,7 +7,7 @@ import java.util.HashMap;
  */
 public class QueryObject {
 
-    public HashMap<String, String> getQueryParameters() {
+    public HashMap<String, Object> getQueryParameters() {
         return queryParameters;
     }
 
@@ -15,10 +15,10 @@ public class QueryObject {
         return hqlQuery;
     }
 
-    private HashMap<String, String> queryParameters;
+    private HashMap<String, Object> queryParameters;
     private String hqlQuery;
 
-    public QueryObject(HashMap<String,String> qp, String hql){
+    public QueryObject(HashMap<String,Object> qp, String hql){
         queryParameters = qp;
         hqlQuery = hql;
     }

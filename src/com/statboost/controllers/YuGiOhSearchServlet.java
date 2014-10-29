@@ -91,7 +91,7 @@ public class YuGiOhSearchServlet extends HttpServlet {
                    = iconConstraint = monsterTypeConstraint = cardTypeConstraint =
                     "";
             ArrayList<String> queryparams = new ArrayList<>();
-            HashMap<String, String> buildableQuery = new HashMap<>();
+            HashMap<String, Object> buildableQuery = new HashMap<>();
             boolean prevCon = false;
             String and = " and";
             String defaultOrderBy = "ycrName";

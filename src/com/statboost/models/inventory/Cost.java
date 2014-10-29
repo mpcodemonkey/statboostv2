@@ -32,6 +32,18 @@ public class Cost {
         }
     }
 
+    public static ItemCondition getConditionEnum(String condition){
+        switch(condition){
+            case "New": return ItemCondition.NEW;
+            case "Near Mint": return ItemCondition.NEAR_MINT;
+            case  "Lightly Played": return ItemCondition.LIGHTLY_PLAYED;
+            case "Moderately Played": return ItemCondition.MODERATELY_PLAYED;
+            case "Heavily Played": return ItemCondition.HEAVILY_PLAYED;
+            case "Damaged": return ItemCondition.DAMAGED;
+            default: return ItemCondition.NEW;
+        }
+    }
+
     public int getCostUid() {
         return costUid;
     }

@@ -44,7 +44,7 @@ public class MagicSearchServlet extends HttpServlet {
         String nameConstraint, typeConstraint, subTypeConstraint, rulesConstraint, colorsConstraint, rarityConstraint, setIdConstraint, expConstraint, cmcConstraint;
         nameConstraint = typeConstraint = subTypeConstraint = rulesConstraint = colorsConstraint = rarityConstraint = setIdConstraint = expConstraint = cmcConstraint = "";
         ArrayList<String> queryparams = new ArrayList<>();
-        HashMap<String, String> buildableQuery = new HashMap<>();
+        HashMap<String, Object> buildableQuery = new HashMap<>();
         boolean prevCon = false;
         String and = " and";
         String defaultOrderBy = "mcrCardName, mcrSetId";
