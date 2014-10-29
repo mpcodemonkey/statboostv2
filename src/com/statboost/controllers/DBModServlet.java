@@ -122,7 +122,7 @@ public class DBModServlet extends HttpServlet {
                     cost0.setItemQuantity(r.nextInt(5) + 1);
                     cost0.setInvUid(iSet.get(j).getUid());
                     cost0.setInventory(iSet.get(j));
-                    cost0.setItemCondition(ItemCondition.NEAR_MINT);
+                    cost0.setItemCondition(ItemCondition.NEW);
                     session.save(cost0);
 
                     Cost cost1 = new Cost();

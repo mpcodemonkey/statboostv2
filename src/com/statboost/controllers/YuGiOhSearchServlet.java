@@ -95,7 +95,7 @@ public class YuGiOhSearchServlet extends HttpServlet {
             boolean prevCon = false;
             String and = " and";
             String defaultOrderBy = "ycrName";
-            String defaultOrder = "desc";
+            String defaultOrder = "asc";
 
             if(request.getParameter("nameInput") != null && !request.getParameter("nameInput").equals(""))
             {
