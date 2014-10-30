@@ -21,18 +21,16 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by Sam Kerr on 9/12/2014.
+ * Created by Jon Tinney on 10/28/2014.
  */
 @WebServlet("/eventFeed")
 public class CalendarFeedServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         //query
-        Calendar cal = Calendar.getInstance();
-
         String start = request.getParameter("start");
         String end = request.getParameter("end");
-        System.out.println(start);
+        //get events in start-end date range
         List<Event> monthEvents = getCurrentSelectedMonthEvents(start, end);
 
         for(Event e: monthEvents){
@@ -56,7 +54,7 @@ public class CalendarFeedServlet extends HttpServlet {
     }
 
     private List<Event> getCurrentSelectedMonthEvents(String start, String end){
-
+        Calendar cal = Calendar.getInstance();
 
         HashMap<String, String> buildableQuery = new HashMap<>();
         String monthConstraint = null;
@@ -65,7 +63,6 @@ public class CalendarFeedServlet extends HttpServlet {
         String hql = "From Event where";
 
         Date first = null, last = null;
-
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
         try{
@@ -73,6 +70,21 @@ public class CalendarFeedServlet extends HttpServlet {
             last = formatter.parse(end);
         }catch(ParseException e){
             e.printStackTrace();
+        }
+
+        //logic to adjust start and end range for beginning and end of selected month
+        if (first != null && last != null) {
+            cal.setTime(first);
+            cal.add(Calendar.MONTH, 1); //month is passed in as 0 for January
+            cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH)); //get first day of month
+            setTimeToBeginningOfDay(cal);
+            first = cal.getTime(); System.out.println("first: " + first.toString());
+
+            cal.setTime(last);
+            cal.add(Calendar.MONTH, -1); //month is passed in as 0 for January
+            cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH)); //get last day of month
+            setTimeToEndofDay(cal);
+            last = cal.getTime();  System.out.println("last: " + last.toString());
         }
 
 
@@ -105,5 +117,19 @@ public class CalendarFeedServlet extends HttpServlet {
 
 
         return currentMonthEvents;
+    }
+
+    private void setTimeToBeginningOfDay(Calendar calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+    }
+
+    private void setTimeToEndofDay(Calendar calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
     }
 }
