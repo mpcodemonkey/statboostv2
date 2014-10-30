@@ -58,7 +58,7 @@
                                     </div>
                                 </td>
                                 <td>${cartItem.condition}</td>
-                                <td class="col-sm-1"><input name="qty" type="text" class="form-control qty" placeholder="QTY" value="${cartItem.quantity}" maxlength="2" size="2"></td>
+                                <td class="col-sm-1"><input name="qty" type="text" class="form-control qty" placeholder="QTY" onchange="updateItemQty(${status.count}, this.value)" value="${cartItem.quantity}" maxlength="2" size="2"></td>
                                 <td><fmt:formatNumber value="${cartItem.price}" type="currency"/></td>
                                 <td><fmt:formatNumber value="${cartItem.total}" type="currency"/></td>
                                 <td><button class="btn btn-sm btn-danger" onclick="removeItem(${status.count})"><span class="glyphicon glyphicon-remove"></span></button></td>
@@ -66,6 +66,7 @@
                         </c:forEach>
                     </tbody>
                 </table>
+
 
                 <div class="row">
                     <div class="col-md-4">
@@ -78,14 +79,22 @@
                         </div>
                     </div>
                     <div class="col-md-4 col-md-push-2">
-                        <div>
-                            Calculate shipping rates: null
-                        </div>
-                        <div>
-                            Subtotal: null<br>
-                            Tax: null<br>
-                            <h2 style="color: darkred;">Order Total: null</h2><br>
-                        </div>
+                       <div class="well well-lg totalBox">
+                            <div>
+                                <p class="lead">
+                                    Calculate shipping rates: null<br>
+
+                                </p>
+                            </div>
+                            <div>
+                                <p class="lead">
+                                    Subtotal: <fmt:formatNumber value="${cartTotal.subtotal}" type="currency"/><br>
+                                    Tax: <fmt:formatNumber value="${cartTotal.taxTotal}" type="currency"/><br>
+                                    Shipping Total: <fmt:formatNumber value="${cartTotal.shippingTotal}" type="currency"/>
+                                </p>
+                                <h2 style="color: darkred;">Order Total: <fmt:formatNumber value="${cartTotal.orderTotal}" type="currency"/></h2><br>
+                            </div>
+                       </div>
                     </div>
                 </div>
 
@@ -97,7 +106,7 @@
 
             </c:when>
             <c:otherwise>
-                <div>
+                <div style="margin-top: 200px;">
                     <h2 align="center">There seems to be no items in your shopping cart.</h2>
                 </div>
             </c:otherwise>
@@ -107,11 +116,28 @@
 </div>
 
 <script>
-    function removeItem(elmnt) {
-        $.post("/cart", 'removeItem='+elmnt);
+    function removeItem(index) {
+        $.post("/cart", 'removeItem='+index);
+        setTimeout(function() {window.location='/cart';}, 500);
+    }
+
+    function updateItemQty(index, quantity) {
+        $.post("/cart", 'updateQuantity='+index+'&newQty='+quantity);
         setTimeout(function() {window.location='/cart';}, 500);
     }
 </script>
 
+<style>
+    .totalBox {
+        background: #f5f6f6; /* Old browsers */
+        background: -moz-linear-gradient(top,  #f5f6f6 0%, #dbdce2 21%, #b8bac6 49%, #dddfe3 80%, #dbdbdb 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f5f6f6), color-stop(21%,#dbdce2), color-stop(49%,#b8bac6), color-stop(80%,#dddfe3), color-stop(100%,#dbdbdb)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top,  #f5f6f6 0%,#dbdce2 21%,#b8bac6 49%,#dddfe3 80%,#dbdbdb 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top,  #f5f6f6 0%,#dbdce2 21%,#b8bac6 49%,#dddfe3 80%,#dbdbdb 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(top,  #f5f6f6 0%,#dbdce2 21%,#b8bac6 49%,#dddfe3 80%,#dbdbdb 100%); /* IE10+ */
+        background: linear-gradient(to bottom,  #f5f6f6 0%,#dbdce2 21%,#b8bac6 49%,#dddfe3 80%,#dbdbdb 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', endColorstr='#dbdbdb',GradientType=0 ); /* IE6-9 */
+    }
+</style>
 
 <jsp:include page="/include/Footer.jsp"/>

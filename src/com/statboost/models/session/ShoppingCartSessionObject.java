@@ -31,6 +31,7 @@ public class ShoppingCartSessionObject {
         public int getQuantity() {
             return quantity;
         }
+        public void setQuantity(int quantity) { this.quantity = quantity; }
 
         public ItemCondition getCondition() {
             return condition;
@@ -53,6 +54,15 @@ public class ShoppingCartSessionObject {
     public void addCartItem(Integer inventoryUID, int quantity, ItemCondition condition) {
         RequestedItem requestedItem = new RequestedItem(inventoryUID, quantity, condition);
         cartList.add(requestedItem);
+    }
+
+    /**
+     * Update the quantity requested of an item in the shopping cart.
+     * @param itemIndex - item index in the cart list
+     * @param quantity - new quantity requested
+     */
+    public void updateCartItem(Integer itemIndex, int quantity) {
+        cartList.get(itemIndex).setQuantity(quantity);
     }
 
     /**
