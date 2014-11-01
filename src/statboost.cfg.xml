@@ -11,8 +11,15 @@
         <property name="connection.is-connection-validation-required">true</property>
         <property name="hibernate.connection.release_mode">after_transaction</property>
 
-         <!--Dev Connection-->
+         <!--Dev Connection(Jon)--><!--
         <property name="hibernate.connection.url">jdbc:mysql://107.138.65.186:3306/statboost?characterEncoding=UTF-8</property>
+        <property name="hibernate.connection.username">generic</property>
+        <property name="hibernate.connection.password">generic11PASSWORD</property>
+        -->
+
+        <!--Dev Alt connection(DigitalOcean) -->
+
+        <property name="hibernate.connection.url">jdbc:mysql://104.131.189.31:3306/statboost?characterEncoding=UTF-8</property>
         <property name="hibernate.connection.username">generic</property>
         <property name="hibernate.connection.password">generic11PASSWORD</property>
 
