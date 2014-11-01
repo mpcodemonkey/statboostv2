@@ -121,6 +121,19 @@
     </div>
 </div>
 
+<script type="text/javascript">
+    var bugmuncher_options = {
+        api_key: "b616434b2747fa2a83e6cb17d1c64435be75d176"
+    };
+    (function(){
+        var node = document.createElement("script");
+        node.setAttribute("type", "text/javascript");
+        node.setAttribute("src", "//app.bugmuncher.com/js/bugMuncher.min.js");
+        document.getElementsByTagName("head")[0].appendChild(node);
+    })();
+</script>
+
+
 <!-- carousel styling -->
 <style>
     #fb-root {
