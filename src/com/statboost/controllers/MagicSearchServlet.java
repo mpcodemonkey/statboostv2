@@ -154,11 +154,11 @@ public class MagicSearchServlet extends HttpServlet {
 
         }
         else if(request.getParameter("advancedSubmit") != null) {
-            if (request.getParameter("cardName") != null && !request.getParameter("cardName").equals("")) {
+            if (request.getParameter("magicCardName") != null && !request.getParameter("magicCardName").equals("")) {
                 nameConstraint = "mcrCardName LIKE :name";
 
                 queryparams.add(nameConstraint);
-                buildableQuery.put("name", ServletUtil.sanitizeWildcard(request.getParameter("cardName")));
+                buildableQuery.put("name", ServletUtil.sanitizeWildcard(request.getParameter("magicCardName")));
                 prevCon = true;
             }
             if (request.getParameter("type") != null && !request.getParameter("type").equals("")) {

@@ -39,7 +39,7 @@
 
                         <!-- Tab panes -->
                         <div class="tab-content">
-                            <div class="tab-pane active fade in" id="simple" style="">
+                            <div class="tab-pane active fade in" id="simple" name="simple" style="">
                                 <!--<div class="col-md-6">-->
                                     <form action="" method="post" id="searchFailSafe1" class="form-horizontal">
                                         <div class="form-group">
@@ -72,13 +72,13 @@
                                     </form>
                                 <!--</div>-->
                             </div>
-                            <div class="tab-pane fade" id="advanced" name="advancedSubmit">
+                            <div class="tab-pane fade" id="advanced" name="advanced">
                                 <form action="" method="post">
                                     <div class="col-md-6">
                                         <br />
                                         <div class="form-group">
-                                            <label class="control-label" for="cardName">Name</label>
-                                            <input type="text" class="form-control" id="cardName" name="cardName" placeholder="The name of the card">
+                                            <label class="control-label" for="magicCardName">Name</label>
+                                            <input type="text" class="form-control" id="magicCardName" name="magicCardName" placeholder="The name of the card">
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label" for="type">Type</label>
@@ -337,7 +337,7 @@
 												<option value="desc">Descending</option>
 											</select>
 										</div>
-										<input class="btn btn-primary" type="submit" name="advancedSubmit" value="Search">
+										<input class="btn btn-primary" type="submit" name="advancedSubmit" id="advancedSubmit" value="Search">
 									</div>
                                 </form>
                             </div>
@@ -390,9 +390,7 @@
                     }
                 }
             }
-        }).on('success.form.bv', function(e) {
-            $("#simpleSubmit").click();
-        });
+        })
     });
 </script>
 

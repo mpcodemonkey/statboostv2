@@ -106,7 +106,6 @@ public class CalendarFeedServlet extends HttpServlet {
             query.setParameter("endD", last);
 
             currentMonthEvents = (List<Event>)query.list();
-
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();

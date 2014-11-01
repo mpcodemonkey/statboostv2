@@ -1,8 +1,10 @@
 package com.statboost.controllers;
 
 import com.statboost.models.enumType.ItemCondition;
+import com.statboost.models.inventory.Category;
 import com.statboost.models.inventory.Cost;
 import com.statboost.models.inventory.Inventory;
+import com.statboost.models.inventory.InventoryCategory;
 import com.statboost.models.mtg.MagicCard;
 import com.statboost.models.ygo.YugiohCard;
 import com.statboost.util.HibernateUtil;
@@ -50,6 +52,10 @@ public class DBModServlet extends HttpServlet {
 
             try {
                 Random r = new Random();
+                Query qCats = session.createQuery("From Category where category = :m or category = :s");
+                qCats.setParameter("m", "magic");
+                qCats.setParameter("s", "single");
+                List<Category> cats = qCats.list();
                 for (int j = 0; j < resultSet.size(); j++) {
                     Inventory inventory = new Inventory();
                     inventory.setName(resultSet.get(j).getMcrCardName());
@@ -58,7 +64,16 @@ public class DBModServlet extends HttpServlet {
 
                     inventory.setMagicCard(resultSet.get(j));
 
+
                     session.save(inventory);
+
+                    for(Category c: cats){
+                        InventoryCategory ic = new InventoryCategory();
+                        ic.setInvUid(inventory.getUid());
+                        ic.setCatUid(c.getCatUid());
+
+                        session.save(ic);
+                    }
 
                     System.out.println("Inserted " + inventory.getName() + " into db");
                 }
@@ -83,6 +98,10 @@ public class DBModServlet extends HttpServlet {
             if (resultSet != null) {
 
                 try {
+                    Query qCats = session.createQuery("From Category where category = :y or category = :s");
+                    qCats.setParameter("y", "yugioh");
+                    qCats.setParameter("s", "single");
+                    List<Category> cats = qCats.list();
                     Random r = new Random();
                     for (int j = 0; j < ySet.size(); j++) {
                         Inventory inventory = new Inventory();
@@ -93,6 +112,14 @@ public class DBModServlet extends HttpServlet {
                         inventory.setYugiohCard(ySet.get(j));
 
                         session.save(inventory);
+
+                        for(Category c: cats){
+                            InventoryCategory ic = new InventoryCategory();
+                            ic.setInvUid(inventory.getUid());
+                            ic.setCatUid(c.getCatUid());
+
+                            session.save(ic);
+                        }
 
                         System.out.println("Inserted " + inventory.getName() + " into db");
                     }

@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +28,13 @@ public class InventorySearchServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        request.getRequestDispatcher("InventorySearch.jsp").forward(request, response);
+        if(request.getParameter("page") != null && !request.getParameter("page").equals("")) {
+            doPost(request, response);
+        }
+        else{
+            request.getRequestDispatcher("InventorySearch.jsp").forward(request, response);
+        }
+
     }
 
     @Override
@@ -41,6 +48,52 @@ public class InventorySearchServlet extends HttpServlet {
         List<Object> inventoryResults = null;
         int page = 1;
         String hql = "From Inventory as I, Cost as C where C.invUid = I.uid ";
+
+
+
+        //check if query object is in the session
+        //new search invalidates check
+        if(request.getParameter("page") == null) {
+            HttpSession session = request.getSession();
+            if (session.getAttribute("QueryObject") != null) {
+                session.removeAttribute("QueryObject");
+            }
+        }
+        else if(request.getParameter("page") != null){
+            HttpSession session = request.getSession();
+            if (session.getAttribute("QueryObject") != null) {
+                page = Integer.parseInt(request.getParameter("page"));
+                QueryObject sessionQuery = (QueryObject)session.getAttribute("QueryObject");
+
+                GenericDAO mcAccessObject = new GenericDAO();
+
+                inventoryResults = (List<Object>)mcAccessObject.getResultSet(sessionQuery, page);
+
+
+                session.setAttribute("QueryObject", sessionQuery);
+
+                ArrayList<InventoryRecord> inventoryPage = getInventoryRecords(inventoryResults);
+
+                //set search results
+                if (inventoryPage != null && inventoryPage.size()>0) {
+                    request.setAttribute("inventoryList", inventoryPage);
+                    int numberOfPages = (int)Math.ceil((double)mcAccessObject.getNumberOfResults()/mcAccessObject.getNumberPerPage());
+                    System.out.println(numberOfPages);
+                    request.setAttribute("numberOfPages", numberOfPages);
+                    request.setAttribute("currentPage", mcAccessObject.getCurrentPage());
+                } else {
+                    request.setAttribute("alertType", "warning");
+                    request.setAttribute("alert", "Sorry, no cards were found.  Please try another search.");
+                }
+                //route to results page even if no results found or transaction throws exception
+                request.getRequestDispatcher("InventoryResult.jsp").forward(request, response);
+                return;//necessary
+            }
+        }
+
+
+
+
         SessionFactory invFactory = HibernateUtil.getDatabaseSessionFactory();
 
         if(request.getParameter("nameField") != null && !request.getParameter("nameField").equalsIgnoreCase("")){
@@ -66,11 +119,31 @@ public class InventorySearchServlet extends HttpServlet {
         QueryObject inventoryQuery = new QueryObject(buildableQuery, hql);
         GenericDAO inventoryDAO = new GenericDAO();
 
-        inventoryResults = (List<Object>)inventoryDAO.getResultSet(inventoryQuery);
+        inventoryResults = (List<Object>)inventoryDAO.getResultSet(inventoryQuery, page);
 
+        HttpSession session = request.getSession();
+        session.setAttribute("QueryObject", inventoryQuery);
+
+        ArrayList<InventoryRecord> inventoryPage = getInventoryRecords(inventoryResults);
+
+        //set search results
+        if (inventoryPage != null && inventoryPage.size()>0) {
+            request.setAttribute("inventoryList", inventoryPage);
+            int numberOfPages = (int)Math.ceil((double)inventoryDAO.getNumberOfResults()/inventoryDAO.getNumberPerPage());
+            request.setAttribute("numberOfPages", numberOfPages);
+            request.setAttribute("currentPage", inventoryDAO.getCurrentPage());
+        } else {
+            request.setAttribute("alertType", "warning");
+            request.setAttribute("alert", "Sorry, no cards were found.  Please try another search.");
+        }
+        //route to results page even if no results found or transaction throws exception
+        request.getRequestDispatcher("InventoryResult.jsp").forward(request, response);
+
+    }
+
+    private ArrayList<InventoryRecord> getInventoryRecords(List<Object> results){
         ArrayList<InventoryRecord> inventoryPage = new ArrayList<>();
-
-        Iterator pairsIt = inventoryResults.iterator();
+        Iterator pairsIt = results.iterator();
         while(pairsIt.hasNext()){
             Object[] pair = (Object[]) pairsIt.next();
             Inventory inv = (Inventory)pair[0];
@@ -89,17 +162,7 @@ public class InventorySearchServlet extends HttpServlet {
 
         }
 
-        for(InventoryRecord ir : inventoryPage){
-            System.out.println(ir.inv_uid);
-            System.out.println(ir.quantity);
-            System.out.println(ir.price);
-            System.out.println(ir.name);
-            System.out.println(ir.description);
-            System.out.println(ir.imageName);
-            System.out.println(ir.condition);
-        }
-
-
+        return inventoryPage;
     }
 
     public class InventoryRecord {

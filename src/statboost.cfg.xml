@@ -56,5 +56,7 @@
         <mapping resource="Order.hbm.xml"/>
         <mapping resource="StockNotification.hbm.xml"/>
         <mapping resource="Cost.hbm.xml"/>
+        <mapping resource="Category.hbm.xml"/>
+        <mapping resource="InventoryCategory.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>
