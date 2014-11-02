@@ -1,6 +1,5 @@
 package com.statboost.controllers;
 
-import com.statboost.models.enumType.ItemCondition;
 import com.statboost.models.inventory.Cost;
 import com.statboost.models.inventory.Inventory;
 import com.statboost.models.session.ShoppingCartSessionObject;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Sam Kerr on 10/18/2014.
@@ -76,14 +74,14 @@ public class ShoppingCartServlet extends HttpServlet {
             /**
              * THIS SECTION WILL BE REMOVED
              * Create test cart session to mimic a shopping cart the user made. For test purposes
-             */
+             *//*
             ShoppingCartSessionObject fakeShoppingCart = new ShoppingCartSessionObject();
             Random rdm = new Random();
             fakeShoppingCart.addCartItem(rdm.nextInt(20000), rdm.nextInt(5)+1, ItemCondition.NEW); //1-5 items wanted of new condition
             fakeShoppingCart.addCartItem(rdm.nextInt(20000), rdm.nextInt(5)+1, ItemCondition.MODERATELY_PLAYED); //1-5 items wanted of moderately played
             fakeShoppingCart.addCartItem(rdm.nextInt(20000), rdm.nextInt(5)+1, ItemCondition.DAMAGED); //1-5 items wanted of damaged
             session.setAttribute("shoppingCart", fakeShoppingCart);
-            /**
+            *//**
              * End test cart creation
              */
         }
@@ -94,43 +92,74 @@ public class ShoppingCartServlet extends HttpServlet {
 
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(); //obtain the session object if exists
+        HttpSession session = request.getSession(); //obtain the session object
 
         //get user's shopping cart if it exists
         ShoppingCartSessionObject shoppingCart = (ShoppingCartSessionObject) session.getAttribute("shoppingCart");
 
-        //handle item removal via ajax/rest call
-        if (request.getParameter("removeItem") != null) {
-            int itemIndex;
-            try {
-                itemIndex = Integer.parseInt(request.getParameter("removeItem")) - 1;
-            } catch (NumberFormatException e) {
-                itemIndex = -1;
-            }
-            if (itemIndex > -1 && itemIndex < shoppingCart.getCartItems().size()) {
-                shoppingCart.removeCartItem(itemIndex);
-            }
-        }
+            //handle add item to cart via ajax/rest call
+            if (request.getParameter("addItem") != null &&
+                    request.getParameter("inv_uid") != null &&
+                    request.getParameter("condition") != null &&
+                    request.getParameter("quantity") != null) {
 
-        //handle item quantity update via ajax/rest call
-        if (request.getParameter("updateQuantity") != null && request.getParameter("newQty") != null) {
-            int itemIndex;
-            int newQty;
-            try {
-                itemIndex = Integer.parseInt(request.getParameter("updateQuantity")) - 1;
-                newQty = Integer.parseInt(request.getParameter("newQty"));
-            } catch (NumberFormatException e) {
-                itemIndex = -1;
-                newQty = -1;
-            }
-            if (newQty > -1 && itemIndex > -1 && itemIndex < shoppingCart.getCartItems().size()) {
-                if (newQty == 0) {
-                    shoppingCart.removeCartItem(itemIndex);
-                } else {
-                    shoppingCart.updateCartItem(itemIndex, newQty);
+                //get parameter data
+                String inv_uid = request.getParameter("inv_uid");
+                String condition = request.getParameter("condition");
+                String quantity = request.getParameter("quantity");
+                int qty = 1;
+                int uid = -1;
+                try {
+                    qty = Integer.parseInt(quantity);
+                    uid = Integer.parseInt(inv_uid);
+                } catch (NumberFormatException e) { }
+
+
+                if (uid > -1) {
+                    //if cart doesn't exist, create a new one
+                    if (shoppingCart == null) {
+                        shoppingCart = new ShoppingCartSessionObject();
+                    }
+                    //add the item to the cart
+                    shoppingCart.addCartItem(uid, qty, Cost.getConditionEnum(condition));
+                    session.setAttribute("shoppingCart", shoppingCart);
                 }
             }
-        }
+
+            //handle item removal via ajax/rest call
+            if (request.getParameter("removeItem") != null && shoppingCart != null) {
+                int itemIndex;
+                try {
+                    itemIndex = Integer.parseInt(request.getParameter("removeItem")) - 1;
+                } catch (NumberFormatException e) {
+                    itemIndex = -1;
+                }
+                if (itemIndex > -1 && itemIndex < shoppingCart.getCartItems().size()) {
+                    shoppingCart.removeCartItem(itemIndex);
+                }
+            }
+
+            //handle item quantity update via ajax/rest call
+            if (request.getParameter("updateQuantity") != null && request.getParameter("newQty") != null && shoppingCart != null) {
+                int itemIndex;
+                int newQty;
+                try {
+                    itemIndex = Integer.parseInt(request.getParameter("updateQuantity")) - 1;
+                    newQty = Integer.parseInt(request.getParameter("newQty"));
+                } catch (NumberFormatException e) {
+                    itemIndex = -1;
+                    newQty = -1;
+                }
+                if (newQty > -1 && itemIndex > -1 && itemIndex < shoppingCart.getCartItems().size()) {
+                    if (newQty == 0) {
+                        shoppingCart.removeCartItem(itemIndex);
+                    } else {
+                        shoppingCart.updateCartItem(itemIndex, newQty);
+                    }
+                }
+            }
+
+
 
     }
 
