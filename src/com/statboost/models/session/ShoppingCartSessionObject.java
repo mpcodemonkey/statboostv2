@@ -46,14 +46,29 @@ public class ShoppingCartSessionObject {
     }
 
     /**
-     * Add a inventory uid to the shopping cart.  The list of inventory uids will
-     * be used to create the collection of inventory items pertaining to the customer's order.
+     * Add a inventory item to the shopping cart.  If the item already exists in the cart, the
+     * existing item quantity will be updated.
      * @param inventoryUID - uid of product inventory from database
      * @param quantity - number of items requested by user
+     * @param condition - ItemCondition of the inventory
      */
     public void addCartItem(Integer inventoryUID, int quantity, ItemCondition condition) {
-        RequestedItem requestedItem = new RequestedItem(inventoryUID, quantity, condition);
-        cartList.add(requestedItem);
+        boolean itemAlreadyExists = false;
+        int existingIndex = -1;
+        for (RequestedItem item : cartList) {
+            if (item.inv_uid == inventoryUID && item.condition == condition) {
+                itemAlreadyExists = true;
+                existingIndex = cartList.indexOf(item);
+            }
+        }
+
+        if (itemAlreadyExists && existingIndex > -1) { //update existing item quantity
+            cartList.get(existingIndex).setQuantity(cartList.get(existingIndex).getQuantity() + quantity);
+        } else { //add new cart item
+            RequestedItem requestedItem = new RequestedItem(inventoryUID, quantity, condition);
+            cartList.add(requestedItem);
+        }
+
     }
 
     /**
