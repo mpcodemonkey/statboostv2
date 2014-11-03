@@ -39,8 +39,9 @@ public class InventorySearchServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String nameConstraint, condConstraint, priceConstraint;
-        nameConstraint = condConstraint = priceConstraint = "";
+        String nameConstraint, condConstraint, priceConstraint, categoryConstraint, catList;
+        nameConstraint = condConstraint = priceConstraint = categoryConstraint = catList = "";
+        Double priceConstraintMax, priceConstraintMin;
         ArrayList<String> queryparams = new ArrayList<>();
         HashMap<String, Object> buildableQuery = new HashMap<>();
         String defaultOrderBy = "name";
@@ -106,15 +107,52 @@ public class InventorySearchServlet extends HttpServlet {
             queryparams.add(condConstraint);
             buildableQuery.put("cond", Cost.getConditionEnum(request.getParameter("condPicker")));
         }
-        if(request.getParameter("priceField") != null && !request.getParameter("priceField").equalsIgnoreCase("")){
+        /*if(request.getParameter("priceField") != null && !request.getParameter("priceField").equalsIgnoreCase("")){
             priceConstraint += " and C.itemPrice " + request.getParameter("pricePicker") + " :price";
             queryparams.add(priceConstraint);
             buildableQuery.put("price", Double.parseDouble(request.getParameter("priceField")));
+        }*/
+
+        priceConstraint += " and C.itemPrice <= :priceMax and C.itemPrice >= :priceMin";
+        priceConstraintMin = Double.parseDouble(request.getParameter("minPrice"));
+        priceConstraintMax = Double.parseDouble(request.getParameter("maxPrice"));
+        queryparams.add(priceConstraint);
+        buildableQuery.put("priceMax", priceConstraintMax);
+        buildableQuery.put("priceMin", priceConstraintMin);
+
+        if(request.getParameterValues("catPicker") != null)
+        {
+            categoryConstraint += " and I.uid in(Select Distinct U.invUid From InventoryCategory as U "
+                    + "where U.catUid in(";
+
+            String[] cats = request.getParameterValues("catPicker");
+
+            for(int q = 0; q < cats.length; q++)
+            {
+                if( q == 0)
+                { categoryConstraint += ":cats"+q; }
+                else
+                { categoryConstraint += ",:cats"+q; }
+            }
+
+            categoryConstraint += ") Group By U.invUid Having Count(Distinct U.catUid) <= :num)";
+
+            queryparams.add(categoryConstraint);
+
+            for(int r = 0; r < cats.length; r++)
+            {
+                buildableQuery.put("cats"+r,Integer.parseInt(cats[r]));
+            }
+            buildableQuery.put("num", Long.parseLong(cats.length+""));
+
+            //System.out.println(catList);
         }
 
         for(String s: queryparams){
             hql += s;
         }
+
+        System.out.println(hql);
 
         QueryObject inventoryQuery = new QueryObject(buildableQuery, hql);
         GenericDAO inventoryDAO = new GenericDAO();
