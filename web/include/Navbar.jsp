@@ -28,7 +28,7 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><a href="/">Home</a></li>
-                <li><a href="/events">Events</a></li>
+                <li><a href="/Events">Events</a></li>
                 <li><a href="#store">Store</a></li>
                 <li class="dropdown"><!--"/Games.jsp"-->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">

@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Created by Sam Kerr on 9/12/2014.
  */
-@WebServlet("/events")
+@WebServlet("/Events")
 public class EventCalendarServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

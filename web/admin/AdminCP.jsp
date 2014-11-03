@@ -34,7 +34,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="btn-toolbar">
-                        <div class="btn-group"><button class="btn btn-primary">View Event Calendar</button></div>
+                        <div class="btn-group"><a href="/Events"><button class="btn btn-primary">View Event Calendar</button></a></div>
                         <div class="btn-group"><button class="btn btn-primary">Add New Event</button></div>
                         <div class="btn-group"><button class="btn btn-primary">Cancel Event</button></div>
                     </div>
