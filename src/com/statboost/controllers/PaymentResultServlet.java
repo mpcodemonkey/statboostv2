@@ -30,7 +30,7 @@ public class PaymentResultServlet extends HttpServlet {
 
             request.setAttribute("alert", result);
             request.setAttribute("alertType", "warning");
-            request.getRequestDispatcher("PaymentResult.jsp").forward(request, response);
+            request.getRequestDispatcher("/PaymentResult.jsp").forward(request, response);
         }
 
     }

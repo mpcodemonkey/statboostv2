@@ -22,7 +22,7 @@ public class RegisterServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        request.getRequestDispatcher("Register.jsp").forward(request, response);
+        request.getRequestDispatcher("/Register.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -39,7 +39,7 @@ public class RegisterServlet extends HttpServlet {
             if(!request.getParameter("password").equals(request.getParameter("passwordConf"))) {
                 request.setAttribute("alertType", "warning");
                 request.setAttribute("alert", "Your passwords do not match.");
-                request.getRequestDispatcher("Register.jsp").forward(request, response);
+                request.getRequestDispatcher("/Register.jsp").forward(request, response);
             }
             //make sure the user email doesn't already exist
             else if (User.find(request.getParameter("email")) == null) {
@@ -62,18 +62,20 @@ public class RegisterServlet extends HttpServlet {
                 //insert the new user into database
                 logger.info("Inserting user: " + usrEmail);
                 User.insert(usrFirstName, usrLastName, usrEmail, usrPassword, "Customer", usrAddress1, usrAddress2, usrCity, usrState, usrZip, usrPhone, usrNewsletter, usrDciNumber);
+                request.setAttribute("alertType", "success");
+                request.setAttribute("alert", "The account for " + usrEmail + " has been created successfully!");
                 response.sendRedirect("/login");
             } else {
                 request.setAttribute("alertType", "danger");
                 request.setAttribute("alert", "The email you have chosen is currently taken, please try another.");
-                request.getRequestDispatcher("Register.jsp").forward(request, response);
+                request.getRequestDispatcher("/Register.jsp").forward(request, response);
             }
 
         } else {
             logger.info("Illegal email pattern recognized: " + usrEmail);
             request.setAttribute("alertType", "danger");
             request.setAttribute("alert", "The email you have chosen, \"" + usrEmail + "\" , is not an accepted format, please use another.");
-            request.getRequestDispatcher("Register.jsp").forward(request, response);
+            request.getRequestDispatcher("/Register.jsp").forward(request, response);
         }
     }
 

@@ -35,7 +35,7 @@ public class MagicSearchServlet extends HttpServlet {
             doPost(request, response);
         }else{
 
-            request.getRequestDispatcher("MagicSearch.jsp").forward(request, response);
+            request.getRequestDispatcher("/MagicSearch.jsp").forward(request, response);
         }
     }
 
@@ -88,7 +88,7 @@ public class MagicSearchServlet extends HttpServlet {
                     request.setAttribute("alert", "Sorry, no cards were found.  Please try another search.");
                 }
                 //route to results page even if no results found or transaction throws exception
-                request.getRequestDispatcher("MagicResult.jsp").forward(request, response);
+                request.getRequestDispatcher("/MagicResult.jsp").forward(request, response);
                 return;//necessary
             }
         }
@@ -310,7 +310,7 @@ public class MagicSearchServlet extends HttpServlet {
             request.setAttribute("alert", "Sorry, no cards were found.  Please try another search.");
         }
         //route to results page even if no results found or transaction throws exception
-        request.getRequestDispatcher("MagicResult.jsp").forward(request, response);
+        request.getRequestDispatcher("/MagicResult.jsp").forward(request, response);
     }
 
     /**Eventual code block to skip over query when page number present(for pagination)

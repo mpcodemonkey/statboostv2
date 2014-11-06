@@ -18,7 +18,7 @@ public class CheckoutServlet extends HttpServlet {
         //populate attributes with user's checkout data
 
 
-        request.getRequestDispatcher("Checkout.jsp").forward(request, response);
+        request.getRequestDispatcher("/Checkout.jsp").forward(request, response);
     }
 
 }

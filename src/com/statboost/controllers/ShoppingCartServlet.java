@@ -87,7 +87,7 @@ public class ShoppingCartServlet extends HttpServlet {
         }
 
 
-        request.getRequestDispatcher("ShoppingCart.jsp").forward(request, response);
+        request.getRequestDispatcher("/ShoppingCart.jsp").forward(request, response);
     }
 
 

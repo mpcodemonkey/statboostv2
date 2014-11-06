@@ -17,7 +17,7 @@ public class LogoutServlet extends HttpServlet {
         if (session != null && session.getAttribute("email") != null) {
             session.removeAttribute("email");
             session.invalidate();
-            request.setAttribute("alertType", "info");
+            request.setAttribute("alertType", "success");
             request.setAttribute("navAlert", "You have been logged out successfully.");
         }
         request.getRequestDispatcher("index.jsp").forward(request, response);
@@ -28,7 +28,7 @@ public class LogoutServlet extends HttpServlet {
         if (session != null && session.getAttribute("email") != null) {
             session.removeAttribute("email");
             session.invalidate();
-            request.setAttribute("alertType", "info");
+            request.setAttribute("alertType", "success");
             request.setAttribute("navAlert", "You have been logged out successfully.");
         }
         request.getRequestDispatcher("index.jsp").forward(request, response);
