@@ -12,7 +12,7 @@
             <c:if test="${requestScope.alert != null && requestScope.alertType != null}">
                 <div class="alert alert-${requestScope.alertType} fade in">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <strong>Oops!</strong> <c:out value="${requestScope.alert}" />
+                    <strong>Alert: </strong> <c:out value="${requestScope.alert}" />
                 </div>
             </c:if>
 

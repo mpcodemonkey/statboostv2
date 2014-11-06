@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 
-@WebServlet("/profile")
+@WebServlet("/user/profile")
 public class UserProfileServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -22,7 +22,7 @@ public class UserProfileServlet extends HttpServlet {
             User user = User.find((String)session.getAttribute("email"));
             request.setAttribute("user", user);
 
-            request.getRequestDispatcher("UserProfile.jsp").forward(request, response);
+            request.getRequestDispatcher("/UserProfile.jsp").forward(request, response);
         } else {
             response.sendRedirect("/");
         }

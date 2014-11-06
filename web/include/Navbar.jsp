@@ -65,7 +65,8 @@
                         <c:out value="${sessionScope.email}"/>&nbsp;<span class="glyphicon glyphicon-user"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a href="/profile">User Profile</a></li>
+                        <li><a href="/user/profile">User Profile</a></li>
+                        <li><a href="/user/orderhistory">Order History</a></li>
                         <c:if test="${sessionScope.admin != null}">
                             <li><a href="/admin/adminCP">Admin CP</a></li>
                         </c:if>

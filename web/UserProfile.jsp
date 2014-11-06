@@ -10,10 +10,10 @@
             <div class="btn-group"><button type="button" class="btn btn-primary" onclick="location.href='/admin/adminCP'">Admin CP</button></div>
         </c:if>
         <c:if test="${user.usrRole == 'Customer'}">
-            <div class="btn-group"><button type="button" class="btn btn-primary" onclick="location.href='#'">View Order History</button></div>
-            <div class="btn-group"><button type="button" class="btn btn-primary" onclick="">Delete Account</button></div>
+            <div class="btn-group"><button type="button" class="btn btn-primary" onclick="location.href='/user/orderhistory'">View Order History</button></div>
+            <div class="btn-group"><button type="button" class="btn btn-primary" onclick="">Deactivate Account</button></div>
         </c:if>
-        <div class="btn-group"><button type="button" class="btn btn-primary" onclick="location.href='logout'">Logout</button></div>
+        <div class="btn-group"><button type="button" class="btn btn-primary" onclick="location.href='/logout'">Logout</button></div>
     </div>
     <div><br></div>
     <div class="panel panel-primary">

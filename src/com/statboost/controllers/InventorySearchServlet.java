@@ -32,7 +32,7 @@ public class InventorySearchServlet extends HttpServlet {
             doPost(request, response);
         }
         else{
-            request.getRequestDispatcher("InventorySearch.jsp").forward(request, response);
+            request.getRequestDispatcher("/InventorySearch.jsp").forward(request, response);
         }
 
     }
@@ -87,7 +87,7 @@ public class InventorySearchServlet extends HttpServlet {
                     request.setAttribute("alert", "Sorry, no cards were found.  Please try another search.");
                 }
                 //route to results page even if no results found or transaction throws exception
-                request.getRequestDispatcher("InventoryResult.jsp").forward(request, response);
+                request.getRequestDispatcher("/InventoryResult.jsp").forward(request, response);
                 return;//necessary
             }
         }
@@ -175,7 +175,7 @@ public class InventorySearchServlet extends HttpServlet {
             request.setAttribute("alert", "Sorry, no cards were found.  Please try another search.");
         }
         //route to results page even if no results found or transaction throws exception
-        request.getRequestDispatcher("InventoryResult.jsp").forward(request, response);
+        request.getRequestDispatcher("/InventoryResult.jsp").forward(request, response);
 
     }
 

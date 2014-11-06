@@ -26,7 +26,7 @@
 <div>
     <div class="container">
         <div class="jumbotron">
-            <h1><img src="/include/images/logo.png" style="max-width: 100px;"> StatBoost v1.2</h1>
+            <h1><img src="/include/images/logo.png" style="max-width: 100px;"> StatBoost v1.8</h1>
 
         </div>
 
