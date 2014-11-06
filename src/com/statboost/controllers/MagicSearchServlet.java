@@ -34,8 +34,12 @@ public class MagicSearchServlet extends HttpServlet {
         } else if(request.getParameter("page") != null && !request.getParameter("page").equals("")) {
             doPost(request, response);
         }else{
+        //we gonna get all db up in this servlet yo
+        GenericDAO expFormDAO = new GenericDAO();
+        ArrayList<String> Expansions = (ArrayList<String>)expFormDAO.getResultSet("Select mstName from MagicSet");
 
-            request.getRequestDispatcher("/MagicSearch.jsp").forward(request, response);
+        request.setAttribute("expansionList", Expansions);
+        request.getRequestDispatcher("/MagicSearch.jsp").forward(request, response);
         }
     }
 
@@ -45,15 +49,15 @@ public class MagicSearchServlet extends HttpServlet {
         nameConstraint = typeConstraint = subTypeConstraint = rulesConstraint = colorsConstraint = rarityConstraint = setIdConstraint = expConstraint = cmcConstraint = "";
         ArrayList<String> queryparams = new ArrayList<>();
         HashMap<String, Object> buildableQuery = new HashMap<>();
-        boolean prevCon = false;
+        boolean prevCon = true;
         String and = " and";
-        String defaultOrderBy = "mcrCardName, mcrSetId";
+        String defaultOrderBy = "m.mcrCardName, m.mcrSetId";
         String defaultOrder = "asc";
         List<MagicCard> cards = null;
         int page = 1;
 
         //query
-        String hql = "From MagicCard where ";
+        String hql = "Select m From MagicCard as m, MagicSet as s where m.mcrSetId = s.mstUid ";
 
         //check if query object is in the session
         //new search invalidates check
@@ -96,38 +100,28 @@ public class MagicSearchServlet extends HttpServlet {
 
 
 
-        if (request.getParameter("simpleSubmit") != null || (request.getParameter("cardName") != null && !request.getParameter("cardName").isEmpty())) {
+        if (request.getParameter("simpleForm") != null || (request.getParameter("cardName") != null && !request.getParameter("cardName").isEmpty())) {
             String[]constraints = request.getParameterValues("r1");
             String fieldText = request.getParameter("fi1") != null ? request.getParameter("fi1") : request.getParameter("cardName");
             int len = constraints == null ? 0 : constraints.length;
+            System.out.println("Hello, peeps!");
             for(int i = 0; i < len; i++)
             {
                 switch(constraints[i]){
                     case "cName":{
-                        nameConstraint="mcrCardName LIKE :name";
-                        prevCon = true;
+                        nameConstraint="and m.mcrCardName LIKE :name";
                         queryparams.add(nameConstraint);
                         buildableQuery.put("name", ServletUtil.sanitizeWildcard(fieldText));
                         break;
                     }
                     case "cType":{
-                        if(prevCon){
-                            typeConstraint= " or mcrTypes like :type";
-                        }
-                        else{
-                            typeConstraint= " mcrTypes like :type";
-                        }
+                            typeConstraint= " and m.mcrTypes like :type";
                         queryparams.add(typeConstraint);
                         buildableQuery.put("type", ServletUtil.sanitizeWildcard(fieldText));
                         break;
                     }
                     case "cText":{
-                        if(prevCon){
-                            rulesConstraint+= " or mcrText like :text";
-                        }
-                        else{
-                            rulesConstraint+= " mcrText like :text";
-                        }
+                        rulesConstraint+= " and m.mcrText like :text";
                         queryparams.add(rulesConstraint);
                         buildableQuery.put("text", ServletUtil.sanitizeWildcard(fieldText));
                         break;
@@ -136,7 +130,7 @@ public class MagicSearchServlet extends HttpServlet {
             }
             //they checked nothing, search by name only
             if(len == 0){
-                nameConstraint="mcrCardName LIKE :name";
+                nameConstraint="and m.mcrCardName LIKE :name";
                 queryparams.add(nameConstraint);
                 buildableQuery.put("name", ServletUtil.sanitizeWildcard(fieldText));
             }
@@ -153,23 +147,18 @@ public class MagicSearchServlet extends HttpServlet {
 
 
         }
-        else if(request.getParameter("advancedSubmit") != null) {
+        else if(request.getParameter("advancedForm") != null) {
             if (request.getParameter("magicCardName") != null && !request.getParameter("magicCardName").equals("")) {
-                nameConstraint = "mcrCardName LIKE :name";
+                nameConstraint = "and m.mcrCardName LIKE :name";
 
                 queryparams.add(nameConstraint);
                 buildableQuery.put("name", ServletUtil.sanitizeWildcard(request.getParameter("magicCardName")));
-                prevCon = true;
             }
             if (request.getParameter("type") != null && !request.getParameter("type").equals("")) {
                 String[] types = request.getParameter("type").split(" ");
                 int i = 0;
                 for (String s : types) {
-                    typeConstraint = " mcrTypes  LIKE :type" + i;
-
-                    if (prevCon) {
-                        typeConstraint = and + typeConstraint;
-                    }
+                    typeConstraint = " and m.mcrTypes  LIKE :type" + i;
                     queryparams.add(typeConstraint);
                     buildableQuery.put("type" + i++, "%" + s + "%");
                     prevCon = true;
@@ -180,11 +169,7 @@ public class MagicSearchServlet extends HttpServlet {
                 System.out.println(subtypes[0]);
                 int i = 0;
                 for (String s : subtypes) {
-                    subTypeConstraint = " mcrSubTypes  LIKE :subs" + i;
-
-                    if (prevCon) {
-                        subTypeConstraint = and + subTypeConstraint;
-                    }
+                    subTypeConstraint = " and m.mcrSubTypes  LIKE :subs" + i;
                     queryparams.add(subTypeConstraint);
                     buildableQuery.put("subs" + i++, "%" + s + "%");
                     prevCon = true;
@@ -193,18 +178,15 @@ public class MagicSearchServlet extends HttpServlet {
             //no color selected is a null result
             if (request.getParameterValues("colors") != null) {
                 System.out.println(request.getParameterValues("colors"));
-                String defCon = " mcrColors = :colors";
+                String defCon = " m.mcrColors = :colors";
                 String[] colors = request.getParameterValues("colors");
 
                 if (colors.length > 1) {
-                    defCon = " mcrColors LIKE :colors";
+                    defCon = " and m.mcrColors LIKE :colors";
                 }
                 for (int i = 0; i < colors.length; i++) {
                     colorsConstraint = defCon + i;
                     //System.out.println("I ran, current color is: " + colors[i]);
-                    if (prevCon) {
-                        colorsConstraint = and + defCon + i;
-                    }
                     queryparams.add(colorsConstraint);
                     if (colors.length > 1)
                         buildableQuery.put("colors" + i, "%" + colors[i] + "%");
@@ -217,11 +199,11 @@ public class MagicSearchServlet extends HttpServlet {
             if (request.getParameterValues("rarities") != null) {
                 String or = " or";
                 //System.out.println(request.getParameterValues("rarities"));
-                String defCon = " mcrRarity = :rarity";
+                String defCon = " m.mcrRarity = :rarity";
                 String[] rarities = request.getParameterValues("rarities");
 
                 if (rarities.length > 1) {
-                    defCon = " mcrRarity LIKE :rarity";
+                    defCon = " m.mcrRarity LIKE :rarity";
                 }
                 for (int i = 0; i < rarities.length; i++) {
                     rarityConstraint = defCon + i;
@@ -248,33 +230,24 @@ public class MagicSearchServlet extends HttpServlet {
             }
             //null here since the selected index shown is -1, which is null(see advFind view js at bottom of advFind.scala.html for ref).
             if (request.getParameter("setID") != null) {
-                setIdConstraint = " mcrSetId LIKE :setid";
-                if (prevCon) {
-                    setIdConstraint = and + setIdConstraint;
-                }
+                setIdConstraint = " and s.mstName LIKE :setid";
                 queryparams.add(setIdConstraint);
                 buildableQuery.put("setid", "%" + request.getParameter("setID") + "%");
                 prevCon = true;
             }
             if (request.getParameter("rulesContain") != null && !request.getParameter("rulesContain").equals("")) {
-                rulesConstraint = " mcrText LIKE :text";
-                if (prevCon) {
-                    rulesConstraint = and + rulesConstraint;
-                }
+                rulesConstraint = " and m.mcrText LIKE :text";
                 queryparams.add(rulesConstraint);
                 buildableQuery.put("text", "%" + request.getParameter("rulesContain") + "%");
                 prevCon = true;
             }
             if (request.getParameter("cmc") != null && !request.getParameter("cmc").equals("")) {
-                cmcConstraint = " mcrCmc " + request.getParameter("cmcModifier") + " :cmc";
-                if (prevCon) {
-                    cmcConstraint = and + cmcConstraint;
-                }
+                cmcConstraint = " and m.mcrCmc " + request.getParameter("cmcModifier") + " :cmc";
                 queryparams.add(cmcConstraint);
                 buildableQuery.put("cmc", request.getParameter("cmc"));
             }
             if (request.getParameter("orderBy") != null) {
-                defaultOrderBy = request.getParameter("orderBy");
+                defaultOrderBy = "m." + request.getParameter("orderBy");
             }
             if (request.getParameter("order") != null) {
                 defaultOrder = request.getParameter("order");

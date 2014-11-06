@@ -53,8 +53,8 @@ public class DBModServlet extends HttpServlet {
             try {
                 Random r = new Random();
                 Query qCats = session.createQuery("From Category where category = :m or category = :s");
-                qCats.setParameter("m", "magic");
-                qCats.setParameter("s", "single");
+                qCats.setParameter("m", "Magic");
+                qCats.setParameter("s", "Single");
                 List<Category> cats = qCats.list();
                 for (int j = 0; j < resultSet.size(); j++) {
                     Inventory inventory = new Inventory();
@@ -99,8 +99,8 @@ public class DBModServlet extends HttpServlet {
 
                 try {
                     Query qCats = session.createQuery("From Category where category = :y or category = :s");
-                    qCats.setParameter("y", "yugioh");
-                    qCats.setParameter("s", "single");
+                    qCats.setParameter("y", "YuGiOh");
+                    qCats.setParameter("s", "Single");
                     List<Category> cats = qCats.list();
                     Random r = new Random();
                     for (int j = 0; j < ySet.size(); j++) {
