@@ -49,7 +49,6 @@ public class GenericDAO{
             }
 
             numberOfResults = query.list().size();
-            System.out.println("The number of results is: " + numberOfResults);
             query.setFirstResult( (pageNo*numberPerPage) - numberPerPage ).setMaxResults(numberPerPage);
 
             resultSet = query.list();
@@ -88,7 +87,46 @@ public class GenericDAO{
             e.printStackTrace();
         } finally {
             session.close();
-            genericQueryFactory.close();
+        }
+
+        return resultSet;
+    }
+
+    public Object getResultSet(String hql){
+        SessionFactory genericQueryFactory = HibernateUtil.getDatabaseSessionFactory();
+        List<Object> resultSet = null;
+        Session session = genericQueryFactory.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery(hql);
+            resultSet = (List<Object>)query.list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return resultSet;
+    }
+
+    public Object getResultSetSql(String sql){
+        SessionFactory genericQueryFactory = HibernateUtil.getDatabaseSessionFactory();
+        List<Object> resultSet = null;
+        Session session = genericQueryFactory.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createSQLQuery(sql);
+            resultSet = (List<Object>)query.list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
         }
 
         return resultSet;
