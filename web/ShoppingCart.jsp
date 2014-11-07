@@ -100,7 +100,7 @@
 
                 <div class="row">
                     <div class="col-lg-1 col-lg-push-10">
-                        <button class="btn btn-lg btn-primary">Checkout</button>
+                        <button class="btn btn-lg btn-primary" onclick="window.location='/checkout'">Checkout</button>
                     </div>
                 </div>
 

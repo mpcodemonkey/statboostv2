@@ -34,7 +34,6 @@ public class ShoppingCartServlet extends HttpServlet {
 
         if (shoppingCart != null && !shoppingCart.getCartItems().isEmpty()) {
 
-
             CartManager cartManager = new CartManager();
             cartManager.buildCartDataCollection(shoppingCart.getCartItems());
             List<CartManager.ItemDataObject> cartObjects = cartManager.getCartDataObjects();
@@ -67,23 +66,9 @@ public class ShoppingCartServlet extends HttpServlet {
             cartTotal.taxTotal = 0.0;//calculateTax(subtotal);
             cartTotal.shippingTotal = 0.0;//calculateShipping();
 
+            session.setAttribute("orderTotal", cartTotal.getOrderTotal()+"");
             request.setAttribute("cartTotal", cartTotal);
             request.setAttribute("itemsInCart", itemsInCart);
-        } else {
-            //TODO: what to do when cart is empty?
-            /**
-             * THIS SECTION WILL BE REMOVED
-             * Create test cart session to mimic a shopping cart the user made. For test purposes
-             *//*
-            ShoppingCartSessionObject fakeShoppingCart = new ShoppingCartSessionObject();
-            Random rdm = new Random();
-            fakeShoppingCart.addCartItem(rdm.nextInt(20000), rdm.nextInt(5)+1, ItemCondition.NEW); //1-5 items wanted of new condition
-            fakeShoppingCart.addCartItem(rdm.nextInt(20000), rdm.nextInt(5)+1, ItemCondition.MODERATELY_PLAYED); //1-5 items wanted of moderately played
-            fakeShoppingCart.addCartItem(rdm.nextInt(20000), rdm.nextInt(5)+1, ItemCondition.DAMAGED); //1-5 items wanted of damaged
-            session.setAttribute("shoppingCart", fakeShoppingCart);
-            *//**
-             * End test cart creation
-             */
         }
 
 
@@ -158,8 +143,6 @@ public class ShoppingCartServlet extends HttpServlet {
                     }
                 }
             }
-
-
 
     }
 

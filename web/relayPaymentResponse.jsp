@@ -42,12 +42,46 @@
                receiptUrlBuffer.append("?");
                receiptUrlBuffer.append(ResponseField.RESPONSE_CODE.getFieldName()).append("=");
                receiptUrlBuffer.append(result.getResponseCode().getCode());
+
                receiptUrlBuffer.append("&");
                receiptUrlBuffer.append(ResponseField.RESPONSE_REASON_CODE.getFieldName()).append("=");
                receiptUrlBuffer.append(result.getReasonResponseCode().getResponseReasonCode());
+
                receiptUrlBuffer.append("&");
                receiptUrlBuffer.append(ResponseField.RESPONSE_REASON_TEXT.getFieldName()).append("=");
                receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.RESPONSE_REASON_TEXT.getFieldName()));
+
+               receiptUrlBuffer.append("&");
+               receiptUrlBuffer.append(ResponseField.AUTHORIZATION_CODE.getFieldName()).append("=");
+               receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.AUTHORIZATION_CODE.getFieldName()));
+
+               receiptUrlBuffer.append("&");
+               receiptUrlBuffer.append(ResponseField.CARD_CODE_RESPONSE.getFieldName()).append("=");
+               receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.CARD_CODE_RESPONSE.getFieldName()));
+
+               receiptUrlBuffer.append("&");
+               receiptUrlBuffer.append(ResponseField.ACCOUNT_NUMBER.getFieldName()).append("=");
+               receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.ACCOUNT_NUMBER.getFieldName()));
+
+               receiptUrlBuffer.append("&");
+               receiptUrlBuffer.append(ResponseField.CARD_TYPE.getFieldName()).append("=");
+               receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.CARD_TYPE.getFieldName()));
+
+               receiptUrlBuffer.append("&");
+               receiptUrlBuffer.append(ResponseField.ACCOUNT_NUMBER.getFieldName()).append("=");
+               receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.ACCOUNT_NUMBER.getFieldName()));
+
+               receiptUrlBuffer.append("&");
+               receiptUrlBuffer.append(ResponseField.AMOUNT.getFieldName()).append("=");
+               receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.AMOUNT.getFieldName()));
+
+               receiptUrlBuffer.append("&");
+               receiptUrlBuffer.append(ResponseField.ACCOUNT_NUMBER.getFieldName()).append("=");
+               receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.ACCOUNT_NUMBER.getFieldName()));
+
+               /** SHIPPING INFO YES? NO?**/
+
+
 
                if(result.isApproved())
                {
