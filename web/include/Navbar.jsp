@@ -36,7 +36,8 @@
                     </a>
                         <ul class="dropdown-menu">
                             <li><a href="/magicSearch">Magic: The Gathering</a></li>
-                            <li><a href="/YugiohMain.jsp">Yu Gi Oh</a></li>
+                            <!--<li><a href="/YugiohMain.jsp">Yu Gi Oh</a></li>-->
+                            <li><a href="/ygoSearch">Yu Gi Oh</a></li>
                         </ul>
                 </li>
                 <li><a href="/AboutUs.jsp">Contact Us</a></li>
