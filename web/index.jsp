@@ -26,8 +26,27 @@
 <div>
     <div class="container">
         <div class="jumbotron">
-            <h1><img src="/include/images/logo.png" style="max-width: 100px;"> StatBoost v1.8</h1>
-
+            <div class="container row">
+                <div class="col-sm-8 col-xs-9"><img src="/include/images/logo.png" style="max-width: 250px;" class="center-block"></div>
+                <div class="visible-xs col-xs-12"><br /></div>
+                <div class="col-sm-4 col-xs-12" role="navigation">
+                    <div class="list-group">
+                        <a href="/" class="list-group-item active">Home</a>
+                        <c:if test="${sessionScope.admin != null}">
+                            <a href="/admin/adminCP" class="list-group-item">Admin CP</a>
+                        </c:if>
+                        <c:if test="${sessionScope.email == null}">
+                            <a href="/login" class="list-group-item">Login</a>
+                        </c:if>
+                        <c:if test="${sessionScope.email == null}">
+                            <a href="/register" class="list-group-item">Register</a>
+                        </c:if>
+                        <c:if test="${sessionScope.email != null}">
+                            <a href="/logout" class="list-group-item">Logout</a>
+                        </c:if>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div>
@@ -45,13 +64,13 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-9">
+        <div class="col-xs-12 col-sm-12">
             <div class="well well-lg">
                 <iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2FExpLevelUp%3Frf%3D211284022311583&amp;width=750&amp;height=395&amp;colorscheme=light&amp;show_faces=false&amp;header=false&amp;stream=true&amp;show_border=false" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100%; min-height:375px; " allowTransparency="true"></iframe>
             </div><!--/span-->
         </div>
 
-        <div class="row row-offcanvas row-offcanvas-right">
+        <!--<div class="row row-offcanvas row-offcanvas-right">
             <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
                 <div class="list-group">
                     <a href="/" class="list-group-item active">Home</a>
@@ -78,6 +97,7 @@
     </div>
 </div>
 
+<!--
 <div>
     <div class="container">
         <div class="row">
@@ -116,6 +136,45 @@
                     <div class="item"><img src="include/images/MTG%20Cards/mtgcard%20(2).jpg" alt="Owl Image"></div>
                 </div>
 
+            </div>
+        </div>
+    </div>
+</div>
+
+-->
+
+<div class="container center-block">
+    <div class="row">
+        <div class="span12" style="text-align: center;">
+            <div class="col-sm-4 col-xs-12">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h3>Magic</h3>
+                        <p>
+                            content of stuff!!
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h3>Yu Gi Oh</h3>
+                        <p>
+                            content of stuff!!
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h3>Accessories</h3>
+                        <p>
+                            content of stuff!!
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

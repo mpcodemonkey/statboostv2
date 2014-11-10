@@ -10,12 +10,37 @@
 <jsp:include page="/include/Navbar.jsp"/>
 
 <link rel="stylesheet" href="/include/stylesheets/bootstrap-multiselect.css">
+<link rel="stylesheet" href="/include/stylesheets/bootstrap-select.min.css">
 
-<div class="container">
+<script src="/include/javascripts/bootstrap-multiselect.js"></script>
+<script src="/include/javascripts/bootstrap-select.min.js"></script>
+
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,600,700' rel='stylesheet' type='text/css'>
+
+<link href="include/stylesheets/owl.carousel.css" rel="stylesheet">
+<link href="include/stylesheets/owl.theme.css" rel="stylesheet">
+
+<div id="title" class="center-block" name="title">
+    <div class="container row col-sm-12 center-block">
+        <div class="span12">
+            <div id="owl-demo" class="owl-carousel">
+                <div class="item"><img src="include/images/banner_temp_1.jpg" alt="The Last of us"></div>
+                <div class="item"><img src="include/images/banner_temp_2.jpg" alt="GTA V"></div>
+                <div class="item"><img src="include/images/banner_temp_3.jpg" alt="Mirror Edge"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row container col-sm-12 center-block">
+    <div class="col-sm-3 hidden-xs" id="leftSide">
+        <img style="width: 80%; max-width: 240px; height:auto;" src="include/images/SarkhanSide.PNG">
+    </div>
+
+    <div class="container col-sm-6">
     <div class="row">
-        <div class="col-md-10">
             <div class="jumbotron">
-                <h2 align="center"><img src="/include/images/yugiohlogo.png" width="180px"> Card Search</h2>
+                <img src="/include/images/yugiohlogo.png" style="width:80%; max-width: 350px; height: auto;" class="center-block" />
                 <div class="row">
                     <div class="tabbed-search">
                         <!-- Nav tabs -->
@@ -40,22 +65,22 @@
                                         <label class="col-lg-3 control-label">Search By:</label>
                                         <br>
                                         <div class="col-lg-5">
-                                            <span class="col-lg-4">
-                                                <input name="r1" type="radio" id="monster" value="monster">
-                                                <label>Monster</label>
-                                            </span>
-                                            <span class="col-lg-4">
-                                                <input name="r1" type="radio" id="spell" value="spell">
-                                                <label>Spell</label>
-                                            </span>
-                                            <span class="col-lg-4">
-                                                <input name="r1" type="radio" id="trap" value="trap">
-                                                <label>Trap</label>
-                                            </span>
-                                            <span class="col-lg-4">
-                                                <input checked="" name="r1" type="radio" id="all" value="all">
-                                                <label>All</label>
-                                            </span>
+                                                <span class="col-lg-4">
+                                                    <input name="r1" type="radio" id="monster" value="monster">
+                                                    <label>Monster</label>
+                                                </span>
+                                                <span class="col-lg-4">
+                                                    <input name="r1" type="radio" id="spell" value="spell">
+                                                    <label>Spell</label>
+                                                </span>
+                                                <span class="col-lg-4">
+                                                    <input name="r1" type="radio" id="trap" value="trap">
+                                                    <label>Trap</label>
+                                                </span>
+                                                <span class="col-lg-4">
+                                                    <input checked="" name="r1" type="radio" id="all" value="all">
+                                                    <label>All</label>
+                                                </span>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -212,12 +237,63 @@
             </div>
         </div>
     </div>
+
+    <div class="col-sm-3 hidden-xs" id="rightSide" name="rightSide">
+        <img style="width: 80%; max-width: 240px; height:auto; float:right;" src="include/images/SorinSide.PNG">
+    </div>
 </div>
 
-<jsp:include page="/include/Footer.jsp"/>
+<div id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <h5>Team JJACS Prototype
+                    <a href="mailto:teamjjacs@gmail.com?subject=Hey Owl!">email</a>
+                    <script>
+                        var owldomain = window.location.hostname.indexOf("owlgraphic");
+                        if(owldomain !== -1){
+                            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+                        }
+                    </script>
+                </h5>
+            </div>
+        </div>
+    </div>
+</div>
 
-<!-- scripts at bottom, faster load time: -->
-<script src="/include/javascripts/bootstrap-multiselect.js"></script>
+<script src="include/javascripts/owl.carousel.min.js"></script>
+
+<style>
+    #owl-demo .item img{
+        display: block;
+        width: 90%;
+        height: auto;
+        margin: 0 auto;
+    }
+</style>
+
+
+<script>
+    $(document).ready(function() {
+        $("#owl-demo").owlCarousel({
+
+            navigation : true,
+            slideSpeed : 300,
+            paginationSpeed : 400,
+            singleItem : true
+
+            // "singleItem:true" is a shortcut for:
+            // items : 1,
+            // itemsDesktop : false,
+            // itemsDesktopSmall : false,
+            // itemsTablet: false,
+            // itemsMobile : false
+
+        });
+    });
+</script>
+
+<jsp:include page="/include/Footer.jsp"/>
 
 <script type="text/javascript">
     $(document).ready(function() {
