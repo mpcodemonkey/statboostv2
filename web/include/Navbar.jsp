@@ -35,7 +35,7 @@
                         Games
                     </a>
                         <ul class="dropdown-menu">
-                            <li><a href="/MagicMain.jsp">Magic: The Gathering</a></li>
+                            <li><a href="/magicSearch">Magic: The Gathering</a></li>
                             <li><a href="/YugiohMain.jsp">Yu Gi Oh</a></li>
                         </ul>
                 </li>
