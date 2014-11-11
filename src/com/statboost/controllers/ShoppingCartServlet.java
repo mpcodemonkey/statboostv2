@@ -4,6 +4,7 @@ import com.statboost.models.inventory.Cost;
 import com.statboost.models.inventory.Inventory;
 import com.statboost.models.session.ShoppingCartSessionObject;
 import com.statboost.util.CartManager;
+import com.statboost.util.ServletUtil;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -66,7 +67,7 @@ public class ShoppingCartServlet extends HttpServlet {
             cartTotal.taxTotal = 0.0;//calculateTax(subtotal);
             cartTotal.shippingTotal = 0.0;//calculateShipping();
 
-            session.setAttribute("orderTotal", cartTotal.getOrderTotal()+"");
+            session.setAttribute("orderTotal", ServletUtil.formatCurrency(cartTotal.getOrderTotal()).replace("$", ""));
             request.setAttribute("cartTotal", cartTotal);
             request.setAttribute("itemsInCart", itemsInCart);
         }

@@ -64,7 +64,7 @@
                     <div class="panel-heading">${card.ycrName}</div>
                     <div class="panel-body">
                         <div class="col-md-2">
-                            <img src="http://placehold.it/150X150" class="img-rounded">
+                            <img src="https://placehold.it/150X150" class="img-rounded">
                         </div>
                         <div class="col-md-8 col-md-offset-1">
                             <div class="row">

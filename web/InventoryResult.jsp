@@ -23,7 +23,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <img class="media-object img-rounded img-responsive" src="http://placehold.it/350x250" alt="placehold.it/350x250">
+                        <img class="media-object img-rounded img-responsive" src="https://placehold.it/350x250" alt="placehold.it/350x250">
                     </div>
                     <div class="col-md-4">
                         <div class="row">

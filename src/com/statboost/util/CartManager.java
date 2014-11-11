@@ -3,6 +3,7 @@ package com.statboost.util;
 import com.statboost.models.inventory.Cost;
 import com.statboost.models.inventory.Inventory;
 import com.statboost.models.session.ShoppingCartSessionObject;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -46,6 +47,7 @@ public class CartManager {
      * Builds a collection of objects containing Inventory and Cost data for each shopping cart item.
      * @param sessionItems
      */
+
     public void buildCartDataCollection(List<ShoppingCartSessionObject.RequestedItem> sessionItems) {
         Session session = HibernateUtil.getDatabaseSessionFactory().openSession();
         Transaction tx = null;
@@ -57,6 +59,8 @@ public class CartManager {
 
                 Cost cost = (Cost) session.createQuery("FROM Cost WHERE itemCondition='" + requestedItem.getCondition() + "' AND invUid=" + requestedItem.getInvUid()).uniqueResult();
                 Inventory inv_item = cost.getInventory();
+                Hibernate.initialize(cost);
+                Hibernate.initialize(inv_item);
 
                 if (inv_item != null && cost != null) {
                     ItemDataObject dataObject = new ItemDataObject(inv_item, cost, requestedItem.getQuantity());
@@ -73,8 +77,7 @@ public class CartManager {
             if (tx != null) tx.rollback();
             e.printStackTrace();
         } finally {
-            //TODO: figure out why this breaks shopping cart code. need to close to return connection to pool.
-            session.close(); //This breaks stuff for some reason
+            session.close();
         }
     }
 

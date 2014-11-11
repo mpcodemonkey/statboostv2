@@ -80,15 +80,13 @@ public class ServletUtil {
         }
     }
 
-    //todo: needs to be tested
-    public static String formatCurrency(String currency)  {
-        if(currency == null || currency.equals(""))  {
+
+    public static String formatCurrency(Double amount)  {
+        if(amount == null)  {
             return null;
         }
-
-        Double currencyDouble = Double.parseDouble(currency);
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        return formatter.format(currencyDouble);
+        return formatter.format(amount);
     }
 
     /**
