@@ -19,7 +19,7 @@
 <div class="container">
     <div id="well">
         <div class="row">
-            <div class="col-sm-10 container">
+            <div class="container">
                 <div class="jumbotron">
                 <h2 align="center">Store Search</h2>
                 <form action="" method="post">

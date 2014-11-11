@@ -48,13 +48,13 @@
                             <tr>
                                 <td>${status.count}</td>
                                 <td>
-                                    <div class="col-lg-10">
+                                    <div class="col-md-3">
+                                        <img src="http://placehold.it/75X75" class="img-rounded">
+                                            ${cartItem.imageName}
+                                    </div>
+                                    <div class="col-md-7">
                                         ${cartItem.name}:
                                         ${cartItem.description}
-                                    </div>
-                                    <div class="col-lg-2">
-                                        <img src="http://placehold.it/75X75" class="img-rounded">
-                                         ${cartItem.imageName}
                                     </div>
                                 </td>
                                 <td>${cartItem.condition}</td>
@@ -99,7 +99,10 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-lg-1 col-lg-push-10">
+                    <div class="col-xs-10">
+
+                    </div>
+                    <div class="col-xs-2">
                         <button class="btn btn-lg btn-primary" onclick="window.location='/checkout'">Checkout</button>
                     </div>
                 </div>
@@ -129,14 +132,10 @@
 
 <style>
     .totalBox {
-        background: #f5f6f6; /* Old browsers */
-        background: -moz-linear-gradient(top,  #f5f6f6 0%, #dbdce2 21%, #b8bac6 49%, #dddfe3 80%, #dbdbdb 100%); /* FF3.6+ */
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f5f6f6), color-stop(21%,#dbdce2), color-stop(49%,#b8bac6), color-stop(80%,#dddfe3), color-stop(100%,#dbdbdb)); /* Chrome,Safari4+ */
-        background: -webkit-linear-gradient(top,  #f5f6f6 0%,#dbdce2 21%,#b8bac6 49%,#dddfe3 80%,#dbdbdb 100%); /* Chrome10+,Safari5.1+ */
-        background: -o-linear-gradient(top,  #f5f6f6 0%,#dbdce2 21%,#b8bac6 49%,#dddfe3 80%,#dbdbdb 100%); /* Opera 11.10+ */
-        background: -ms-linear-gradient(top,  #f5f6f6 0%,#dbdce2 21%,#b8bac6 49%,#dddfe3 80%,#dbdbdb 100%); /* IE10+ */
-        background: linear-gradient(to bottom,  #f5f6f6 0%,#dbdce2 21%,#b8bac6 49%,#dddfe3 80%,#dbdbdb 100%); /* W3C */
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f6f6', endColorstr='#dbdbdb',GradientType=0 ); /* IE6-9 */
+        border-radius: 15px 15px 15px 15px;
+        -moz-border-radius: 15px 15px 15px 15px;
+        -webkit-border-radius: 15px 15px 15px 15px;
+        border: 3px ridge #60bf07;
     }
 </style>
 

@@ -23,7 +23,7 @@ import java.util.List;
  * Created by Jon on 10/28/2014.
  */
 
-@WebServlet("/inventorySearch")
+@WebServlet("/Store")
 public class InventorySearchServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

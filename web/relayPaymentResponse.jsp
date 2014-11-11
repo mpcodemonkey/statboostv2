@@ -24,7 +24,7 @@
     if (referrer && referrer.indexOf(document.location.hostname) != 0) {
         <%
              String apiLoginId = "8qLJKr37W";
-             String receiptPageUrl = "http://teamjjacs.us/paymentResult";
+             String receiptPageUrl = "https://teamjjacs.us/paymentResult";
              /*
               * Leave the MD5HashKey as is - unless you have explicitly set it in the
               * merchant interface: Account > Settings > Security Settings > MD5-Hash
@@ -67,20 +67,10 @@
                receiptUrlBuffer.append(ResponseField.CARD_TYPE.getFieldName()).append("=");
                receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.CARD_TYPE.getFieldName()));
 
-               receiptUrlBuffer.append("&");
-               receiptUrlBuffer.append(ResponseField.ACCOUNT_NUMBER.getFieldName()).append("=");
-               receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.ACCOUNT_NUMBER.getFieldName()));
 
                receiptUrlBuffer.append("&");
                receiptUrlBuffer.append(ResponseField.AMOUNT.getFieldName()).append("=");
                receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.AMOUNT.getFieldName()));
-
-               receiptUrlBuffer.append("&");
-               receiptUrlBuffer.append(ResponseField.ACCOUNT_NUMBER.getFieldName()).append("=");
-               receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.ACCOUNT_NUMBER.getFieldName()));
-
-               /** SHIPPING INFO YES? NO?**/
-
 
 
                if(result.isApproved())

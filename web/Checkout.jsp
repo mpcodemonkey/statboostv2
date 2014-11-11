@@ -15,19 +15,39 @@
 <script>
     $(document).ready(function () {
         //init input masks
-       // $('#cc_number').mask('9999-9999-9999-9999', {placeholder: " "});
-        $('#exp').mask('99/99', {placeholder: " "});
+        $('#cc_number').mask('9999-9999-9999-9?999', {placeholder: "#"});
+        $('#cc_code').mask('999?9', {placeholder: "#"});
+        $('#exp').mask('99/99', {placeholder: "#"});
 
     });
 
+    function copyFields(form) {
+        if (form.copyShipping.checked == true) {
+            form.x_first_name.value = form.x_ship_to_first_name.value;
+            form.x_last_name.value = form.x_ship_to_last_name.value;
+            form.x_address.value = form.x_ship_to_address.value;
+            form.x_city.value = form.x_ship_to_city.value;
+            form.x_state.value = form.x_ship_to_state.value;
+            form.x_zip.value = form.x_ship_to_zip.value;
+        } else {
+            form.x_first_name.value = '';
+            form.x_last_name.value = '';
+            form.x_address.value = '';
+            form.x_city.value = '';
+            form.x_state.value = '';
+            form.x_zip.value = '';
+        }
+    }
+
 </script>
 
+<%@ page import="com.statboost.util.ServletUtil" %>
 <%@ page import="net.authorize.sim.Fingerprint" %>
 <%@ page import="java.util.Random" %>
 <%
     String apiLoginId = "8qLJKr37W"; //Authorize API Login ID
     String transactionKey = "9Rw9M2K8UsgSu28x"; //Authorize Transaction Key
-    String relayResponseUrl = "http://teamjjacs.us/relayPaymentResponse.jsp";
+    String relayResponseUrl = "https://teamjjacs.us/relayPaymentResponse.jsp";
     String amount = (String)session.getAttribute("orderTotal");
 
     Random rdm = new Random();
@@ -42,6 +62,10 @@
     long x_fp_sequence = fingerprint.getSequence();
     long x_fp_timestamp = fingerprint.getTimeStamp();
     String x_fp_hash = fingerprint.getFingerprintHash();
+
+
+    String clientIP = ServletUtil.getClientIpAddr(request);
+
 %>
 
 
@@ -82,11 +106,11 @@
                     </div>
                 </div>
                 <div class="checkbox">
-                    <label class=""><input id="copyShipping" type="checkbox" class="checkbox">&nbsp;Copy Shipping Info</label>
+                    <label class=""><input name="copyShipping" type="checkbox" class="checkbox" onclick="copyFields(this.form)">&nbsp;Copy Shipping Info</label>
                 </div>
                 <br><br>
                 <div class="row">
-                    <div class="col-xs-6">
+                    <div class="col-lg-6" style="max-width: 500px;">
                         <div class="form-group has-feedback">
                             <label class="">Credit Card Number</label>
                             <input class="form-control" id="cc_number" type='text' name='x_card_num' required/>
@@ -124,12 +148,13 @@
                 <input type='hidden' name='x_header_email_receipt' value='Your payment to EXP:Level-Up has been processed.' />
                 <input type='hidden' name='x_footer_email_receipt' value='Thank you for shopping with EXP:Level-Up online!' />
                 <!-- Customer fields -->
+                <input type='hidden' name='x_customer_ip' value='<%=clientIP%>' />
                 <input type='hidden' name='x_email_customer' value='FALSE' />
                 <input type='hidden' name='x_email' value='' />
 
 
-                <!-- for each of all cart items -->
-                <input type='hidden' name='x_line_item' value='item ID<|>item name<|>item description<|>item quantity<|>item price per unit<|>TRUE' />
+                <!-- for each of all cart items item ID<|>item name<|>item description<|>item quantity<|>item price per unit<|>is Taxable -->
+                <input type='hidden' name='x_line_item' value='1234<|>Test Item<|>Test Description<|>1<|>1.99<|>TRUE' />
 
 
                 <br><br><br>
@@ -137,6 +162,7 @@
                     <button class="btn btn-lg btn-primary" type='submit' name='buy_button' value='BUY'>Purchase</button>
                     <span class="btn btn-lg btn-default" type='button' onclick="window.location='/';">Cancel</span>
                 </div>
+                <img src="/include/images/RapidSSL_SEAL-90x50.gif">
             </form>
         </div>
     </div>

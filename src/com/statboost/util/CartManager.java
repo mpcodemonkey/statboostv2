@@ -74,7 +74,7 @@ public class CartManager {
             e.printStackTrace();
         } finally {
             //TODO: figure out why this breaks shopping cart code. need to close to return connection to pool.
-            //session.close(); //This breaks stuff for some reason
+            session.close(); //This breaks stuff for some reason
         }
     }
 

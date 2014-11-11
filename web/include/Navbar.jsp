@@ -27,12 +27,12 @@
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="/">Home</a></li>
+                <!--<li><a href="/">Home</a></li>-->
                 <li><a href="/Events">Events</a></li>
-                <li><a href="#store">Store</a></li>
+                <li><a href="/Store">Store</a></li>
                 <li class="dropdown"><!--"/Games.jsp"-->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        Games
+                        Games <span class="caret"></span>
                     </a>
                         <ul class="dropdown-menu">
                             <li><a href="/magicSearch">Magic: The Gathering</a></li>
@@ -55,17 +55,19 @@
                     int cartSize = ((ShoppingCartSessionObject)session.getAttribute("shoppingCart")).getCartItems().size();
                     session.setAttribute("cartSize", cartSize);
                 %>
-                <div class="">
+                <div style="float:right;">
                     <button class="btn btn-sm navbar-btn" onclick="window.location='/cart'"><span class="glyphicon glyphicon-shopping-cart"></span> Cart &nbsp;<span class="badge">${cartSize}</span></button>
                 </div>
             </c:if>
 
             <c:if test="${sessionScope.email != null}">
-                <div class="btn-group">
+                <div class="btn-group" style="max-width: 50px;">
                     <button type="button" class="btn navbar-btn btn-success dropdown-toggle" data-toggle="dropdown">
-                        <c:out value="${sessionScope.email}"/>&nbsp;<span class="glyphicon glyphicon-user"></span>
+                        <span class="glyphicon glyphicon-user"></span>&nbsp;<span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
+                        <li role="presentation" class="dropdown-header"><span style="font-size: 20px;"><c:out value="${sessionScope.email}"/></span></li>
+                        <li class="divider"></li>
                         <li><a href="/user/profile">User Profile</a></li>
                         <li><a href="/user/orderhistory">Order History</a></li>
                         <c:if test="${sessionScope.admin != null}">
