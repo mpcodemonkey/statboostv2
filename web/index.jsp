@@ -274,7 +274,7 @@
 
 
 <footer>
-    <p align="center">&copy; StatBoost 2014</p>
+    <p align="center" style="color:white;">&copy; StatBoost 2014</p>
 </footer>
 
 

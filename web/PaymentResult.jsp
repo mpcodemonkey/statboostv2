@@ -13,13 +13,13 @@
 <div class="container">
     <div class="well well-lg">
         <div style="max-width:400px;margin-left: auto; margin-right: auto;">
+            <h1 align="center">Payment Result</h1>
             <c:if test="${requestScope.alert != null && requestScope.alertType != null}">
                 <div class="alert alert-${requestScope.alertType} fade in">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <strong>Alert:</strong> <c:out value="${requestScope.alert}" />
                 </div>
             </c:if>
-            <h1 align="center">Payment Result</h1>
             <br>
 
 

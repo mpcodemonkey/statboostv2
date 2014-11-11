@@ -49,7 +49,7 @@
                                 <td>${status.count}</td>
                                 <td>
                                     <div class="col-md-3">
-                                        <img src="http://placehold.it/75X75" class="img-rounded">
+                                        <img src="https://placehold.it/75X75" class="img-rounded">
                                             ${cartItem.imageName}
                                     </div>
                                     <div class="col-md-7">

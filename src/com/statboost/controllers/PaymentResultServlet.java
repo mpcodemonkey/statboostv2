@@ -36,7 +36,7 @@ public class PaymentResultServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+/*
         Map<String, String[]> parameters = request.getParameterMap();
         if (parameters.isEmpty()) {
             response.sendRedirect("/");
@@ -51,7 +51,7 @@ public class PaymentResultServlet extends HttpServlet {
             request.setAttribute("alert", result);
             request.setAttribute("alertType", "warning");
             request.getRequestDispatcher("PaymentResult.jsp").forward(request, response);
-        }
+        }*/
     }
 
 }
