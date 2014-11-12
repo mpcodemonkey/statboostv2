@@ -89,7 +89,7 @@
 
 <script>
     function addToCart(inv_uid, condition, quantity) {
-        $.post("/cart", 'addItem=true&inv_uid='+inv_uid+'&condition='+condition+'&quantity='+quantity);
+        $.post('/cart', 'addItem=true&inv_uid='+inv_uid+'&condition='+condition+'&quantity='+quantity);
         location.reload(true);
         $('#'+inv_uid).show();
     }

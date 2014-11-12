@@ -72,6 +72,34 @@
                receiptUrlBuffer.append(ResponseField.AMOUNT.getFieldName()).append("=");
                receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.AMOUNT.getFieldName()));
 
+               receiptUrlBuffer.append("&");
+               receiptUrlBuffer.append(ResponseField.FREIGHT.getFieldName()).append("=");
+               receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.FREIGHT.getFieldName()));
+
+               receiptUrlBuffer.append("&");
+               receiptUrlBuffer.append(ResponseField.TAX.getFieldName()).append("=");
+               receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.TAX.getFieldName()));
+
+
+               /**
+                * Shipping details
+                */
+               receiptUrlBuffer.append("&");
+               receiptUrlBuffer.append(ResponseField.SHIP_TO_ADDRESS.getFieldName()).append("=");
+               receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.SHIP_TO_ADDRESS.getFieldName()));
+
+               receiptUrlBuffer.append("&");
+               receiptUrlBuffer.append(ResponseField.SHIP_TO_CITY.getFieldName()).append("=");
+               receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.SHIP_TO_CITY.getFieldName()));
+
+               receiptUrlBuffer.append("&");
+               receiptUrlBuffer.append(ResponseField.SHIP_TO_STATE.getFieldName()).append("=");
+               receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.SHIP_TO_STATE.getFieldName()));
+
+               receiptUrlBuffer.append("&");
+               receiptUrlBuffer.append(ResponseField.SHIP_TO_ZIP_CODE.getFieldName()).append("=");
+               receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.SHIP_TO_ZIP_CODE.getFieldName()));
+
 
                if(result.isApproved())
                {

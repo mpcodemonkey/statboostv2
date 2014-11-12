@@ -1,14 +1,19 @@
 package com.statboost.controllers;
 
+import com.statboost.models.actor.User;
+import com.statboost.models.session.ShoppingCartSessionObject;
+import com.statboost.util.OrderManager;
+import net.authorize.ResponseField;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Sam Kerr on 10/3/2014.
@@ -17,41 +22,84 @@ import java.util.Set;
 public class PaymentResultServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        Map<String, String[]> parameters = request.getParameterMap();
-        if (parameters.isEmpty()) {
-            response.sendRedirect("/");
-        } else {
-            Set keys = parameters.keySet();
-            String result = "";
-            for (Object o : keys) {
-                String key = (String)o;
-                result += key + "=" + Arrays.toString(parameters.get(key)).replace("^\\[*|\\]*", "") + "\n";
-            }
+        boolean issueOccurred = false;
+        String responseCode = request.getParameter(ResponseField.RESPONSE_CODE.getFieldName());
+        /**
+         * Response Code - Description
+         *  1 - This transaction has been approved.
+         *  2 - This transaction has been declined.
+         *  3 - There has been an error processing this transaction.
+         *  4 - This transaction is being held for review.
+         */
+        //if response code is not 1, then transaction was not approved.
+        if (responseCode == null || !responseCode.equals("1")) {
+            issueOccurred = true;
+        }
 
-            request.setAttribute("alert", result);
-            request.setAttribute("alertType", "warning");
+
+        if (issueOccurred) {
+            String responseReason = request.getParameter(ResponseField.RESPONSE_REASON_TEXT.getFieldName());
+            request.setAttribute("alert", responseReason);
+            request.setAttribute("alertType", "danger");
+            request.getRequestDispatcher("/PaymentResult.jsp").forward(request, response);
+        } else {
+            /**
+             * The transaction was successful
+             */
+            HttpSession session = request.getSession();
+
+            //TODO: decrement inventory
+
+            //get transaction details
+            String transactionID = request.getParameter(ResponseField.TRANSACTION_ID.getFieldName());
+            String amount = request.getParameter(ResponseField.AMOUNT.getFieldName());
+            String cardType = request.getParameter(ResponseField.CARD_TYPE.getFieldName());
+            String acctNumber = request.getParameter(ResponseField.ACCOUNT_NUMBER.getFieldName());
+
+            request.setAttribute("transactionID", transactionID);
+            request.setAttribute("amount", amount);
+            request.setAttribute("cardType", cardType);
+            request.setAttribute("acctNumber", acctNumber);
+
+            //get shipping details
+            String inStorePickup = "false"; //TODO: obtain set value for in store pickup
+            String shippingMethod = "null"; //TODO: obtain shipping mehtod
+            String shipAddress = request.getParameter(ResponseField.SHIP_TO_ADDRESS.getFieldName());
+            String shipCity = request.getParameter(ResponseField.SHIP_TO_CITY.getFieldName());
+            String shipState = request.getParameter(ResponseField.SHIP_TO_STATE.getFieldName());
+            String shipZip = request.getParameter(ResponseField.SHIP_TO_ZIP_CODE.getFieldName());
+
+            //get order totals
+            String orderTotal = amount;
+            String taxTotal = request.getParameter(ResponseField.TAX.getFieldName());;
+            String shippingTotal = request.getParameter(ResponseField.FREIGHT.getFieldName());;
+
+            //set orderParams for creating order
+            Map<String, String> orderParams = new HashMap<>();
+            orderParams.put("orderTotal", orderTotal);
+            orderParams.put("shippingTotal", shippingTotal);
+            orderParams.put("taxTotal", taxTotal);
+            orderParams.put("inStorePickup", inStorePickup);
+            orderParams.put("shippingMethod", shippingMethod);
+            orderParams.put("shippingAddress", shipAddress);
+            orderParams.put("shippingCity", shipCity);
+            orderParams.put("shippingState", shipState);
+            orderParams.put("shippingZip", shipZip);
+
+            //create the order
+            User user = User.find((String)session.getAttribute("email"));
+            ShoppingCartSessionObject shoppingCart = (ShoppingCartSessionObject)session.getAttribute("shoppingCart");
+            Integer orderID = OrderManager.createOrder(user, shoppingCart, orderParams);
+            request.setAttribute("orderID", orderID);
+
+
+            //set the response alert and direct to payment result page
+            String responseReason = request.getParameter(ResponseField.RESPONSE_REASON_TEXT.getFieldName());
+            request.setAttribute("alert", responseReason);
+            request.setAttribute("alertType", "success");
             request.getRequestDispatcher("/PaymentResult.jsp").forward(request, response);
         }
 
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-/*
-        Map<String, String[]> parameters = request.getParameterMap();
-        if (parameters.isEmpty()) {
-            response.sendRedirect("/");
-        } else {
-            Set keys = parameters.keySet();
-            String result = "";
-            for (Object o : keys) {
-                String key = (String)o;
-                result += key + "=" + Arrays.toString(parameters.get(key)).replace("^\\[*|\\]*", "") + "\n";
-            }
-
-            request.setAttribute("alert", result);
-            request.setAttribute("alertType", "warning");
-            request.getRequestDispatcher("PaymentResult.jsp").forward(request, response);
-        }*/
     }
 
 }

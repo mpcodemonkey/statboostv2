@@ -9,9 +9,9 @@
             <generator class="identity"/>
         </id>
         <property name="status" column="ord_status">
-            <type name="com.statboost.models.enumType.HibernateVarCharEnum">
+            <type name="org.hibernate.type.EnumType">
                 <param name="enumClass">com.statboost.models.enumType.OrderStatus</param>
-                <param name="type">12</param>
+                <param name="useNamed">true</param>
             </type>
         </property>
         <property name="shippingTotal" column="ord_shipping_total"/>

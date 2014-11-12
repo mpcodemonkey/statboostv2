@@ -11,6 +11,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -28,8 +29,8 @@ public class OrderManager {
      * @param orderParams - a Map of order specific details that were supplied by the user.
      * @return - true if order record is successfully created.
      */
-    public boolean createOrder(User user, ShoppingCartSessionObject shoppingCart, Map<String, String> orderParams) {
-        boolean result = false;
+    public static int createOrder(User user, ShoppingCartSessionObject shoppingCart, Map<String, String> orderParams) {
+        Integer orderID = null;
 
         //init new order object
         Order order = new Order();
@@ -45,8 +46,8 @@ public class OrderManager {
         //set order shipping details
         order.setInStorePickup(Boolean.parseBoolean(orderParams.get("inStorePickup")));
         order.setShippingMethod(orderParams.get("shippingMethod"));
-        order.setShippingAddress1(orderParams.get("shippingAddress1"));
-        order.setShippingAddress1(orderParams.get("shippingAddress2"));
+        order.setShippingAddress1(orderParams.get("shippingAddress"));
+        //order.setShippingAddress2(orderParams.get("shippingAddress2"));
         order.setShippingCity(orderParams.get("shippingCity"));
         order.setShippingState(orderParams.get("shippingState"));
         order.setShippingZip(orderParams.get("shippingZip"));
@@ -60,7 +61,7 @@ public class OrderManager {
         try {
             tx = session.beginTransaction();
             //insert the order record into the database
-            int orderID = (Integer) session.save(order);
+            orderID = (Integer) session.save(order);
 
             //create the inventory items and link them to the order
             order = (Order) session.get(Order.class, orderID);
@@ -75,10 +76,9 @@ public class OrderManager {
             e.printStackTrace();
         } finally {
             session.close();
-            result = true;
         }
 
-        return result;
+        return orderID;
     }
 
     /**
@@ -88,8 +88,8 @@ public class OrderManager {
      * @param sessionObject
      * @return
      */
-    private List<InventoryItem> createInventoryItems(ShoppingCartSessionObject sessionObject) {
-        List<InventoryItem> items = null;
+    private static List<InventoryItem> createInventoryItems(ShoppingCartSessionObject sessionObject) {
+        List<InventoryItem> items = new ArrayList<>();
         List<CartManager.ItemDataObject> itemObjectList;
 
         CartManager cartManager = new CartManager();
@@ -105,7 +105,7 @@ public class OrderManager {
 
 
                 inventoryItem.setName(inv.getName());
-                inventoryItem.setDescription(inv.getDescription());
+                inventoryItem.setDescription(inv.getDescription()==null?"N/A":inv.getDescription());
                 inventoryItem.setPrice(cost.getItemPrice());
                 inventoryItem.setQuantity(cost.getItemQuantity());
                 inventoryItem.setImage(inv.getImage());

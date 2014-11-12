@@ -86,7 +86,7 @@ public class ServletUtil {
             return null;
         }
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        return formatter.format(amount);
+        return formatter.format(amount).replace("$", "");
     }
 
     /**
