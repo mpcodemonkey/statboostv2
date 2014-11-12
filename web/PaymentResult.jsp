@@ -20,10 +20,36 @@
                     <strong>Alert:</strong> <c:out value="${requestScope.alert}" />
                 </div>
             </c:if>
-            <br>
+            <c:choose>
+                <c:when test="${requestScope.alertType != null && requestScope.alertType == 'success'}">
+                    <div>
+                        <h3>Thank you for your order!</h3>
+                    </div>
+                    <div>
+                        <p>Here is your receipt info..</p>
+                        <p>
+                            Transaction ID: ${requestScope.transactionID}<br>
+                            Amount Paid: ${requestScope.amount}<br>
+                            Account Charged: ${requestScope.acctNumber}<br>
+                            Card Type: ${requestScope.cardType}<br>
+                        </p>
+                    </div>
+                    <div>
+                        <p>Here is your order info:</p>
+                        <p>
+                            Order ID: ${requestScope.orderID}<br>
+                        </p>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <p>We are sorry, your transaction was not successful.</p>
+                    <p>Please try again by validating that your payment information is correct, or by using a different card.</p><br>
 
-
-
+                    <script>
+                        setTimeout(function() {window.location='/checkout';}, 6000);
+                    </script>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
 </div>

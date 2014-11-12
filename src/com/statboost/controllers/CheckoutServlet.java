@@ -29,12 +29,9 @@ public class CheckoutServlet extends HttpServlet {
             }
 
             request.getRequestDispatcher("/Checkout.jsp").forward(request, response);
-
-
         } else {
             response.sendRedirect("/cart");
         }
-
 
     }
 

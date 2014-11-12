@@ -67,7 +67,8 @@ public class ShoppingCartServlet extends HttpServlet {
             cartTotal.taxTotal = 0.0;//calculateTax(subtotal);
             cartTotal.shippingTotal = 0.0;//calculateShipping();
 
-            session.setAttribute("orderTotal", ServletUtil.formatCurrency(cartTotal.getOrderTotal()).replace("$", ""));
+            session.setAttribute("orderTotal", ServletUtil.formatCurrency(cartTotal.getOrderTotal()));
+            session.setAttribute("cartTotals", cartTotal);
             request.setAttribute("cartTotal", cartTotal);
             request.setAttribute("itemsInCart", itemsInCart);
         }

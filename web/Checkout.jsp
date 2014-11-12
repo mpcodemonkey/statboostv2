@@ -167,6 +167,8 @@
                 <input type='hidden' name='x_method' value='CC' />
                 <input type='hidden' name='x_type' value='AUTH_CAPTURE' />
                 <input type='hidden' name='x_amount' value='<%=amount%>' />
+                <input type='hidden' name='x_tax' value='${sessionScope.cartTotals.taxTotal}' />
+                <input type='hidden' name='x_freight' value='${sessionScope.cartTotals.shippingTotal}' />
                 <input type='hidden' name='x_test_request' value='FALSE' />
                 <input type='hidden' name='notes' value='none' />
                 <input type='hidden' name='x_header_email_receipt' value='Your payment to EXP:Level-Up has been processed.' />

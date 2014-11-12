@@ -3,6 +3,8 @@ package com.statboost.models.inventory;
 import com.statboost.models.actor.User;
 import com.statboost.models.enumType.OrderStatus;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import java.util.Date;
 import java.util.HashSet;
@@ -42,6 +44,7 @@ public class Order {
         this.uid = ordUid;
     }
 
+    @Enumerated(EnumType.STRING)
     public OrderStatus getStatus() {
         return status;
     }
