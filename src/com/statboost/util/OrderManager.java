@@ -37,6 +37,7 @@ public class OrderManager {
         order.setUser(user);
         order.setPaid(false);
         order.setStatus(OrderStatus.PLACED);
+        order.setTransactionId(orderParams.get("transactionId"));
 
         //set order totals
         order.setShippingTotal(Double.parseDouble(orderParams.get("shippingTotal")));
@@ -54,6 +55,8 @@ public class OrderManager {
 
         //set date time to now
         order.setDateSubmitted(new Date());
+        order.setDatePaid(new Date());
+        order.setPaid(true);
 
 
         Session session = HibernateUtil.getDatabaseSessionFactory().openSession();
@@ -107,7 +110,8 @@ public class OrderManager {
                 inventoryItem.setName(inv.getName());
                 inventoryItem.setDescription(inv.getDescription()==null?"N/A":inv.getDescription());
                 inventoryItem.setPrice(cost.getItemPrice());
-                inventoryItem.setQuantity(cost.getItemQuantity());
+                inventoryItem.setCondition(Cost.getConditionString(cost.getItemCondition()));
+                inventoryItem.setQuantity(itemObject.getQuantity());
                 inventoryItem.setImage(inv.getImage());
                 inventoryItem.setEvent(inv.getEvent());
                 inventoryItem.setMagicCard(inv.getMagicCard());

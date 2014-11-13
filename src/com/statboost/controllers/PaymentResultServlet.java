@@ -71,11 +71,12 @@ public class PaymentResultServlet extends HttpServlet {
 
             //get order totals
             String orderTotal = amount;
-            String taxTotal = request.getParameter(ResponseField.TAX.getFieldName());;
-            String shippingTotal = request.getParameter(ResponseField.FREIGHT.getFieldName());;
+            String taxTotal = request.getParameter(ResponseField.TAX.getFieldName());
+            String shippingTotal = request.getParameter(ResponseField.FREIGHT.getFieldName());
 
             //set orderParams for creating order
             Map<String, String> orderParams = new HashMap<>();
+            orderParams.put("transactionId", transactionID);
             orderParams.put("orderTotal", orderTotal);
             orderParams.put("shippingTotal", shippingTotal);
             orderParams.put("taxTotal", taxTotal);

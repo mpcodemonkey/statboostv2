@@ -130,13 +130,4 @@
     }
 </script>
 
-<style>
-    .totalBox {
-        border-radius: 15px 15px 15px 15px;
-        -moz-border-radius: 15px 15px 15px 15px;
-        -webkit-border-radius: 15px 15px 15px 15px;
-        border: 3px ridge #60bf07;
-    }
-</style>
-
 <jsp:include page="/include/Footer.jsp"/>

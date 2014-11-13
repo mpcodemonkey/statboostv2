@@ -3,6 +3,8 @@ package com.statboost.models.inventory;
 import com.statboost.models.mtg.MagicCard;
 import com.statboost.models.ygo.YugiohCard;
 
+import javax.persistence.ManyToOne;
+
 /**
  * Created by Jessica on 9/25/14.
  */
@@ -14,6 +16,7 @@ public class InventoryItem {
     private String image;
     private boolean preOrder;
     private String description;
+    @ManyToOne
     private Order order;
     private MagicCard magicCard;
     private YugiohCard yugiohCard;

@@ -21,7 +21,7 @@
 
         //init input masks
         $('#cc_number').mask('9999999999999?999', {placeholder: ""});
-        $('#cc_code').mask('999?9', {placeholder: "#"});
+        $('#cc_code').mask('999?9', {placeholder: ""});
         $('#exp').mask('99/99', {placeholder: "#"});
 
     });
@@ -247,13 +247,6 @@
     form #cc_feedback.invalid{
 
     }
-
-     .totalBox {
-         border-radius: 15px 15px 15px 15px;
-         -moz-border-radius: 15px 15px 15px 15px;
-         -webkit-border-radius: 15px 15px 15px 15px;
-         border: 3px ridge #60bf07;
-     }
 </style>
 
 
