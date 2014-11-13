@@ -19,8 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by Sam Kerr
- * Logic by Jon Tinney
+ * Created by Team JJACS
  * 4:35 PM on 8/6/2014
  */
 @WebServlet("/magicSearch")
@@ -242,9 +241,16 @@ public class MagicSearchServlet extends HttpServlet {
                 prevCon = true;
             }
             if (request.getParameter("cmc") != null && !request.getParameter("cmc").equals("")) {
+                double mana;
+                if(ServletUtil.isDouble(request.getParameter("cmc"))){
+                    mana = Double.parseDouble(request.getParameter("cmc"));
+                }
+                else{
+                    mana = -1;
+                }
                 cmcConstraint = " and m.mcrCmc " + request.getParameter("cmcModifier") + " :cmc";
                 queryparams.add(cmcConstraint);
-                buildableQuery.put("cmc", request.getParameter("cmc"));
+                buildableQuery.put("cmc", mana);
             }
             if (request.getParameter("orderBy") != null) {
                 defaultOrderBy = "m." + request.getParameter("orderBy");

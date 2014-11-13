@@ -48,7 +48,6 @@
         <mapping resource="User.hbm.xml"/>
         <mapping resource="MagicCard.hbm.xml"/>
         <mapping resource="MagicSet.hbm.xml"/>
-        <mapping resource="YugiohCard.hbm.xml"/>
         <mapping resource="Email.hbm.xml"/>
         <mapping resource="EmailTemplate.hbm.xml"/>
         <mapping resource="EmailVariable.hbm.xml"/>
@@ -65,5 +64,6 @@
         <mapping resource="Cost.hbm.xml"/>
         <mapping resource="Category.hbm.xml"/>
         <mapping resource="InventoryCategory.hbm.xml"/>
+        <mapping resource="YugiohCard.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>
