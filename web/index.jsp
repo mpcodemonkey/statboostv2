@@ -182,7 +182,7 @@
 
 <script type="text/javascript">
     var bugmuncher_options = {
-        api_key: "b616434b2747fa2a83e6cb17d1c64435be75d176"
+        api_key: "c2e9c3d83a40f204696df23782ad6c87a26f1854"
     };
     (function(){
         var node = document.createElement("script");

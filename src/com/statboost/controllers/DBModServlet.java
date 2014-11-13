@@ -60,6 +60,7 @@ public class DBModServlet extends HttpServlet {
                     Inventory inventory = new Inventory();
                     inventory.setName(resultSet.get(j).getMcrCardName());
                     inventory.setImage(resultSet.get(j).getMcrImageName());
+                    inventory.setDescription("MTG - " + resultSet.get(j).getMcrSetId());
                     //generate random card costs
 
                     inventory.setMagicCard(resultSet.get(j));
@@ -106,7 +107,8 @@ public class DBModServlet extends HttpServlet {
                     for (int j = 0; j < ySet.size(); j++) {
                         Inventory inventory = new Inventory();
                         inventory.setName(ySet.get(j).getYcrName());
-                        inventory.setImage(ySet.get(j).getYcrName());
+                        inventory.setImage(ySet.get(j).getYcrImage());
+                        inventory.setDescription("YGO");
                         //generate random card costs
 
                         inventory.setYugiohCard(ySet.get(j));
@@ -145,47 +147,47 @@ public class DBModServlet extends HttpServlet {
                 Random r = new Random();
                 for (int j = 0; j < iSet.size(); j++) {
                     Cost cost0 = new Cost();
-                    cost0.setItemPrice((r.nextInt(300) + 1) / 100.0);
-                    cost0.setItemQuantity(r.nextInt(5) + 1);
+                    cost0.setItemPrice((r.nextInt(3000) + 1) / 100.0);
+                    cost0.setItemQuantity(r.nextInt(50) + 1);
                     cost0.setInvUid(iSet.get(j).getUid());
                     cost0.setInventory(iSet.get(j));
                     cost0.setItemCondition(ItemCondition.NEW);
                     session.save(cost0);
 
                     Cost cost1 = new Cost();
-                    cost1.setItemPrice((r.nextInt(300) + 1) / 100.0);
-                    cost1.setItemQuantity(r.nextInt(5) + 1);
+                    cost1.setItemPrice((r.nextInt(2500) + 1) / 100.0);
+                    cost1.setItemQuantity(r.nextInt(25) + 1);
                     cost1.setInvUid(iSet.get(j).getUid());
                     cost1.setInventory(iSet.get(j));
                     cost1.setItemCondition(ItemCondition.NEAR_MINT);
                     session.save(cost1);
 
                     Cost cost2 = new Cost();
-                    cost2.setItemPrice((r.nextInt(300) + 1) / 100.0);
-                    cost2.setItemQuantity(r.nextInt(5) + 1);
+                    cost2.setItemPrice((r.nextInt(2000) + 1) / 100.0);
+                    cost2.setItemQuantity(r.nextInt(20) + 1);
                     cost2.setInvUid(iSet.get(j).getUid());
                     cost2.setInventory(iSet.get(j));
                     cost2.setItemCondition(ItemCondition.LIGHTLY_PLAYED);
                     session.save(cost2);
 
                     Cost cost3 = new Cost();
-                    cost3.setItemPrice((r.nextInt(300) + 1) / 100.0);
-                    cost3.setItemQuantity(r.nextInt(5) + 1);
+                    cost3.setItemPrice((r.nextInt(1500) + 1) / 100.0);
+                    cost3.setItemQuantity(r.nextInt(15) + 1);
                     cost3.setInvUid(iSet.get(j).getUid());
                     cost3.setInventory(iSet.get(j));
                     cost3.setItemCondition(ItemCondition.MODERATELY_PLAYED);
                     session.save(cost3);
 
                     Cost cost4 = new Cost();
-                    cost4.setItemPrice((r.nextInt(300) + 1) / 100.0);
-                    cost4.setItemQuantity(r.nextInt(5) + 1);
+                    cost4.setItemPrice((r.nextInt(1000) + 1) / 100.0);
+                    cost4.setItemQuantity(r.nextInt(10) + 1);
                     cost4.setInvUid(iSet.get(j).getUid());
                     cost4.setInventory(iSet.get(j));
                     cost4.setItemCondition(ItemCondition.HEAVILY_PLAYED);
                     session.save(cost4);
 
                     Cost cost5 = new Cost();
-                    cost5.setItemPrice((r.nextInt(300) + 1) / 100.0);
+                    cost5.setItemPrice((r.nextInt(500) + 1) / 100.0);
                     cost5.setItemQuantity(r.nextInt(5) + 1);
                     cost5.setInvUid(iSet.get(j).getUid());
                     cost5.setInventory(iSet.get(j));

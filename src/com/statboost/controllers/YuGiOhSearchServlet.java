@@ -118,7 +118,7 @@ public class YuGiOhSearchServlet extends HttpServlet {
             }
             if(request.getParameter("effectInput") != null && !request.getParameter("effectInput").equals(""))
             {
-                pendulumConstraint = "ycrPendulumEffect LIKE :pendEff";
+                pendulumConstraint = "ycrPendulumDescription LIKE :pendEff";
 
                 if(prevCon){
                     pendulumConstraint = and + pendulumConstraint;
@@ -151,13 +151,20 @@ public class YuGiOhSearchServlet extends HttpServlet {
             }
             if(request.getParameter("scaleInput") != null && !request.getParameter("scaleInput").equals(""))
             {
-                scaleConstraint = "ycrScale = :scale";
+                scaleConstraint = "ycrPendulumScale = :scale";
+                int pendulum;
+                if(ServletUtil.isInteger(request.getParameter("scaleInput"))){
+                    pendulum = Integer.parseInt(request.getParameter("scaleInput"));
+                }
+                else{
+                    pendulum = -1;
+                }
 
                 if(prevCon){
                     scaleConstraint = and + scaleConstraint;
                 }
-                queryparams.add(defConstraint);
-                buildableQuery.put("scale",request.getParameter("scaleInput"));
+                queryparams.add(scaleConstraint);
+                buildableQuery.put("scale",pendulum);
                 prevCon = true;
             }
             if(request.getParameterValues("attribInput") != null)
@@ -210,15 +217,15 @@ public class YuGiOhSearchServlet extends HttpServlet {
                     prevCon = true;
                 }
             }
-            if(request.getParameterValues("monsterTypeInput") != null)
+            if(request.getParameterValues("monsterType") != null)
             {
-                System.out.println(request.getParameterValues("monsterTypeInput"));
-                String defCon = " ycrType = :mTypes";
-                String[] mTypes = request.getParameterValues("monsterTypeInput");
+                System.out.println(request.getParameterValues("monsterType"));
+                String defCon = " ycrMonsterType = :mTypes";
+                String[] mTypes = request.getParameterValues("monsterType");
 
                 if(mTypes.length > 1)
                 {
-                    defCon = " ycrType LIKE :mTypes";
+                    defCon = " ycrMonsterType LIKE :mTypes";
                 }
                 for(int i = 0; i < mTypes.length; i++)
                 {

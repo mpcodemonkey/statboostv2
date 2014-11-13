@@ -131,8 +131,8 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label class="control-label" for="formInput3">Pendulum</label>
-                                                    <input type="text" class="form-control" id="formInput3" name="scaleInput" placeholder="Scale #">
+                                                    <label class="control-label" for="scaleInput">Pendulum</label>
+                                                    <input type="text" class="form-control" id="scaleInput" name="scaleInput" placeholder="Scale #">
                                                 </div>
                                             </div>
                                         </div>
@@ -183,7 +183,7 @@
                                             <input type="checkbox" class="monsterCheck" id="mc1">
                                             <label class="control-label" for="mc2">or</label>
                                             <input type="checkbox" class="monsterCheck" id="mc2">
-                                            <select class="form-control multiselect" multiple="multiple" id="monsterType" name="monsterTypeInput">
+                                            <select class="form-control multiselect" multiple="multiple" id="monsterType" name="monsterType">
                                                 <option value="aqua">Aqua</option>
                                                 <option value="beast">Beast</option>
                                                 <option value="beast-warrior">Beast-Warrior</option>
