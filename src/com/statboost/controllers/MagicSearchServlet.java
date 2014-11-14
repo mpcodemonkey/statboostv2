@@ -56,7 +56,7 @@ public class MagicSearchServlet extends HttpServlet {
         List<MagicCard> cards = null;
         int page = 1;
 
-        //query
+        //query query
         String hql = "Select m From MagicCard as m, MagicSet as s where m.mcrSetId = s.mstUid ";
 
         //check if query object is in the session
