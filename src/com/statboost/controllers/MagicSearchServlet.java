@@ -36,16 +36,17 @@ public class MagicSearchServlet extends HttpServlet {
         //we gonna get all db up in this servlet yo
         GenericDAO expFormDAO = new GenericDAO();
         ArrayList<String> Expansions = (ArrayList<String>)expFormDAO.getResultSet("Select mstName from MagicSet");
-
+        ArrayList<String> Formats = (ArrayList<String>)expFormDAO.getResultSet("Select distinct mstBlock from MagicSet where mstBlock is not null");
         request.setAttribute("expansionList", Expansions);
+        request.setAttribute("formatList", Formats);
         request.getRequestDispatcher("/MagicSearch.jsp").forward(request, response);
         }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String nameConstraint, typeConstraint, subTypeConstraint, rulesConstraint, colorsConstraint, rarityConstraint, setIdConstraint, expConstraint, cmcConstraint;
-        nameConstraint = typeConstraint = subTypeConstraint = rulesConstraint = colorsConstraint = rarityConstraint = setIdConstraint = expConstraint = cmcConstraint = "";
+        String nameConstraint, typeConstraint, subTypeConstraint, rulesConstraint, colorsConstraint, rarityConstraint, setIdConstraint, expConstraint, cmcConstraint, formatConstraint;
+        nameConstraint = typeConstraint = subTypeConstraint = rulesConstraint = colorsConstraint = rarityConstraint = setIdConstraint = expConstraint = cmcConstraint = formatConstraint = "";
         ArrayList<String> queryparams = new ArrayList<>();
         HashMap<String, Object> buildableQuery = new HashMap<>();
         boolean prevCon = true;
@@ -191,6 +192,26 @@ public class MagicSearchServlet extends HttpServlet {
                         buildableQuery.put("colors" + i, "%" + colors[i] + "%");
                     else
                         buildableQuery.put("colors" + i, colors[i]);
+                    prevCon = true;
+                }
+            }
+
+            if (request.getParameterValues("format") != null) {
+                System.out.println(request.getParameterValues("format"));
+                String formCon = " and s.mstBlock = :format";
+                String[] format = request.getParameterValues("format");
+
+                if (format.length > 1) {
+                    formCon = " and s.mstBlock LIKE :format";
+                }
+                for (int i = 0; i < format.length; i++) {
+                    formatConstraint = formCon + i;
+                    //System.out.println("I ran, current color is: " + colors[i]);
+                    queryparams.add(formatConstraint);
+                    if (format.length > 1)
+                        buildableQuery.put("format" + i, "%" + format[i] + "%");
+                    else
+                        buildableQuery.put("format" + i, format[i]);
                     prevCon = true;
                 }
             }

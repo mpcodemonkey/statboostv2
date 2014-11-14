@@ -165,7 +165,7 @@
                                             <input type="checkbox" class="iconCheck" id="ic1">
                                             <label class="control-label" for="ic2">or</label>
                                             <input type="checkbox" class="iconCheck" id="ic2">
-                                            <select class="form-control multiselect" multiple="multiple" name="iconInput" id="icon">
+                                            <select class="form-control multiselect" multiple="multiple" name="iconInput" id="iconInput">
                                                 <option value="equip">Equip</option>
                                                 <option value="field">Field</option>
                                                 <option value="quick-play">Quick-Play</option>
@@ -184,35 +184,39 @@
                                             <label class="control-label" for="mc2">or</label>
                                             <input type="checkbox" class="monsterCheck" id="mc2">
                                             <select class="form-control multiselect" multiple="multiple" id="monsterType" name="monsterType">
-                                                <option value="aqua">Aqua</option>
-                                                <option value="beast">Beast</option>
-                                                <option value="beast-warrior">Beast-Warrior</option>
-                                                <option value="dinosaur">Dinosaur</option>
-                                                <option value="divine-beast">Divine-Beast</option>
-                                                <option value="dragon">Dragon</option>
-                                                <option value="fairy">Fairy</option>
-                                                <option value="fiend">Fiend</option>
-                                                <option value="fish">Fish</option>
-                                                <option value="insect">Insect</option>
-                                                <option value="machine">Machine</option>
-                                                <option value="plant">Plant</option>
-                                                <option value="psychic">Psychic</option>
-                                                <option value="pyro">Pyro</option>
-                                                <option value="reptile">Reptile</option>
-                                                <option value="warrior">Warrior</option>
-                                                <option value="winged beast">Winged Beast</option>
-                                                <option value="zombie">Zombie</option>
+                                                <option value="Aqua">Aqua</option>
+                                                <option value="Beast">Beast</option>
+                                                <option value="Beast-Warrior">Beast-Warrior</option>
+                                                <option value="Dinosaur">Dinosaur</option>
+                                                <option value="Divine-Beast">Divine-Beast</option>
+                                                <option value="Dragon">Dragon</option>
+                                                <option value="Fairy">Fairy</option>
+                                                <option value="Fiend">Fiend</option>
+                                                <option value="Fish">Fish</option>
+                                                <option value="Insect">Insect</option>
+                                                <option value="Machine">Machine</option>
+                                                <option value="Plant">Plant</option>
+                                                <option value="Psychic">Psychic</option>
+                                                <option value="Pyro">Pyro</option>
+                                                <option value="Reptile">Reptile</option>
+                                                <option value="Rock">Rock</option>
+                                                <option value="Spellcaster">Spellcaster</option>
+                                                <option value="Sea Serpent">Sea Serpent</option>
+                                                <option value="Thunder">Thunder</option>
+                                                <option value="Warrior">Warrior</option>
+                                                <option value="Winged Beast">Winged Beast</option>
+                                                <option value="Zombie">Zombie</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <!-- multiselect for card Type(not type) -->
-                                            <label class="control-label" for="cardType">Card Type</label>
+                                            <label class="control-label" for="cardTypeInput">Card Type</label>
                                             <br>
                                             <label class="control-label" for="cc1">and</label>
                                             <input type="checkbox" class="cardCheck" id="cc1">
                                             <label class="control-label" for="cc2">or</label>
                                             <input type="checkbox" class="cardCheck" id="cc2">
-                                            <select class="form-control multiselect" multiple="multiple" id="cardType" name="cardTypeInput" >
+                                            <select class="form-control multiselect" multiple="multiple" id="cardTypeInput" name="cardTypeInput" >
                                                 <option value="effect">Effect</option>
                                                 <option value="flip">Flip</option>
                                                 <option value="fusion">Fusion</option>
@@ -220,6 +224,7 @@
                                                 <option value="normal">Normal</option>
                                                 <option value="pendulum">Pendulum</option>
                                                 <option value="ritual">Ritual</option>
+                                                <option value="spirit">Spirit</option>
                                                 <option value="synchro">Synchro</option>
                                                 <option value="toon">Toon</option>
                                                 <option value="tuner">Tuner</option>
