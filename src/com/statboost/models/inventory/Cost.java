@@ -1,6 +1,11 @@
 package com.statboost.models.inventory;
 
 import com.statboost.models.enumType.ItemCondition;
+import com.statboost.models.session.ShoppingCartSessionObject;
+import com.statboost.util.HibernateUtil;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -42,6 +47,68 @@ public class Cost {
             case "Damaged": return ItemCondition.DAMAGED;
             default: return ItemCondition.NEW;
         }
+    }
+
+
+    public static boolean isQuantityInStock(int invUid, ItemCondition condition, int quantity) {
+        boolean result = false;
+
+        Cost cost = null;
+
+        Session session = HibernateUtil.getDatabaseSessionFactory().openSession();
+        Transaction tx = null;
+        if (quantity > 0) {
+            try {
+                tx = session.beginTransaction();
+                //query for cost record
+                cost = (Cost) session.createQuery("FROM Cost WHERE invUid=" + invUid + " AND itemCondition=" + condition);
+
+                tx.commit();
+            } catch (HibernateException e) {
+                if (tx != null) tx.rollback();
+                e.printStackTrace();
+            } finally {
+                session.close();
+            }
+        }
+
+        //check quantity
+        if (cost != null && (cost.getItemQuantity() >= quantity)) {
+                result = true;
+        }
+
+        return result;
+    }
+
+    public static boolean decrementCosts(ShoppingCartSessionObject shoppingCart) {
+        boolean result = true;
+
+        Session session = HibernateUtil.getDatabaseSessionFactory().openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+
+            for (ShoppingCartSessionObject.RequestedItem item : shoppingCart.getCartItems()) {
+                //query for cost record TODO: FIX query to support enum
+                Cost cost = (Cost) session.createQuery("FROM Cost WHERE invUid=" + item.getInvUid() + " AND itemCondition=" + item.getCondition());
+                if (cost != null) {
+                    cost.setItemQuantity(cost.getItemQuantity()-item.getQuantity());
+                    //update record
+                    session.update(cost);
+                }
+            }
+
+            tx.commit();
+        } catch (HibernateException e) {
+            result = false;
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+
+        }
+        return result;
     }
 
     public int getCostUid() {

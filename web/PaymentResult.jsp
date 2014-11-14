@@ -29,7 +29,7 @@
                     <div>
                         <p>Payment Details:</p>
                         <p>
-                            Order ID: ${requestScope.orderID}<br>
+                            <c:if test="${requestScope.orderID != null}"> Order ID: ${requestScope.orderID}<br> </c:if>
                             Transaction ID: ${requestScope.transactionID}<br>
                             Amount Paid: <fmt:formatNumber value="${requestScope.amount}" type="currency"/><br>
                             Account Charged: ${requestScope.acctNumber}<br>
@@ -39,7 +39,7 @@
                     <div>
                         <p>
                             <c:choose>
-                                <c:when test="${sessionScope.email != null}"><button class="btn btn-sm btn-primary" onclick="window.location='/user/orderHistory'">View Order History</button></c:when>
+                                <c:when test="${sessionScope.email != null}"><button class="btn btn-sm btn-primary" onclick="window.location='/user/orderhistory'">View Order History</button></c:when>
                                 <c:otherwise>Create an account before future orders to log your order history.</c:otherwise>
                             </c:choose>
                         </p>

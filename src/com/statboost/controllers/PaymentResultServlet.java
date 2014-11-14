@@ -1,9 +1,12 @@
 package com.statboost.controllers;
 
 import com.statboost.models.actor.User;
+import com.statboost.models.inventory.Cost;
 import com.statboost.models.session.ShoppingCartSessionObject;
 import com.statboost.util.OrderManager;
 import net.authorize.ResponseField;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,6 +23,8 @@ import java.util.Map;
  */
 @WebServlet("/paymentResult")
 public class PaymentResultServlet extends HttpServlet {
+    private static Logger logger = Logger.getLogger(OrderManager.class);
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         boolean issueOccurred = false;
@@ -48,8 +53,6 @@ public class PaymentResultServlet extends HttpServlet {
              */
             HttpSession session = request.getSession();
 
-            //TODO: decrement inventory
-
             //get transaction details
             String transactionID = request.getParameter(ResponseField.TRANSACTION_ID.getFieldName());
             String amount = request.getParameter(ResponseField.AMOUNT.getFieldName());
@@ -62,8 +65,9 @@ public class PaymentResultServlet extends HttpServlet {
             request.setAttribute("acctNumber", acctNumber);
 
             //get shipping details
-            String inStorePickup = "false"; //TODO: obtain set value for in store pickup
-            String shippingMethod = "null"; //TODO: obtain shipping mehtod
+            String inStorePickup = request.getParameter("inStorePickup");
+            inStorePickup = inStorePickup.equalsIgnoreCase("No") ? "false" : "true";
+            String shippingMethod = "null"; //TODO: obtain shipping method
             String shipAddress = request.getParameter(ResponseField.SHIP_TO_ADDRESS.getFieldName());
             String shipCity = request.getParameter(ResponseField.SHIP_TO_CITY.getFieldName());
             String shipState = request.getParameter(ResponseField.SHIP_TO_STATE.getFieldName());
@@ -90,8 +94,24 @@ public class PaymentResultServlet extends HttpServlet {
             //create the order
             User user = User.find((String)session.getAttribute("email"));
             ShoppingCartSessionObject shoppingCart = (ShoppingCartSessionObject)session.getAttribute("shoppingCart");
-            Integer orderID = OrderManager.createOrder(user, shoppingCart, orderParams);
+            Integer orderID = null;
+            try {
+               orderID = OrderManager.createOrder(user, shoppingCart, orderParams);
+            } catch (Exception e) {
+                logger.setLevel(Level.DEBUG);
+                logger.debug("Something terrible happened when creating the order for transaction #" + transactionID + ".");
+            }
             request.setAttribute("orderID", orderID);
+
+            //decrement cost table, items have been purchased.
+            Cost.decrementCosts(shoppingCart);
+
+            //session clean up
+            session.removeAttribute("shoppingCart");
+            session.removeAttribute("cartTotals");
+            session.removeAttribute("itemsInCart");
+            session.removeAttribute("orderTotal");
+
 
 
             //set the response alert and direct to payment result page
