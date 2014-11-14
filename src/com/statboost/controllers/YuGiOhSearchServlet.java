@@ -220,7 +220,7 @@ public class YuGiOhSearchServlet extends HttpServlet {
             if(request.getParameterValues("monsterType") != null)
             {
                 System.out.println(request.getParameterValues("monsterType"));
-                String defCon = " ycrMonsterType = :mTypes";
+                String defCon = " ycrMonsterType like :mTypes";
                 String[] mTypes = request.getParameterValues("monsterType");
 
                 if(mTypes.length > 1)
@@ -232,25 +232,50 @@ public class YuGiOhSearchServlet extends HttpServlet {
                     monsterTypeConstraint = defCon + i;
                     if(prevCon)
                     {
-                        monsterTypeConstraint = and + defCon + i;
+                        monsterTypeConstraint = "or" + defCon + i;
                     }
                     queryparams.add(monsterTypeConstraint);
                     if(mTypes.length > 1)
                         buildableQuery.put("mTypes" + i, "%" + mTypes[i] + "%");
                     else
-                        buildableQuery.put("mTypes" + i, mTypes[i]);
+                        buildableQuery.put("mTypes" + i, "&" + mTypes[i] + "%");
+                    prevCon = true;
+                }
+            }
+            if(request.getParameterValues("iconInput") != null)
+            {
+                System.out.println(request.getParameterValues("iconInput"));
+                String defCon = " ycrIcon like :cIcons";
+                String[] iTypes = request.getParameterValues("iconInput");
+
+                if(iTypes.length > 1)
+                {
+                    defCon = " ycrIcon LIKE :cIcons";
+                }
+                for(int i = 0; i < iTypes.length; i++)
+                {
+                    cardTypeConstraint = defCon + i;
+                    if(prevCon)
+                    {
+                        cardTypeConstraint = and + defCon + i;
+                    }
+                    queryparams.add(cardTypeConstraint);
+                    if(iTypes.length > 1)
+                        buildableQuery.put("cIcons" + i, "%" + iTypes[i] + "%");
+                    else
+                        buildableQuery.put("cIcons" + i, iTypes[i]);
                     prevCon = true;
                 }
             }
             if(request.getParameterValues("cardTypeInput") != null)
             {
                 System.out.println(request.getParameterValues("cardTypeInput"));
-                String defCon = " ycrCardType = :cTypes";
+                String defCon = " ycrType like :cTypes";
                 String[] cTypes = request.getParameterValues("cardTypeInput");
 
                 if(cTypes.length > 1)
                 {
-                    defCon = " ycrCardType LIKE :cTypes";
+                    defCon = " ycrType LIKE :cTypes";
                 }
                 for(int i = 0; i < cTypes.length; i++)
                 {

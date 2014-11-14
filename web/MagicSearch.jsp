@@ -121,7 +121,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label" for="rulesContain">Rules Text</label>
-                                            <input type="text" class="form-control" id="rulesContain" name=rulesContain" placeholder="Abilities or errata">
+                                            <input type="text" class="form-control" id="rulesContain" name="rulesContain" placeholder="Abilities or errata">
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label" for="cmcModifier">Mana Cost</label>
@@ -208,38 +208,9 @@
                                             <label class="control-label" for="cc2">or</label>
                                             <input type="radio" name="format" id="cc2" value="or">
                                             <select class="form-control multiselect" multiple="multiple" id="format" name="format">
-                                                <option value="Classic">Classic</option>
-                                                <option value="Commander">Commander</option>
-                                                <option value="Extended">Extended</option>
-                                                <option value="Freeform">Freeform</option>
-                                                <option value="Ice Age Block">Ice Age Block</option>
-                                                <option value="Innistrad Block">Innistrad Block</option>
-                                                <option value="Invasion Block">Invasion Block</option>
-                                                <option value="Kamigawa Block">Kamigawa Block</option>
-                                                <option value="Legacy">Legacy</option>
-                                                <option value="Lorwyn-Shadowmoor Block">Lorwyn-Shadowmoor Block</option>
-                                                <option value="Masques Block">Masques Block</option>
-                                                <option value="Mirage Block">Mirage Block</option>
-                                                <option value="Mirrodin Block">Mirrodin Block</option>
-                                                <option value="Modern">Modern</option>
-                                                <option value="Odyssey Block">Odyssey Block</option>
-                                                <option value="Onslaught Block">Onslaught Block</option>
-                                                <option value="Prismatic">Prismatic</option>
-                                                <option value="Ravnica Block">Ravnica Block</option>
-                                                <option value="Return to Ravnica Block">Return to Ravnica Block</option>
-                                                <option value="Scars of Mirrodin Block">Scars of Mirrodin Block</option>
-                                                <option value="Shards of Alara Block">Shards of Alara Block</option>
-                                                <option value="Singleton 100">Singleton 100</option>
-                                                <option value="Standard">Standard</option>
-                                                <option value="Tempest Block">Tempest Block</option>
-                                                <option value="Theros Block">Theros Block</option>
-                                                <option value="Time Spiral Block">Time Spiral Block</option>
-                                                <option value="Tribal Wars Legacy">Tribal Wars Legacy</option>
-                                                <option value="Tribal Wars Standard">Tribal Wars Standard</option>
-                                                <option value="Un-Sets">Un-Sets</option>
-                                                <option value="Urza Block">Urza Block</option>
-                                                <option value="Vintage">Vintage</option>
-                                                <option value="Zendikar Block">Zendikar Block</option>
+                                                <c:forEach items="${requestScope.formatList}" var="format">
+                                                    <option value="${format}">${format}</option>
+                                                </c:forEach>
                                             </select>
                                         </div>
                                         <div class="form-group">
