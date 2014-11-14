@@ -30,7 +30,7 @@
             </div>
         </c:if>
         <c:choose>
-            <c:when test="${fn:length(requestScope.itemsInCart) gt 0}">
+            <c:when test="${fn:length(sessionScope.itemsInCart) gt 0}">
                 <table class="table">
                     <thead>
                         <tr>
@@ -44,7 +44,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach items="${requestScope.itemsInCart}" var="cartItem" varStatus="status">
+                        <c:forEach items="${sessionScope.itemsInCart}" var="cartItem" varStatus="status">
                             <tr>
                                 <td>${status.count}</td>
                                 <td>
@@ -72,7 +72,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>In Store Pickup?</label><br>
-                            <select class="form-control">
+                            <select id="inStorePickup" class="form-control">
                                 <option>2920 Arden Way, Sacramento CA</option>
                                 <option selected>No</option>
                             </select>
@@ -103,7 +103,7 @@
 
                     </div>
                     <div class="col-xs-2">
-                        <button class="btn btn-lg btn-primary" onclick="window.location='/checkout'">Checkout</button>
+                        <button class="btn btn-lg btn-primary" onclick="window.location='/checkout?pickupOrder='+$('#inStorePickup').find(':selected').text()+''">Checkout</button>
                     </div>
                 </div>
 

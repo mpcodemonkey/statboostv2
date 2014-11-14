@@ -46,6 +46,7 @@
 
 </script>
 
+<%@ page import="com.statboost.controllers.ShoppingCartServlet" %>
 <%@ page import="com.statboost.util.ServletUtil" %>
 <%@ page import="net.authorize.sim.Fingerprint" %>
 <%@ page import="java.util.Random" %>
@@ -54,6 +55,8 @@
     String transactionKey = "9Rw9M2K8UsgSu28x"; //Authorize Transaction Key
     String relayResponseUrl = "https://teamjjacs.us/relayPaymentResponse.jsp";
     String amount = (String)session.getAttribute("orderTotal");
+    String tax = ServletUtil.formatCurrency(((ShoppingCartServlet.ShoppingCartTotal)session.getAttribute("cartTotals")).getTaxTotal());
+    String shipping = ServletUtil.formatCurrency(((ShoppingCartServlet.ShoppingCartTotal)session.getAttribute("cartTotals")).getShippingTotal());
 
     Random rdm = new Random();
     String num = ""+rdm.nextLong();
@@ -167,20 +170,23 @@
                 <input type='hidden' name='x_method' value='CC' />
                 <input type='hidden' name='x_type' value='AUTH_CAPTURE' />
                 <input type='hidden' name='x_amount' value='<%=amount%>' />
-                <input type='hidden' name='x_tax' value='${sessionScope.cartTotals.taxTotal}' />
-                <input type='hidden' name='x_freight' value='${sessionScope.cartTotals.shippingTotal}' />
+                <input type='hidden' name='x_tax' value='<%=tax%>' />
+                <input type='hidden' name='x_freight' value='<%=shipping%>' />
                 <input type='hidden' name='x_test_request' value='FALSE' />
                 <input type='hidden' name='notes' value='none' />
                 <input type='hidden' name='x_header_email_receipt' value='Your payment to EXP:Level-Up has been processed.' />
                 <input type='hidden' name='x_footer_email_receipt' value='Thank you for shopping with EXP:Level-Up online!' />
                 <!-- Customer fields -->
                 <input type='hidden' name='x_customer_ip' value='<%=clientIP%>' />
+                <input type='hidden' name='x_cust_id' value='${requestScope.user.usrUid}' />
+                <input type='hidden' name='x_phone' value='${requestScope.user.usrPhone}' />
                 <input type='hidden' name='x_email_customer' value='TRUE' />
+                <input type='hidden' name='inStorePickup' value='${param.pickupOrder}' />
 
                 <!-- for each of all cart items item ID<|>item name<|>item description<|>item quantity<|>item price per unit<|>is Taxable -->
-                <input type='hidden' name='x_line_item' value='1234<|>Test Item<|>Test Description<|>1<|>1.99<|>TRUE' />
-
-
+                <c:forEach items="${sessionScope.itemsInCart}" var="item" varStatus="status">
+                    <input type='hidden' name='x_line_item' value='${item.invUID}<|>${item.description}<|>${item.name} - ${item.condition}<|>${item.quantity}<|>${item.price}<|>TRUE' />
+                </c:forEach>
                 <br><br><br>
                 <div align="center">
                     <button class="btn btn-lg btn-primary" type='submit' name='buy_button' value='BUY'>Purchase</button>

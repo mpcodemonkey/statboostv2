@@ -80,6 +80,9 @@
                receiptUrlBuffer.append(ResponseField.TAX.getFieldName()).append("=");
                receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.TAX.getFieldName()));
 
+               receiptUrlBuffer.append("&");
+               receiptUrlBuffer.append("inStorePickup").append("=");
+               receiptUrlBuffer.append(result.getResponseMap().get("inStorePickup"));
 
                /**
                 * Shipping details

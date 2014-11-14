@@ -50,6 +50,7 @@ public class ShoppingCartServlet extends HttpServlet {
                 Cost cost = cartObject.getCost();
 
                 //build cart item to be displayed on JSP
+                cartItem.invUID = inv.getUid();
                 cartItem.name = inv.getName();
                 cartItem.description = inv.getDescription();
                 cartItem.imageName = inv.getImage();
@@ -64,13 +65,13 @@ public class ShoppingCartServlet extends HttpServlet {
 
             ShoppingCartTotal cartTotal = new ShoppingCartTotal();
             cartTotal.subtotal = subtotal;
-            cartTotal.taxTotal = 0.0;//calculateTax(subtotal);
-            cartTotal.shippingTotal = 0.0;//calculateShipping();
+            cartTotal.taxTotal = subtotal * getTaxRate();
+            cartTotal.shippingTotal = 0.0;//calculateShipping(ShippingMethod method);
 
             session.setAttribute("orderTotal", ServletUtil.formatCurrency(cartTotal.getOrderTotal()));
             session.setAttribute("cartTotals", cartTotal);
             request.setAttribute("cartTotal", cartTotal);
-            request.setAttribute("itemsInCart", itemsInCart);
+            session.setAttribute("itemsInCart", itemsInCart);
         }
 
 
@@ -148,9 +149,15 @@ public class ShoppingCartServlet extends HttpServlet {
 
     }
 
+    //TODO: figure this out. maybe pull data from http://www.taxrates.com/calculator/
+    public double getTaxRate() {
+        return 0.080;
+    }
+
 
     //inner class used by JSP
     public class ShoppingCartItem {
+        private int invUID;
         private int quantity;
         private double price;
         private double total;
@@ -180,6 +187,10 @@ public class ShoppingCartServlet extends HttpServlet {
         }
 
         public String getCondition() { return condition; }
+
+        public int getInvUID() {
+            return invUID;
+        }
     }
 
     //another inner class used by JSP

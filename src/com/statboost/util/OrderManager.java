@@ -22,6 +22,7 @@ import java.util.Map;
 
 public class OrderManager {
 
+
     /**
      * This method will create a new order for the provided user.
      * @param user - the user the order will be created for.
@@ -54,6 +55,7 @@ public class OrderManager {
         order.setShippingZip(orderParams.get("shippingZip"));
 
         //set date time to now
+        //TODO: adjust this stuff, date is server time not PDT and change date paid to date completed
         order.setDateSubmitted(new Date());
         order.setDatePaid(new Date());
         order.setPaid(true);
