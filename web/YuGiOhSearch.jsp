@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Jon
@@ -148,31 +149,23 @@
                                             <label class="control-label" for="ac1">or</label>
                                             <input type="checkbox" class="attribCheck" id="ac2">
                                             <select class="form-control multiselect" multiple="multiple" id="attrib" name="attribInput">
-                                                <option value="dark">Dark</option>
-                                                <option value="light">Light</option>
-                                                <option value="earth">Earth</option>
-                                                <option value="water">Water</option>
-                                                <option value="fire">Fire</option>
-                                                <option value="wind">Wind</option>
-                                                <option value="divine">Divine</option>
+                                                <c:forEach items="${requestScope.attribList}" var="attribs">
+                                                    <option value="${attribs}">${attribs}</option>
+                                                </c:forEach>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <!-- multiselect for card icon -->
-                                            <label class="control-label" for="icon">Icon</label>
+                                            <label class="control-label" for="iconInput">Icon</label>
                                             <br>
                                             <label class="control-label" for="ic1">and</label>
                                             <input type="checkbox" class="iconCheck" id="ic1">
                                             <label class="control-label" for="ic2">or</label>
                                             <input type="checkbox" class="iconCheck" id="ic2">
                                             <select class="form-control multiselect" multiple="multiple" name="iconInput" id="iconInput">
-                                                <option value="equip">Equip</option>
-                                                <option value="field">Field</option>
-                                                <option value="quick-play">Quick-Play</option>
-                                                <option value="ritual">Ritual</option>
-                                                <option value="continuous">Continuous</option>
-                                                <option value="counter">Counter</option>
-                                                <option value="normal">Normal</option>
+                                                <c:forEach items="${requestScope.iconList}" var="icons">
+                                                    <option value="${icons}">${icons}</option>
+                                                </c:forEach>
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -184,28 +177,9 @@
                                             <label class="control-label" for="mc2">or</label>
                                             <input type="checkbox" class="monsterCheck" id="mc2">
                                             <select class="form-control multiselect" multiple="multiple" id="monsterType" name="monsterType">
-                                                <option value="Aqua">Aqua</option>
-                                                <option value="Beast">Beast</option>
-                                                <option value="Beast-Warrior">Beast-Warrior</option>
-                                                <option value="Dinosaur">Dinosaur</option>
-                                                <option value="Divine-Beast">Divine-Beast</option>
-                                                <option value="Dragon">Dragon</option>
-                                                <option value="Fairy">Fairy</option>
-                                                <option value="Fiend">Fiend</option>
-                                                <option value="Fish">Fish</option>
-                                                <option value="Insect">Insect</option>
-                                                <option value="Machine">Machine</option>
-                                                <option value="Plant">Plant</option>
-                                                <option value="Psychic">Psychic</option>
-                                                <option value="Pyro">Pyro</option>
-                                                <option value="Reptile">Reptile</option>
-                                                <option value="Rock">Rock</option>
-                                                <option value="Spellcaster">Spellcaster</option>
-                                                <option value="Sea Serpent">Sea Serpent</option>
-                                                <option value="Thunder">Thunder</option>
-                                                <option value="Warrior">Warrior</option>
-                                                <option value="Winged Beast">Winged Beast</option>
-                                                <option value="Zombie">Zombie</option>
+                                                <c:forEach items="${requestScope.mTypeList}" var="mTypes">
+                                                    <option value="${mTypes}">${mTypes}</option>
+                                                </c:forEach>
                                             </select>
                                         </div>
                                         <div class="form-group">

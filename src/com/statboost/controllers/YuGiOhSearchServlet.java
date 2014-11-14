@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,10 +31,62 @@ public class YuGiOhSearchServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        if(request.getParameter("page") != null && !request.getParameter("page").equals("")) {
+            doPost(request, response);
+        }else{
+            GenericDAO expFormDAO = new GenericDAO();
+            ArrayList<String> Attribs = (ArrayList<String>)expFormDAO.getResultSet("Select distinct ycrAttribute from YugiohCard where ycrAttribute is not null order by ycrAttribute asc");
+            ArrayList<String> Icons = (ArrayList<String>)expFormDAO.getResultSet("Select distinct ycrIcon from YugiohCard where ycrIcon is not null order by ycrIcon asc");
+            ArrayList<String> Monsters = (ArrayList<String>)expFormDAO.getResultSet("Select distinct ycrMonsterType from YugiohCard where ycrMonsterType is not null order by ycrMonsterType asc");
+            request.setAttribute("attribList", Attribs);
+            request.setAttribute("iconList", Icons);
+            request.setAttribute("mTypeList", Monsters);
             request.getRequestDispatcher("/YuGiOhSearch.jsp").forward(request, response);
+        }
+
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        int page = 1;
+        //check if query object is in the session
+        //new search invalidates check
+        if(request.getParameter("page") == null) {
+            HttpSession session = request.getSession();
+            if (session.getAttribute("QueryObject") != null) {
+                session.removeAttribute("QueryObject");
+            }
+        }
+        else if(request.getParameter("page") != null){
+            HttpSession session = request.getSession();
+            if (session.getAttribute("QueryObject") != null) {
+                page = Integer.parseInt(request.getParameter("page"));
+                QueryObject sessionQuery = (QueryObject)session.getAttribute("QueryObject");
+
+                GenericDAO ygoAccessObject = new GenericDAO();
+
+                List<YugiohCard> cards = (List<YugiohCard>)ygoAccessObject.getResultSet(sessionQuery, page);
+
+
+                session.setAttribute("QueryObject", sessionQuery);
+
+                //set search results
+                if (cards != null && cards.size()>0) {
+                    request.setAttribute("cardList", cards);
+                    int numberOfPages = (int)Math.ceil((double)ygoAccessObject.getNumberOfResults()/ygoAccessObject.getNumberPerPage());
+                    System.out.println(numberOfPages);
+                    request.setAttribute("numberOfPages", numberOfPages);
+                    request.setAttribute("currentPage", ygoAccessObject.getCurrentPage());
+                } else {
+                    request.setAttribute("alertType", "warning");
+                    request.setAttribute("alert", "Sorry, no cards were found.  Please try another search.");
+                }
+                //route to results page even if no results found or transaction throws exception
+                request.getRequestDispatcher("/YuGiOhResult.jsp").forward(request, response);
+                return;//necessary
+            }
+        }
+
 
         SessionFactory ygoFactory = HibernateUtil.getDatabaseSessionFactory();
 
@@ -135,7 +188,16 @@ public class YuGiOhSearchServlet extends HttpServlet {
                     atkConstraint = and + atkConstraint;
                 }
                 queryparams.add(atkConstraint);
-                buildableQuery.put("atk", request.getParameter("atkInput"));
+
+                int atk;
+                if(ServletUtil.isInteger(request.getParameter("atkInput"))){
+                    atk = Integer.parseInt(request.getParameter("atkInput"));
+                }
+                else{
+                    atk = -1;
+                }
+
+                buildableQuery.put("atk", atk);
                 prevCon = true;
             }
             if(request.getParameter("defInput") != null && !request.getParameter("defInput").equals(""))
@@ -146,7 +208,16 @@ public class YuGiOhSearchServlet extends HttpServlet {
                     defConstraint = and + defConstraint;
                 }
                 queryparams.add(defConstraint);
-                buildableQuery.put("def", request.getParameter("defInput"));
+
+                int def;
+                if(ServletUtil.isInteger(request.getParameter("defInput"))){
+                    def = Integer.parseInt(request.getParameter("defInput"));
+                }
+                else{
+                    def = -1;
+                }
+
+                buildableQuery.put("def", def);
                 prevCon = true;
             }
             if(request.getParameter("scaleInput") != null && !request.getParameter("scaleInput").equals(""))
@@ -238,7 +309,7 @@ public class YuGiOhSearchServlet extends HttpServlet {
                     if(mTypes.length > 1)
                         buildableQuery.put("mTypes" + i, "%" + mTypes[i] + "%");
                     else
-                        buildableQuery.put("mTypes" + i, "&" + mTypes[i] + "%");
+                        buildableQuery.put("mTypes" + i, "%" + mTypes[i] + "%");
                     prevCon = true;
                 }
             }
@@ -306,14 +377,19 @@ public class YuGiOhSearchServlet extends HttpServlet {
             List<YugiohCard> cards = null;
             QueryObject sessionQuery = new QueryObject(buildableQuery, hql);
 
-            GenericDAO mcAccessObject = new GenericDAO();
-            cards = (List<YugiohCard>)mcAccessObject.getResultSet(sessionQuery, 1);
+            GenericDAO ygoAccessObject = new GenericDAO();
+            cards = (List<YugiohCard>)ygoAccessObject.getResultSet(sessionQuery, 1);
 
-
+            HttpSession session = request.getSession();
+            //add query object to session
+            session.setAttribute("QueryObject", sessionQuery);
 
             //set search results
             if (cards != null && cards.size()>0) {
                 request.setAttribute("cardList", cards);
+                int numberOfPages = (int)Math.ceil((double)ygoAccessObject.getNumberOfResults()/ygoAccessObject.getNumberPerPage());
+                request.setAttribute("numberOfPages", numberOfPages);
+                request.setAttribute("currentPage", ygoAccessObject.getCurrentPage());
             } else {
                 request.setAttribute("alertType", "warning");
                 request.setAttribute("alert", "Sorry, no cards were found.  Please try another search.");
