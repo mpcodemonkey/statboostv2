@@ -30,7 +30,7 @@
         <property name="inStorePickup" column="ord_in_store_pickup"/>
         <property name="paid" column="ord_paid"/>
         <many-to-one name="user" class="com.statboost.models.actor.User"
-                     column="ord_usr_uid" not-null="true" insert="true" update="true"
+                     column="ord_usr_uid" not-null="false" insert="true" update="true"
                      cascade="all" />
         <set name="inventoryItems" table="stt_inventory_item" cascade="all" inverse="true">
             <key column="iit_uid" not-null="true"></key>

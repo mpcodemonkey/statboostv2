@@ -94,7 +94,7 @@
                             <input class="form-control" type='text' name='x_ship_to_last_name' placeholder="Last Name" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrLastName}</c:if>' required/><br>
                             <input class="form-control" type='text' name='x_ship_to_address' placeholder="Address" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrAddress1}</c:if>' required/><br>
                             <input class="form-control" type='text' name='x_ship_to_city' placeholder="City" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrCity}</c:if>' required/><br>
-                            <input class="form-control" type='text' name='x_ship_to_state' placeholder="State" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrState}</c:if>' required/><br>
+                            <input class="form-control" type='text' name='x_ship_to_state' placeholder="State" maxlength="2" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrState}</c:if>' required/><br>
                             <input class="form-control" type='text' name='x_ship_to_zip' placeholder="Zip" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrZip}</c:if>' required/><br>
                         </fieldset>
                     </div>
@@ -105,7 +105,7 @@
                             <input class="form-control" type='text' name='x_last_name' placeholder="Cardholder's Last Name" value='' required/><br>
                             <input class="form-control" type='text' name='x_address' placeholder="Billing Address" value='' required/><br>
                             <input class="form-control" type='text' name='x_city' placeholder="Billing City" value='' required/><br>
-                            <input class="form-control" type='text' name='x_state' placeholder="Billing State" value='' required/><br>
+                            <input class="form-control" type='text' name='x_state' placeholder="Billing State" maxlength="2" value='' required/><br>
                             <input class="form-control" type='text' name='x_zip' placeholder="Billing Zip" value='' required/><br>
                         </fieldset>
                     </div>

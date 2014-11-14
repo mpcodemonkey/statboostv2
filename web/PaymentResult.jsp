@@ -6,6 +6,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <jsp:include page="/include/Header.jsp"/>
 <jsp:include page="/include/Navbar.jsp"/>
@@ -23,21 +24,24 @@
             <c:choose>
                 <c:when test="${requestScope.alertType != null && requestScope.alertType == 'success'}">
                     <div>
-                        <h3>Thank you for your order!</h3>
+                        <h3>Thank you for your order! A receipt has been emailed to you.</h3>
                     </div>
                     <div>
-                        <p>Here is your receipt info..</p>
+                        <p>Payment Details:</p>
                         <p>
+                            Order ID: ${requestScope.orderID}<br>
                             Transaction ID: ${requestScope.transactionID}<br>
-                            Amount Paid: ${requestScope.amount}<br>
+                            Amount Paid: <fmt:formatNumber value="${requestScope.amount}" type="currency"/><br>
                             Account Charged: ${requestScope.acctNumber}<br>
                             Card Type: ${requestScope.cardType}<br>
                         </p>
                     </div>
                     <div>
-                        <p>Here is your order info:</p>
                         <p>
-                            Order ID: ${requestScope.orderID}<br>
+                            <c:choose>
+                                <c:when test="${sessionScope.email != null}"><button class="btn btn-sm btn-primary" onclick="window.location='/user/orderHistory'">View Order History</button></c:when>
+                                <c:otherwise>Create an account before future orders to log your order history.</c:otherwise>
+                            </c:choose>
                         </p>
                     </div>
                 </c:when>
