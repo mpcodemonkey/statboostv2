@@ -5,6 +5,7 @@ package com.statboost.models.inventory;
  */
 public class Category {
     private int catUid;
+    //todo: is category just the name fo the category?
     private String category;
 
     public int getCatUid() {

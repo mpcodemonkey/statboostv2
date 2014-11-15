@@ -1,21 +1,18 @@
 <%@ page import="org.apache.log4j.Logger" %>
 <%@ page import="com.statboost.controllers.admin.InventoryEditorServlet" %>
 <%@ page import="static com.statboost.controllers.admin.InventoryEditorServlet.*" %>
-<%@ page import="com.statboost.models.inventory.Inventory" %>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="com.statboost.models.mtg.MagicCard" %>
 <%@ page import="com.statboost.models.ygo.YugiohCard" %>
-<%@ page import="com.statboost.models.inventory.Event" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.statboost.controllers.admin.InventorySqllistServlet" %>
 <%@ page import="com.statboost.util.ServletUtil" %>
 <%@ page import="java.util.Calendar" %>
 <%@ page import="net.authorize.util.DateUtil" %>
-<%@ page import="com.statboost.models.inventory.Cost" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.HashMap" %>
-<%@ page import="com.statboost.models.inventory.InventoryCategory" %>
 <%@ page import="com.statboost.models.enumType.ItemCondition" %>
+<%@ page import="com.statboost.models.inventory.*" %>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -33,6 +30,7 @@
         ResultSet magicSets = (ResultSet) request.getAttribute(InventoryEditorServlet.ATTR_MAGIC_SETS);
         String type = (String) request.getAttribute(InventoryEditorServlet.ATTR_TYPE);
         List<Cost> costs = (List<Cost>) request.getAttribute(InventoryEditorServlet.ATTR_COST_ITEMS);
+        List<Category> categories = (List<Category>) request.getAttribute(InventoryEditorServlet.ATTR_CATEGORIES);
 
         HashMap<ItemCondition, Cost> costHash = new HashMap<ItemCondition, Cost>();
         if(costs != null)  {
@@ -151,7 +149,22 @@
     %>
     <tr>
         <td>Inventory</td>
-        <td><input type="submit"> &nbsp; <a href="<%=InventorySqllistServlet.SRV_MAP%>">Close</a></td></td>
+        <td><input type="submit"> &nbsp; <a href="<%=InventorySqllistServlet.SRV_MAP%>">Close</a></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+    <%
+        for(Category currentCategory : categories)  {
+    %>
+                    <td style="padding-right: 10px;"><input type="checkbox" name="<%=PARAM_CATEGORIES%>" value="<%=currentCategory.getCatUid()%>">&nbsp;<%=currentCategory.getCategory()%></td>
+    <%
+        }
+    %>
+                </tr>
+            </table>
+        </td>
     </tr>
     <tr>
         <td colspan="2"><input type="checkbox" <%=inventory.isPreOrder()? "checked=\"checked\"" : ""%>>&nbsp;Pre Order</td>

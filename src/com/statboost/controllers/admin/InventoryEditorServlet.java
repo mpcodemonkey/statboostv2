@@ -1,9 +1,7 @@
 package com.statboost.controllers.admin;
 
 import com.statboost.models.enumType.ItemCondition;
-import com.statboost.models.inventory.Cost;
-import com.statboost.models.inventory.Event;
-import com.statboost.models.inventory.Inventory;
+import com.statboost.models.inventory.*;
 import com.statboost.models.mtg.MagicCard;
 import com.statboost.models.mtg.MagicSet;
 import com.statboost.models.ygo.YugiohCard;
@@ -59,6 +57,8 @@ public class InventoryEditorServlet extends HttpServlet {
     public static final String ATTR_ERRORS = "errors";
     public static final String ATTR_INFO = "info";
     public static final String ATTR_WARNING = "warning";
+    public static final String ATTR_CATEGORIES = "categories";
+    public static final String PARAM_CATEGORIES = "categoriesparam";
 
     //params for yugioh card
     public static final String PARAM_YUGIOH_NAME = "yugiohName";
@@ -134,6 +134,7 @@ public class InventoryEditorServlet extends HttpServlet {
         Event event = null;
         String typeToPass = "GENERIC";
         List<Cost> costs = null;
+        List<Category> categories = null;
         if(request.getParameter(PARAM_INVENTORY_UID) == null || request.getParameter(PARAM_INVENTORY_UID).equals("0") ||
                 request.getParameter(PARAM_INVENTORY_UID).equals("0"))  {
             inventory = new Inventory();
@@ -168,8 +169,9 @@ public class InventoryEditorServlet extends HttpServlet {
         }
 
         magicSets = ServletUtil.getResultSetFromSql("select * from stt_magic_set");
+        categories = (List<Category>) session.createSQLQuery("select * from stt_category").addEntity(Category.class).list();
 
-        forwardToEditor(request, response, null, "", inventory, magicCard, event, yugiohCard, "", magicSets, typeToPass, costs);
+        forwardToEditor(request, response, null, "", inventory, magicCard, event, yugiohCard, "", magicSets, typeToPass, costs, categories);
         session.close();
     }
 
@@ -183,6 +185,7 @@ public class InventoryEditorServlet extends HttpServlet {
         Event event = null;
         List<Cost> costs = null;
         ResultSet magicSets = null;
+        List<Category> categories = null;
         if(request.getParameter(PARAM_INVENTORY_UID) == null || request.getParameter(PARAM_INVENTORY_UID).equals("0") ||
                 request.getParameter(PARAM_INVENTORY_UID).equals("0"))  {
             inventory = new Inventory();
@@ -206,6 +209,7 @@ public class InventoryEditorServlet extends HttpServlet {
             costs = new ArrayList<Cost>();
         }
         magicSets = ServletUtil.getResultSetFromSql("select * from stt_magic_set");
+        categories = (List<Category>) session.createSQLQuery("select * from stt_category").addEntity(Category.class).list();
 
         ArrayList<String> errors = new ArrayList<String>();
         String warning = "";
@@ -342,6 +346,52 @@ public class InventoryEditorServlet extends HttpServlet {
 
             lightlyPlayed.setItemPrice(Double.parseDouble(request.getParameter(PARAM_LIGHTLY_PLAYED_PRICE)));
         }
+
+        String[] categoriesChecked = request.getParameterValues(PARAM_CATEGORIES);
+        boolean didCheck;
+        List<InventoryCategory> categorySaved = (List<InventoryCategory>) session.createSQLQuery("select * from stt_inventory_category where inv_uid =" + inventory.getUid()).addEntity(InventoryCategory.class).list();
+        List<InventoryCategory> categoriesToRemove = new ArrayList<InventoryCategory>();
+        if(categoriesChecked != null || categorySaved != null)  {
+            for(Category currentCategory: categories)  {
+                didCheck = false;
+                if(categoriesChecked != null)  {
+                    for(String currentCategoryChecked: categoriesChecked)  {
+                        if((currentCategory.getCatUid() + "").equals(currentCategoryChecked))  {
+                            didCheck = true;
+                            break;
+                        }
+                    }
+                }
+
+
+                InventoryCategory inventoryCategory = null;
+                if(categorySaved != null)  {
+                    for(InventoryCategory currentInventoryCategory : categorySaved)  {
+                        if(currentInventoryCategory.getCatUid() == currentCategory.getCatUid())  {
+                            inventoryCategory =  currentInventoryCategory;
+                            break;
+                        }
+                    }
+                }
+
+                if(!didCheck && inventoryCategory != null)  {
+                    //need to delete
+                    categoriesToRemove.add(inventoryCategory);
+                    session.delete(inventoryCategory);
+                } else if(didCheck && inventoryCategory == null)  {
+                    //need to create new record
+                    InventoryCategory inventoryCategory1 = new InventoryCategory();
+                    inventoryCategory1.setCatUid(currentCategory.getCatUid());
+                    categorySaved.add(inventoryCategory1);
+                }
+                //else leave the same
+            }
+        }
+
+        for(InventoryCategory currentOneToRemove: categoriesToRemove)  {
+            categorySaved.remove(currentOneToRemove);
+        }
+
 
         if(request.getParameter(PARAM_NUM_MODERATELY_PLAYED_IN_STOCK) != null && !request.getParameter(PARAM_NUM_MODERATELY_PLAYED_IN_STOCK).equals(""))  {
             if(moderatelyPlayed == null)  {
@@ -769,9 +819,16 @@ public class InventoryEditorServlet extends HttpServlet {
                 }
             }
 
+            if(categorySaved != null)  {
+                for(InventoryCategory currentInventoryCategory : categorySaved)  {
+                    currentInventoryCategory.setInvUid(inventory.getUid());
+                    session.save(currentInventoryCategory);
+                }
+            }
+
             session.getTransaction().commit();
             forwardToEditor(request, response, null, "The transaction was saved successfully", inventory,
-                    magicCard, event, yugiohCard, warning, magicSets, request.getParameter(PARAM_TYPE), costs);
+                    magicCard, event, yugiohCard, warning, magicSets, request.getParameter(PARAM_TYPE), costs, categories);
         }  else  {
             if(magicCard == null)  {
                 magicCard = new MagicCard();
@@ -785,7 +842,7 @@ public class InventoryEditorServlet extends HttpServlet {
                 event = new Event();
             }
             forwardToEditor(request, response, errors, "", inventory, magicCard, event, yugiohCard, "", magicSets,
-                    request.getParameter(PARAM_TYPE), costs);
+                    request.getParameter(PARAM_TYPE), costs, categories);
         }
 
         session.close();
@@ -794,7 +851,7 @@ public class InventoryEditorServlet extends HttpServlet {
     private static void forwardToEditor(HttpServletRequest request, HttpServletResponse response,ArrayList<String> errors,
                                         String info, Inventory inventory, MagicCard magicCard,
                                         Event event, YugiohCard yugiohCard, String warning, ResultSet magicSets,
-                                        String type, List<Cost> costs) throws IOException,
+                                        String type, List<Cost> costs, List<Category> categories) throws IOException,
             ServletException {
         request.setAttribute(ATTR_ERRORS, errors);
         request.setAttribute(ATTR_INFO, info);
@@ -806,6 +863,7 @@ public class InventoryEditorServlet extends HttpServlet {
         request.setAttribute(ATTR_MAGIC_SETS, magicSets);
         request.setAttribute(ATTR_TYPE, type);
         request.setAttribute(ATTR_COST_ITEMS, costs);
+        request.setAttribute(ATTR_CATEGORIES, categories);
         request.getRequestDispatcher("/admin/InventoryEditor.jsp").forward(request, response);
     }
 
