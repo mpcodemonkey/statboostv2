@@ -11,6 +11,11 @@
 <%@ page import="com.statboost.util.ServletUtil" %>
 <%@ page import="java.util.Calendar" %>
 <%@ page import="net.authorize.util.DateUtil" %>
+<%@ page import="com.statboost.models.inventory.Cost" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="com.statboost.models.inventory.InventoryCategory" %>
+<%@ page import="com.statboost.models.enumType.ItemCondition" %>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -27,6 +32,14 @@
         Event event = (Event) request.getAttribute(InventoryEditorServlet.ATTR_EVENT);
         ResultSet magicSets = (ResultSet) request.getAttribute(InventoryEditorServlet.ATTR_MAGIC_SETS);
         String type = (String) request.getAttribute(InventoryEditorServlet.ATTR_TYPE);
+        List<Cost> costs = (List<Cost>) request.getAttribute(InventoryEditorServlet.ATTR_COST_ITEMS);
+
+        HashMap<ItemCondition, Cost> costHash = new HashMap<ItemCondition, Cost>();
+        if(costs != null)  {
+            for(Cost currentCost: costs)  {
+                costHash.put(currentCost.getItemCondition(), currentCost);
+            }
+        }
     %>
     <jsp:include page="/include/HeadTags.jsp"/>
     <script type="text/javascript">
@@ -149,54 +162,54 @@
     </tr>
     <tr>
         <td>New Price</td>
-        <td>$<input type="text" name="<%=PARAM_NEW_PRICE%>" value="<%=inventory.getNewPrice()%>"></td>
+        <td>$<input type="text" name="<%=PARAM_NEW_PRICE%>" value="<%=costHash.get(ItemCondition.NEW) != null ? costHash.get(ItemCondition.NEW).getItemPrice(): 0%>"></td>
     </tr>
     <tr>
         <td>Near Mint Price</td>
-        <td>$<input type="text" name="<%=PARAM_NEAR_MINT_PRICE%>" value="<%=inventory.getNearMintPrice()%>"></td>
+        <td>$<input type="text" name="<%=PARAM_NEAR_MINT_PRICE%>" value="<%=costHash.get(ItemCondition.NEAR_MINT) != null ? costHash.get(ItemCondition.NEAR_MINT).getItemPrice(): 0%>"></td>
     </tr>
     <tr>
         <td>Lightly Played Price</td>
-        <td>$<input type="text" name="<%=PARAM_LIGHTLY_PLAYED_PRICE%>" value="<%=inventory.getLightlyPlayedPrice()%>"></td>
+        <td>$<input type="text" name="<%=PARAM_LIGHTLY_PLAYED_PRICE%>" value="<%=costHash.get(ItemCondition.LIGHTLY_PLAYED) != null ? costHash.get(ItemCondition.LIGHTLY_PLAYED).getItemPrice(): 0%>"></td>
     </tr>
     <tr>
         <td>Moderately Played Price</td>
-        <td>$<input type="text" name="<%=PARAM_MODERATELY_PLAYED_PRICE%>" value="<%=inventory.getModeratelyPlayedPrice()%>"></td>
+        <td>$<input type="text" name="<%=PARAM_MODERATELY_PLAYED_PRICE%>" value="<%=costHash.get(ItemCondition.MODERATELY_PLAYED) != null ? costHash.get(ItemCondition.MODERATELY_PLAYED).getItemPrice(): 0%>"></td>
     </tr>
     <tr>
         <td>Heavily Played Price</td>
-        <td>$<input type="text" name="<%=PARAM_HEAVILY_PLAYED_PRICE%>" value="<%=inventory.getHeavilyPlayedPrice()%>"/></td>
+        <td>$<input type="text" name="<%=PARAM_HEAVILY_PLAYED_PRICE%>" value="<%=costHash.get(ItemCondition.HEAVILY_PLAYED) != null ? costHash.get(ItemCondition.HEAVILY_PLAYED).getItemPrice(): 0%>"/></td>
     </tr>
     <tr>
         <td>Damaged Price</td>
-        <td>$<input type="text" name="<%=PARAM_DAMAGED_PRICE%>" value="<%=inventory.getDamagedPrice()%>"/></td>
+        <td>$<input type="text" name="<%=PARAM_DAMAGED_PRICE%>" value="<%=costHash.get(ItemCondition.DAMAGED) != null ? costHash.get(ItemCondition.DAMAGED).getItemPrice(): 0%>"/></td>
     </tr>
     <tr>
         <td colspan="2">Number in Stock</td>
     </tr>
     <tr>
         <td>New</td>
-        <td><input type="text" name="<%=PARAM_NUM_NEW_IN_STOCK%>" value="<%=inventory.getNumNewInStock()%>"></td>
+        <td><input type="text" name="<%=PARAM_NUM_NEW_IN_STOCK%>" value="<%=costHash.get(ItemCondition.NEW) != null ? costHash.get(ItemCondition.NEW).getItemQuantity(): 0%>"></td>
     </tr>
     <tr>
         <td>Near Mint</td>
-        <td><input type="text" name="<%=PARAM_NUM_NEAR_MINT_IN_STOCK%>" value="<%=inventory.getNearMintInStock()%>"></td>
+        <td><input type="text" name="<%=PARAM_NUM_NEAR_MINT_IN_STOCK%>" value="<%=costHash.get(ItemCondition.NEAR_MINT) != null ? costHash.get(ItemCondition.NEAR_MINT).getItemQuantity(): 0%>"></td>
     </tr>
     <tr>
         <td>Lightly Played</td>
-        <td><input type="text" name="<%=PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK%>" value="<%=inventory.getLightlyPlayedInStock()%>"></td>
+        <td><input type="text" name="<%=PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK%>" value="<%=costHash.get(ItemCondition.LIGHTLY_PLAYED) != null ? costHash.get(ItemCondition.LIGHTLY_PLAYED).getItemQuantity(): 0%>"></td>
     </tr>
     <tr>
         <td>Moderately Played</td>
-        <td><input type="text" name="<%=PARAM_NUM_MODERATELY_PLAYED_IN_STOCK%>" value="<%=inventory.getModeratelyPlayedInStock()%>"></td>
+        <td><input type="text" name="<%=PARAM_NUM_MODERATELY_PLAYED_IN_STOCK%>" value="<%=costHash.get(ItemCondition.MODERATELY_PLAYED) != null ? costHash.get(ItemCondition.MODERATELY_PLAYED).getItemQuantity(): 0%>"></td>
     </tr>
     <tr>
         <td>Heavily Played</td>
-        <td><input type="text" name="<%=PARAM_NUM_HEAVILY_PLAYED_IN_STOCK%>" value="<%=inventory.getHeavilyPlayedInStock()%>"></td>
+        <td><input type="text" name="<%=PARAM_NUM_HEAVILY_PLAYED_IN_STOCK%>" value="<%=costHash.get(ItemCondition.HEAVILY_PLAYED) != null ? costHash.get(ItemCondition.HEAVILY_PLAYED).getItemQuantity(): 0%>"></td>
     </tr>
     <tr>
         <td>Damaged</td>
-        <td><input type="text" name="<%=PARAM_NUM_DAMAGED_IN_STOCK%>" value="<%=inventory.getDamagedInStock()%>"></td>
+        <td><input type="text" name="<%=PARAM_NUM_DAMAGED_IN_STOCK%>" value="<%=costHash.get(ItemCondition.DAMAGED) != null ? costHash.get(ItemCondition.DAMAGED).getItemQuantity(): 0%>"></td>
     </tr>
     <%--todo: give them way to browse images--%>
     <tr>
