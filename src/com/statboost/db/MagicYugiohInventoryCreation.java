@@ -44,7 +44,7 @@ public class MagicYugiohInventoryCreation {
                     session.close();
                 }
             } catch (SQLException e) {
-                logger.error("Could nto loop through the magic cards.");
+                logger.error("Could not loop through the magic cards.", e);
             }
         }
 

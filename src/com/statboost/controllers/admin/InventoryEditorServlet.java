@@ -1,5 +1,7 @@
 package com.statboost.controllers.admin;
 
+import com.statboost.models.enumType.ItemCondition;
+import com.statboost.models.inventory.Cost;
 import com.statboost.models.inventory.Event;
 import com.statboost.models.inventory.Inventory;
 import com.statboost.models.mtg.MagicCard;
@@ -20,6 +22,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by Jessica on 9/25/14.
@@ -35,15 +38,15 @@ public class InventoryEditorServlet extends HttpServlet {
     public static final String PARAM_INVENTORY_PRE_ORDER = "inventoryPreOrder";
     public static final String PARAM_INVENTORY_DESCRIPTION = "inventoryDescription";
     public static final String PARAM_DAMAGED_PRICE = "damagedPrice";
+    public static final String PARAM_NUM_DAMAGED_IN_STOCK = "numDamagedInStock";
     public static final String PARAM_HEAVILY_PLAYED_PRICE = "heavilyPlayedPrice";
-    public static final String PARAM_LIGHTLY_PLAYED_PRICE = "lightlyPlayedPrice";
+    public static final String PARAM_NUM_HEAVILY_PLAYED_IN_STOCK = "numHeavilyDamagedInStock";
     public static final String PARAM_MODERATELY_PLAYED_PRICE = "moderatelyPlayedPrice";
+    public static final String PARAM_NUM_MODERATELY_PLAYED_IN_STOCK = "numModeratelyPlayedInStock";
+    public static final String PARAM_LIGHTLY_PLAYED_PRICE = "lightlyPlayedPrice";
     public static final String PARAM_NEAR_MINT_PRICE = "nearMintPrice";
     public static final String PARAM_NEW_PRICE = "newPrice";
-    public static final String PARAM_NUM_DAMAGED_IN_STOCK = "numDamagedInStock";
-    public static final String PARAM_NUM_HEAVILY_PLAYED_IN_STOCK = "numHeavilyDamagedInStock";
     public static final String PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK = "numLightlyPlayedInStock";
-    public static final String PARAM_NUM_MODERATELY_PLAYED_IN_STOCK = "numModeratelyPlayedInStock";
     public static final String PARAM_NUM_NEAR_MINT_IN_STOCK = "nearMintInStock";
     public static final String PARAM_NUM_NEW_IN_STOCK = "numNewInStock";
 
@@ -51,6 +54,7 @@ public class InventoryEditorServlet extends HttpServlet {
     public static final String PARAM_TYPE = "type";
     public static final String ATTR_TYPE = "attrtype";
 
+    public static final String ATTR_COST_ITEMS = "costItems";
     public static final String ATTR_INVENTORY = "inventory";
     public static final String ATTR_ERRORS = "errors";
     public static final String ATTR_INFO = "info";
@@ -129,6 +133,7 @@ public class InventoryEditorServlet extends HttpServlet {
         ResultSet magicSets = null;
         Event event = null;
         String typeToPass = "GENERIC";
+        List<Cost> costs = null;
         if(request.getParameter(PARAM_INVENTORY_UID) == null || request.getParameter(PARAM_INVENTORY_UID).equals("0") ||
                 request.getParameter(PARAM_INVENTORY_UID).equals("0"))  {
             inventory = new Inventory();
@@ -137,6 +142,7 @@ public class InventoryEditorServlet extends HttpServlet {
             event = new Event();
         } else  {
             inventory = (Inventory) session.load(Inventory.class, Integer.parseInt(request.getParameter(PARAM_INVENTORY_UID)));
+            costs = (List<Cost>) session.createSQLQuery("select * from stt_cost where cst_inv_uid = " + inventory.getUid()).addEntity(Cost.class).list();
             //check if it has the item if it does not initialize it to a new item so that we aren't throwing nulls in
             // the jsp and they can switch the type
             if(inventory != null && inventory.getMagicCard() != null)  {
@@ -163,7 +169,7 @@ public class InventoryEditorServlet extends HttpServlet {
 
         magicSets = ServletUtil.getResultSetFromSql("select * from stt_magic_set");
 
-        forwardToEditor(request, response, null, "", inventory, magicCard, event, yugiohCard, "", magicSets, typeToPass);
+        forwardToEditor(request, response, null, "", inventory, magicCard, event, yugiohCard, "", magicSets, typeToPass, costs);
         session.close();
     }
 
@@ -175,6 +181,7 @@ public class InventoryEditorServlet extends HttpServlet {
         MagicCard magicCard = null;
         YugiohCard yugiohCard = null;
         Event event = null;
+        List<Cost> costs = null;
         ResultSet magicSets = null;
         if(request.getParameter(PARAM_INVENTORY_UID) == null || request.getParameter(PARAM_INVENTORY_UID).equals("0") ||
                 request.getParameter(PARAM_INVENTORY_UID).equals("0"))  {
@@ -182,6 +189,7 @@ public class InventoryEditorServlet extends HttpServlet {
             //do not initialize the magic card, yugio, card, or event, will do this only if necessary
         } else  {
             inventory = (Inventory) session.load(Inventory.class, Integer.parseInt(request.getParameter(PARAM_INVENTORY_UID)));
+            costs = (List<Cost>) session.createSQLQuery("select * from stt_cost where cst_inv_uid = " + inventory.getUid()).addEntity(Cost.class).list();
             if(request.getParameter(PARAM_MAGIC_CARD_UID) != null && ! request.getParameter(PARAM_MAGIC_CARD_UID).equals("0") &&
                     ! request.getParameter(PARAM_MAGIC_CARD_UID).equals(""))  {
                 magicCard = (MagicCard) session.load(MagicCard.class, Integer.parseInt(request.getParameter(PARAM_MAGIC_CARD_UID)));
@@ -194,6 +202,9 @@ public class InventoryEditorServlet extends HttpServlet {
             }
         }
 
+        if(costs == null){
+            costs = new ArrayList<Cost>();
+        }
         magicSets = ServletUtil.getResultSetFromSql("select * from stt_magic_set");
 
         ArrayList<String> errors = new ArrayList<String>();
@@ -219,55 +230,179 @@ public class InventoryEditorServlet extends HttpServlet {
         inventory.setImage(request.getParameter(PARAM_INVENTORY_IMAGE));
         inventory.setMagicCard(magicCard);
         inventory.setYugiohCard(yugiohCard);
-/* COMMENTED OUT BECAUSE FIELDS HAVE CHANGED AND BROKEN
+
+// COMMENTED OUT BECAUSE FIELDS HAVE CHANGED AND BROKEN
+
+        Cost damagedItem = null;
+        Cost heavilyPlayed = null;
+        Cost moderatelyPlayed = null;
+        Cost lightlyPlayed = null;
+        Cost nearMint = null;
+        Cost newCost = null;
+        if(costs != null)  {
+            for(Cost currentCost: costs)  {
+                if(currentCost.getItemCondition() == ItemCondition.DAMAGED)  {
+                    damagedItem = currentCost;
+                    break;
+                }
+            }
+
+            for(Cost currentCost: costs)  {
+                if(currentCost.getItemCondition() == ItemCondition.HEAVILY_PLAYED)  {
+                    heavilyPlayed = currentCost;
+                    break;
+                }
+            }
+
+            for(Cost currentCost: costs)  {
+                if(currentCost.getItemCondition() == ItemCondition.MODERATELY_PLAYED)  {
+                    moderatelyPlayed = currentCost;
+                    break;
+                }
+            }
+
+            for(Cost currentCost: costs)  {
+                if(currentCost.getItemCondition() == ItemCondition.LIGHTLY_PLAYED)  {
+                    lightlyPlayed = currentCost;
+                    break;
+                }
+            }
+
+            for(Cost currentCost: costs)  {
+                if(currentCost.getItemCondition() == ItemCondition.NEAR_MINT)  {
+                    nearMint = currentCost;
+                    break;
+                }
+            }
+
+            for(Cost currentCost: costs)  {
+                if(currentCost.getItemCondition() == ItemCondition.NEW)  {
+                    newCost = currentCost;
+                    break;
+                }
+            }
+        }
+
         if(request.getParameter(PARAM_NUM_DAMAGED_IN_STOCK) != null && !request.getParameter(PARAM_NUM_DAMAGED_IN_STOCK).equals(""))  {
-            inventory.setDamagedInStock(Integer.parseInt(request.getParameter(PARAM_NUM_DAMAGED_IN_STOCK)));
-        }
+            if(damagedItem == null)  {
+                damagedItem = new Cost();
+                damagedItem.setItemCondition(ItemCondition.DAMAGED);
+                costs.add(damagedItem);
+            }
 
-        if(request.getParameter(PARAM_NUM_HEAVILY_PLAYED_IN_STOCK) != null && !request.getParameter(PARAM_NUM_HEAVILY_PLAYED_IN_STOCK).equals(""))  {
-            inventory.setHeavilyPlayedInStock(Integer.parseInt(request.getParameter(PARAM_NUM_HEAVILY_PLAYED_IN_STOCK)));
-        }
-
-        if(request.getParameter(PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK) != null && !request.getParameter(PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK).equals(""))  {
-            inventory.setLightlyPlayedInStock(Integer.parseInt(request.getParameter(PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK)));
-        }
-
-        if(request.getParameter(PARAM_NUM_MODERATELY_PLAYED_IN_STOCK) != null && !request.getParameter(PARAM_NUM_MODERATELY_PLAYED_IN_STOCK).equals(""))  {
-            inventory.setModeratelyPlayedInStock(Integer.parseInt(request.getParameter(PARAM_NUM_MODERATELY_PLAYED_IN_STOCK)));
-        }
-
-        if(request.getParameter(PARAM_NUM_NEAR_MINT_IN_STOCK) != null && !request.getParameter(PARAM_NUM_NEAR_MINT_IN_STOCK).equals(""))  {
-            inventory.setNearMintInStock(Integer.parseInt(request.getParameter(PARAM_NUM_NEAR_MINT_IN_STOCK)));
-        }
-
-        if(request.getParameter(PARAM_NUM_NEW_IN_STOCK) != null && !request.getParameter(PARAM_NUM_NEW_IN_STOCK).equals(""))  {
-            inventory.setNumNewInStock(Integer.parseInt(request.getParameter(PARAM_NUM_NEW_IN_STOCK)));
+            damagedItem.setItemQuantity(Integer.parseInt(request.getParameter(PARAM_NUM_DAMAGED_IN_STOCK)));
         }
 
         if(request.getParameter(PARAM_DAMAGED_PRICE) != null && !request.getParameter(PARAM_DAMAGED_PRICE).equals(""))  {
-            inventory.setDamagedPrice(Double.parseDouble(request.getParameter(PARAM_DAMAGED_PRICE)));
+            if(damagedItem == null)  {
+                damagedItem = new Cost();
+                damagedItem.setItemCondition(ItemCondition.DAMAGED);
+                costs.add(damagedItem);
+            }
+
+            damagedItem.setItemPrice(Double.parseDouble(request.getParameter(PARAM_DAMAGED_PRICE)));
         }
 
-        if(request.getParameter(PARAM_NEW_PRICE) != null && !request.getParameter(PARAM_NEW_PRICE).equals(""))  {
-            inventory.setNewPrice(Double.parseDouble(request.getParameter(PARAM_NEW_PRICE)));
+        if(request.getParameter(PARAM_NUM_HEAVILY_PLAYED_IN_STOCK) != null && !request.getParameter(PARAM_NUM_HEAVILY_PLAYED_IN_STOCK).equals(""))  {
+            if(heavilyPlayed == null)  {
+                heavilyPlayed = new Cost();
+                heavilyPlayed.setItemCondition(ItemCondition.HEAVILY_PLAYED);
+                costs.add(heavilyPlayed);
+            }
+
+            heavilyPlayed.setItemQuantity(Integer.parseInt(request.getParameter(PARAM_NUM_HEAVILY_PLAYED_IN_STOCK)));
         }
 
         if(request.getParameter(PARAM_HEAVILY_PLAYED_PRICE) != null && !request.getParameter(PARAM_HEAVILY_PLAYED_PRICE).equals(""))  {
-            inventory.setHeavilyPlayedPrice(Double.parseDouble(request.getParameter(PARAM_HEAVILY_PLAYED_PRICE)));
+            if(heavilyPlayed == null)  {
+                heavilyPlayed = new Cost();
+                heavilyPlayed.setItemCondition(ItemCondition.HEAVILY_PLAYED);
+                costs.add(heavilyPlayed);
+            }
+
+            heavilyPlayed.setItemPrice(Double.parseDouble(request.getParameter(PARAM_HEAVILY_PLAYED_PRICE)));
+        }
+
+        if(request.getParameter(PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK) != null && !request.getParameter(PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK).equals(""))  {
+            if(lightlyPlayed == null)  {
+                lightlyPlayed = new Cost();
+                lightlyPlayed.setItemCondition(ItemCondition.LIGHTLY_PLAYED);
+                costs.add(lightlyPlayed);
+            }
+
+            lightlyPlayed.setItemQuantity(Integer.parseInt(request.getParameter(PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK)));
         }
 
         if(request.getParameter(PARAM_LIGHTLY_PLAYED_PRICE) != null && !request.getParameter(PARAM_LIGHTLY_PLAYED_PRICE).equals(""))  {
-            inventory.setLightlyPlayedPrice(Double.parseDouble(request.getParameter(PARAM_LIGHTLY_PLAYED_PRICE)));
+            if(lightlyPlayed == null)  {
+                lightlyPlayed = new Cost();
+                lightlyPlayed.setItemCondition(ItemCondition.LIGHTLY_PLAYED);
+                costs.add(lightlyPlayed);
+            }
+
+            lightlyPlayed.setItemPrice(Double.parseDouble(request.getParameter(PARAM_LIGHTLY_PLAYED_PRICE)));
+        }
+
+        if(request.getParameter(PARAM_NUM_MODERATELY_PLAYED_IN_STOCK) != null && !request.getParameter(PARAM_NUM_MODERATELY_PLAYED_IN_STOCK).equals(""))  {
+            if(moderatelyPlayed == null)  {
+                moderatelyPlayed = new Cost();
+                moderatelyPlayed.setItemCondition(ItemCondition.MODERATELY_PLAYED);
+                costs.add(moderatelyPlayed);
+            }
+
+            moderatelyPlayed.setItemQuantity(Integer.parseInt(request.getParameter(PARAM_NUM_MODERATELY_PLAYED_IN_STOCK)));
         }
 
         if(request.getParameter(PARAM_MODERATELY_PLAYED_PRICE) != null && !request.getParameter(PARAM_MODERATELY_PLAYED_PRICE).equals(""))  {
-            inventory.setModeratelyPlayedPrice(Double.parseDouble(request.getParameter(PARAM_MODERATELY_PLAYED_PRICE)));
+            if(moderatelyPlayed == null)  {
+                moderatelyPlayed = new Cost();
+                moderatelyPlayed.setItemCondition(ItemCondition.MODERATELY_PLAYED);
+                costs.add(moderatelyPlayed);
+            }
+
+            moderatelyPlayed.setItemPrice(Double.parseDouble(request.getParameter(PARAM_MODERATELY_PLAYED_PRICE)));
+        }
+
+        if(request.getParameter(PARAM_NUM_NEAR_MINT_IN_STOCK) != null && !request.getParameter(PARAM_NUM_NEAR_MINT_IN_STOCK).equals(""))  {
+            if(nearMint == null)  {
+                nearMint = new Cost();
+                nearMint.setItemCondition(ItemCondition.NEAR_MINT);
+                costs.add(nearMint);
+            }
+
+            nearMint.setItemQuantity(Integer.parseInt(request.getParameter(PARAM_NUM_NEAR_MINT_IN_STOCK)));
         }
 
         if(request.getParameter(PARAM_NEAR_MINT_PRICE) != null && !request.getParameter(PARAM_NEAR_MINT_PRICE).equals(""))  {
-            inventory.setNearMintPrice(Double.parseDouble(request.getParameter(PARAM_NEAR_MINT_PRICE)));
+            if(nearMint == null)  {
+                nearMint = new Cost();
+                nearMint.setItemCondition(ItemCondition.NEAR_MINT);
+                costs.add(nearMint);
+            }
+
+            nearMint.setItemPrice(Double.parseDouble(request.getParameter(PARAM_NEAR_MINT_PRICE)));
         }
-*/
+
+        if(request.getParameter(PARAM_NUM_NEW_IN_STOCK) != null && !request.getParameter(PARAM_NUM_NEW_IN_STOCK).equals(""))  {
+            if(newCost == null)  {
+                newCost = new Cost();
+                newCost.setItemCondition(ItemCondition.NEW);
+                costs.add(newCost);
+            }
+
+            newCost.setItemQuantity(Integer.parseInt(request.getParameter(PARAM_NUM_NEW_IN_STOCK)));
+        }
+
+        if(request.getParameter(PARAM_NEW_PRICE) != null && !request.getParameter(PARAM_NEW_PRICE).equals(""))  {
+            if(newCost == null)  {
+                newCost = new Cost();
+                newCost.setItemCondition(ItemCondition.NEW);
+                costs.add(newCost);
+            }
+
+            newCost.setItemPrice(Double.parseDouble(request.getParameter(PARAM_NEW_PRICE)));
+        }
+
         //not going to make the price required since some they will not have inventory for
 
         //check if it is a yugioh card, if it is validate and set the yugioh fields
@@ -625,9 +760,18 @@ public class InventoryEditorServlet extends HttpServlet {
 
             session.save(inventory);
 
+            if(costs != null)  {
+                for(Cost currentCost : costs)  {
+                    if(currentCost.getItemPrice() > 0 || currentCost.getItemQuantity() > 0)  {
+                        currentCost.setInvUid(inventory.getUid());
+                        session.save(currentCost);
+                    }
+                }
+            }
+
             session.getTransaction().commit();
             forwardToEditor(request, response, null, "The transaction was saved successfully", inventory,
-                    magicCard, event, yugiohCard, warning, magicSets, request.getParameter(PARAM_TYPE));
+                    magicCard, event, yugiohCard, warning, magicSets, request.getParameter(PARAM_TYPE), costs);
         }  else  {
             if(magicCard == null)  {
                 magicCard = new MagicCard();
@@ -641,7 +785,7 @@ public class InventoryEditorServlet extends HttpServlet {
                 event = new Event();
             }
             forwardToEditor(request, response, errors, "", inventory, magicCard, event, yugiohCard, "", magicSets,
-                    request.getParameter(PARAM_TYPE));
+                    request.getParameter(PARAM_TYPE), costs);
         }
 
         session.close();
@@ -650,7 +794,7 @@ public class InventoryEditorServlet extends HttpServlet {
     private static void forwardToEditor(HttpServletRequest request, HttpServletResponse response,ArrayList<String> errors,
                                         String info, Inventory inventory, MagicCard magicCard,
                                         Event event, YugiohCard yugiohCard, String warning, ResultSet magicSets,
-                                        String type) throws IOException,
+                                        String type, List<Cost> costs) throws IOException,
             ServletException {
         request.setAttribute(ATTR_ERRORS, errors);
         request.setAttribute(ATTR_INFO, info);
@@ -661,6 +805,7 @@ public class InventoryEditorServlet extends HttpServlet {
         request.setAttribute(ATTR_WARNING, warning);
         request.setAttribute(ATTR_MAGIC_SETS, magicSets);
         request.setAttribute(ATTR_TYPE, type);
+        request.setAttribute(ATTR_COST_ITEMS, costs);
         request.getRequestDispatcher("/admin/InventoryEditor.jsp").forward(request, response);
     }
 

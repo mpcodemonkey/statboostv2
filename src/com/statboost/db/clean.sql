@@ -77,65 +77,6 @@ CREATE TABLE `stt_yugioh_card` (
   PRIMARY KEY (`ycr_uid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=23778 DEFAULT CHARSET=utf8;
 
-CREATE TABLE `stt_email_template` (
-  `etm_uid` int(11) NOT NULL AUTO_INCREMENT,
-  `etm_name` varchar(100) NOT NULL,
-  `etm_body` text NOT NULL,
-  PRIMARY KEY (`etm_uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
-CREATE TABLE `stt_email_variable_group` (
-  `evg_uid` int(11) NOT NULL AUTO_INCREMENT,
-  `evg_name` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`evg_uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
-CREATE TABLE `stt_email` (
-  `eml_uid` int(11) NOT NULL AUTO_INCREMENT,
-  `eml_name` varchar(100) NOT NULL,
-  `eml_subject` varchar(250) NOT NULL,
-  `eml_from` varchar(1000) NOT NULL,
-  `eml_to` varchar(1000) NOT NULL,
-  `eml_body` text NOT NULL,
-  `eml_etm_uid` int(11) NOT NULL,
-  `eml_evg_uid` int(11) NOT NULL,
-  PRIMARY KEY (`eml_uid`),
-  KEY `eml_etm_uid_fk` (`eml_etm_uid`),
-  KEY `eml_evg_uid_fk` (`eml_evg_uid`),
-  CONSTRAINT `eml_etm_uid_fk` FOREIGN KEY (`eml_etm_uid`) REFERENCES `stt_email_template` (`etm_uid`),
-  CONSTRAINT `eml_evg_uid_fk` FOREIGN KEY (`eml_evg_uid`) REFERENCES `stt_email_variable_group` (`evg_uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
-CREATE TABLE `stt_workflow_event` (
-  `wev_uid` int(11) NOT NULL AUTO_INCREMENT,
-  `wev_name` varchar(100) NOT NULL,
-  `wev_description` varchar(1000) DEFAULT NULL,
-  `wev_code` varchar(100) NOT NULL,
-  PRIMARY KEY (`wev_uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
-CREATE TABLE `stt_email_workflow_event_link` (
-  `ewe_uid` int(11) NOT NULL AUTO_INCREMENT,
-  `ewe_eml_uid` int(11) NOT NULL,
-  `ewe_wev_uid` int(11) NOT NULL,
-  PRIMARY KEY (`ewe_uid`),
-  KEY `ewe_eml_uid_fk` (`ewe_eml_uid`),
-  KEY `ewe_wev_uid_fk` (`ewe_wev_uid`),
-  CONSTRAINT `ewe_eml_uid_fk` FOREIGN KEY (`ewe_eml_uid`) REFERENCES `stt_email` (`eml_uid`),
-  CONSTRAINT `ewe_wev_uid_fk` FOREIGN KEY (`ewe_wev_uid`) REFERENCES `stt_workflow_event` (`wev_uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
-CREATE TABLE `stt_email_variable` (
-  `evr_uid` int(11) NOT NULL AUTO_INCREMENT,
-  `evr_evg_uid` int(11) NOT NULL,
-  `evr_name` varchar(50) NOT NULL,
-  `err_default_value` varchar(1000) DEFAULT NULL,
-  `evr_format` varchar(100) DEFAULT NULL,
-  `evr_display_name` varchar(100) NOT NULL,
-  PRIMARY KEY (`evr_uid`),
-  KEY `evr_evg_uid_fk` (`evr_evg_uid`),
-  CONSTRAINT `evr_evg_uid_fk` FOREIGN KEY (`evr_evg_uid`) REFERENCES `stt_email_variable_group` (`evg_uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `stt_webpage` (
   `wbp_uid` int(11) NOT NULL AUTO_INCREMENT,
