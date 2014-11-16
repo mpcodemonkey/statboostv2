@@ -69,7 +69,7 @@
 
     <ul class="pagination">
         <c:if test="${currentPage != 1}">
-            <li><a href="inventorySearch?page=${currentPage - 1}">Previous</a></li>
+            <li><a href="Store?page=${currentPage - 1}">Previous</a></li>
         </c:if>
         <c:forEach begin="1" end="${numberOfPages}" var="i">
             <c:choose>
@@ -77,12 +77,12 @@
                     <li class="active"><a href="#">${i}</a></li>
                 </c:when>
                 <c:otherwise>
-                    <li><a href="inventorySearch?page=${i}">${i}</a></li>
+                    <li><a href="Store?page=${i}">${i}</a></li>
                 </c:otherwise>
             </c:choose>
         </c:forEach>
         <c:if test="${currentPage lt numberOfPages}">
-            <li><a href="inventorySearch?page=${currentPage + 1}">Next</a></li>
+            <li><a href="Store?page=${currentPage + 1}">Next</a></li>
         </c:if>
     </ul>
 </div>
