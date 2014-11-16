@@ -53,14 +53,13 @@ public class InventorySearchServlet extends HttpServlet {
 
         //check if query object is in the session
         //new search invalidates check
+        HttpSession session = request.getSession();
         if(request.getParameter("page") == null) {
-            HttpSession session = request.getSession();
             if (session.getAttribute("QueryObject") != null) {
                 session.removeAttribute("QueryObject");
             }
         }
         else if(request.getParameter("page") != null){
-            HttpSession session = request.getSession();
             if (session.getAttribute("QueryObject") != null) {
                 page = Integer.parseInt(request.getParameter("page"));
                 QueryObject sessionQuery = (QueryObject)session.getAttribute("QueryObject");
@@ -87,6 +86,10 @@ public class InventorySearchServlet extends HttpServlet {
                 }
                 //route to results page even if no results found or transaction throws exception
                 request.getRequestDispatcher("/InventoryResult.jsp").forward(request, response);
+                return;
+            }
+            else{
+                request.getRequestDispatcher("/InventorySearch.jsp").forward(request, response);
                 return;
             }
         }
@@ -158,7 +161,6 @@ public class InventorySearchServlet extends HttpServlet {
 
         inventoryResults = (List<Object>)inventoryDAO.getResultSet(inventoryQuery, page);
 
-        HttpSession session = request.getSession();
         session.setAttribute("QueryObject", inventoryQuery);
 
         ArrayList<InventoryRecord> inventoryPage = getInventoryRecords(inventoryResults);

@@ -95,6 +95,10 @@ public class MagicSearchServlet extends HttpServlet {
                 request.getRequestDispatcher("/MagicResult.jsp").forward(request, response);
                 return;//necessary
             }
+            else{
+                request.getRequestDispatcher("/MagicSearch.jsp").forward(request, response);
+                return;
+            }
         }
 
 

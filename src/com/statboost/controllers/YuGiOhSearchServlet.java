@@ -85,6 +85,10 @@ public class YuGiOhSearchServlet extends HttpServlet {
                 request.getRequestDispatcher("/YuGiOhResult.jsp").forward(request, response);
                 return;//necessary
             }
+            else{
+                request.getRequestDispatcher("/YuGiOhSearch.jsp").forward(request, response);
+                return;
+            }
         }
 
 
