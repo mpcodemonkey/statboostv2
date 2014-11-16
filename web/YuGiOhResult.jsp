@@ -134,20 +134,42 @@
 
     <ul class="pagination">
         <c:if test="${currentPage != 1}">
+            <li><a href="ygoSearch?page=${1}">First</a></li>
             <li><a href="ygoSearch?page=${currentPage - 1}">Previous</a></li>
         </c:if>
-        <c:forEach begin="1" end="${numberOfPages}" var="i">
-            <c:choose>
-                <c:when test="${currentPage eq i}">
-                    <li class="active"><a href="#">${i}</a></li>
-                </c:when>
-                <c:otherwise>
-                    <li><a href="ygoSearch?page=${i}">${i}</a></li>
-                </c:otherwise>
-            </c:choose>
-        </c:forEach>
+        <c:choose>
+            <c:when test="${numberOfPages <= 6}">
+                <c:forEach begin="${1}" end="${numberOfPages}" var="j">
+                    <c:if test="${j le numberOfPages}">
+                        <c:choose>
+                            <c:when test="${currentPage eq j}">
+                                <li class="active"><a href="#">${j}</a></li>
+                            </c:when>
+                            <c:otherwise>
+                                <li><a href="ygoSearch?page=${j}">${j}</a></li>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:if>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <c:forEach begin="${currentPage}" end="${currentPage + 5}" var="i">
+                    <c:if test="${i le numberOfPages}">
+                        <c:choose>
+                            <c:when test="${currentPage eq i}">
+                                <li class="active"><a href="#">${i}</a></li>
+                            </c:when>
+                            <c:otherwise>
+                                <li><a href="ygoSearch?page=${i}">${i}</a></li>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:if>
+                </c:forEach>
+            </c:otherwise>
+        </c:choose>
         <c:if test="${currentPage lt numberOfPages}">
             <li><a href="ygoSearch?page=${currentPage + 1}">Next</a></li>
+            <li><a href="ygoSearch?page=${numberOfPages}">Last</a></li>
         </c:if>
     </ul>
 
