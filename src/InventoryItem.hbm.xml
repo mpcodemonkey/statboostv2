@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.statboost.models.inventory.InventoryItem" table="stt_inventory_item">
+        <id name="uid" column="iit_uid">
+            <generator class="identity"/>
+        </id>
+        <property name="price" column="iit_price"/>
+        <property name="quantity" column="iit_quantity"/>
+        <property name="name" column="iit_name"/>
+        <property name="image" column="iit_image"/>
+        <property name="preOrder" column="iit_pre_order"/>
+        <property name="description" column="iit_description"/>
+        <property name="condition" column="iit_condition"/>
+        <many-to-one name="magicCard" class="com.statboost.models.mtg.MagicCard"
+                     column="iit_mcr_uid" not-null="false" insert="true" update="true"
+                     cascade="all" />
+        <many-to-one name="yugiohCard" class="com.statboost.models.ygo.YugiohCard"
+                     column="iit_ycr_uid" not-null="false" insert="true" update="true"
+                     cascade="all" />
+        <many-to-one name="event" class="com.statboost.models.inventory.Event"
+                     column="iit_evn_uid" not-null="false" insert="true" update="true"
+                     cascade="all" />
+        <many-to-one name="order" class="com.statboost.models.inventory.Order"
+                     column="iit_ord_uid" not-null="true" insert="true" update="true"
+                     cascade="all" />
+    </class>
+</hibernate-mapping>
