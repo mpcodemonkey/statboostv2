@@ -1,6 +1,7 @@
 package com.statboost.controllers;
 
 import com.statboost.models.actor.User;
+import com.statboost.models.inventory.Cost;
 import com.statboost.models.session.ShoppingCartSessionObject;
 
 import javax.servlet.ServletException;
@@ -22,6 +23,13 @@ public class CheckoutServlet extends HttpServlet {
         ShoppingCartSessionObject shoppingCart = (ShoppingCartSessionObject)session.getAttribute("shoppingCart");
         //validate shopping cart exists and is not empty
         if (shoppingCart != null && !shoppingCart.getCartItems().isEmpty() && session.getAttribute("orderTotal") != null) {
+
+            /**
+             * TEST
+             */
+            Cost.decrementCosts(shoppingCart);
+
+
             //get user object for pulling info if exists
             if (session.getAttribute("email") != null) {
                 User user = User.find((String)session.getAttribute("email"));

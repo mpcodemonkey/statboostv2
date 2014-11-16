@@ -149,9 +149,12 @@ public class ShoppingCartServlet extends HttpServlet {
 
     }
 
-    //TODO: figure this out. maybe pull data from http://www.taxrates.com/calculator/
+    /**
+     * HARD CODED TAX RATE 8.75%
+     * @return double
+     */
     public double getTaxRate() {
-        return 0.080;
+        return 0.0875;
     }
 
 
