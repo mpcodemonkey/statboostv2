@@ -90,8 +90,8 @@ public class Cost {
             tx = session.beginTransaction();
 
             for (ShoppingCartSessionObject.RequestedItem item : shoppingCart.getCartItems()) {
-                //query for cost record TODO: FIX query to support enum
-                Cost cost = (Cost) session.createQuery("FROM Cost WHERE invUid=" + item.getInvUid() + " AND itemCondition=" + item.getCondition());
+                //query for unique cost record
+                Cost cost = (Cost) session.createQuery("FROM Cost WHERE invUid=" + item.getInvUid() + " AND itemCondition='" + item.getCondition()+"'").uniqueResult();
                 if (cost != null) {
                     cost.setItemQuantity(cost.getItemQuantity()-item.getQuantity());
                     //update record
