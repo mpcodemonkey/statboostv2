@@ -17,18 +17,51 @@
 
         //initialize calendar
         $('#calendar').fullCalendar({
+
             header: {
                 left: 'prev,next today',
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
             },
+
+            eventClick:  function(event, jsEvent, view) {
+                $('#modalTitle').html(event.title);
+                $('#modalBody').html(event.description);
+                //$('#eventStart').html(event.start);
+                //$('#eventEnd').html(event.end);
+                //$('#eventLimit').html(event.playerLimit);
+                $('#eventUrl').attr('href', event.url);
+                $('#fullCalModal').modal();
+            },
+
             height: 800,
             //eventually populate with json payload
             events: "/eventFeed"
+
         })
 
     });
 </script>
+
+<div id="fullCalModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>Close</span></button>
+                <h4 id="modalTitle" class="modal-title"></h4>
+                <h4 id="eventStart" class="modal-title"></h4>
+
+            </div>
+            <div id="modalBody" class="modal-body"></div>
+            <div class="modal-footer">
+
+                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default"><a id="eventUrl" target="_blank">Check out More Details!</a></button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="container-fluid">
     <div class="well well-lg">
@@ -36,7 +69,6 @@
         <div id="calendar"></div>
     </div>
 </div>
-
 
 
 <jsp:include page="/include/Footer.jsp"/>

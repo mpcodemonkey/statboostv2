@@ -43,6 +43,9 @@ public class CalendarFeedServlet extends HttpServlet {
             jo.addProperty("title", e.getTitle());
             jo.addProperty("start", e.getFromDate().toString());
             jo.addProperty("end", e.getToDate().toString());
+            jo.addProperty("description", e.getDescription());
+            jo.addProperty("playerLimit", e.getPlayerLimit());
+            jo.addProperty("inStoreUsers", e.getNumberInStoreUsers());
             j.add(jo);
         }
         response.getWriter().write(new Gson().toJson(j));
