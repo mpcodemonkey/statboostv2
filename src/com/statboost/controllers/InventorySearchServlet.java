@@ -35,6 +35,7 @@ public class InventorySearchServlet extends HttpServlet {
 
         }
             request.getRequestDispatcher("/InventorySearch.jsp").forward(request, response);
+            return;
         }
 
     @Override
@@ -88,7 +89,6 @@ public class InventorySearchServlet extends HttpServlet {
                 }
                 //route to results page even if no results found or transaction throws exception
                 request.getRequestDispatcher("/InventoryResult.jsp").forward(request, response);
-                return;//necessary
             }
         }
 
@@ -176,6 +176,7 @@ public class InventorySearchServlet extends HttpServlet {
         }
         //route to results page even if no results found or transaction throws exception
         request.getRequestDispatcher("/InventoryResult.jsp").forward(request, response);
+        return;
 
     }
 
