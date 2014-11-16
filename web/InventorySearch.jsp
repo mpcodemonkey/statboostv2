@@ -77,6 +77,49 @@
     </div>
 </div>
 
+<div class="container center-block">
+    <div class="row">
+        <div class="span12" style="text-align: center;">
+            <div class="col-sm-4 col-xs-12">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h3>Magic</h3>
+                        <p>
+                        <h3>Store:</h3>
+                        <div>All Singles</div>
+                        <div>All Sealed Product</div>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h3>Yu Gi Oh</h3>
+                        <p>
+                        <h3>Store:</h3>
+                        <div>All Singles</div>
+                        <div>All Sealed Product</div>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h3>Accessories</h3>
+                        <p>
+                        <h3>Store:</h3>
+                        <div>All Game Accessories</div>
+                        <div></div>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
     $(document).ready(function() {
         $("#slider").slider({

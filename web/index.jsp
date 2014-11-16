@@ -151,7 +151,9 @@
                     <div class="caption">
                         <h3>Magic</h3>
                         <p>
-                            content of stuff!!
+                            <h3>Store:</h3>
+                            <div>All Singles</div>
+                            <div>All Sealed Product</div>
                         </p>
                     </div>
                 </div>
@@ -161,7 +163,9 @@
                     <div class="caption">
                         <h3>Yu Gi Oh</h3>
                         <p>
-                            content of stuff!!
+                            <h3>Store:</h3>
+                            <div>All Singles</div>
+                            <div>All Sealed Product</div>
                         </p>
                     </div>
                 </div>
@@ -171,7 +175,9 @@
                     <div class="caption">
                         <h3>Accessories</h3>
                         <p>
-                            content of stuff!!
+                            <h3>Store:</h3>
+                            <div>All Game Accessories</div>
+                            <div></div>
                         </p>
                     </div>
                 </div>
@@ -206,7 +212,7 @@
 
     #owl-demobanner .item img{
         display: block;
-        width: 80%;
+        width: 60%;
         height: auto;
         margin-left: auto;
         margin-right: auto;

@@ -142,22 +142,22 @@
                     Be sure to check out our weekly tournaments for Magic: The
                     Gathering, Yu-Gi-Oh, and WeiB Schwarz!</span><span class="apple-converted-space"><b><span><o:p></o:p></span></b></span></p>
             <p>&nbsp;</p>
-        </div>>
+        </div>
     </div>
     <!-- /.col-md-4 -->
     <div class="col-md-4">
-        <h2>Social Media</h2>
-
-        <div class="col-sm-6">
-            <a href="https://www.facebook.com/profile.php?id=100003578735222&fref=nf" ><img src="/include/images/facebook.jpg" alt="" height="50" width="150"></a>
-
+        <div class="well">
+           <h2>Social Media</h2>
+           <p>
+                <div class="col-sm-6">
+                    <a href="https://www.facebook.com/profile.php?id=100003578735222&fref=nf" ><img src="/include/images/facebook.jpg" alt="" height="50" width="150"></a>
+                </div>
+                <div class="col-sm-5 col-sm-offset-1">
+                   <a href="http://www.yelp.com/biz/the-mages-realm-sacramento" ><img src="/include/images/yelp.png" alt="" height="75" width="75"></a>
+                </div>
+                <div>&nbsp;</div>
+           </p>
         </div>
-
-
-        <div class="col-sm-5 col-sm-offset-1">
-           <a href="http://www.yelp.com/biz/the-mages-realm-sacramento" ><img src="/include/images/yelp.png" alt="" height="75" width="75"></a>
-        </div>
-
     </div>
     <!-- /.col-md-4 -->
 </div>
