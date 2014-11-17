@@ -25,6 +25,17 @@
 </head>
 <body>
 <table>
+    <%
+        if(request.getParameter(InventoryCategorySqllistServlet.ATTR_INFO)  != null)  {
+    %>
+    <tr>
+        <td colspan="2" class="info">
+            <%=request.getParameter(InventoryCategorySqllistServlet.ATTR_INFO)%>
+        </td>
+    </tr>
+    <%
+        }
+    %>
     <tr>
         <td><a href="<%=InventoryCategoryEditorServlet.SRV_MAP%>">New Category</a></td>
     </tr>

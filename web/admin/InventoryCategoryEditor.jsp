@@ -24,6 +24,15 @@
     Category category = (Category) request.getAttribute(InventoryCategoryEditorServlet.ATTR_INVENTORY_CATEGORY);
 %>
 <jsp:include page="/include/HeadTags.jsp"/>
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            jQuery('#deleteButton').click(function() {
+                if (confirm('Are you sure you want to delete the inventory category? This will also remove all inventory from the category you are deleting.')) {
+                    document.location.assign('<%=InventoryCategoryEditorServlet.getDeleteUrl(category.getCatUid())%>');
+                }
+            });
+        });
+    </script>
 </head>
 <body>
 <form method="post" action="<%=InventoryCategoryEditorServlet.SRV_MAP%>">
@@ -58,6 +67,13 @@
         <tr>
             <td><input type="submit"></td>
             <td><a href="<%=InventoryCategorySqllistServlet.SRV_MAP%>">Close</a></td>
+            <%
+                if(category.getCatUid() > 0)  {
+            %>
+            <td><a href="#" onclick="confirmDelete()" id="deleteButton">Delete</a></td>
+            <%
+                }
+            %>
         </tr>
         <tr>
             <td class="leftNav">Name</td>

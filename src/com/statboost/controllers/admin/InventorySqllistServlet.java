@@ -23,6 +23,7 @@ public class InventorySqllistServlet extends HttpServlet {
     public static final String ATTR_INVENTORY = "inventory";
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //todo: add admin check
         //todo: pagination
         String sql = "select * from stt_inventory limit 10";
         ResultSet inventory = ServletUtil.getResultSetFromSql(sql);
