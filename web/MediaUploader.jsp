@@ -9,11 +9,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title></title>
+    <title>Media</title>
 </head>
 <body>
 <form method="post" action="<%=MediaUploaderServlet.SRV_MAP%>" enctype="multipart/form-data">
-    <table cellpadding="0" cellspacing="0" border="0">
+    <table border="0">
         <tr>
             <td>Image</td>
             <td><input type="file" name="<%=MediaUploaderServlet.PARAM_IMAGE_TO_UPLOAD%>"></td>

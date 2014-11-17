@@ -27,7 +27,8 @@ public class MediaUploaderServlet extends HttpServlet {
     public static final String PARAM_IMAGE_TO_UPLOAD = "imageToUpload";
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws  ServletException, IOException  {
-        //todo: will eventually load up the inventory stuff. but for now just forwards to the page
+        //todo: should be able to de
+        //todo: add admin check
         request.getRequestDispatcher("/MediaUploader.jsp").forward(request, response);
     }
 
@@ -73,14 +74,15 @@ public class MediaUploaderServlet extends HttpServlet {
         //todo; hard code for now, later use the uid of the inventory
         String filePart = "/" + 1 + originalFileName.substring(originalFileName.lastIndexOf("."));
         //todo: hard coded for now, later make variable.
-        String uploadFilePath = "c:/Users/Jessica/IdeaProjects/statbooster2/web/images" + filePart;
+       // String uploadFilePath = "c:/Users/Jessica/IdeaProjects/statbooster2/web/images" + filePart;
+        String uploadFilePath = "/home/images/inventory/other" + filePart;
         File uploadFile = new File(uploadFilePath);
+
 
         try  {
             uploadFileItem.write(uploadFile);
         }  catch(Exception e)  {
             logger.error("Could not write the file.", e);
-            return;
         }
 
         //todo: set the magic card fields here that have to do with the image

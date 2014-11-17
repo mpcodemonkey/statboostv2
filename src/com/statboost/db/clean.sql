@@ -191,4 +191,11 @@ CREATE TABLE stt_cost (
   PRIMARY KEY (cst_uid)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `stt_category` (
+  `cat_uid` int(11) NOT NULL AUTO_INCREMENT,
+  `category` varchar(30) NOT NULL,
+  `ctg_deletable` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`cat_uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 

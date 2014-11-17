@@ -7,5 +7,6 @@
     <class name="com.statboost.models.inventory.Category" table="stt_category" schema="" catalog="statboost">
         <id name="catUid" column="cat_uid"/>
         <property name="category" column="category"/>
+        <property name="deletable" column="ctg_deletable"/>
     </class>
 </hibernate-mapping>

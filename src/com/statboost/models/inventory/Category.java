@@ -5,8 +5,11 @@ package com.statboost.models.inventory;
  */
 public class Category {
     private int catUid;
-    //todo: is category just the name fo the category?
+    //category is really the name fo the category
     private String category;
+    //also used for determining if they can edit the record.
+    private Byte deletable;
+
 
     public int getCatUid() {
         return catUid;
@@ -24,23 +27,11 @@ public class Category {
         this.category = category;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Category that = (Category) o;
-
-        if (catUid != that.catUid) return false;
-        if (category != null ? !category.equals(that.category) : that.category != null) return false;
-
-        return true;
+    public Byte getDeletable() {
+        return deletable;
     }
 
-    @Override
-    public int hashCode() {
-        int result = catUid;
-        result = 31 * result + (category != null ? category.hashCode() : 0);
-        return result;
+    public void setDeletable(Byte deletable) {
+        this.deletable = deletable;
     }
 }
