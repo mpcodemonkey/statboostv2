@@ -61,7 +61,7 @@ public class Cost {
             try {
                 tx = session.beginTransaction();
                 //query for cost record
-                cost = (Cost) session.createQuery("FROM Cost WHERE invUid=" + invUid + " AND itemCondition=" + condition);
+                cost = (Cost) session.createQuery("FROM Cost WHERE invUid=" + invUid + " AND itemCondition='" + condition + "'").uniqueResult();
 
                 tx.commit();
             } catch (HibernateException e) {

@@ -82,7 +82,8 @@
                                                     <p>
                                                         <b>Order Status:</b> ${order.status}<br>
                                                         <b>Paid:</b> ${order.paid}<br>
-                                                        <b>Date Paid:</b> ${order.datePaid}<br>
+                                                        <b>Date Submitted:</b> <fmt:formatDate type="both" dateStyle="medium" timeStyle="medium" value="${order.dateSubmitted}" /><br>
+                                                        <b>Date Complete:</b> <fmt:formatDate type="both" dateStyle="medium" timeStyle="medium" value="${order.dateComplete}" /><br>
                                                         <b>Transaction ID:</b> ${order.transactionId}<br>
                                                         <b>In Store Pickup:</b> ${order.inStorePickup}<br>
                                                         <b>Tracking Number:</b> ${order.trackingNumber}<br><br>

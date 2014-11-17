@@ -29,7 +29,7 @@ public class OrderHistoryServlet extends HttpServlet {
 
             //get all orders associated with the user
             GenericDAO dao = new GenericDAO();
-            List<Order> orderList = (List<Order>)dao.getResultSet("From Order where user = '" + user.getUsrUid() + "'");
+            List<Order> orderList = (List<Order>)dao.getResultSet("From Order where user = '" + user.getUsrUid() + "' order by dateSubmitted desc");
 
             if (orderList.isEmpty()) {
                 request.setAttribute("alert", "You have no orders :(");

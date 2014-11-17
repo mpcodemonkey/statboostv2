@@ -73,8 +73,8 @@
                         <div class="form-group">
                             <label>In Store Pickup?</label><br>
                             <select id="inStorePickup" class="form-control">
-                                <option>2920 Arden Way, Sacramento CA</option>
-                                <option selected>No</option>
+                                <option selected>2920 Arden Way, Sacramento CA</option>
+                                <option>No</option>
                             </select>
                         </div>
                     </div>

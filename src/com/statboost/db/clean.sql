@@ -95,7 +95,7 @@ CREATE TABLE `stt_order` (
   `ord_shipping_total` DECIMAL(7, 2) NOT NULL,
   `ord_shipping_method` varchar(50) DEFAULT NULL,
   `ord_date_submitted` datetime NOT NULL,
-  `ord_date_paid` datetime DEFAULT NULL,
+  `ord_date_complete` datetime DEFAULT NULL,
   `ord_shipping_address1` varchar(150) DEFAULT NULL,
   `ord_shipping_address2` varchar(100) DEFAULT NULL,
   `ord_shipping_city` varchar(100) DEFAULT NULL,
