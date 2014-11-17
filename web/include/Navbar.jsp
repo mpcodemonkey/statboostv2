@@ -60,25 +60,31 @@
                 </div>
             </c:if>
 
-            <c:if test="${sessionScope.email != null}">
-                <div class="btn-group" style="max-width: 50px;">
-                    <button type="button" class="btn navbar-btn btn-success dropdown-toggle" data-toggle="dropdown">
-                        <span class="glyphicon glyphicon-user"></span>&nbsp;<span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li role="presentation" class="dropdown-header"><span style="font-size: 20px;"><c:out value="${sessionScope.email}"/></span></li>
-                        <li class="divider"></li>
-                        <li><a href="/user/profile">User Profile</a></li>
-                        <li><a href="/user/orderhistory">Order History</a></li>
-                        <c:if test="${sessionScope.admin != null}">
-                            <li><a href="/admin/adminCP">Admin CP</a></li>
-                        </c:if>
-                        <li class="divider"></li>
-                        <li><a href="/logout">Logout</a></li>
-                    </ul>
-                </div>
-            </c:if>
-
+            <c:choose>
+                <c:when test="${sessionScope.email != null}">
+                    <div class="btn-group" style="max-width: 50px;">
+                        <button type="button" class="btn navbar-btn btn-success dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-user"></span>&nbsp;<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li role="presentation" class="dropdown-header"><span style="font-size: 20px;"><c:out value="${sessionScope.email}"/></span></li>
+                            <li class="divider"></li>
+                            <li><a href="/user/profile">User Profile</a></li>
+                            <li><a href="/user/orderhistory">Order History</a></li>
+                            <c:if test="${sessionScope.admin != null}">
+                                <li><a href="/admin/adminCP">Admin CP</a></li>
+                            </c:if>
+                            <li class="divider"></li>
+                            <li><a href="/logout">Logout</a></li>
+                        </ul>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="btn-group" style="max-width: 50px;">
+                        <button class="btn btn-primary btn-sm navbar-btn btn-right" onclick="window.location='/login'">Login</button>
+                    </div>
+                </c:otherwise>
+            </c:choose>
         </div><!-- /.nav-collapse -->
     </div><!-- /.container -->
 </div><!-- /.navbar -->

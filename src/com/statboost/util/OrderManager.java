@@ -12,7 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +36,7 @@ public class OrderManager {
         //init new order object
         Order order = new Order();
         order.setUser(user);
-        order.setPaid(false);
+        order.setPaid(true);
         order.setStatus(OrderStatus.PLACED);
         order.setTransactionId(orderParams.get("transactionId"));
 
@@ -54,11 +54,11 @@ public class OrderManager {
         order.setShippingState(orderParams.get("shippingState"));
         order.setShippingZip(orderParams.get("shippingZip"));
 
-        //set date time to now
-        //TODO: adjust this stuff, date is server time not PDT and change date paid to date completed
-        order.setDateSubmitted(new Date());
-        order.setDatePaid(new Date());
-        order.setPaid(true);
+
+        //Adjust server time into PST
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.HOUR, -8);
+        order.setDateSubmitted(cal.getTime());
 
 
         Session session = HibernateUtil.getDatabaseSessionFactory().openSession();

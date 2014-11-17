@@ -20,7 +20,7 @@ public class Order {
     private double taxTotal;
     private double shippingTotal;
     private Date dateSubmitted;
-    private Date datePaid;
+    private Date dateComplete;
     private String shippingMethod;
     private String shippingAddress1;
     private String shippingAddress2;
@@ -157,12 +157,12 @@ public class Order {
         this.dateSubmitted = dateSubmitted;
     }
 
-    public Date getDatePaid() {
-        return datePaid;
+    public Date getDateComplete() {
+        return dateComplete;
     }
 
-    public void setDatePaid(Date datePaid) {
-        this.datePaid = datePaid;
+    public void setDateComplete(Date datePaid) {
+        this.dateComplete = datePaid;
     }
 
     public String getShippingMethod() {
