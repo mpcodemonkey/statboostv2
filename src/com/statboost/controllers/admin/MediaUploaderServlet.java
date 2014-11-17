@@ -25,9 +25,14 @@ public class MediaUploaderServlet extends HttpServlet {
     static Logger logger = Logger.getLogger(MediaUploaderServlet.class);
     public static final String SRV_MAP = "/admin/mediauploader";
     public static final String PARAM_IMAGE_TO_UPLOAD = "imageToUpload";
+    public static final String PARAM_TYPE = "type";
+    public static final String PARAM_NAME = "name";
+    public static final String ATTR_ERROR = "error";
+    public static final String ATTR_INFO = "info";
+    private String error = "";
+    private String message = "";
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws  ServletException, IOException  {
-        //todo: should be able to de
         //todo: add admin check
         request.getRequestDispatcher("/MediaUploader.jsp").forward(request, response);
     }
@@ -56,14 +61,18 @@ public class MediaUploaderServlet extends HttpServlet {
             throw new IllegalStateException("More than one upload detected.");
         }
 
-        processUpload(request, uploadFields);
+
+        String name = normalFields.get(PARAM_NAME);
+        String type = normalFields.get(PARAM_TYPE);
+        processUpload(request, uploadFields, type, name);
 
 
+        request.setAttribute(ATTR_ERROR, error);
+        request.setAttribute(ATTR_INFO, message);
         request.getRequestDispatcher("/MediaUploader.jsp").forward(request, response);
-
     }
 
-    private void processUpload(HttpServletRequest request, HashMap<String,FileItem> uploadedFiles)  {
+    private void processUpload(HttpServletRequest request, HashMap<String,FileItem> uploadedFiles, String type, String name)  {
         FileItem uploadFileItem = uploadedFiles.get(PARAM_IMAGE_TO_UPLOAD);
 
         if(uploadFileItem == null)  {
@@ -71,23 +80,41 @@ public class MediaUploaderServlet extends HttpServlet {
         }
 
         String originalFileName = uploadFileItem.getName();
-        //todo; hard code for now, later use the uid of the inventory
-        String filePart = "/" + 1 + originalFileName.substring(originalFileName.lastIndexOf("."));
-        //todo: hard coded for now, later make variable.
-       // String uploadFilePath = "c:/Users/Jessica/IdeaProjects/statbooster2/web/images" + filePart;
-        String uploadFilePath = "/home/images/inventory/other" + filePart;
-        File uploadFile = new File(uploadFilePath);
+        if(originalFileName != null && !originalFileName.equals(""))  {
+            String filePart = "/" + (name == null? originalFileName : (name + originalFileName.substring(originalFileName.lastIndexOf("."))));
 
+            String magicPath = "/inventory/magic";
+            String yugiohPath = "/inventory/yugioh";
+            String otherPath = "/inventory/other";
 
-        try  {
-            uploadFileItem.write(uploadFile);
-        }  catch(Exception e)  {
-            logger.error("Could not write the file.", e);
+            //default is website path
+            String path = "/website";
+            if(type != null)  {
+                if(type.equals("magic"))  {
+                    path = magicPath;
+                } else if(type.equals("yugioh"))  {
+                    path = yugiohPath;
+                } else if(type.equals("other"))  {
+                    path = otherPath;
+                }
+            }
+
+            //used for local
+           //String uploadFilePath = "c:/Users/Jessica/IdeaProjects/statbooster2/web/images" + path + filePart;
+
+           //used for prod on digitalocean
+           String uploadFilePath = "/home/images/inventory/other" + path + filePart;
+            File uploadFile = new File(uploadFilePath);
+
+            try  {
+                uploadFileItem.write(uploadFile);
+                message = "The file was uploaded successfully to " + uploadFilePath;
+            }  catch(Exception e)  {
+                logger.error("Could not write the file.", e);
+                error = "The file could not be uploaded";
+            }
         }
-
-        //todo: set the magic card fields here that have to do with the image
-        //todo: save magic card etc
-
+        error = "You must select an image to upload";
     }
 
     //gets all of the other fields like text, checkbox, etc
@@ -103,7 +130,7 @@ public class MediaUploaderServlet extends HttpServlet {
         return normalFields;
     }
 
-    //gets all of the fields that are files ot upload
+    //gets all of the fields that are files to upload
     private HashMap<String, FileItem> getUploadedFields(List<FileItem> uploadItems)  {
         HashMap<String, FileItem> normalFields = new HashMap<>();
         for (FileItem currentItem : uploadItems)  {
