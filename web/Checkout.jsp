@@ -24,26 +24,16 @@
         $('#cc_code').mask('999?9', {placeholder: ""});
         $('#exp').mask('99/99', {placeholder: "#"});
 
-    });
+        //copyFields($('#checkout'));
+        //$('#copyShipping').prop('checked', true);
 
-    function copyFields(form) {
-        if (form.copyShipping.checked == true) {
-            form.x_first_name.value = form.x_ship_to_first_name.value;
-            form.x_last_name.value = form.x_ship_to_last_name.value;
-            form.x_address.value = form.x_ship_to_address.value;
-            form.x_city.value = form.x_ship_to_city.value;
-            form.x_state.value = form.x_ship_to_state.value;
-            form.x_zip.value = form.x_ship_to_zip.value;
-        } else {
-            form.x_first_name.value = '';
-            form.x_last_name.value = '';
-            form.x_address.value = '';
-            form.x_city.value = '';
-            form.x_state.value = '';
-            form.x_zip.value = '';
+        //clear and disable shipping info if in store pickup order
+        if (window.location.search.indexOf("pickupOrder=No") == -1) {
+            //$('#shippingInfo').children().val('');
+            $('#shippingInfo').children().attr("disabled", "disabled");
         }
-    }
 
+    });
 </script>
 
 <%@ page import="com.statboost.controllers.ShoppingCartServlet" %>
@@ -88,34 +78,43 @@
             </c:if>
             <h1 align="center">Order Checkout</h1>
             <br>
-            <form method="post" action="https://test.authorize.net/gateway/transact.dll">
+            <form id="checkout" method="post" action="https://test.authorize.net/gateway/transact.dll">
                 <div class="row">
                     <div class="col-xs-6">
                         <fieldset style="">
-                            <legend>Shipping Information</legend>
-                            <input class="form-control" type='text' name='x_ship_to_first_name' placeholder="First Name" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrFirstName}</c:if>' required/><br>
-                            <input class="form-control" type='text' name='x_ship_to_last_name' placeholder="Last Name" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrLastName}</c:if>' required/><br>
-                            <input class="form-control" type='text' name='x_ship_to_address' placeholder="Address" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrAddress1}</c:if>' required/><br>
-                            <input class="form-control" type='text' name='x_ship_to_city' placeholder="City" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrCity}</c:if>' required/><br>
-                            <input class="form-control" type='text' name='x_ship_to_state' placeholder="State" maxlength="2" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrState}</c:if>' required/><br>
-                            <input class="form-control" type='text' name='x_ship_to_zip' placeholder="Zip" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrZip}</c:if>' required/><br>
+                            <legend>Billing Information</legend>
+                            <input class="form-control" type='text' name='x_first_name' placeholder="Cardholder's First Name" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrFirstName}</c:if>' required/><br>
+                            <input class="form-control" type='text' name='x_last_name' placeholder="Cardholder's Last Name" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrLastName}</c:if>' required/><br>
+                            <input class="form-control" type='text' name='x_address' placeholder="Billing Address" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrAddress1}</c:if>' required/><br>
+                            <input class="form-control" type='text' name='x_city' placeholder="Billing City" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrCity}</c:if>' required/><br>
+                            <input class="form-control" type='text' name='x_state' placeholder="Billing State" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrState}</c:if>' required/><br>
+                            <input class="form-control" type='text' name='x_zip' placeholder="Billing Zip" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrZip}</c:if>' required/><br>
                         </fieldset>
                     </div>
                     <div class="col-xs-6">
-                        <fieldset style="">
-                            <legend>Billing Information</legend>
-                            <input class="form-control" type='text' name='x_first_name' placeholder="Cardholder's First Name" value='' required/><br>
-                            <input class="form-control" type='text' name='x_last_name' placeholder="Cardholder's Last Name" value='' required/><br>
-                            <input class="form-control" type='text' name='x_address' placeholder="Billing Address" value='' required/><br>
-                            <input class="form-control" type='text' name='x_city' placeholder="Billing City" value='' required/><br>
-                            <input class="form-control" type='text' name='x_state' placeholder="Billing State" maxlength="2" value='' required/><br>
-                            <input class="form-control" type='text' name='x_zip' placeholder="Billing Zip" value='' required/><br>
+                        <fieldset id="shippingInfo">
+                            <legend>Shipping Information</legend>
+                            <input class="form-control" type='text' name='x_ship_to_first_name' placeholder="First Name" <c:if test="${param.pickupOrder == 'No'}">required</c:if>/><br>
+                            <input class="form-control" type='text' name='x_ship_to_last_name' placeholder="Last Name" <c:if test="${param.pickupOrder == 'No'}">required</c:if>/><br>
+                            <input class="form-control" type='text' name='x_ship_to_address' placeholder="Address" <c:if test="${param.pickupOrder == 'No'}">required</c:if>/><br>
+                            <input class="form-control" type='text' name='x_ship_to_city' placeholder="City" <c:if test="${param.pickupOrder == 'No'}">required</c:if>/><br>
+                            <input class="form-control" type='text' name='x_ship_to_state' placeholder="State" maxlength="2" <c:if test="${param.pickupOrder == 'No'}">required</c:if>/><br>
+                            <input class="form-control" type='text' name='x_ship_to_zip' placeholder="Zip" <c:if test="${param.pickupOrder == 'No'}">required</c:if>/><br>
                         </fieldset>
                     </div>
                 </div>
-                <div class="checkbox">
-                    <label class=""><input name="copyShipping" type="checkbox" class="checkbox" onclick="copyFields(this.form)">&nbsp;Copy Shipping Info</label>
-                </div>
+                <c:choose>
+                    <c:when test="${param.pickupOrder == 'No'}">
+                        <div class="checkbox">
+                            <label><input name="copyShipping" id="copyShipping" type="checkbox" class="checkbox" onclick="copyFields(this.form)">&nbsp;Copy Billing Info</label>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="checkbox">
+                            <h4 style="color: darkred"><span class="glyphicon glyphicon-hand-right">&nbsp;</span> Store pickup will be at <u>${param.pickupOrder}</u></h4>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
                 <br><br>
                 <div class="row">
                     <div class="col-lg-6" style="max-width: 500px;">
@@ -201,6 +200,25 @@
 
 
 <script>
+    function copyFields(form) {
+        if (form.copyShipping.checked == true) {
+             form.x_ship_to_first_name.value = form.x_first_name.value;
+             form.x_ship_to_last_name.value = form.x_last_name.value;
+             form.x_ship_to_address.value = form.x_address.value;
+             form.x_ship_to_city.value = form.x_city.value;
+             form.x_ship_to_state.value = form.x_state.value;
+             form.x_ship_to_zip.value = form.x_zip.value;
+        } else {
+            form.x_ship_to_first_name.value = '';
+            form.x_ship_to_last_name.value = '';
+            form.x_ship_to_address.value = '';
+            form.x_ship_to_city.value = '';
+            form.x_ship_to_state.value = '';
+            form.x_ship_to_zip.value = '';
+        }
+    }
+
+
     $('#cc_number').validateCreditCard(function(result) {
         /*
         alert('CC type: ' + result.card_type.name

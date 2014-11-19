@@ -16,7 +16,8 @@ public class LogoutServlet extends HttpServlet {
         HttpSession session = request.getSession(false); //obtain the session object if exists
         if (session != null && session.getAttribute("email") != null) {
             session.removeAttribute("email");
-            session.invalidate();
+            if (session.getAttribute("admin") != null) session.removeAttribute("admin");
+            if (session.getAttribute("employee") != null) session.removeAttribute("employee");
             request.setAttribute("alertType", "success");
             request.setAttribute("navAlert", "You have been logged out successfully.");
         }
@@ -27,7 +28,8 @@ public class LogoutServlet extends HttpServlet {
         HttpSession session = request.getSession(false); //obtain the session object if exists
         if (session != null && session.getAttribute("email") != null) {
             session.removeAttribute("email");
-            session.invalidate();
+            if (session.getAttribute("admin") != null) session.removeAttribute("admin");
+            if (session.getAttribute("employee") != null) session.removeAttribute("employee");
             request.setAttribute("alertType", "success");
             request.setAttribute("navAlert", "You have been logged out successfully.");
         }

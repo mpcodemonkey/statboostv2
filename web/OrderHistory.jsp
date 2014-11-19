@@ -78,21 +78,26 @@
                                         </div>
                                         <div class="modal-body">
                                             <div class="row">
-                                                <div class="col-lg-6 col-lg-push-3">
+                                                <div class="col-lg-9 col-lg-push-1">
                                                     <p>
                                                         <b>Order Status:</b> ${order.status}<br>
                                                         <b>Paid:</b> ${order.paid}<br>
                                                         <b>Date Submitted:</b> <fmt:formatDate type="both" dateStyle="medium" timeStyle="medium" value="${order.dateSubmitted}" /><br>
                                                         <b>Date Complete:</b> <fmt:formatDate type="both" dateStyle="medium" timeStyle="medium" value="${order.dateComplete}" /><br>
                                                         <b>Transaction ID:</b> ${order.transactionId}<br>
-                                                        <b>In Store Pickup:</b> ${order.inStorePickup}<br>
-                                                        <b>Tracking Number:</b> ${order.trackingNumber}<br><br>
+                                                        <c:if test="${order.inStorePickup == 'true'}">
+                                                            <b>In Store Pickup:</b>  2920 Arden Way #1, Sacramento CA, 95825<br>
+                                                            <b>Store Phone:</b> (916) 993-8461<br>
+                                                        </c:if>
 
+                                                        <c:if test="${order.inStorePickup != 'true'}">
+                                                        <b>Tracking Number:</b> ${order.trackingNumber}<br>
                                                         <b>Shipping Method:</b> ${order.shippingMethod}<br>
                                                         <b>Shipping Address:</b> ${order.shippingAddress1}<br>
                                                         <b>Shipping City:</b> ${order.shippingCity}<br>
                                                         <b>Shipping State:</b> ${order.shippingState}<br>
                                                         <b>Shipping Zip:</b> ${order.shippingZip}<br><br>
+                                                        </c:if>
                                                     </p>
                                                     <div align="left">
                                                         <button type="button" class="btn btn-sm btn-primary" onclick="window.location='?specificOrder=true&orderID=${order.uid}'">View Items Purchased</button>
