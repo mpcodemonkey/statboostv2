@@ -34,3 +34,19 @@
 <script>
     webshim.polyfill('forms');
 </script>
+
+<!-- let there be bugmuncher! -->
+<script type="text/javascript">
+    var bugmuncher_options = {
+        language: "en",
+        position: "right",
+        require_email: false,
+        api_key: "050d8080e61b4d1cb5677c15b38233371608785f"
+    };
+    (function(){
+        var node = document.createElement("script");
+        node.setAttribute("type", "text/javascript");
+        node.setAttribute("src", "//app.bugmuncher.com/js/bugMuncher.min.js");
+        document.getElementsByTagName("head")[0].appendChild(node);
+    })();
+</script>
