@@ -48,14 +48,25 @@
                             <tr>
                                 <td>${status.count}</td>
                                 <td>
-                                    <div class="col-md-3">
-                                        <img src="https://placehold.it/75X75" class="img-rounded">
-                                            ${cartItem.imageName}
-                                    </div>
                                     <div class="col-md-7">
-                                        ${cartItem.name}:
-                                        ${cartItem.description}
+                                        <b>${cartItem.name}: <i>${cartItem.description}</i></b>
                                     </div>
+                                    <div class="col-md-3">
+                                        <c:choose>
+                                            <c:when test="${fn:contains(cartItem.description, 'YGO')}">
+                                                <!-- PROD LINK
+                                                <img id="YGO-${status.count}" src="/static-images/inventory/yugioh/${cartItem.imageName}" style="max-height: 100px;" onclick="toggleSize(this.id);"> -->
+                                                <img id="YGO-${status.count}" src="https://teamjjacs.us/static-images/inventory/yugioh/${cartItem.imageName}" style="max-height: 100px;" onclick="toggleSize(this.id);">
+                                            </c:when>
+                                            <c:when test="${fn:contains(cartItem.description, 'MTG')}">
+                                                <img id="MTG-${status.count}" src="https://teamjjacs.us/static-images/inventory/mtg/${cartItem.imageName}" style="max-height: 100px;" onclick="toggleSize(this.id);">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <img id="GEN-${status.count}" src="https://teamjjacs.us/static-images/inventory/generic/${cartItem.imageName}" style="max-height: 100px;" onclick="toggleSize(this.id);">
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+
                                 </td>
                                 <td>${cartItem.condition}</td>
                                 <td class="col-sm-1"><input name="qty" type="text" class="form-control qty" placeholder="QTY" onchange="updateItemQty(${status.count}, this.value)" value="${cartItem.quantity}" maxlength="2" size="2"></td>
@@ -127,6 +138,21 @@
     function updateItemQty(index, quantity) {
         $.post("/cart", 'updateQuantity='+index+'&newQty='+quantity);
         setTimeout(function() {window.location='/cart';}, 500);
+    }
+
+    function toggleSize(id) {
+        if( $('#'+id).css('max-height') == '100px' )  {
+           // $('#'+id).css('max-height', '250px');
+            $('#'+id).animate({
+                "max-height": 250
+            }, 200 );
+        }
+        else {
+           // $('#'+id).css('max-height', '100px');
+            $('#'+id).animate({
+                "max-height": 100
+            }, 200 );
+        }
     }
 </script>
 
