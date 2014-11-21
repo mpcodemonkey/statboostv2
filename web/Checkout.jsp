@@ -39,7 +39,7 @@
 <%@ page import="com.statboost.controllers.ShoppingCartServlet" %>
 <%@ page import="com.statboost.util.ServletUtil" %>
 <%@ page import="net.authorize.sim.Fingerprint" %>
-<%@ page import="java.util.Random" %>
+
 <%
     String apiLoginId = "8qLJKr37W"; //Authorize API Login ID
     String transactionKey = "9Rw9M2K8UsgSu28x"; //Authorize Transaction Key
@@ -48,13 +48,11 @@
     String tax = ServletUtil.formatCurrency(((ShoppingCartServlet.ShoppingCartTotal)session.getAttribute("cartTotals")).getTaxTotal());
     String shipping = ServletUtil.formatCurrency(((ShoppingCartServlet.ShoppingCartTotal)session.getAttribute("cartTotals")).getShippingTotal());
 
-    Random rdm = new Random();
-    String num = ""+rdm.nextLong();
-    num = num.substring(0, 8);
+
     Fingerprint fingerprint = Fingerprint.createFingerprint(
             apiLoginId,
             transactionKey,
-            Long.parseLong(num),  // Random val?
+            1051628394,  // Random sequence (will be appended with random value)
             amount);
 
     long x_fp_sequence = fingerprint.getSequence();
@@ -63,7 +61,6 @@
 
 
     String clientIP = ServletUtil.getClientIpAddr(request);
-
 %>
 
 

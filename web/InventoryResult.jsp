@@ -110,9 +110,11 @@
 
 <script>
     function addToCart(inv_uid, condition, quantity) {
-        $.post('/cart', 'addItem=true&inv_uid='+inv_uid+'&condition='+condition+'&quantity='+quantity);
-        location.reload(true);
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("POST", '/cart?addItem=true&inv_uid='+inv_uid+'&condition='+condition+'&quantity='+quantity, true);
+        xmlhttp.send();
         $('#'+inv_uid).show();
+        setTimeout(function() {location.reload(true)}, 500);
     }
 </script>
 

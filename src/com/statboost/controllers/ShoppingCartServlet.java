@@ -32,7 +32,6 @@ public class ShoppingCartServlet extends HttpServlet {
         //get user's shopping cart if it exists
         ShoppingCartSessionObject shoppingCart = (ShoppingCartSessionObject) session.getAttribute("shoppingCart");
 
-
         if (shoppingCart != null && !shoppingCart.getCartItems().isEmpty()) {
 
             CartManager cartManager = new CartManager();
@@ -72,6 +71,11 @@ public class ShoppingCartServlet extends HttpServlet {
             session.setAttribute("cartTotals", cartTotal);
             request.setAttribute("cartTotal", cartTotal);
             session.setAttribute("itemsInCart", itemsInCart);
+        } else if (shoppingCart!=null && shoppingCart.getCartItems().isEmpty()) {
+            //cart is empty
+            session.removeAttribute("itemsInCart");
+            session.removeAttribute("cartTotals");
+            session.removeAttribute("orderTotal");
         }
 
 
@@ -85,67 +89,78 @@ public class ShoppingCartServlet extends HttpServlet {
         //get user's shopping cart if it exists
         ShoppingCartSessionObject shoppingCart = (ShoppingCartSessionObject) session.getAttribute("shoppingCart");
 
-            //handle add item to cart via ajax/rest call
-            if (request.getParameter("addItem") != null &&
-                    request.getParameter("inv_uid") != null &&
-                    request.getParameter("condition") != null &&
-                    request.getParameter("quantity") != null) {
 
-                //get parameter data
-                String inv_uid = request.getParameter("inv_uid");
-                String condition = request.getParameter("condition");
-                String quantity = request.getParameter("quantity");
-                int qty = 1;
-                int uid = -1;
-                try {
-                    qty = Integer.parseInt(quantity);
-                    uid = Integer.parseInt(inv_uid);
-                } catch (NumberFormatException e) { }
+        //handle add item to cart via ajax get request
+        if (request.getParameter("addItem") != null &&
+                request.getParameter("inv_uid") != null &&
+                request.getParameter("condition") != null &&
+                request.getParameter("quantity") != null) {
+
+            //get parameter data
+            String inv_uid = request.getParameter("inv_uid");
+            String condition = request.getParameter("condition");
+            String quantity = request.getParameter("quantity");
+            int qty = 1;
+            int uid = -1;
+            try {
+                qty = Integer.parseInt(quantity);
+                uid = Integer.parseInt(inv_uid);
+            } catch (NumberFormatException e) { }
 
 
-                if (uid > -1) {
-                    //if cart doesn't exist, create a new one
-                    if (shoppingCart == null) {
-                        shoppingCart = new ShoppingCartSessionObject();
-                    }
-                    //add the item to the cart
-                    shoppingCart.addCartItem(uid, qty, Cost.getConditionEnum(condition));
-                    session.setAttribute("shoppingCart", shoppingCart);
+            if (uid > -1) {
+                //if cart doesn't exist, create a new one
+                if (shoppingCart == null) {
+                    shoppingCart = new ShoppingCartSessionObject();
                 }
+                //add the item to the cart
+                shoppingCart.addCartItem(uid, qty, Cost.getConditionEnum(condition));
+                session.setAttribute("shoppingCart", shoppingCart);
             }
+            //response.sendRedirect("/cart");
+           // return;
+        }
 
-            //handle item removal via ajax/rest call
-            if (request.getParameter("removeItem") != null && shoppingCart != null) {
-                int itemIndex;
-                try {
-                    itemIndex = Integer.parseInt(request.getParameter("removeItem")) - 1;
-                } catch (NumberFormatException e) {
-                    itemIndex = -1;
-                }
-                if (itemIndex > -1 && itemIndex < shoppingCart.getCartItems().size()) {
+        //handle item removal via ajax/rest call
+        if (request.getParameter("removeItem") != null && shoppingCart != null) {
+            int itemIndex;
+            try {
+                itemIndex = Integer.parseInt(request.getParameter("removeItem")) - 1;
+            } catch (NumberFormatException e) {
+                itemIndex = -1;
+            }
+            if (itemIndex > -1 && itemIndex < shoppingCart.getCartItems().size()) {
+                shoppingCart.removeCartItem(itemIndex);
+            }
+        }
+
+        //handle item quantity update via ajax/rest call
+        if (request.getParameter("updateQuantity") != null && request.getParameter("newQty") != null && shoppingCart != null) {
+            int itemIndex;
+            int newQty;
+            try {
+                itemIndex = Integer.parseInt(request.getParameter("updateQuantity")) - 1;
+                newQty = Integer.parseInt(request.getParameter("newQty"));
+            } catch (NumberFormatException e) {
+                itemIndex = -1;
+                newQty = -1;
+            }
+            if (newQty > -1 && itemIndex > -1 && itemIndex < shoppingCart.getCartItems().size()) {
+                if (newQty == 0) {
                     shoppingCart.removeCartItem(itemIndex);
+                } else {
+                    shoppingCart.updateCartItem(itemIndex, newQty);
                 }
             }
+        }
 
-            //handle item quantity update via ajax/rest call
-            if (request.getParameter("updateQuantity") != null && request.getParameter("newQty") != null && shoppingCart != null) {
-                int itemIndex;
-                int newQty;
-                try {
-                    itemIndex = Integer.parseInt(request.getParameter("updateQuantity")) - 1;
-                    newQty = Integer.parseInt(request.getParameter("newQty"));
-                } catch (NumberFormatException e) {
-                    itemIndex = -1;
-                    newQty = -1;
-                }
-                if (newQty > -1 && itemIndex > -1 && itemIndex < shoppingCart.getCartItems().size()) {
-                    if (newQty == 0) {
-                        shoppingCart.removeCartItem(itemIndex);
-                    } else {
-                        shoppingCart.updateCartItem(itemIndex, newQty);
-                    }
-                }
-            }
+/*
+        if (shoppingCart.getCartItems().size() <= 0) {
+            se
+        }*/
+        if (shoppingCart != null) {
+            session.setAttribute("shoppingCart", shoppingCart);
+        }
 
     }
 
