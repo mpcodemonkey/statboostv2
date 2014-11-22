@@ -21,21 +21,19 @@
 <link href="include/stylesheets/owl.carousel.css" rel="stylesheet">
 <link href="include/stylesheets/owl.theme.css" rel="stylesheet">
 
-<div id="title" class="center-block" name="title">
-    <div class="container row col-sm-12 center-block">
-        <div class="span12">
-            <div id="owl-demo" class="owl-carousel">
-                <div class="item"><img src="include/images/banner_temp_1.jpg" alt="The Last of us"></div>
-                <div class="item"><img src="include/images/banner_temp_2.jpg" alt="GTA V"></div>
-                <div class="item"><img src="include/images/banner_temp_3.jpg" alt="Mirror Edge"></div>
-            </div>
+<div class="container row col-sm-12 center-block" style="width:80%; margin:0 auto; float:none;">
+    <div class="span12">
+        <div id="owl-demo" class="owl-carousel">
+            <div class="item"><img src="include/images/ygo_1.jpg" alt="The Last of us"></div>
+            <div class="item"><img src="include/images/ygo_2.jpg" alt="GTA V"></div>
+            <div class="item"><img src="include/images/ygo_3.jpg" alt="Mirror Edge"></div>
         </div>
     </div>
 </div>
 
 <div class="row container col-sm-12 center-block">
     <div class="col-sm-3 hidden-xs" id="leftSide">
-        <img style="width: 80%; max-width: 240px; height:auto;" src="include/images/SarkhanSide.PNG">
+        <img style="width: 80%; max-width: 240px; height:auto;" src="include/images/ygo_side_L.jpg">
     </div>
 
     <div class="container col-sm-6">
@@ -218,13 +216,13 @@
     </div>
 
     <div class="col-sm-3 hidden-xs" id="rightSide" name="rightSide">
-        <img style="width: 80%; max-width: 240px; height:auto; float:right;" src="include/images/SorinSide.PNG">
+        <img style="width: 80%; max-width: 240px; height:auto; float:right;" src="include/images/ygo_side_R.jpg">
     </div>
 </div>
 
 <div id="footer">
     <div class="container">
-        <div class="row">
+        <div class="row col-sm-12">
             <div class="span12">
                 <h5>Team JJACS Prototype
                     <a href="mailto:teamjjacs@gmail.com?subject=Hey Owl!">email</a>
