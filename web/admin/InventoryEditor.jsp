@@ -213,7 +213,31 @@
         </div>
         <div class="col-sm-6 container-fluid">
             <div>
-                <b>Number in Stock:</b>
+                <div><b>Number in Stock:</b></div>
+            </div>
+            <div>
+                <div><b>New</b></div>
+                <div><input type="text" name="<%=PARAM_NUM_NEW_IN_STOCK%>" value="<%=costHash.get(ItemCondition.NEW) != null ? costHash.get(ItemCondition.NEW).getItemQuantity(): 0%>"></div>
+            </div>
+            <div>
+                <div><b>Near Mint</b></div>
+                <div><input type="text" name="<%=PARAM_NUM_NEAR_MINT_IN_STOCK%>" value="<%=costHash.get(ItemCondition.NEAR_MINT) != null ? costHash.get(ItemCondition.NEAR_MINT).getItemQuantity(): 0%>"></div>
+            </div>
+            <div>
+                <div><b>Lightly Played</b></div>
+                <div><input type="text" name="<%=PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK%>" value="<%=costHash.get(ItemCondition.LIGHTLY_PLAYED) != null ? costHash.get(ItemCondition.LIGHTLY_PLAYED).getItemQuantity(): 0%>"></div>
+            </div>
+            <div>
+                <div><b>Moderately Played</b></div>
+                <div><input type="text" name="<%=PARAM_NUM_MODERATELY_PLAYED_IN_STOCK%>" value="<%=costHash.get(ItemCondition.MODERATELY_PLAYED) != null ? costHash.get(ItemCondition.MODERATELY_PLAYED).getItemQuantity(): 0%>"></div>
+            </div>
+            <div>
+                <div><b>Heavily Played</b></div>
+                <div><input type="text" name="<%=PARAM_NUM_HEAVILY_PLAYED_IN_STOCK%>" value="<%=costHash.get(ItemCondition.HEAVILY_PLAYED) != null ? costHash.get(ItemCondition.HEAVILY_PLAYED).getItemQuantity(): 0%>"></div>
+            </div>
+            <div>
+                <div><b>Damaged</b></div>
+                <div><input type="text" name="<%=PARAM_NUM_DAMAGED_IN_STOCK%>" value="<%=costHash.get(ItemCondition.DAMAGED) != null ? costHash.get(ItemCondition.DAMAGED).getItemQuantity(): 0%>"></div>
             </div>
         </div>
 
@@ -227,30 +251,7 @@
             <tr>
                 <td colspan="2">Number in Stock</td>
             </tr>
-            <tr>
-                <td>New</td>
-                <td><input type="text" name="<%=PARAM_NUM_NEW_IN_STOCK%>" value="<%=costHash.get(ItemCondition.NEW) != null ? costHash.get(ItemCondition.NEW).getItemQuantity(): 0%>"></td>
-            </tr>
-            <tr>
-                <td>Near Mint</td>
-                <td><input type="text" name="<%=PARAM_NUM_NEAR_MINT_IN_STOCK%>" value="<%=costHash.get(ItemCondition.NEAR_MINT) != null ? costHash.get(ItemCondition.NEAR_MINT).getItemQuantity(): 0%>"></td>
-            </tr>
-            <tr>
-                <td>Lightly Played</td>
-                <td><input type="text" name="<%=PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK%>" value="<%=costHash.get(ItemCondition.LIGHTLY_PLAYED) != null ? costHash.get(ItemCondition.LIGHTLY_PLAYED).getItemQuantity(): 0%>"></td>
-            </tr>
-            <tr>
-                <td>Moderately Played</td>
-                <td><input type="text" name="<%=PARAM_NUM_MODERATELY_PLAYED_IN_STOCK%>" value="<%=costHash.get(ItemCondition.MODERATELY_PLAYED) != null ? costHash.get(ItemCondition.MODERATELY_PLAYED).getItemQuantity(): 0%>"></td>
-            </tr>
-            <tr>
-                <td>Heavily Played</td>
-                <td><input type="text" name="<%=PARAM_NUM_HEAVILY_PLAYED_IN_STOCK%>" value="<%=costHash.get(ItemCondition.HEAVILY_PLAYED) != null ? costHash.get(ItemCondition.HEAVILY_PLAYED).getItemQuantity(): 0%>"></td>
-            </tr>
-            <tr>
-                <td>Damaged</td>
-                <td><input type="text" name="<%=PARAM_NUM_DAMAGED_IN_STOCK%>" value="<%=costHash.get(ItemCondition.DAMAGED) != null ? costHash.get(ItemCondition.DAMAGED).getItemQuantity(): 0%>"></td>
-            </tr>
+
             <%--todo: give them way to browse images--%>
             <tr>
                 <td>Image Url</td>
