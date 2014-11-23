@@ -49,7 +49,7 @@
         <mapping resource="MagicCard.hbm.xml"/>
         <mapping resource="MagicSet.hbm.xml"/>
         <mapping resource="Webpage.hbm.xml"/>
-        <mapping resource="Announcement.hbm.xml"/>
+        <mapping resource="Image.hbm.xml"/>
         <mapping resource="Event.hbm.xml"/>
         <mapping resource="Inventory.hbm.xml"/>
         <mapping resource="InventoryItem.hbm.xml"/>

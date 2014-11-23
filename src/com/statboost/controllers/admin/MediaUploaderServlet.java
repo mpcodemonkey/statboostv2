@@ -1,11 +1,15 @@
 package com.statboost.controllers.admin;
 
+import com.statboost.models.inventory.Image;
+import com.statboost.util.HibernateUtil;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -100,14 +104,21 @@ public class MediaUploaderServlet extends HttpServlet {
             }
 
             //used for local
-           //String uploadFilePath = "c:/Users/Jessica/IdeaProjects/statbooster2/web/images" + path + filePart;
+           String uploadFilePath = "c:/Users/Jessica/IdeaProjects/statbooster2/web/images" + path + filePart;
 
            //used for prod on digitalocean
-           String uploadFilePath = "/home/images/inventory/other" + path + filePart;
+           //String uploadFilePath = "/home/images/inventory/other" + path + filePart;
             File uploadFile = new File(uploadFilePath);
+            Image image = new Image();
+            image.setPath(uploadFilePath);
 
             try  {
                 uploadFileItem.write(uploadFile);
+                SessionFactory sessionFactory = HibernateUtil.getDatabaseSessionFactory();
+                Session session = sessionFactory.openSession();
+                session.beginTransaction();
+                session.save(image);
+                session.getTransaction().commit();
                 message = "The file was uploaded successfully to " + uploadFilePath;
             }  catch(Exception e)  {
                 logger.error("Could not write the file.", e);

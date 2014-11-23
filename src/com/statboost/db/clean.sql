@@ -124,20 +124,22 @@ CREATE TABLE `stt_event` (
 CREATE TABLE `stt_inventory` (
   `inv_uid` int(11) NOT NULL AUTO_INCREMENT,
   `inv_name` varchar(200) DEFAULT NULL,
-  `inv_image` varchar(300) DEFAULT NULL,
   `inv_mcr_uid` int(11) DEFAULT NULL,
   `inv_ycr_uid` int(11) DEFAULT NULL,
   `inv_evn_uid` int(11) DEFAULT NULL,
   `inv_pre_order` tinyint(1) DEFAULT NULL,
   `inv_description` text,
+  `inv_img_uid` int(11) DEFAULT NULL,
   PRIMARY KEY (`inv_uid`),
   KEY `inv_mcr_uid_fk` (`inv_mcr_uid`),
   KEY `inv_ycr_uid_fk` (`inv_ycr_uid`),
   KEY `inv_evn_uid_fk` (`inv_evn_uid`),
+  KEY `fk_inv_img_uid` (`inv_img_uid`),
+  CONSTRAINT `fk_inv_img_uid` FOREIGN KEY (`inv_img_uid`) REFERENCES `stt_image` (`img_uid`),
   CONSTRAINT `inv_evn_uid_fk` FOREIGN KEY (`inv_evn_uid`) REFERENCES `stt_event` (`evn_uid`),
   CONSTRAINT `inv_mcr_uid_fk` FOREIGN KEY (`inv_mcr_uid`) REFERENCES `stt_magic_card` (`mcr_uid`),
   CONSTRAINT `inv_ycr_uid_fk` FOREIGN KEY (`inv_ycr_uid`) REFERENCES `stt_yugioh_card` (`ycr_uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=32423 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `stt_inventory_item` (
   `iit_uid` int(11) NOT NULL AUTO_INCREMENT,
@@ -172,13 +174,7 @@ CREATE TABLE `stt_stock_notification` (
   CONSTRAINT `snt_inv_uid_fk` FOREIGN KEY (`snt_inv_uid`) REFERENCES `stt_inventory` (`inv_uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `stt_announcement` (
-  `ann_uid` int(11) NOT NULL AUTO_INCREMENT,
-  `ann_created` datetime DEFAULT NULL,
-  `ann_title` varchar(150) DEFAULT NULL,
-  `ann_content` text,
-  PRIMARY KEY (`ann_uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE stt_cost (
   cst_uid int(11) NOT NULL AUTO_INCREMENT,
@@ -198,4 +194,43 @@ CREATE TABLE `stt_category` (
   PRIMARY KEY (`cat_uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `stt_image` (
+  `img_uid` int(11) NOT NULL AUTO_INCREMENT,
+  `img_path` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`img_uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE `stt_magic_card` (
+  `mcr_card_name` varchar(150) DEFAULT NULL,
+  `mcr_names` varchar(150) DEFAULT NULL,
+  `mcr_set_id` char(4) DEFAULT NULL,
+  `mcr_mana_cost` varchar(50) DEFAULT NULL,
+  `mcr_cmc` double DEFAULT NULL,
+  `mcr_colors` varchar(100) DEFAULT NULL,
+  `mcr_type` varchar(500) DEFAULT NULL,
+  `mcr_super_types` varchar(100) DEFAULT NULL,
+  `mcr_sub_types` varchar(100) DEFAULT NULL,
+  `mcr_types` varchar(100) DEFAULT NULL,
+  `mcr_rarity` varchar(50) DEFAULT NULL,
+  `mcr_text` varchar(1000) DEFAULT NULL,
+  `mcr_flavor` varchar(500) DEFAULT NULL,
+  `mcr_artist` varchar(50) DEFAULT NULL,
+  `mcr_number` varchar(5) DEFAULT NULL,
+  `mcr_power` varchar(5) DEFAULT NULL,
+  `mcr_toughness` varchar(5) DEFAULT NULL,
+  `mcr_loyalty` int(11) DEFAULT NULL,
+  `mcr_layout` varchar(50) DEFAULT NULL,
+  `mcr_multiverse_id` int(11) DEFAULT NULL,
+  `mcr_variations` varchar(100) DEFAULT NULL,
+  `mcr_watermark` varchar(50) DEFAULT NULL,
+  `mcr_border` varchar(15) DEFAULT NULL,
+  `mcr_hand` int(11) DEFAULT NULL,
+  `mcr_life` int(11) DEFAULT NULL,
+  `mcr_timeshifted` tinyint(1) DEFAULT '0',
+  `mcr_reserved` tinyint(1) DEFAULT '0',
+  `mcr_release_date` varchar(50) DEFAULT NULL,
+  `mcr_uid` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`mcr_uid`),
+  KEY `stt_magic_card` (`mcr_set_id`),
+  CONSTRAINT `stt_magic_card` FOREIGN KEY (`mcr_set_id`) REFERENCES `stt_magic_set` (`mst_uid`)
+) ENGINE=InnoDB AUTO_INCREMENT=25956 DEFAULT CHARSET=utf8;

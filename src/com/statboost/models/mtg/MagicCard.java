@@ -41,7 +41,6 @@ public class MagicCard implements Serializable {
     private String mcrLayout;
     private Integer mcrMultiverseId;
     private String mcrVariations;
-    private String mcrImageName;
     private String mcrWatermark;
     private String mcrBorder;
     private Integer mcrHand;
@@ -260,14 +259,6 @@ public class MagicCard implements Serializable {
         this.mcrVariations = mcrVariations;
     }
 
-    public String getMcrImageName() {
-        return mcrImageName;
-    }
-
-    public void setMcrImageName(String mcrImageName) {
-        this.mcrImageName = mcrImageName;
-    }
-
     public String getMcrWatermark() {
         return mcrWatermark;
     }
@@ -355,7 +346,6 @@ public class MagicCard implements Serializable {
         if (mcrColors != null ? !mcrColors.equals(that.mcrColors) : that.mcrColors != null) return false;
         if (mcrFlavor != null ? !mcrFlavor.equals(that.mcrFlavor) : that.mcrFlavor != null) return false;
         if (mcrHand != null ? !mcrHand.equals(that.mcrHand) : that.mcrHand != null) return false;
-        if (mcrImageName != null ? !mcrImageName.equals(that.mcrImageName) : that.mcrImageName != null) return false;
         if (mcrLayout != null ? !mcrLayout.equals(that.mcrLayout) : that.mcrLayout != null) return false;
         if (mcrLife != null ? !mcrLife.equals(that.mcrLife) : that.mcrLife != null) return false;
         if (mcrLoyalty != null ? !mcrLoyalty.equals(that.mcrLoyalty) : that.mcrLoyalty != null) return false;
@@ -404,7 +394,6 @@ public class MagicCard implements Serializable {
         result = 31 * result + (mcrLayout != null ? mcrLayout.hashCode() : 0);
         result = 31 * result + (mcrMultiverseId != null ? mcrMultiverseId.hashCode() : 0);
         result = 31 * result + (mcrVariations != null ? mcrVariations.hashCode() : 0);
-        result = 31 * result + (mcrImageName != null ? mcrImageName.hashCode() : 0);
         result = 31 * result + (mcrWatermark != null ? mcrWatermark.hashCode() : 0);
         result = 31 * result + (mcrBorder != null ? mcrBorder.hashCode() : 0);
         result = 31 * result + (mcrHand != null ? mcrHand.hashCode() : 0);

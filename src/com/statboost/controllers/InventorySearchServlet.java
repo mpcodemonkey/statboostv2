@@ -194,7 +194,8 @@ public class InventorySearchServlet extends HttpServlet {
             ir.price = co.getItemPrice();
             ir.name = inv.getName();
             ir.description = inv.getDescription();
-            ir.imageName = inv.getImage();
+            //todo: Jon this will need fixing based on the new data structure
+            //ir.imageName = inv.getImageUid();
             ir.condition = Cost.getConditionString(co.getItemCondition());
 
             inventoryPage.add(ir);
