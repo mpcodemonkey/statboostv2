@@ -59,7 +59,8 @@ public class DBModServlet extends HttpServlet {
                 for (int j = 0; j < resultSet.size(); j++) {
                     Inventory inventory = new Inventory();
                     inventory.setName(resultSet.get(j).getMcrCardName());
-                    inventory.setImage(resultSet.get(j).getMcrImageName());
+                    //todo: will need to be fixed
+                    //inventory.setImage(resultSet.get(j).getMcrImageName());
                     inventory.setDescription("MTG - " + resultSet.get(j).getMcrSetId());
                     //generate random card costs
 
@@ -107,7 +108,8 @@ public class DBModServlet extends HttpServlet {
                     for (int j = 0; j < ySet.size(); j++) {
                         Inventory inventory = new Inventory();
                         inventory.setName(ySet.get(j).getYcrName());
-                        inventory.setImage(ySet.get(j).getYcrImage());
+                        //todo: will need to be fixed
+                        //inventory.setImage(ySet.get(j).getYcrImage());
                         inventory.setDescription("YGO");
                         //generate random card costs
 

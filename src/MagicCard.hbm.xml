@@ -34,7 +34,6 @@
         <property name="mcrLayout" column="mcr_layout"/>
         <property name="mcrMultiverseId" column="mcr_multiverse_id"/>
         <property name="mcrVariations" column="mcr_variations"/>
-        <property name="mcrImageName" column="mcr_image_name"/>
         <property name="mcrWatermark" column="mcr_watermark"/>
         <property name="mcrBorder" column="mcr_border"/>
         <property name="mcrHand" column="mcr_hand"/>

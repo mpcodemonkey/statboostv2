@@ -9,6 +9,7 @@ import com.statboost.models.inventory.Order;
 import com.statboost.models.session.ShoppingCartSessionObject;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.util.ArrayList;
@@ -114,7 +115,8 @@ public class OrderManager {
                 inventoryItem.setPrice(cost.getItemPrice());
                 inventoryItem.setCondition(Cost.getConditionString(cost.getItemCondition()));
                 inventoryItem.setQuantity(itemObject.getQuantity());
-                inventoryItem.setImage(inv.getImage());
+                //todo: have a discussion about how we want to deal with this
+                //inventoryItem.setImage(inv.getImageUid());
                 inventoryItem.setEvent(inv.getEvent());
                 inventoryItem.setMagicCard(inv.getMagicCard());
                 inventoryItem.setYugiohCard(inv.getYugiohCard());

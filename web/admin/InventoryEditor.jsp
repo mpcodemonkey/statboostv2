@@ -390,11 +390,6 @@
                                 <td>Variations</td>
                                 <td><input type="text" name="<%=PARAM_MAGIC_VARIATIONS%>" value="<%=ServletUtil.hideNulls(magicCard.getMcrVariations())%>"></td>
                             </tr>
-                            <%--todo: do it this way for now but will later be changed--%>
-                            <tr>
-                                <td>Image Name</td>
-                                <td><input type="text" name="<%=PARAM_MAGIC_IMAGE_NAME%>" value="<%=ServletUtil.hideNulls(magicCard.getMcrImageName())%>"></td>
-                            </tr>
                             <tr>
                                 <td>Watermark</td>
                                 <td><input type="text" name="<%=PARAM_MAGIC_WATERMARK%>" value="<%=ServletUtil.hideNulls(magicCard.getMcrWatermark())%>"></td>

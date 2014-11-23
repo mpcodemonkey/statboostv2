@@ -9,7 +9,7 @@ import com.statboost.models.ygo.YugiohCard;
 public class Inventory {
     private int uid;
     private String name;
-    private String image;
+    private int imageUid;
     private MagicCard magicCard;
     private YugiohCard yugiohCard;
     private Event event;
@@ -33,12 +33,12 @@ public class Inventory {
         this.name = invName;
     }
 
-    public String getImage() {
-        return image;
+    public int getImageUid() {
+        return imageUid;
     }
 
-    public void setImage(String invImage) {
-        this.image = invImage;
+    public void setImageUid(int imageUid) {
+        this.imageUid = imageUid;
     }
 
     public String getDescription() {

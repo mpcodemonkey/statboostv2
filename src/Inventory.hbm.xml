@@ -9,7 +9,7 @@
             <generator class="identity"/>
         </id>
         <property name="name" column="inv_name"/>
-        <property name="image" column="inv_image"/>
+        <property name="imageUid" column="inv_img_uid"/>
         <property name="preOrder" column="inv_pre_order"/>
         <property name="description" column="inv_description"/>
         <many-to-one name="magicCard" class="com.statboost.models.mtg.MagicCard"

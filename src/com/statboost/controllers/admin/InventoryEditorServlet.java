@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -94,7 +95,6 @@ public class InventoryEditorServlet extends HttpServlet {
     public static final String PARAM_MAGIC_LAYOUT = "magicLayout";
     public static final String PARAM_MAGIC_MULTIVERSE_ID = "multiverseID";
     public static final String PARAM_MAGIC_VARIATIONS = "variations";
-    public static final String PARAM_MAGIC_IMAGE_NAME = "magicImageName";
     public static final String PARAM_MAGIC_WATERMARK = "magicWatermark";
     public static final String PARAM_MAGIC_BORDER = "magicBorder";
     public static final String PARAM_MAGIC_HAND = "magicHand";
@@ -231,8 +231,18 @@ public class InventoryEditorServlet extends HttpServlet {
         //fields not required
         inventory.setDescription(request.getParameter(PARAM_INVENTORY_DESCRIPTION));
         inventory.setEvent(event);
-        //todo change how image works
-        inventory.setImage(request.getParameter(PARAM_INVENTORY_IMAGE));
+        ResultSet image = ServletUtil.getResultSetFromSql("select * from stt_image where img_path = '" + request.getParameter(PARAM_INVENTORY_IMAGE) + "'");
+        try {
+            if(image != null && image.next())  {
+                inventory.setImageUid(image.getInt("img_uid"));
+            } else  {
+                errors.add("You must select a valid image for the inventory item.");
+            }
+        } catch (SQLException e) {
+            logger.error("Could not get the image for the inventory item", e);
+            errors.add("You must select a valid image for the inventory item.");
+        }
+
         inventory.setMagicCard(magicCard);
         inventory.setYugiohCard(yugiohCard);
 
@@ -564,14 +574,6 @@ public class InventoryEditorServlet extends HttpServlet {
             magicCard.setMcrColors(request.getParameter(PARAM_MAGIC_COLORS));
             if(request.getParameter(PARAM_MAGIC_COLORS) == null || request.getParameter(PARAM_MAGIC_COLORS).equals(""))  {
                 errors.add("You must enter the color of the Magic Card.");
-            }
-
-            //todo: discuss if we can move these images to the image field in inventory
-            magicCard.setMcrImageName(request.getParameter(PARAM_MAGIC_IMAGE_NAME));
-            if(request.getParameter(PARAM_MAGIC_IMAGE_NAME) == null ||
-                    request.getParameter(PARAM_MAGIC_IMAGE_NAME).equals("") ||
-                    request.getParameter(PARAM_MAGIC_IMAGE_NAME).length() > 150)  {
-                errors.add("You must select an image for the magic card.");
             }
 
             magicCard.setMcrLayout(request.getParameter(PARAM_MAGIC_LAYOUT));
