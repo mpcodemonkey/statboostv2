@@ -34,8 +34,10 @@
                     <br>
             </span><span class="apple-converted-space"><b><span><o:p></o:p></span></b></span></p>
             <p>&nbsp;</p>
-
+            <br>
             <a class="btn btn-primary btn-lg" href="https://www.google.com/maps/dir/''/mages+realm/data=!4m5!4m4!1m0!1m2!1m1!1s0x809adbb58d2466b5:0x77a7f6e76074745a">Get Directions</a>
+            <p>&nbsp;</p>
+            <a href="mailto:themagesrealm@gmail.com">themagesrealm@gmail.com</a>
 
         </div>
     </div>
