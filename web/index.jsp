@@ -65,32 +65,34 @@
             </div>
         </div>
         <div class="col-xs-12 col-sm-12">
-            <div class="well well-lg">
-                <iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2FExpLevelUp%3Frf%3D211284022311583&amp;width=750&amp;height=395&amp;colorscheme=light&amp;show_faces=false&amp;header=false&amp;stream=true&amp;show_border=false" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100%; min-height:375px; " allowTransparency="true"></iframe>
+            <div class="well well-lg col-sm-6">
+                <iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2FExpLevelUp%3Frf%3D211284022311583&amp;width=750&amp;height=600&amp;colorscheme=light&amp;show_faces=false&amp;header=false&amp;stream=true&amp;show_border=false" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100%; min-height:600px; " allowTransparency="true"></iframe>
             </div><!--/span-->
+        <div class="well well-lg col-sm-6">
+            <a class="twitter-timeline" href="https://twitter.com/EXPLevelUp" data-widget-id="536658574634524673">Tweets by @EXPLevelUp</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
         </div>
-
-        <!--<div class="row row-offcanvas row-offcanvas-right">
-            <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
-                <div class="list-group">
-                    <a href="/" class="list-group-item active">Home</a>
-                    <c:if test="${sessionScope.admin != null}">
-                        <a href="/admin/adminCP" class="list-group-item">Admin CP</a>
-                    </c:if>
-                    <a href="/magicSearch" class="list-group-item">Magic Search</a>
-                    <a href="/ygoSearch" class="list-group-item">Yu-Gi-Oh Search</a>
-                    <c:if test="${sessionScope.email == null}">
-                        <a href="/login" class="list-group-item">Login</a>
-                    </c:if>
-                    <c:if test="${sessionScope.email == null}">
-                        <a href="/register" class="list-group-item">Register</a>
-                    </c:if>
-                    <c:if test="${sessionScope.email != null}">
-                        <a href="/logout" class="list-group-item">Logout</a>
-                    </c:if>
+            <!--<div class="row row-offcanvas row-offcanvas-right">
+                <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+                    <div class="list-group">
+                        <a href="/" class="list-group-item active">Home</a>
+                        <c:if test="${sessionScope.admin != null}">
+                            <a href="/admin/adminCP" class="list-group-item">Admin CP</a>
+                        </c:if>
+                        <a href="/magicSearch" class="list-group-item">Magic Search</a>
+                        <a href="/ygoSearch" class="list-group-item">Yu-Gi-Oh Search</a>
+                        <c:if test="${sessionScope.email == null}">
+                            <a href="/login" class="list-group-item">Login</a>
+                        </c:if>
+                        <c:if test="${sessionScope.email == null}">
+                            <a href="/register" class="list-group-item">Register</a>
+                        </c:if>
+                        <c:if test="${sessionScope.email != null}">
+                            <a href="/logout" class="list-group-item">Logout</a>
+                        </c:if>
+                    </div>
                 </div>
-            </div>
-        </div><!--/row-->
+            </div><!--/row-->
 
 
 
@@ -185,6 +187,10 @@
         </div>
     </div>
 </div>
+
+
+
+
 
 <!-- carousel styling -->
 <style>
