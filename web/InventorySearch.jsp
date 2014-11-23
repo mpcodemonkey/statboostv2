@@ -65,7 +65,7 @@
                                 <div id="slider"></div>
                             </div>
                             <div class="col-sm-2">
-                                <input type="text" name="maxPrice" id="maxPrice" class="sliderValue col-sm-12" data-index="1" value="100.00" />
+                                <input type="text" name="maxPrice" id="maxPrice" class="sliderValue col-sm-12" data-index="1" value="1000.00" />
                             </div>
                         </div>
                     </div>
@@ -124,7 +124,7 @@
     $(document).ready(function() {
         $("#slider").slider({
             min: 0.01,
-            max: 100.00,
+            max: 1000.00,
             range: true,
             step: .01,
             values: [0.01, 99.00],

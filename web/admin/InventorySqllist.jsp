@@ -3,12 +3,11 @@
 <%@ page import="org.apache.log4j.Logger" %>
 <%@ page import="com.statboost.controllers.admin.InventorySqllistServlet" %>
 <%@ page import="com.statboost.controllers.admin.InventoryEditorServlet" %>
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<jsp:include page="/include/Header.jsp"/>
+<jsp:include page="/include/Navbar.jsp"/>
+
 <head>
-    <title>Inventory</title>
     <%!
         static Logger logger = Logger.getLogger(InventorySqllistServlet.class);
     %>
@@ -17,31 +16,42 @@
     %>
     <jsp:include page="/include/HeadTags.jsp"/>
 </head>
-<body>
-<table>
-    <%--todo: pagination--%>
-    <tr>
-        <td><a href="<%=InventoryEditorServlet.SRV_MAP%>">New Inventory</a></td>
-    </tr>
-    <tr>
-        <td>Name</td>
-        <td>Subject</td>
-    </tr>
-    <%
-        if(inventory != null)  {
-            try  {
-                while(inventory.next())  {
-    %>
-    <tr>
-        <td><a href="<%=InventoryEditorServlet.getEditUrl(inventory.getInt("inv_uid"))%>"><%=inventory.getString("inv_name")%></a></td>
-    </tr>
-    <%
-                }
-            } catch (Exception e)  {
-                logger.error("Could not loop through the emails.", e);
-            }
-        }
-    %>
-</table>
-</body>
-</html>
+    <div class="container-fluid">
+        <div class="well well-sm col-sm-12">
+            <div class="col-sm-12">
+                <h3 class="col-sm-12">Inventory Listing</h3>
+                <hr class="col-sm-10" />
+                <div class="col-sm-2"><a href="<%=InventoryEditorServlet.SRV_MAP%>"><input type="button" class="btn btn-primary" value="Add New Inventory" /></a></div>
+            </div>
+            <hr class="col-sm-10" />
+            <div class="col-sm-12">
+                <table class="table">
+                    <tbody>
+                        <%--todo: pagination--%>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                        </tr>
+                        <%
+                            if(inventory != null)  {
+                                try  {
+                                    while(inventory.next())  {
+                        %>
+                        <tr>
+                            <td><a href="<%=InventoryEditorServlet.getEditUrl(inventory.getInt("inv_uid"))%>"><%=inventory.getString("inv_name")%></a></td>
+                            <td><%=inventory.getString("inv_description")%></td>
+                        </tr>
+                        <%
+                                    }
+                                } catch (Exception e)  {
+                                    logger.error("Could not loop through the emails.", e);
+                                }
+                            }
+                        %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+<jsp:include page="/include/Footer.jsp"/>

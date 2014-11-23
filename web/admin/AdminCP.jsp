@@ -46,9 +46,9 @@
                 </div>
                 <div class="panel-body">
                     <div class="btn-toolbar">
-                        <div class="btn-group"><button class="btn btn-primary">Add New Inventory</button></div>
-                        <div class="btn-group"><button class="btn btn-primary">Edit Existing Inventory</button></div>
-                        <div class="btn-group"><button class="btn btn-primary">Remove Inventory</button></div>
+                        <div class="btn-group"><a href="/admin/inventorysqllist"><button class="btn btn-primary">Browse Inventory</button></a></div>
+                        <div class="btn-group"><a href="/admin/inventoryeditor"><button class="btn btn-primary">Add New Inventory</button></a></div>
+                        <div class="btn-group"><button class="btn btn-danger">Remove Inventory</button></div>
                     </div>
                 </div>
             </div>
