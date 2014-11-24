@@ -1,5 +1,7 @@
 package com.statboost.models.inventory;
 
+import java.util.Set;
+
 /**
  * Created by Jon on 10/30/2014.
  */
@@ -10,6 +12,15 @@ public class Category {
     //also used for determining if they can edit the record.
     private Byte deletable;
 
+    private Set<Inventory> inventorySet;
+
+    public Set<Inventory> getInventorySet() {
+        return inventorySet;
+    }
+
+    public void setInventorySet(Set<Inventory> inventorySet) {
+        this.inventorySet = inventorySet;
+    }
 
     public int getCatUid() {
         return catUid;

@@ -49,7 +49,7 @@
                                     <option value="2">Board Games</option>
                                     <option value="3">Magic</option>
                                     <option value="4">Sealed</option>
-                                    <option value="5">Singles</option>
+                                    <option value="5">Single</option>
                                     <option value="6">Yu-Gi-Oh</option>
                                 </select>
                             </div>

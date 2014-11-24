@@ -5,7 +5,7 @@ import com.statboost.models.inventory.Cost;
 import com.statboost.models.inventory.Inventory;
 import com.statboost.models.session.QueryObject;
 import com.statboost.util.HibernateUtil;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -154,9 +154,47 @@ public class InventorySearchServlet extends HttpServlet {
             hql += s;
         }
 
+        hql = "Select I from Inventory I join I.categories c where I.name like :name and c.category in (:categories) group by I having count(c)=:category_count";
+
+        hql = 	"select I from Inventory I " +
+                "join I.categories c " +
+                "where c.category in (:categories) " +
+                "and I.id in (" +
+                "select I2.id " +
+                "from Inventory I2 " +
+                "join I2.categories c2 " +
+                "group by I2 " +
+                "having count(c2)=:category_count) " +
+                "group by I " +
+                "having count(c)=:category_count";
+
+        String[] cats = {"Magic", "Single"};
         System.out.println(hql);
 
-        QueryObject inventoryQuery = new QueryObject(buildableQuery, hql);
+        SessionFactory genericQueryFactory = HibernateUtil.getDatabaseSessionFactory();
+        List<Object> resultSet = null;
+        Session gensession = genericQueryFactory.openSession();
+        Transaction tx = null;
+        try {
+            tx = gensession.beginTransaction();
+            Query query = gensession.createQuery(hql);
+            //query.setParameter("name", "%goblin%");
+            query.setParameterList("categories", cats);
+            query.setInteger("category_count", cats.length);
+
+            resultSet = query.list();
+
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            gensession.close();
+        }
+
+        System.out.println(resultSet.size());
+
+        /*QueryObject inventoryQuery = new QueryObject(buildableQuery, hql);
         GenericDAO inventoryDAO = new GenericDAO();
 
         inventoryResults = (List<Object>)inventoryDAO.getResultSet(inventoryQuery, page);
@@ -177,7 +215,7 @@ public class InventorySearchServlet extends HttpServlet {
         }
         //route to results page even if no results found or transaction throws exception
         request.getRequestDispatcher("/InventoryResult.jsp").forward(request, response);
-
+*/
     }
 
     private ArrayList<InventoryRecord> getInventoryRecords(List<Object> results){
@@ -194,8 +232,7 @@ public class InventorySearchServlet extends HttpServlet {
             ir.price = co.getItemPrice();
             ir.name = inv.getName();
             ir.description = inv.getDescription();
-            //todo: Jon this will need fixing based on the new data structure
-            //ir.imageName = inv.getImageUid();
+            ir.imageName = inv.getImage();
             ir.condition = Cost.getConditionString(co.getItemCondition());
 
             inventoryPage.add(ir);

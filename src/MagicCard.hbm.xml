@@ -13,6 +13,9 @@
                      column="mcr_set_id" not-null="true" insert="false" update="false"
                      cascade="all" />
 
+        <property name="mcrImageName">
+            <column name="mcr_image_name" sql-type="varchar" length="150"/>
+        </property>
         <property name="mcrCardName" column="mcr_card_name"/>
         <property name="mcrNames" column="mcr_names"/>
         <property name="mcrSetId" column="mcr_set_id"/>

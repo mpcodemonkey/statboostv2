@@ -234,7 +234,8 @@ public class InventoryEditorServlet extends HttpServlet {
         ResultSet image = ServletUtil.getResultSetFromSql("select * from stt_image where img_path = '" + request.getParameter(PARAM_INVENTORY_IMAGE) + "'");
         try {
             if(image != null && image.next())  {
-                inventory.setImageUid(image.getInt("img_uid"));
+                //TODO: fix this
+                //inventory.setImageUid(image.getInt("img_uid"));
             } else  {
                 errors.add("You must select a valid image for the inventory item.");
             }

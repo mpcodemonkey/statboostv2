@@ -48,6 +48,7 @@ public class MagicCard implements Serializable {
     private String mcrReleaseDate;
     private Byte mcrTimeshifted;
     private Byte mcrReserved;
+    private String mcrImageName;
 
 
     @ManyToOne
@@ -91,6 +92,15 @@ public class MagicCard implements Serializable {
     /**
      * Getters and Setters
      */
+
+    public String getMcrImageName() {
+        return mcrImageName;
+    }
+
+    public void setMcrImageName(String mcrImageName) {
+        this.mcrImageName = mcrImageName;
+    }
+
     public String getMcrCardName() {
         return mcrCardName;
     }
