@@ -5,7 +5,7 @@ import com.statboost.models.inventory.Cost;
 import com.statboost.models.inventory.Inventory;
 import com.statboost.models.session.QueryObject;
 import com.statboost.util.HibernateUtil;
-import org.hibernate.*;
+import org.hibernate.SessionFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -150,6 +150,7 @@ public class InventorySearchServlet extends HttpServlet {
             //System.out.println(catList);
         }
 
+        /*
         for(String s: queryparams){
             hql += s;
         }
@@ -193,8 +194,9 @@ public class InventorySearchServlet extends HttpServlet {
         }
 
         System.out.println(resultSet.size());
+*/
 
-        /*QueryObject inventoryQuery = new QueryObject(buildableQuery, hql);
+        QueryObject inventoryQuery = new QueryObject(buildableQuery, hql);
         GenericDAO inventoryDAO = new GenericDAO();
 
         inventoryResults = (List<Object>)inventoryDAO.getResultSet(inventoryQuery, page);
@@ -215,7 +217,7 @@ public class InventorySearchServlet extends HttpServlet {
         }
         //route to results page even if no results found or transaction throws exception
         request.getRequestDispatcher("/InventoryResult.jsp").forward(request, response);
-*/
+
     }
 
     private ArrayList<InventoryRecord> getInventoryRecords(List<Object> results){
