@@ -58,26 +58,37 @@ public class DBModServlet extends HttpServlet {
                 List<Category> cats = qCats.list();
                 for (int j = 0; j < resultSet.size(); j++) {
                     Inventory inventory = new Inventory();
+                    Inventory foil = new Inventory();
+
                     inventory.setName(resultSet.get(j).getMcrCardName());
-                    //todo: will need to be fixed
-                    //inventory.setImage(resultSet.get(j).getMcrImageName());
+                    inventory.setImage(resultSet.get(j).getMcrImageName());
                     inventory.setDescription("MTG - " + resultSet.get(j).getMcrSetId());
+
+                    foil.setName(resultSet.get(j).getMcrCardName());
+                    foil.setImage(resultSet.get(j).getMcrImageName());
+                    foil.setDescription("MTG - " + resultSet.get(j).getMcrSetId());
+                    byte b = 1;
+                    foil.setInvFoil(b);
                     //generate random card costs
 
                     inventory.setMagicCard(resultSet.get(j));
-
+                    foil.setMagicCard(resultSet.get(j));
 
                     session.save(inventory);
+                    session.save(foil);
 
                     for(Category c: cats){
                         InventoryCategory ic = new InventoryCategory();
+                        InventoryCategory ic2 = new InventoryCategory();
                         ic.setInvUid(inventory.getUid());
                         ic.setCatUid(c.getCatUid());
-
+                        ic2.setInvUid(foil.getUid());
+                        ic2.setCatUid(c.getCatUid());
                         session.save(ic);
+                        session.save(ic2);
                     }
 
-                    System.out.println("Inserted " + inventory.getName() + " into db");
+                    System.out.println("Inserted " + inventory.getName() + " into db, as well as foil");
                 }
                 tx.commit();
                 session.close();
@@ -107,21 +118,31 @@ public class DBModServlet extends HttpServlet {
                     Random r = new Random();
                     for (int j = 0; j < ySet.size(); j++) {
                         Inventory inventory = new Inventory();
+                        Inventory holo = new Inventory();
                         inventory.setName(ySet.get(j).getYcrName());
-                        //todo: will need to be fixed
-                        //inventory.setImage(ySet.get(j).getYcrImage());
+                        inventory.setImage(ySet.get(j).getYcrImage());
                         inventory.setDescription("YGO");
+                        holo.setName(ySet.get(j).getYcrName());
+                        holo.setImage(ySet.get(j).getYcrImage());
+                        holo.setDescription("YGO");
                         //generate random card costs
 
                         inventory.setYugiohCard(ySet.get(j));
+                        holo.setYugiohCard(ySet.get(j));
+
+                        byte b = 1;
+                        holo.setInvFoil(b);
 
                         session.save(inventory);
+                        session.save(holo);
 
                         for(Category c: cats){
                             InventoryCategory ic = new InventoryCategory();
+                            InventoryCategory ic2 = new InventoryCategory();
                             ic.setInvUid(inventory.getUid());
                             ic.setCatUid(c.getCatUid());
-
+                            ic2.setInvUid(holo.getUid());
+                            ic2.setCatUid(c.getCatUid());
                             session.save(ic);
                         }
 

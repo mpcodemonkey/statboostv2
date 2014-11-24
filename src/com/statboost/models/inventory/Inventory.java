@@ -3,19 +3,38 @@ package com.statboost.models.inventory;
 import com.statboost.models.mtg.MagicCard;
 import com.statboost.models.ygo.YugiohCard;
 
+import java.util.Set;
+
 /**
  * Created by Jessica on 9/25/14.
  */
 public class Inventory {
     private int uid;
     private String name;
-    private int imageUid;
+    private String image;
     private MagicCard magicCard;
     private YugiohCard yugiohCard;
     private Event event;
     private boolean preOrder;
     private String description;
+    private Set<Category> categories;
+    private byte invFoil;
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String invImage) {
+        this.image = invImage;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
 
     public int getUid() {
         return uid;
@@ -31,14 +50,6 @@ public class Inventory {
 
     public void setName(String invName) {
         this.name = invName;
-    }
-
-    public int getImageUid() {
-        return imageUid;
-    }
-
-    public void setImageUid(int imageUid) {
-        this.imageUid = imageUid;
     }
 
     public String getDescription() {
@@ -79,6 +90,14 @@ public class Inventory {
 
     public void setPreOrder(boolean preOrder) {
         this.preOrder = preOrder;
+    }
+
+    public byte getInvFoil() {
+        return invFoil;
+    }
+
+    public void setInvFoil(byte invFoil) {
+        this.invFoil = invFoil;
     }
 
 }
