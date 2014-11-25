@@ -5,6 +5,7 @@ import com.statboost.models.inventory.Cost;
 import com.statboost.models.inventory.Inventory;
 import com.statboost.models.session.QueryObject;
 import com.statboost.util.HibernateUtil;
+import com.statboost.util.ServletUtil;
 import org.hibernate.SessionFactory;
 
 import javax.servlet.ServletException;
@@ -31,6 +32,9 @@ public class InventorySearchServlet extends HttpServlet {
         if(request.getParameter("page") != null && !request.getParameter("page").equals("")) {
             doPost(request, response);
         }
+        else if(request.getParameter("mId") != null){
+            doPost(request, response);
+        }
         else{
             request.getRequestDispatcher("/InventorySearch.jsp").forward(request, response);
         }
@@ -49,6 +53,31 @@ public class InventorySearchServlet extends HttpServlet {
         int page = 1;
         String hql = "From Inventory as I, Cost as C where C.invUid = I.uid ";
 
+
+        if(request.getParameter("mId") != null){
+            GenericDAO inventoryDAO = new GenericDAO();
+            hql = "From Inventory as I, Cost as C where C.invUid = I.uid and I.magicCard.mcrMultiverseId=:id";
+            int theId = ServletUtil.isInteger(request.getParameter("mId")) == true ? Integer.parseInt(request.getParameter("mId")) : -1;
+            buildableQuery.put("id", theId);
+            QueryObject qo = new QueryObject(buildableQuery, hql);
+            inventoryResults = (List<Object>)inventoryDAO.getResultSet(qo);
+
+            ArrayList<InventoryRecord> inventoryPage = getInventoryRecords(inventoryResults);
+            //set search results
+            if (inventoryPage != null && inventoryPage.size()>0) {
+                request.setAttribute("inventoryList", inventoryPage);
+                int numberOfPages = (int)Math.ceil((double)inventoryDAO.getNumberOfResults()/inventoryDAO.getNumberPerPage());
+                request.setAttribute("numberOfPages", numberOfPages);
+                request.setAttribute("currentPage", inventoryDAO.getCurrentPage());
+            } else {
+                request.setAttribute("alertType", "warning");
+                request.setAttribute("alert", "Sorry, no cards were found.  Please try another search.");
+            }
+            //route to results page even if no results found or transaction throws exception
+            request.getRequestDispatcher("/InventoryResult.jsp").forward(request, response);
+
+
+        }
 
 
         //check if query object is in the session
