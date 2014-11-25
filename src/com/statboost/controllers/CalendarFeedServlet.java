@@ -3,7 +3,6 @@ package com.statboost.controllers;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.statboost.models.inventory.Event;
 import com.statboost.util.HibernateUtil;
 import org.hibernate.*;
 
@@ -31,21 +30,22 @@ public class CalendarFeedServlet extends HttpServlet {
         String start = request.getParameter("start");
         String end = request.getParameter("end");
         //get events in start-end date range
-        List<Event> monthEvents = getCurrentSelectedMonthEvents(start, end);
+        List<Object[]> monthEvents = getCurrentSelectedMonthEvents(start, end);
 
-        for(Event e: monthEvents){
-            System.out.println(e.getTitle());
-        }
+        /*for(Inventory I: monthEvents){
+            System.out.println(I.getEvent().getTitle());
+        }*/
         JsonArray j = new JsonArray();
-        for(Event e : monthEvents) {
+        for(Object[] row : monthEvents) {
             JsonObject jo = new JsonObject();
-            jo.addProperty("id", e.getUid());
-            jo.addProperty("title", e.getTitle());
-            jo.addProperty("start", e.getFromDate().toString());
-            jo.addProperty("end", e.getToDate().toString());
-            jo.addProperty("description", e.getDescription());
-            jo.addProperty("playerLimit", e.getPlayerLimit());
-            jo.addProperty("inStoreUsers", e.getNumberInStoreUsers());
+            jo.addProperty("id", (int)row[0]);
+            jo.addProperty("title", (String)row[1]);
+            jo.addProperty("start", row[3].toString());
+            jo.addProperty("end", row[4].toString());
+            jo.addProperty("description", (String)row[2]);
+            jo.addProperty("playerLimit", (int)row[5]);
+            jo.addProperty("inStoreUsers", (int)row[6]);
+            jo.addProperty("eventCost", (double)row[7]);
             j.add(jo);
         }
         response.getWriter().write(new Gson().toJson(j));
@@ -56,14 +56,14 @@ public class CalendarFeedServlet extends HttpServlet {
 
     }
 
-    private List<Event> getCurrentSelectedMonthEvents(String start, String end){
+    private List<Object[]> getCurrentSelectedMonthEvents(String start, String end){
         Calendar cal = Calendar.getInstance();
 
         HashMap<String, String> buildableQuery = new HashMap<>();
         String monthConstraint = null;
-        List<Event> currentMonthEvents = null;
+        List<Object[]> currentMonthEvents = null;
 
-        String hql = "From Event where";
+        String hql = "Select E.id, E.title, E.description, E.fromDate, E.toDate, E.playerLimit, E.numberInStoreUsers, C.itemPrice From Inventory as I, Event as E, Cost as C where E.uid = I.event.uid and I.uid = C.invUid";
 
         Date first = null, last = null;
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -92,12 +92,13 @@ public class CalendarFeedServlet extends HttpServlet {
 
 
 
-        monthConstraint = " fromDate >= :startD";
+        monthConstraint = " and E.fromDate >= :startD";
 
-        monthConstraint += " and toDate <= :endD";
+        monthConstraint += " and E.toDate <= :endD";
 
         hql += monthConstraint;
 
+        System.out.println(hql);
         SessionFactory eventQueryFactory = HibernateUtil.getDatabaseSessionFactory();
         List<Object> resultSet = null;
         Session session = eventQueryFactory.openSession();
@@ -108,7 +109,7 @@ public class CalendarFeedServlet extends HttpServlet {
             query.setParameter("startD", first);
             query.setParameter("endD", last);
 
-            currentMonthEvents = (List<Event>)query.list();
+            currentMonthEvents = (List<Object[]>)query.list();
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();

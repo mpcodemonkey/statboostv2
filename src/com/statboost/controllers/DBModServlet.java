@@ -1,10 +1,7 @@
 package com.statboost.controllers;
 
 import com.statboost.models.enumType.ItemCondition;
-import com.statboost.models.inventory.Category;
-import com.statboost.models.inventory.Cost;
-import com.statboost.models.inventory.Inventory;
-import com.statboost.models.inventory.InventoryCategory;
+import com.statboost.models.inventory.*;
 import com.statboost.models.mtg.MagicCard;
 import com.statboost.models.ygo.YugiohCard;
 import com.statboost.util.HibernateUtil;
@@ -219,6 +216,43 @@ public class DBModServlet extends HttpServlet {
 
                     System.out.println("Generated costs for: " + iSet.get(j).getName());
 
+                }
+                tx.commit();
+                session.close();
+            } catch (Exception e) {
+                logger.error("Could not loop through the magic cards.");
+            }
+        }
+        List<Event> eventList = null;
+        try {
+            tx = session.beginTransaction();
+            Query q = session.createQuery("FROM Event");
+            eventList = q.list();
+        } catch (Exception e) {
+            logger.error("Could not get the result set.", e);
+        }
+        if(eventList != null){
+            try {
+                Random r = new Random();
+                for (int j = 0; j < eventList.size(); j++) {
+                    Inventory inventory = new Inventory();
+
+                    inventory.setName(eventList.get(j).getTitle());
+                    inventory.setDescription(eventList.get(j).getDescription());
+
+                    inventory.setEvent(eventList.get(j));
+
+                    session.save(inventory);
+
+                    Cost cost0 = new Cost();
+                    cost0.setItemPrice((r.nextInt(3000) + 1) / 100.0);
+                    cost0.setItemQuantity(r.nextInt(50) + 1);
+                    cost0.setInvUid(inventory.getUid());
+                    cost0.setInventory(inventory);
+                    cost0.setItemCondition(ItemCondition.NEW);
+                    session.save(cost0);
+
+                    System.out.println("Inserted " + inventory.getName() + " into db, as well as foil");
                 }
                 tx.commit();
                 session.close();

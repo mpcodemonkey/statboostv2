@@ -201,11 +201,12 @@ public class InventorySearchServlet extends HttpServlet {
             //System.out.println(catList);
         }
 
-        /*
+
         for(String s: queryparams){
             hql += s;
         }
 
+        /*
         hql = "Select I from Inventory I join I.categories c where I.name like :name and c.category in (:categories) group by I having count(c)=:category_count";
 
         hql = 	"select I from Inventory I " +

@@ -127,7 +127,7 @@
             max: 1000.00,
             range: true,
             step: .01,
-            values: [0.01, 99.00],
+            values: [0.01, 1000.00],
             animate: "fast",
             slide: function(event, ui) {
                 for (var i = 0; i < ui.values.length; ++i) {
