@@ -81,7 +81,7 @@
                                 <table>
                                     <tr>
                                         <td class="container">
-                                                <div class="col-sm-6" style="font-size: large;">${card.mcrCardName}</div>
+                                                <div class="col-sm-6" style="font-size: large;"><a href="/Store?mId=${card.mcrMultiverseId}">${card.mcrCardName}</a></div>
                                                 <div class="col-sm-6">
                                                     <c:forEach items="${manaParts}" var="mana">
                                                         <c:if test="${mana != ''}">
