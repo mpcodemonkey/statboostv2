@@ -32,7 +32,7 @@ public class InventorySearchServlet extends HttpServlet {
         if(request.getParameter("page") != null && !request.getParameter("page").equals("")) {
             doPost(request, response);
         }
-        else if(request.getParameter("mId") != null){
+        else if(request.getParameter("mId") != null || request.getParameter("yId") != null){
             doPost(request, response);
         }
         else{
@@ -77,6 +77,28 @@ public class InventorySearchServlet extends HttpServlet {
             request.getRequestDispatcher("/InventoryResult.jsp").forward(request, response);
 
 
+        }//TODO: merge yId and mId code so it's not redundant
+        else if(request.getParameter("yId") != null){
+            GenericDAO inventoryDAO = new GenericDAO();
+            hql = "From Inventory as I, Cost as C where C.invUid = I.uid and I.yugiohCard.ycrUid=:id";
+            int theId = ServletUtil.isInteger(request.getParameter("yId")) == true ? Integer.parseInt(request.getParameter("yId")) : -1;
+            buildableQuery.put("id", theId);
+            QueryObject qo = new QueryObject(buildableQuery, hql);
+            inventoryResults = (List<Object>)inventoryDAO.getResultSet(qo);
+
+            ArrayList<InventoryRecord> inventoryPage = getInventoryRecords(inventoryResults);
+            //set search results
+            if (inventoryPage != null && inventoryPage.size()>0) {
+                request.setAttribute("inventoryList", inventoryPage);
+                int numberOfPages = (int)Math.ceil((double)inventoryDAO.getNumberOfResults()/inventoryDAO.getNumberPerPage());
+                request.setAttribute("numberOfPages", numberOfPages);
+                request.setAttribute("currentPage", inventoryDAO.getCurrentPage());
+            } else {
+                request.setAttribute("alertType", "warning");
+                request.setAttribute("alert", "Sorry, no cards were found.  Please try another search.");
+            }
+            //route to results page even if no results found or transaction throws exception
+            request.getRequestDispatcher("/InventoryResult.jsp").forward(request, response);
         }
 
 
