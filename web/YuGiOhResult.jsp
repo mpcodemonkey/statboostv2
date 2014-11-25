@@ -60,8 +60,8 @@
         <c:set var="typeVar" value="${card.ycrCardType}"/>
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">${card.ycrName}</div>
+                <div class="panel">
+                    <div class="panel-heading"><a href="/Store?yId=${card.ycrUid}">${card.ycrName}</a></div>
                     <div class="panel-body">
                         <div class="col-md-2">
                             <img src="https://placehold.it/150X150" class="img-rounded">
