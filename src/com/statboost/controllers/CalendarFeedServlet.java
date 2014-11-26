@@ -3,6 +3,8 @@ package com.statboost.controllers;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.statboost.models.enumType.ItemCondition;
+import com.statboost.models.inventory.Cost;
 import com.statboost.util.HibernateUtil;
 import org.hibernate.*;
 
@@ -36,16 +38,18 @@ public class CalendarFeedServlet extends HttpServlet {
             System.out.println(I.getEvent().getTitle());
         }*/
         JsonArray j = new JsonArray();
-        for(Object[] row : monthEvents) {
+        for(Object[] col : monthEvents) {
             JsonObject jo = new JsonObject();
-            jo.addProperty("id", (int)row[0]);
-            jo.addProperty("title", (String)row[1]);
-            jo.addProperty("start", row[3].toString());
-            jo.addProperty("end", row[4].toString());
-            jo.addProperty("description", (String)row[2]);
-            jo.addProperty("playerLimit", (int)row[5]);
-            jo.addProperty("inStoreUsers", (int)row[6]);
-            jo.addProperty("eventCost", (double)row[7]);
+            jo.addProperty("id", (int)col[0]);
+            jo.addProperty("title", (String)col[1]);
+            jo.addProperty("start", ((Date)col[3]).toString());
+            jo.addProperty("end", ((Date)col[4]).toString());
+            jo.addProperty("description", (String)col[2]);
+            jo.addProperty("playerLimit", (int)col[5]);
+            jo.addProperty("inStoreUsers", (int)col[6]);
+            jo.addProperty("eventCost", "$"+(double)col[7]);
+            jo.addProperty("invId", (int)col[8]);
+            jo.addProperty("cond", Cost.getConditionString((ItemCondition)col[9]));
             j.add(jo);
         }
         response.getWriter().write(new Gson().toJson(j));
@@ -63,7 +67,7 @@ public class CalendarFeedServlet extends HttpServlet {
         String monthConstraint = null;
         List<Object[]> currentMonthEvents = null;
 
-        String hql = "Select E.id, E.title, E.description, E.fromDate, E.toDate, E.playerLimit, E.numberInStoreUsers, C.itemPrice From Inventory as I, Event as E, Cost as C where E.uid = I.event.uid and I.uid = C.invUid";
+        String hql = "Select E.id, E.title, E.description, E.fromDate, E.toDate, E.playerLimit, E.numberInStoreUsers, C.itemPrice, I.uid, C.itemCondition From Inventory as I, Event as E, Cost as C where E.uid = I.event.uid and I.uid = C.invUid";
 
         Date first = null, last = null;
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
