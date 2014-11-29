@@ -70,7 +70,14 @@
                             <li role="presentation" class="dropdown-header"><span style="font-size: 20px;"><c:out value="${sessionScope.email}"/></span></li>
                             <li class="divider"></li>
                             <li><a href="/user/profile">User Profile</a></li>
-                            <li><a href="/user/orderhistory">Order History</a></li>
+                            <c:choose>
+                                <c:when test="${sessionScope.admin != null}">
+                                    <li><a href="/admin/ordermanager">Order Manager</a></li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li><a href="/user/orderhistory">Order History</a></li>
+                                </c:otherwise>
+                            </c:choose>
                             <c:if test="${sessionScope.admin != null}">
                                 <li><a href="/admin/adminCP">Admin CP</a></li>
                             </c:if>

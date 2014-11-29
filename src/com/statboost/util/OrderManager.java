@@ -9,7 +9,6 @@ import com.statboost.models.inventory.Order;
 import com.statboost.models.session.ShoppingCartSessionObject;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.util.ArrayList;
@@ -37,6 +36,7 @@ public class OrderManager {
         //init new order object
         Order order = new Order();
         order.setUser(user);
+        order.setUserEmail(user.getUsrEmail());
         order.setPaid(true);
         order.setStatus(OrderStatus.PLACED);
         order.setTransactionId(orderParams.get("transactionId"));

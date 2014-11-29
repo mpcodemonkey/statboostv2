@@ -1,14 +1,18 @@
 package com.statboost.models.inventory;
 
+import com.statboost.models.DAO.GenericDAO;
 import com.statboost.models.actor.User;
 import com.statboost.models.enumType.OrderStatus;
+import com.statboost.models.session.QueryObject;
+import com.statboost.util.HibernateUtil;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Jessica on 9/25/14.
@@ -31,10 +35,91 @@ public class Order {
     private String trackingNumber;
     private boolean inStorePickup;
     private boolean paid;
+    private String userEmail;
     private User user;
+
 
     @OneToMany
     private Set<InventoryItem> inventoryItems  = new HashSet<>();
+
+
+    /**
+     * Returns an order that matches the specified order number
+     * @param orderNumber
+     * @return - Order
+     */
+    public static Order findByNumber(String orderNumber) {
+        Order order = null;
+
+        Session session = HibernateUtil.getDatabaseSessionFactory().openSession();
+        Transaction tx = null;
+        if (orderNumber != null && orderNumber.matches("\\d+")) {
+            try {
+                tx = session.beginTransaction();
+                //query
+                order = (Order) session.createQuery("FROM Order WHERE uid=" + orderNumber + "").uniqueResult();
+                tx.commit();
+            } catch (HibernateException e) {
+                if (tx != null) tx.rollback();
+                e.printStackTrace();
+            } finally {
+                session.close();
+            }
+        }
+
+        return order;
+    }
+
+    /**
+     * Returns all orders that match the specified user's email address
+     * @param orderEmail
+     * @return - List of Orders
+     */
+    public static List<Order> findByEmail(String orderEmail) {
+        List<Order> orders;
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("orderEmail", orderEmail);
+        String hql = "FROM Order where userEmail = :orderEmail";
+        QueryObject queryObject = new QueryObject(params, hql);
+        GenericDAO dao = new GenericDAO();
+
+        //query for results
+        orders = (List<Order>) dao.getResultSet(queryObject);
+
+
+        return orders;
+    }
+
+    /**
+     * Returns an order that matches the specified Transaction Id
+     * @param transactionId
+     * @return - Order
+     */
+    public static Order findByTransactionId(String transactionId) {
+        Order order = null;
+
+        Session session = HibernateUtil.getDatabaseSessionFactory().openSession();
+        Transaction tx = null;
+        if (transactionId != null && transactionId.matches("\\d+")) {
+            try {
+                tx = session.beginTransaction();
+                //query
+                order = (Order) session.createQuery("FROM Order WHERE transactionId=" + transactionId + "").uniqueResult();
+                tx.commit();
+            } catch (HibernateException e) {
+                if (tx != null) tx.rollback();
+                e.printStackTrace();
+            } finally {
+                session.close();
+            }
+        }
+
+        return order;
+    }
+
+
+
 
     public int getUid() {
         return uid;
@@ -171,6 +256,14 @@ public class Order {
 
     public void setShippingMethod(String shippingMethod) {
         this.shippingMethod = shippingMethod;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public User getUser() {
