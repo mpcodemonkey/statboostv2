@@ -47,11 +47,11 @@
     function validate() {
 
         if(document.getElementById('firstname').value.length < 2) {
-            alert('First name must be at least 2 characters.');
+            alert('First name must be at least 1 character.');
             return false;
         }
         if(document.getElementById('lastname').value.length < 2) {
-            alert('Last name must be at least 2 characters.');
+            alert('Last name must be at least 1 character.');
             return false;
         }
         if(document.getElementById('pswd').value.length < 8) {

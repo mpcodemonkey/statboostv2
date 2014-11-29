@@ -30,6 +30,16 @@
             </div>
             <div class="panel panel-info">
                 <div class="panel-heading">
+                    <h1 class="panel-title">Manage Orders</h1>
+                </div>
+                <div class="panel-body">
+                    <div class="btn-toolbar">
+                        <div class="btn-group"><a href="/admin/ordermanager"><button class="btn btn-primary">Order Manager</button></a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">
                     <h1 class="panel-title">Manage Events</h1>
                 </div>
                 <div class="panel-body">
