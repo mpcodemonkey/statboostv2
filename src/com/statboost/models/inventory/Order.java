@@ -83,6 +83,12 @@ public class Order {
                 //query
                 Order order = (Order) session.createQuery("FROM Order WHERE uid=" + orderId + "").uniqueResult();
                 order.setStatus(Order.getOrderStatusEnum(status));
+                if (status.equalsIgnoreCase("complete")) {
+                    //Adjust server time into PST
+                    Calendar cal = Calendar.getInstance();
+                    cal.add(Calendar.HOUR, -8);
+                    order.setDateComplete(cal.getTime());
+                }
                 session.update(order);
                 tx.commit();
             } catch (HibernateException e) {
