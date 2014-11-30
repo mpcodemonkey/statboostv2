@@ -44,10 +44,10 @@
             </ul>
 
             <form class="navbar-form navbar-left" role="search" method="get" action="/magicSearch">
-                <div class="form-group">
+                <div class="form-group has-feedback">
                     <input type="text" id="search" name="cardName" class="autocomplete form-control" data-url="/autocomplete">
+                    <span class="glyphicon glyphicon-search form-control-feedback" title="Type a card name to search for."></span>
                 </div>
-                &nbsp;<span class="glyphicon glyphicon-search" style="color:white" title="Type a card name to search for."></span>
             </form>
 
             <c:if test="${sessionScope.shoppingCart != null}">
@@ -71,7 +71,7 @@
                             <li class="divider"></li>
                             <li><a href="/user/profile">User Profile</a></li>
                             <c:choose>
-                                <c:when test="${sessionScope.admin != null}">
+                                <c:when test="${sessionScope.admin != null || sessionScope.employee != null}">
                                     <li><a href="/admin/ordermanager">Order Manager</a></li>
                                 </c:when>
                                 <c:otherwise>

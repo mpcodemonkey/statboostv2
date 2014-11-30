@@ -89,7 +89,7 @@ CREATE TABLE `stt_webpage` (
 CREATE TABLE `stt_order` (
   `ord_uid` int(11) NOT NULL AUTO_INCREMENT,
   `ord_usr_uid` int(11) DEFAULT NULL,
-  `ord_status` enum('PLACED','SHIPPED','RETURNED','READY_FOR_PICKUP','CANCELLED','DELIVERED') DEFAULT NULL,
+  `ord_status` enum('PLACED','SHIPPED','RETURNED','READY_FOR_PICKUP','CANCELLED','COMPLETE') DEFAULT NULL,
   `ord_total` DECIMAL(7, 2) NOT NULL,
   `ord_tax_total` DECIMAL(7, 2) NOT NULL,
   `ord_shipping_total` DECIMAL(7, 2) NOT NULL,

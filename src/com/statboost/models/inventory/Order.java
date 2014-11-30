@@ -42,6 +42,61 @@ public class Order {
     @OneToMany
     private Set<InventoryItem> inventoryItems  = new HashSet<>();
 
+    public static String getOrderStatusString(OrderStatus condition) {
+        switch (condition) {
+            case PLACED: return "Placed";
+            case SHIPPED: return "Shipped";
+            case RETURNED: return "Returned";
+            case READY_FOR_PICKUP: return "Ready For Pickup";
+            case CANCELLED: return "Cancelled";
+            case COMPLETE: return "Complete";
+            default: return "";
+        }
+    }
+
+    public static OrderStatus getOrderStatusEnum(String condition){
+        switch(condition){
+            case "Placed": return OrderStatus.PLACED;
+            case "Shipped": return OrderStatus.SHIPPED;
+            case "Returned": return OrderStatus.RETURNED;
+            case "Ready For Pickup": return OrderStatus.READY_FOR_PICKUP;
+            case "Cancelled": return OrderStatus.CANCELLED;
+            case "Complete": return OrderStatus.COMPLETE;
+            default: return OrderStatus.PLACED;
+        }
+    }
+
+    /**
+     * This method will update an order to a different status.
+     * @param orderId - Uid of the Order record
+     * @param status - new OrderStatus string value
+     * @return
+     */
+    public static boolean updateOrderStatus(String orderId, String status) {
+        Boolean result = false;
+
+        Session session = HibernateUtil.getDatabaseSessionFactory().openSession();
+        Transaction tx = null;
+        if (orderId != null && orderId.matches("\\d+")) {
+            try {
+                tx = session.beginTransaction();
+                //query
+                Order order = (Order) session.createQuery("FROM Order WHERE uid=" + orderId + "").uniqueResult();
+                order.setStatus(Order.getOrderStatusEnum(status));
+                session.update(order);
+                tx.commit();
+            } catch (HibernateException e) {
+                if (tx != null) tx.rollback();
+                e.printStackTrace();
+            } finally {
+                session.close();
+                result = true;
+            }
+        }
+
+        return result;
+    }
+
 
     /**
      * Returns an order that matches the specified order number

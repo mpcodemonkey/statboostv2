@@ -266,7 +266,7 @@ public class User {
     public static boolean isAdmin(HttpSession session) {
         //check that the user is logged in and check that the user is an admin either through session attribute or db check
         if (isLoggedIn(session) &&
-                (session.getAttribute("admin").equals("true") || User.isAdmin((String) session.getAttribute("email")))) {
+                (session.getAttribute("admin") != null || User.isAdmin((String) session.getAttribute("email")))) {
             return true;
         }
         return false;
@@ -284,6 +284,39 @@ public class User {
         if (email != null) {
             User candidate = User.find(email);
             if (candidate != null && candidate.usrRole.equals("Admin")) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Check that the user is logged in and check that the user is an Employee, either through session attribute or db check last resort
+     *
+     * @param session
+     * @return - true if Employee is legit
+     */
+    public static boolean isEmployee(HttpSession session) {
+        //check that the user is logged in and check that the user is an employee either through session attribute or db check
+        if (isLoggedIn(session) &&
+                (session.getAttribute("employee") != null || User.isEmployee((String) session.getAttribute("email")))) {
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * This method returns true if the provided email is an Employee user
+     *
+     * @param email
+     * @return boolean - true if success
+     */
+    public static boolean isEmployee(String email) {
+        boolean result = false;
+        if (email != null) {
+            User candidate = User.find(email);
+            if (candidate != null && candidate.usrRole.equals("Employee")) {
                 result = true;
             }
         }

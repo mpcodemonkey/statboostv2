@@ -54,8 +54,7 @@ public class LoginServlet extends HttpServlet {
             logger.info("User has logged in: " + session.getAttribute("email"));
             if (candidate.getUsrRole().equals("Admin")) {
                 session.setAttribute("admin", "true");
-            }
-            if (candidate.getUsrRole().equals("Employee")) {
+            } else if (candidate.getUsrRole().equals("Employee")) {
                 session.setAttribute("employee", "true");
             }
             response.sendRedirect("/");
