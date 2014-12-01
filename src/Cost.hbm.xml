@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.statboost.models.inventory.Cost" table="stt_cost">
+        <id name="costUid" column="cst_uid">
+            <generator class="identity"/>
+        </id>
+        <property name="itemCondition" column="cst_item_condition">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.statboost.models.enumType.ItemCondition</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+        <property name="itemPrice" column="cst_item_price"/>
+        <property name="itemQuantity" column="cst_item_quantity"/>
+        <property name="invUid" column="cst_inv_uid"/>
+        <many-to-one name="inventory"
+                     column="cst_inv_uid"
+                     not-null="true" insert="false" update="false"/>
+    </class>
+</hibernate-mapping>

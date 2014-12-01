@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.autoReconnect">true</property>
+        <property name="connection.autoReconnectForPools">true</property>
+        <property name="connection.is-connection-validation-required">true</property>
+        <property name="hibernate.connection.release_mode">after_transaction</property>
+
+         <!--Dev Connection(Jon)--><!--
+        <property name="hibernate.connection.url">jdbc:mysql://107.138.65.186:3306/statboost?characterEncoding=UTF-8</property>
+        <property name="hibernate.connection.username">generic</property>
+        <property name="hibernate.connection.password">generic11PASSWORD</property>
+        -->
+
+        <!--Dev Alt connection(DigitalOcean) -->
+
+        <property name="hibernate.connection.url">jdbc:mysql://104.131.189.31:3306/statboost?characterEncoding=UTF-8</property>
+        <property name="hibernate.connection.username">generic</property>
+        <property name="hibernate.connection.password">generic11PASSWORD</property>
+
+        <!-- Prod Connection -->
+        <!--
+        <property name="hibernate.connection.url">jdbc:mysql://10.128.219.28:3306/teamjjac_statboost</property>
+        <property name="hibernate.connection.username">teamjjac_apiuser</property>
+        <property name="hibernate.connection.password">1!a^%=%+Z|6G1:X</property>
+        -->
+
+        <!-- Set up connection pools -->
+        <property name="hibernate.connection.provider_class">org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider</property>
+        <property name="hibernate.connection.pool_size">10</property>
+        <!-- <property name="show_sql">true</property> -->
+        <property name="hibernate.c3p0.idle_test_period">300</property> <!-- In seconds -->
+        <property name="hibernate.c3p0.min_size">1</property>
+        <property name="hibernate.c3p0.max_size">10</property>
+        <property name="hibernate.c3p0.timeout">900</property>
+        <property name="hibernate.c3p0.maxConnectionAge">3600</property>
+        <property name="hibernate.c3p0.max_statements">50</property>
+        <property name="hibernate.c3p0.testConnectionOnCheckout">true</property>
+        <property name="hibernate.c3p0.preferredTestQuery">SELECT 1</property>
+
+
+        <!-- List of XML mapping files -->
+        <mapping resource="User.hbm.xml"/>
+        <mapping resource="MagicCard.hbm.xml"/>
+        <mapping resource="MagicSet.hbm.xml"/>
+        <mapping resource="Webpage.hbm.xml"/>
+        <mapping resource="Image.hbm.xml"/>
+        <mapping resource="Event.hbm.xml"/>
+        <mapping resource="Inventory.hbm.xml"/>
+        <mapping resource="InventoryItem.hbm.xml"/>
+        <mapping resource="Order.hbm.xml"/>
+        <mapping resource="StockNotification.hbm.xml"/>
+        <mapping resource="Cost.hbm.xml"/>
+        <mapping resource="Category.hbm.xml"/>
+        <mapping resource="InventoryCategory.hbm.xml"/>
+        <mapping resource="YugiohCard.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>

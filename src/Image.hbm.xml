@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.statboost.models.inventory.Image" table="stt_image">
+        <id name="uid" column="img_uid">
+            <generator class="identity"/>
+        </id>
+        <property name="path" column="img_path"/>
+    </class>
+</hibernate-mapping>
