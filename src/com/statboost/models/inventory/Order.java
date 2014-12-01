@@ -51,7 +51,7 @@ public class Order {
             case READY_FOR_PICKUP: return "Ready For Pickup";
             case CANCELLED: return "Cancelled";
             case COMPLETE: return "Complete";
-            default: return "";
+            default: return "Placed";
         }
     }
 

@@ -62,6 +62,19 @@ public class RegisterServlet extends HttpServlet {
                 //insert the new user into database
                 logger.info("Inserting user: " + usrEmail);
                 User.insert(usrFirstName, usrLastName, usrEmail, usrPassword, "Customer", usrAddress1, usrAddress2, usrCity, usrState, usrZip, usrPhone, usrNewsletter, usrDciNumber);
+                //TODO: send email notification to user
+                /*
+                ArrayList<String> a = new ArrayList<>();
+                List<Pair> p = new ArrayList<>();
+                a.add("motox683@gmail.com");
+                Map<String, List<Pair>> map = new HashMap<>();
+
+                p.add(new Pair("FNAME", "Sam"));
+                p.add(new Pair("LNAME", "Kerr"));
+                p.add(new Pair("EMAILADDRESS", "motox683@gmail.com"));
+                map.put("motox683@gmail.com", p);
+                MandrillUtil.sendEmail("register-for-account-response", a, map);
+                */
                 request.setAttribute("alertType", "success");
                 request.setAttribute("alert", "The account for " + usrEmail + " has been created successfully!");
                 response.sendRedirect("/login");
