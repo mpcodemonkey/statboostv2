@@ -7,7 +7,14 @@ import com.statboost.models.mtg.MagicSet;
 import com.statboost.models.ygo.YugiohCard;
 import com.statboost.util.HibernateUtil;
 import com.statboost.util.ServletUtil;
+import com.sun.deploy.net.HttpRequest;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -16,11 +23,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -122,7 +131,9 @@ public class InventoryEditorServlet extends HttpServlet {
     public static final String PARAM_TO_EVENT_AM_PM = "toEventAMPM";
     public static final String PARAM_TO_EVENT_DATE = "toEventDate";
 
-
+    private ArrayList<String> errors = new ArrayList<>();
+    private ArrayList<String> info = new ArrayList<>();
+    private ArrayList<String> warning = new ArrayList<>();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //todo: add admin check
@@ -164,19 +175,57 @@ public class InventoryEditorServlet extends HttpServlet {
             if(inventory != null && inventory.getEvent() != null)  {
                 event = (Event) session.load(Event.class, inventory.getEvent().getUid());
                 typeToPass = "EVENT";
+                if(event == null)  {
+                    event = new Event();
+                }
             } else  {
                 event = new Event();
             }
         }
 
+        if(request.getParameter(PARAM_TYPE) != null && request.getParameter(PARAM_TYPE).equals("EVENT"))  {
+            typeToPass = "EVENT";
+        }
+
+        info = new ArrayList<>();
+        warning = new ArrayList<>();
+        errors = new ArrayList<>();
+
         magicSets = ServletUtil.getResultSetFromSql("select * from stt_magic_set");
         categories = (List<Category>) session.createSQLQuery("select * from stt_category").addEntity(Category.class).list();
 
-        forwardToEditor(request, response, null, "", inventory, magicCard, event, yugiohCard, "", magicSets, typeToPass, costs, categories);
+        forwardToEditor(request, response, null, null, inventory, magicCard, event, yugiohCard, null, magicSets, typeToPass, costs, categories);
         session.close();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(!ServletFileUpload.isMultipartContent(request))  {
+            logger.error("The form must be type multipart/form-data");
+        }
+
+        info = new ArrayList<>();
+        warning = new ArrayList<>();
+        errors = new ArrayList<>();
+
+        //configure upload settings
+        FileItemFactory fileItemFactory = new DiskFileItemFactory();
+        ServletFileUpload servletFileUpload = new ServletFileUpload(fileItemFactory);
+        List<FileItem> uploadFileItems;
+
+        try  {
+            uploadFileItems = servletFileUpload.parseRequest(request);
+        } catch (FileUploadException e)  {
+            logger.error("Could not handle the uploaded content.");
+            return;
+        }
+
+        HashMap<String, String> normalFields = getNormalFields(uploadFileItems);
+        HashMap<String, FileItem> uploadFields = getUploadedFields(uploadFileItems);
+
+        if(uploadFields != null && uploadFields.size() > 1)  {
+            throw new IllegalStateException("More than one upload detected.");
+        }
+
         Inventory inventory = null;
         SessionFactory sessionFactory = HibernateUtil.getDatabaseSessionFactory();
         Session session = sessionFactory.openSession();
@@ -187,67 +236,50 @@ public class InventoryEditorServlet extends HttpServlet {
         List<Cost> costs = null;
         ResultSet magicSets = null;
         List<Category> categories = null;
-        if(request.getParameter(PARAM_INVENTORY_UID) == null || request.getParameter(PARAM_INVENTORY_UID).equals("0") ||
-                request.getParameter(PARAM_INVENTORY_UID).equals("0"))  {
+        if(normalFields.get(PARAM_INVENTORY_UID) == null || normalFields.get(PARAM_INVENTORY_UID).equals("0") ||
+                normalFields.get(PARAM_INVENTORY_UID).equals("0"))  {
             inventory = new Inventory();
-            //do not initialize the magic card, yugio, card, or event, will do this only if necessary
+            //do not initialize the magic card, yugioh, card, or event, will do this only if necessary
         } else  {
-            inventory = (Inventory) session.load(Inventory.class, Integer.parseInt(request.getParameter(PARAM_INVENTORY_UID)));
+            inventory = (Inventory) session.load(Inventory.class, Integer.parseInt(normalFields.get(PARAM_INVENTORY_UID)));
             costs = (List<Cost>) session.createSQLQuery("select * from stt_cost where cst_inv_uid = " + inventory.getUid()).addEntity(Cost.class).list();
-            if(request.getParameter(PARAM_MAGIC_CARD_UID) != null && ! request.getParameter(PARAM_MAGIC_CARD_UID).equals("0") &&
-                    ! request.getParameter(PARAM_MAGIC_CARD_UID).equals(""))  {
-                magicCard = (MagicCard) session.load(MagicCard.class, Integer.parseInt(request.getParameter(PARAM_MAGIC_CARD_UID)));
-            } else if(request.getParameter(PARAM_YUGIOH_UID) != null && !request.getParameter(PARAM_YUGIOH_UID).equals("") &&
-                    !request.getParameter(PARAM_YUGIOH_UID).equals("0"))  {
-                yugiohCard = (YugiohCard) session.load(YugiohCard.class, Integer.parseInt(request.getParameter(PARAM_YUGIOH_UID)));
-            } else if(request.getParameter(PARAM_EVENT_UID) != null && !request.getParameter(PARAM_EVENT_UID).equals("")  &&
-                    !request.getParameter(PARAM_EVENT_UID).equals("0"))  {
-                event = (Event) session.load(Event.class, Integer.parseInt(request.getParameter(PARAM_EVENT_UID)));
+            if(normalFields.get(PARAM_MAGIC_CARD_UID) != null && ! normalFields.get(PARAM_MAGIC_CARD_UID).equals("0") &&
+                    ! normalFields.get(PARAM_MAGIC_CARD_UID).equals(""))  {
+                magicCard = (MagicCard) session.load(MagicCard.class, Integer.parseInt(normalFields.get(PARAM_MAGIC_CARD_UID)));
+            } else if(normalFields.get(PARAM_YUGIOH_UID) != null && !normalFields.get(PARAM_YUGIOH_UID).equals("") &&
+                    !normalFields.get(PARAM_YUGIOH_UID).equals("0"))  {
+                yugiohCard = (YugiohCard) session.load(YugiohCard.class, Integer.parseInt(normalFields.get(PARAM_YUGIOH_UID)));
+            } else if(normalFields.get(PARAM_EVENT_UID) != null && !normalFields.get(PARAM_EVENT_UID).equals("")  &&
+                    !normalFields.get(PARAM_EVENT_UID).equals("0"))  {
+                event = (Event) session.load(Event.class, Integer.parseInt(normalFields.get(PARAM_EVENT_UID)));
             }
         }
 
         if(costs == null){
             costs = new ArrayList<Cost>();
         }
+
         magicSets = ServletUtil.getResultSetFromSql("select * from stt_magic_set");
         categories = (List<Category>) session.createSQLQuery("select * from stt_category").addEntity(Category.class).list();
 
-        ArrayList<String> errors = new ArrayList<String>();
-        String warning = "";
-
         //inventory validation & setting
-        if(request.getParameter(PARAM_INVENTORY_PRE_ORDER) != null && !request.getParameter(PARAM_INVENTORY_PRE_ORDER).equals(""))  {
+        if(normalFields.get(PARAM_INVENTORY_PRE_ORDER) != null && !normalFields.get(PARAM_INVENTORY_PRE_ORDER).equals(""))  {
             inventory.setPreOrder(true);
         } else  {
             inventory.setPreOrder(false);
         }
 
         //warning about not filling price
-        inventory.setName(request.getParameter(PARAM_INVENTORY_NAME));
-        if(request.getParameter(PARAM_INVENTORY_NAME) == null || request.getParameter(PARAM_INVENTORY_NAME).equals(""))  {
+        inventory.setName(normalFields.get(PARAM_INVENTORY_NAME));
+        if(normalFields.get(PARAM_INVENTORY_NAME) == null || normalFields.get(PARAM_INVENTORY_NAME).equals(""))  {
             errors.add("You must enter the name of the inventory.");
         }
 
         //fields not required
-        inventory.setDescription(request.getParameter(PARAM_INVENTORY_DESCRIPTION));
+        inventory.setDescription(normalFields.get(PARAM_INVENTORY_DESCRIPTION));
         inventory.setEvent(event);
-        ResultSet image = ServletUtil.getResultSetFromSql("select * from stt_image where img_path = '" + request.getParameter(PARAM_INVENTORY_IMAGE) + "'");
-        try {
-            if(image != null && image.next())  {
-                //TODO: fix this
-                //inventory.setImageUid(image.getInt("img_uid"));
-            } else  {
-                errors.add("You must select a valid image for the inventory item.");
-            }
-        } catch (SQLException e) {
-            logger.error("Could not get the image for the inventory item", e);
-            errors.add("You must select a valid image for the inventory item.");
-        }
-
         inventory.setMagicCard(magicCard);
         inventory.setYugiohCard(yugiohCard);
-
-// COMMENTED OUT BECAUSE FIELDS HAVE CHANGED AND BROKEN
 
         Cost damagedItem = null;
         Cost heavilyPlayed = null;
@@ -299,67 +331,67 @@ public class InventoryEditorServlet extends HttpServlet {
             }
         }
 
-        if(request.getParameter(PARAM_NUM_DAMAGED_IN_STOCK) != null && !request.getParameter(PARAM_NUM_DAMAGED_IN_STOCK).equals(""))  {
+        if(normalFields.get(PARAM_NUM_DAMAGED_IN_STOCK) != null && !normalFields.get(PARAM_NUM_DAMAGED_IN_STOCK).equals(""))  {
             if(damagedItem == null)  {
                 damagedItem = new Cost();
                 damagedItem.setItemCondition(ItemCondition.DAMAGED);
                 costs.add(damagedItem);
             }
 
-            damagedItem.setItemQuantity(Integer.parseInt(request.getParameter(PARAM_NUM_DAMAGED_IN_STOCK)));
+            damagedItem.setItemQuantity(Integer.parseInt(normalFields.get(PARAM_NUM_DAMAGED_IN_STOCK)));
         }
 
-        if(request.getParameter(PARAM_DAMAGED_PRICE) != null && !request.getParameter(PARAM_DAMAGED_PRICE).equals(""))  {
+        if(normalFields.get(PARAM_DAMAGED_PRICE) != null && !normalFields.get(PARAM_DAMAGED_PRICE).equals(""))  {
             if(damagedItem == null)  {
                 damagedItem = new Cost();
                 damagedItem.setItemCondition(ItemCondition.DAMAGED);
                 costs.add(damagedItem);
             }
 
-            damagedItem.setItemPrice(Double.parseDouble(request.getParameter(PARAM_DAMAGED_PRICE)));
+            damagedItem.setItemPrice(Double.parseDouble(normalFields.get(PARAM_DAMAGED_PRICE)));
         }
 
-        if(request.getParameter(PARAM_NUM_HEAVILY_PLAYED_IN_STOCK) != null && !request.getParameter(PARAM_NUM_HEAVILY_PLAYED_IN_STOCK).equals(""))  {
+        if(normalFields.get(PARAM_NUM_HEAVILY_PLAYED_IN_STOCK) != null && !normalFields.get(PARAM_NUM_HEAVILY_PLAYED_IN_STOCK).equals(""))  {
             if(heavilyPlayed == null)  {
                 heavilyPlayed = new Cost();
                 heavilyPlayed.setItemCondition(ItemCondition.HEAVILY_PLAYED);
                 costs.add(heavilyPlayed);
             }
 
-            heavilyPlayed.setItemQuantity(Integer.parseInt(request.getParameter(PARAM_NUM_HEAVILY_PLAYED_IN_STOCK)));
+            heavilyPlayed.setItemQuantity(Integer.parseInt(normalFields.get(PARAM_NUM_HEAVILY_PLAYED_IN_STOCK)));
         }
 
-        if(request.getParameter(PARAM_HEAVILY_PLAYED_PRICE) != null && !request.getParameter(PARAM_HEAVILY_PLAYED_PRICE).equals(""))  {
+        if(normalFields.get(PARAM_HEAVILY_PLAYED_PRICE) != null && !normalFields.get(PARAM_HEAVILY_PLAYED_PRICE).equals(""))  {
             if(heavilyPlayed == null)  {
                 heavilyPlayed = new Cost();
                 heavilyPlayed.setItemCondition(ItemCondition.HEAVILY_PLAYED);
                 costs.add(heavilyPlayed);
             }
 
-            heavilyPlayed.setItemPrice(Double.parseDouble(request.getParameter(PARAM_HEAVILY_PLAYED_PRICE)));
+            heavilyPlayed.setItemPrice(Double.parseDouble(normalFields.get(PARAM_HEAVILY_PLAYED_PRICE)));
         }
 
-        if(request.getParameter(PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK) != null && !request.getParameter(PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK).equals(""))  {
+        if(normalFields.get(PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK) != null && !normalFields.get(PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK).equals(""))  {
             if(lightlyPlayed == null)  {
                 lightlyPlayed = new Cost();
                 lightlyPlayed.setItemCondition(ItemCondition.LIGHTLY_PLAYED);
                 costs.add(lightlyPlayed);
             }
 
-            lightlyPlayed.setItemQuantity(Integer.parseInt(request.getParameter(PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK)));
+            lightlyPlayed.setItemQuantity(Integer.parseInt(normalFields.get(PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK)));
         }
 
-        if(request.getParameter(PARAM_LIGHTLY_PLAYED_PRICE) != null && !request.getParameter(PARAM_LIGHTLY_PLAYED_PRICE).equals(""))  {
+        if(normalFields.get(PARAM_LIGHTLY_PLAYED_PRICE) != null && !normalFields.get(PARAM_LIGHTLY_PLAYED_PRICE).equals(""))  {
             if(lightlyPlayed == null)  {
                 lightlyPlayed = new Cost();
                 lightlyPlayed.setItemCondition(ItemCondition.LIGHTLY_PLAYED);
                 costs.add(lightlyPlayed);
             }
 
-            lightlyPlayed.setItemPrice(Double.parseDouble(request.getParameter(PARAM_LIGHTLY_PLAYED_PRICE)));
+            lightlyPlayed.setItemPrice(Double.parseDouble(normalFields.get(PARAM_LIGHTLY_PLAYED_PRICE)));
         }
 
-        String[] categoriesChecked = request.getParameterValues(PARAM_CATEGORIES);
+        String categoriesChecked = normalFields.get(PARAM_CATEGORIES);
         boolean didCheck;
         List<InventoryCategory> categorySaved = (List<InventoryCategory>) session.createSQLQuery("select * from stt_inventory_category where inv_uid =" + inventory.getUid()).addEntity(InventoryCategory.class).list();
         List<InventoryCategory> categoriesToRemove = new ArrayList<InventoryCategory>();
@@ -367,11 +399,9 @@ public class InventoryEditorServlet extends HttpServlet {
             for(Category currentCategory: categories)  {
                 didCheck = false;
                 if(categoriesChecked != null)  {
-                    for(String currentCategoryChecked: categoriesChecked)  {
-                        if((currentCategory.getCatUid() + "").equals(currentCategoryChecked))  {
-                            didCheck = true;
-                            break;
-                        }
+                    if((currentCategory.getCatUid() + "").equals(categoriesChecked))  {
+                        didCheck = true;
+                        break;
                     }
                 }
 
@@ -405,238 +435,238 @@ public class InventoryEditorServlet extends HttpServlet {
         }
 
 
-        if(request.getParameter(PARAM_NUM_MODERATELY_PLAYED_IN_STOCK) != null && !request.getParameter(PARAM_NUM_MODERATELY_PLAYED_IN_STOCK).equals(""))  {
+        if(normalFields.get(PARAM_NUM_MODERATELY_PLAYED_IN_STOCK) != null && !normalFields.get(PARAM_NUM_MODERATELY_PLAYED_IN_STOCK).equals(""))  {
             if(moderatelyPlayed == null)  {
                 moderatelyPlayed = new Cost();
                 moderatelyPlayed.setItemCondition(ItemCondition.MODERATELY_PLAYED);
                 costs.add(moderatelyPlayed);
             }
 
-            moderatelyPlayed.setItemQuantity(Integer.parseInt(request.getParameter(PARAM_NUM_MODERATELY_PLAYED_IN_STOCK)));
+            moderatelyPlayed.setItemQuantity(Integer.parseInt(normalFields.get(PARAM_NUM_MODERATELY_PLAYED_IN_STOCK)));
         }
 
-        if(request.getParameter(PARAM_MODERATELY_PLAYED_PRICE) != null && !request.getParameter(PARAM_MODERATELY_PLAYED_PRICE).equals(""))  {
+        if(normalFields.get(PARAM_MODERATELY_PLAYED_PRICE) != null && !normalFields.get(PARAM_MODERATELY_PLAYED_PRICE).equals(""))  {
             if(moderatelyPlayed == null)  {
                 moderatelyPlayed = new Cost();
                 moderatelyPlayed.setItemCondition(ItemCondition.MODERATELY_PLAYED);
                 costs.add(moderatelyPlayed);
             }
 
-            moderatelyPlayed.setItemPrice(Double.parseDouble(request.getParameter(PARAM_MODERATELY_PLAYED_PRICE)));
+            moderatelyPlayed.setItemPrice(Double.parseDouble(normalFields.get(PARAM_MODERATELY_PLAYED_PRICE)));
         }
 
-        if(request.getParameter(PARAM_NUM_NEAR_MINT_IN_STOCK) != null && !request.getParameter(PARAM_NUM_NEAR_MINT_IN_STOCK).equals(""))  {
+        if(normalFields.get(PARAM_NUM_NEAR_MINT_IN_STOCK) != null && !normalFields.get(PARAM_NUM_NEAR_MINT_IN_STOCK).equals(""))  {
             if(nearMint == null)  {
                 nearMint = new Cost();
                 nearMint.setItemCondition(ItemCondition.NEAR_MINT);
                 costs.add(nearMint);
             }
 
-            nearMint.setItemQuantity(Integer.parseInt(request.getParameter(PARAM_NUM_NEAR_MINT_IN_STOCK)));
+            nearMint.setItemQuantity(Integer.parseInt(normalFields.get(PARAM_NUM_NEAR_MINT_IN_STOCK)));
         }
 
-        if(request.getParameter(PARAM_NEAR_MINT_PRICE) != null && !request.getParameter(PARAM_NEAR_MINT_PRICE).equals(""))  {
+        if(normalFields.get(PARAM_NEAR_MINT_PRICE) != null && !normalFields.get(PARAM_NEAR_MINT_PRICE).equals(""))  {
             if(nearMint == null)  {
                 nearMint = new Cost();
                 nearMint.setItemCondition(ItemCondition.NEAR_MINT);
                 costs.add(nearMint);
             }
 
-            nearMint.setItemPrice(Double.parseDouble(request.getParameter(PARAM_NEAR_MINT_PRICE)));
+            nearMint.setItemPrice(Double.parseDouble(normalFields.get(PARAM_NEAR_MINT_PRICE)));
         }
 
-        if(request.getParameter(PARAM_NUM_NEW_IN_STOCK) != null && !request.getParameter(PARAM_NUM_NEW_IN_STOCK).equals(""))  {
+        if(normalFields.get(PARAM_NUM_NEW_IN_STOCK) != null && !normalFields.get(PARAM_NUM_NEW_IN_STOCK).equals(""))  {
             if(newCost == null)  {
                 newCost = new Cost();
                 newCost.setItemCondition(ItemCondition.NEW);
                 costs.add(newCost);
             }
 
-            newCost.setItemQuantity(Integer.parseInt(request.getParameter(PARAM_NUM_NEW_IN_STOCK)));
+            newCost.setItemQuantity(Integer.parseInt(normalFields.get(PARAM_NUM_NEW_IN_STOCK)));
         }
 
-        if(request.getParameter(PARAM_NEW_PRICE) != null && !request.getParameter(PARAM_NEW_PRICE).equals(""))  {
+        if(normalFields.get(PARAM_NEW_PRICE) != null && !normalFields.get(PARAM_NEW_PRICE).equals(""))  {
             if(newCost == null)  {
                 newCost = new Cost();
                 newCost.setItemCondition(ItemCondition.NEW);
                 costs.add(newCost);
             }
 
-            newCost.setItemPrice(Double.parseDouble(request.getParameter(PARAM_NEW_PRICE)));
+            newCost.setItemPrice(Double.parseDouble(normalFields.get(PARAM_NEW_PRICE)));
         }
 
         //not going to make the price required since some they will not have inventory for
 
         //check if it is a yugioh card, if it is validate and set the yugioh fields
-        if(request.getParameter(PARAM_TYPE) != null && !request.getParameter(PARAM_TYPE).equals("") &&
-                request.getParameter(PARAM_TYPE).equals("YUGIOH"))  {
+        if(normalFields.get(PARAM_TYPE) != null && !normalFields.get(PARAM_TYPE).equals("") &&
+                normalFields.get(PARAM_TYPE).equals("YUGIOH"))  {
             //check if it is a new record
             if(yugiohCard == null)  {
                 yugiohCard = new YugiohCard();
             }
 
             //all fields required except description, atk, and def
-            yugiohCard.setYcrDescription(request.getParameter(PARAM_YUGIOH_DESCRIPTION));
+            yugiohCard.setYcrDescription(normalFields.get(PARAM_YUGIOH_DESCRIPTION));
 
-            if(request.getParameter(PARAM_YUGIOH_ATK) != null && !request.getParameter(PARAM_YUGIOH_ATK).equals(""))  {
-                if(Integer.parseInt(request.getParameter(PARAM_YUGIOH_ATK)) >= 0)  {
-                    yugiohCard.setYcrAtk(Integer.parseInt(request.getParameter(PARAM_YUGIOH_ATK)));
+            if(normalFields.get(PARAM_YUGIOH_ATK) != null && !normalFields.get(PARAM_YUGIOH_ATK).equals(""))  {
+                if(Integer.parseInt(normalFields.get(PARAM_YUGIOH_ATK)) >= 0)  {
+                    yugiohCard.setYcrAtk(Integer.parseInt(normalFields.get(PARAM_YUGIOH_ATK)));
                 } else  {
                     errors.add("The ATK must be greater than or equal to zero for the Yu-gi-oh card.");
                 }
             }
 
-            if(request.getParameter(PARAM_YUGIOH_DEF) != null && !request.getParameter(PARAM_YUGIOH_DEF).equals(""))  {
-                if(Integer.parseInt(request.getParameter(PARAM_YUGIOH_DEF)) >= 0)  {
-                    yugiohCard.setYcrDef(Integer.parseInt(request.getParameter(PARAM_YUGIOH_DEF)));
+            if(normalFields.get(PARAM_YUGIOH_DEF) != null && !normalFields.get(PARAM_YUGIOH_DEF).equals(""))  {
+                if(Integer.parseInt(normalFields.get(PARAM_YUGIOH_DEF)) >= 0)  {
+                    yugiohCard.setYcrDef(Integer.parseInt(normalFields.get(PARAM_YUGIOH_DEF)));
                 } else {
                     errors.add("The DEF must be greater than or equal to zero for the Yu-gi-oh card.");
                 }
             }
 
-            yugiohCard.setYcrAttribute(request.getParameter(PARAM_YUGIOH_ATTRIBUTE));
-            if(request.getParameter(PARAM_YUGIOH_ATTRIBUTE) == null ||
-                    request.getParameter(PARAM_YUGIOH_ATTRIBUTE).equals("") ||
-                    request.getParameter(PARAM_YUGIOH_ATTRIBUTE).length() > 25)  {
+            yugiohCard.setYcrAttribute(normalFields.get(PARAM_YUGIOH_ATTRIBUTE));
+            if(normalFields.get(PARAM_YUGIOH_ATTRIBUTE) == null ||
+                    normalFields.get(PARAM_YUGIOH_ATTRIBUTE).equals("") ||
+                    normalFields.get(PARAM_YUGIOH_ATTRIBUTE).length() > 25)  {
                 errors.add("You must enter an attribute for the Yu-gi-oh card.");
             }
 
-            yugiohCard.setYcrCardType(request.getParameter(PARAM_YUGIOH_CARD_TYPE));
-            if(request.getParameter(PARAM_YUGIOH_CARD_TYPE) == null ||
-                    request.getParameter(PARAM_YUGIOH_CARD_TYPE).equals("") ||
-                    request.getParameter(PARAM_YUGIOH_CARD_TYPE).length() > 50)  {
+            yugiohCard.setYcrCardType(normalFields.get(PARAM_YUGIOH_CARD_TYPE));
+            if(normalFields.get(PARAM_YUGIOH_CARD_TYPE) == null ||
+                    normalFields.get(PARAM_YUGIOH_CARD_TYPE).equals("") ||
+                    normalFields.get(PARAM_YUGIOH_CARD_TYPE).length() > 50)  {
                 errors.add("You must enter a card type for the Yu-gi-oh card.");
             }
 
-            if(request.getParameter(PARAM_YUGIOH_LEVEL) != null && !request.getParameter(PARAM_YUGIOH_LEVEL).equals(""))  {
-                yugiohCard.setYcrLevel(Integer.parseInt(request.getParameter(PARAM_YUGIOH_LEVEL)));
+            if(normalFields.get(PARAM_YUGIOH_LEVEL) != null && !normalFields.get(PARAM_YUGIOH_LEVEL).equals(""))  {
+                yugiohCard.setYcrLevel(Integer.parseInt(normalFields.get(PARAM_YUGIOH_LEVEL)));
             } else  {
                 errors.add("You must enter the level for the Yu-gi-oh card.");
             }
 
-            yugiohCard.setYcrName(request.getParameter(PARAM_YUGIOH_NAME));
-            if(request.getParameter(PARAM_YUGIOH_NAME) == null || request.getParameter(PARAM_YUGIOH_NAME).equals("") ||
-                    request.getParameter(PARAM_YUGIOH_NAME).length() > 255)  {
+            yugiohCard.setYcrName(normalFields.get(PARAM_YUGIOH_NAME));
+            if(normalFields.get(PARAM_YUGIOH_NAME) == null || normalFields.get(PARAM_YUGIOH_NAME).equals("") ||
+                    normalFields.get(PARAM_YUGIOH_NAME).length() > 255)  {
                 errors.add("You must enter the name for the Yu-gi-oh card.");
             }
 
-            yugiohCard.setYcrType(request.getParameter(PARAM_YUGIOH_TYPE));
-            if(request.getParameter(PARAM_YUGIOH_TYPE) == null || request.getParameter(PARAM_YUGIOH_TYPE).equals("") ||
-                    request.getParameter(PARAM_YUGIOH_TYPE).length() > 25)  {
+            yugiohCard.setYcrType(normalFields.get(PARAM_YUGIOH_TYPE));
+            if(normalFields.get(PARAM_YUGIOH_TYPE) == null || normalFields.get(PARAM_YUGIOH_TYPE).equals("") ||
+                    normalFields.get(PARAM_YUGIOH_TYPE).length() > 25)  {
                 errors.add("You must enter the type for the Yu-gi-oh card.");
             }
 
             //check if it is a magic card, if it is validate and set the magic fields
-        } else if(request.getParameter(PARAM_TYPE) != null && !request.getParameter(PARAM_TYPE).equals("") &&
-                request.getParameter(PARAM_TYPE).equals("MAGIC"))  {
+        } else if(normalFields.get(PARAM_TYPE) != null && !normalFields.get(PARAM_TYPE).equals("") &&
+                normalFields.get(PARAM_TYPE).equals("MAGIC"))  {
             //check if it is a new record
             if(magicCard == null)  {
                 magicCard = new MagicCard();
             }
 
             //all fields required except flavor, text, power, toughness, hand, life
-            magicCard.setMcrFlavor(request.getParameter(PARAM_MAGIC_FLAVOR));
-            magicCard.setMcrPower(request.getParameter(PARAM_MAGIC_POWER));
+            magicCard.setMcrFlavor(normalFields.get(PARAM_MAGIC_FLAVOR));
+            magicCard.setMcrPower(normalFields.get(PARAM_MAGIC_POWER));
             if(magicCard.getMcrPower().length() > 5)  {
                 errors.add("The power cannot be more than 5 characters long");
             }
-            magicCard.setMcrToughness(request.getParameter(PARAM_MAGIC_TOUGHNESS));
-            magicCard.setMcrText(request.getParameter(PARAM_MAGIC_TEXT));
+            magicCard.setMcrToughness(normalFields.get(PARAM_MAGIC_TOUGHNESS));
+            magicCard.setMcrText(normalFields.get(PARAM_MAGIC_TEXT));
 
-            if(request.getParameter(PARAM_MAGIC_HAND) != null && !request.getParameter(PARAM_MAGIC_HAND).equals(""))  {
-                magicCard.setMcrHand(Integer.parseInt(request.getParameter(PARAM_MAGIC_HAND)));
+            if(normalFields.get(PARAM_MAGIC_HAND) != null && !normalFields.get(PARAM_MAGIC_HAND).equals(""))  {
+                magicCard.setMcrHand(Integer.parseInt(normalFields.get(PARAM_MAGIC_HAND)));
             }
 
-            if(request.getParameter(PARAM_MAGIC_LIFE) != null && !request.getParameter(PARAM_MAGIC_LIFE).equals(""))  {
-                magicCard.setMcrLife(Integer.parseInt(request.getParameter(PARAM_MAGIC_LIFE)));
+            if(normalFields.get(PARAM_MAGIC_LIFE) != null && !normalFields.get(PARAM_MAGIC_LIFE).equals(""))  {
+                magicCard.setMcrLife(Integer.parseInt(normalFields.get(PARAM_MAGIC_LIFE)));
             }
 
             //required fields
-            magicCard.setMcrArtist(request.getParameter(PARAM_MAGIC_ARTIST));
-            if(request.getParameter(PARAM_MAGIC_ARTIST) == null || request.getParameter(PARAM_MAGIC_ARTIST).equals(""))  {
+            magicCard.setMcrArtist(normalFields.get(PARAM_MAGIC_ARTIST));
+            if(normalFields.get(PARAM_MAGIC_ARTIST) == null || normalFields.get(PARAM_MAGIC_ARTIST).equals(""))  {
                 errors.add("You must enter the artist of the Magic Card.");
             }
 
-            magicCard.setMcrBorder(request.getParameter(PARAM_MAGIC_BORDER));
-            if(request.getParameter(PARAM_MAGIC_BORDER) == null || request.getParameter(PARAM_MAGIC_BORDER).equals(""))  {
+            magicCard.setMcrBorder(normalFields.get(PARAM_MAGIC_BORDER));
+            if(normalFields.get(PARAM_MAGIC_BORDER) == null || normalFields.get(PARAM_MAGIC_BORDER).equals(""))  {
                 errors.add("You must enter the border of the Magic Card");
             }
 
-            magicCard.setMcrCardName(request.getParameter(PARAM_MAGIC_CARD_NAME));
-            if(request.getParameter(PARAM_MAGIC_CARD_NAME) == null || request.getParameter(PARAM_MAGIC_CARD_NAME).equals(""))  {
+            magicCard.setMcrCardName(normalFields.get(PARAM_MAGIC_CARD_NAME));
+            if(normalFields.get(PARAM_MAGIC_CARD_NAME) == null || normalFields.get(PARAM_MAGIC_CARD_NAME).equals(""))  {
                 errors.add("You must enter the card name of the Magic Card.");
             }
 
-            magicCard.setMcrCmc(Double.parseDouble(request.getParameter(PARAM_MAGIC_CMC)));
-            if(request.getParameter(PARAM_MAGIC_CMC) == null || request.getParameter(PARAM_MAGIC_CMC).equals(""))  {
+            magicCard.setMcrCmc(Double.parseDouble(normalFields.get(PARAM_MAGIC_CMC)));
+            if(normalFields.get(PARAM_MAGIC_CMC) == null || normalFields.get(PARAM_MAGIC_CMC).equals(""))  {
                 errors.add("You must enter the CMC of the Magic Card.");
             }
 
-            magicCard.setMcrColors(request.getParameter(PARAM_MAGIC_COLORS));
-            if(request.getParameter(PARAM_MAGIC_COLORS) == null || request.getParameter(PARAM_MAGIC_COLORS).equals(""))  {
+            magicCard.setMcrColors(normalFields.get(PARAM_MAGIC_COLORS));
+            if(normalFields.get(PARAM_MAGIC_COLORS) == null || normalFields.get(PARAM_MAGIC_COLORS).equals(""))  {
                 errors.add("You must enter the color of the Magic Card.");
             }
 
-            magicCard.setMcrLayout(request.getParameter(PARAM_MAGIC_LAYOUT));
-            if(request.getParameter(PARAM_MAGIC_LAYOUT) == null || request.getParameter(PARAM_MAGIC_LAYOUT).equals("") ||
-                    request.getParameter(PARAM_MAGIC_LAYOUT).length() > 50)  {
+            magicCard.setMcrLayout(normalFields.get(PARAM_MAGIC_LAYOUT));
+            if(normalFields.get(PARAM_MAGIC_LAYOUT) == null || normalFields.get(PARAM_MAGIC_LAYOUT).equals("") ||
+                    normalFields.get(PARAM_MAGIC_LAYOUT).length() > 50)  {
                 errors.add("You must select the layout of the Magic card.");
             }
 
-            magicCard.setMcrLoyalty(Integer.parseInt(request.getParameter(PARAM_MAGIC_LOYALTY)));
-            if(request.getParameter(PARAM_MAGIC_LOYALTY) == null || request.getParameter(PARAM_MAGIC_LOYALTY).equals("")
-                    || Integer.parseInt(request.getParameter(PARAM_MAGIC_LOYALTY)) < 0)  {
+            magicCard.setMcrLoyalty(Integer.parseInt(normalFields.get(PARAM_MAGIC_LOYALTY)));
+            if(normalFields.get(PARAM_MAGIC_LOYALTY) == null || normalFields.get(PARAM_MAGIC_LOYALTY).equals("")
+                    || Integer.parseInt(normalFields.get(PARAM_MAGIC_LOYALTY)) < 0)  {
                 errors.add("You must select the life of the Magic card.");
             }
 
-            magicCard.setMcrManaCost(request.getParameter(PARAM_MAGIC_MANA_COST));
-            if(request.getParameter(PARAM_MAGIC_MANA_COST) == null ||
-                    request.getParameter(PARAM_MAGIC_MANA_COST).equals("") ||
-                    request.getParameter(PARAM_MAGIC_MANA_COST).length() > 50)  {
+            magicCard.setMcrManaCost(normalFields.get(PARAM_MAGIC_MANA_COST));
+            if(normalFields.get(PARAM_MAGIC_MANA_COST) == null ||
+                    normalFields.get(PARAM_MAGIC_MANA_COST).equals("") ||
+                    normalFields.get(PARAM_MAGIC_MANA_COST).length() > 50)  {
                 errors.add("You must enter the mana cost of a Magic card.");
             }
 
-            magicCard.setMcrMultiverseId(Integer.parseInt(request.getParameter(PARAM_MAGIC_MULTIVERSE_ID)));
-            if(request.getParameter(PARAM_MAGIC_MULTIVERSE_ID) == null ||
-                    request.getParameter(PARAM_MAGIC_MULTIVERSE_ID).equals("") ||
-                    Integer.parseInt(request.getParameter(PARAM_MAGIC_MULTIVERSE_ID)) < 0)  {
+            magicCard.setMcrMultiverseId(Integer.parseInt(normalFields.get(PARAM_MAGIC_MULTIVERSE_ID)));
+            if(normalFields.get(PARAM_MAGIC_MULTIVERSE_ID) == null ||
+                    normalFields.get(PARAM_MAGIC_MULTIVERSE_ID).equals("") ||
+                    Integer.parseInt(normalFields.get(PARAM_MAGIC_MULTIVERSE_ID)) < 0)  {
                 errors.add("You must enter the mutiverse id of the Magic card.");
             }
 
-            magicCard.setMcrNames(request.getParameter(PARAM_MAGIC_NAMES));
-            if(request.getParameter(PARAM_MAGIC_NAMES) == null || request.getParameter(PARAM_MAGIC_NAMES).equals("") ||
-                    request.getParameter(PARAM_MAGIC_NAMES).length() > 150)  {
+            magicCard.setMcrNames(normalFields.get(PARAM_MAGIC_NAMES));
+            if(normalFields.get(PARAM_MAGIC_NAMES) == null || normalFields.get(PARAM_MAGIC_NAMES).equals("") ||
+                    normalFields.get(PARAM_MAGIC_NAMES).length() > 150)  {
                 errors.add("You must enter the names of the Magic card.");
             }
 
-            magicCard.setMcrNumber(request.getParameter(PARAM_MAGIC_NUMBER));
-            if(request.getParameter(PARAM_MAGIC_NUMBER) == null || request.getParameter(PARAM_MAGIC_NUMBER).equals("") ||
-                    request.getParameter(PARAM_MAGIC_NUMBER).length() > 5)  {
+            magicCard.setMcrNumber(normalFields.get(PARAM_MAGIC_NUMBER));
+            if(normalFields.get(PARAM_MAGIC_NUMBER) == null || normalFields.get(PARAM_MAGIC_NUMBER).equals("") ||
+                    normalFields.get(PARAM_MAGIC_NUMBER).length() > 5)  {
                 errors.add("You must enter the number of the Magic card.");
             }
 
-            magicCard.setMcrRarity(request.getParameter(PARAM_MAGIC_RARITY));
-            if(request.getParameter(PARAM_MAGIC_RARITY) == null || request.getParameter(PARAM_MAGIC_RARITY).equals("") ||
-                    request.getParameter(PARAM_MAGIC_RARITY).length() > 50)  {
+            magicCard.setMcrRarity(normalFields.get(PARAM_MAGIC_RARITY));
+            if(normalFields.get(PARAM_MAGIC_RARITY) == null || normalFields.get(PARAM_MAGIC_RARITY).equals("") ||
+                    normalFields.get(PARAM_MAGIC_RARITY).length() > 50)  {
                 errors.add("You must enter the rarity of the Magic card.");
             }
 
-            magicCard.setMcrReleaseDate(request.getParameter(PARAM_MAGIC_RELEASE_DATE));
-            if(request.getParameter(PARAM_MAGIC_RELEASE_DATE) == null ||
-                    request.getParameter(PARAM_MAGIC_RELEASE_DATE).equals("") ||
-                    request.getParameter(PARAM_MAGIC_RELEASE_DATE).length() > 50)  {
+            magicCard.setMcrReleaseDate(normalFields.get(PARAM_MAGIC_RELEASE_DATE));
+            if(normalFields.get(PARAM_MAGIC_RELEASE_DATE) == null ||
+                    normalFields.get(PARAM_MAGIC_RELEASE_DATE).equals("") ||
+                    normalFields.get(PARAM_MAGIC_RELEASE_DATE).length() > 50)  {
                 errors.add("You must enter the release date of the magic card.");
             }
 
-            if(request.getParameter(PARAM_MAGIC_RESERVED) != null && !request.getParameter(PARAM_MAGIC_RESERVED).equals("") &&
-                    request.getParameter(PARAM_MAGIC_RESERVED).equals("true"))  {
+            if(normalFields.get(PARAM_MAGIC_RESERVED) != null && !normalFields.get(PARAM_MAGIC_RESERVED).equals("") &&
+                    normalFields.get(PARAM_MAGIC_RESERVED).equals("true"))  {
                 magicCard.setMcrReserved(Byte.parseByte("1"));
             } else  {
                 magicCard.setMcrReserved(Byte.parseByte("0"));
             }
 
-            if(request.getParameter(PARAM_MAGIC_SET_ID) != null && !request.getParameter(PARAM_MAGIC_SET_ID).equals(""))  {
-                MagicSet magicSet = (MagicSet) session.get(MagicSet.class, request.getParameter(PARAM_MAGIC_SET_ID));
+            if(normalFields.get(PARAM_MAGIC_SET_ID) != null && !normalFields.get(PARAM_MAGIC_SET_ID).equals(""))  {
+                MagicSet magicSet = (MagicSet) session.get(MagicSet.class, normalFields.get(PARAM_MAGIC_SET_ID));
                 if(magicSet != null)  {
                     magicCard.setMagicSet(magicSet);
                 } else  {
@@ -647,75 +677,75 @@ public class InventoryEditorServlet extends HttpServlet {
                 errors.add("You must select a magic set.");
             }
 
-            magicCard.setMcrSubTypes(request.getParameter(PARAM_MAGIC_SUB_TYPES));
-            if(request.getParameter(PARAM_MAGIC_SUB_TYPES) == null || request.getParameter(PARAM_MAGIC_SUB_TYPES).equals("") ||
-                    request.getParameter(PARAM_MAGIC_SUB_TYPES).length() > 100)  {
+            magicCard.setMcrSubTypes(normalFields.get(PARAM_MAGIC_SUB_TYPES));
+            if(normalFields.get(PARAM_MAGIC_SUB_TYPES) == null || normalFields.get(PARAM_MAGIC_SUB_TYPES).equals("") ||
+                    normalFields.get(PARAM_MAGIC_SUB_TYPES).length() > 100)  {
                 errors.add("You must enter a magic sub type.");
             }
 
-            magicCard.setMcrSuperTypes(request.getParameter(PARAM_MAGIC_SUPER_TYPES));
-            if(request.getParameter(PARAM_MAGIC_SUPER_TYPES) == null || request.getParameter(PARAM_MAGIC_SUPER_TYPES).equals("") ||
-                    request.getParameter(PARAM_MAGIC_SUPER_TYPES).length() > 100)  {
+            magicCard.setMcrSuperTypes(normalFields.get(PARAM_MAGIC_SUPER_TYPES));
+            if(normalFields.get(PARAM_MAGIC_SUPER_TYPES) == null || normalFields.get(PARAM_MAGIC_SUPER_TYPES).equals("") ||
+                    normalFields.get(PARAM_MAGIC_SUPER_TYPES).length() > 100)  {
                 errors.add("You must enter the super type of the Magic Card.");
             }
 
-            if(request.getParameter(PARAM_MAGIC_TIMESHIFTED) != null &&
-                    request.getParameter(PARAM_MAGIC_TIMESHIFTED).equals("true"))  {
+            if(normalFields.get(PARAM_MAGIC_TIMESHIFTED) != null &&
+                    normalFields.get(PARAM_MAGIC_TIMESHIFTED).equals("true"))  {
                 magicCard.setMcrTimeshifted(Byte.parseByte("1"));
             } else  {
                 magicCard.setMcrTimeshifted(Byte.parseByte("0"));
             }
 
-            magicCard.setMcrType(request.getParameter(PARAM_MAGIC_TYPE));
-            if(request.getParameter(PARAM_MAGIC_TYPE) == null || request.getParameter(PARAM_MAGIC_TYPE).equals("") ||
-                    request.getParameter(PARAM_MAGIC_TYPE).length() > 500)  {
+            magicCard.setMcrType(normalFields.get(PARAM_MAGIC_TYPE));
+            if(normalFields.get(PARAM_MAGIC_TYPE) == null || normalFields.get(PARAM_MAGIC_TYPE).equals("") ||
+                    normalFields.get(PARAM_MAGIC_TYPE).length() > 500)  {
                 errors.add("You must enter the type of the magic card,");
             }
 
-            magicCard.setMcrTypes(request.getParameter(PARAM_MAGIC_TYPES));
-            if(request.getParameter(PARAM_MAGIC_TYPES) == null || request.getParameter(PARAM_MAGIC_TYPES).equals("") ||
-                    request.getParameter(PARAM_MAGIC_TYPES).length() > 100)  {
+            magicCard.setMcrTypes(normalFields.get(PARAM_MAGIC_TYPES));
+            if(normalFields.get(PARAM_MAGIC_TYPES) == null || normalFields.get(PARAM_MAGIC_TYPES).equals("") ||
+                    normalFields.get(PARAM_MAGIC_TYPES).length() > 100)  {
                 errors.add("You must enter the types of the magic card.");
             }
 
-            magicCard.setMcrVariations(request.getParameter(PARAM_MAGIC_VARIATIONS));
-            if(request.getParameter(PARAM_MAGIC_VARIATIONS) == null ||
-                    request.getParameter(PARAM_MAGIC_VARIATIONS).equals("") ||
-                    request.getParameter(PARAM_MAGIC_VARIATIONS).length() > 100)  {
+            magicCard.setMcrVariations(normalFields.get(PARAM_MAGIC_VARIATIONS));
+            if(normalFields.get(PARAM_MAGIC_VARIATIONS) == null ||
+                    normalFields.get(PARAM_MAGIC_VARIATIONS).equals("") ||
+                    normalFields.get(PARAM_MAGIC_VARIATIONS).length() > 100)  {
                 errors.add("You must enter the variations of the magic card.");
             }
 
-            magicCard.setMcrWatermark(request.getParameter(PARAM_MAGIC_WATERMARK));
-            if(request.getParameter(PARAM_MAGIC_WATERMARK) == null ||
-                    request.getParameter(PARAM_MAGIC_WATERMARK).equals("") ||
-                   request.getParameter(PARAM_MAGIC_WATERMARK).length() > 50)  {
+            magicCard.setMcrWatermark(normalFields.get(PARAM_MAGIC_WATERMARK));
+            if(normalFields.get(PARAM_MAGIC_WATERMARK) == null ||
+                    normalFields.get(PARAM_MAGIC_WATERMARK).equals("") ||
+                   normalFields.get(PARAM_MAGIC_WATERMARK).length() > 50)  {
                 errors.add("You must enter the watermark of the magic card.");
             }
 
             //check if it is a event, if it is validate and set the event fields
-        } else if(request.getParameter(PARAM_TYPE) != null && !request.getParameter(PARAM_TYPE).equals("") &&
-                request.getParameter(PARAM_TYPE).equals("EVENT"))  {
+        } else if(normalFields.get(PARAM_TYPE) != null && !normalFields.get(PARAM_TYPE).equals("") &&
+                normalFields.get(PARAM_TYPE).equals("EVENT"))  {
 
             event = new Event();
 
             Calendar fromDate = Calendar.getInstance();
-            if(request.getParameter(PARAM_FROM_EVENT_DATE) != null && !request.getParameter(PARAM_FROM_EVENT_DATE).equals(""))  {
-                fromDate.setTime(ServletUtil.getDateFromString(request.getParameter(PARAM_FROM_EVENT_DATE)));
+            if(normalFields.get(PARAM_FROM_EVENT_DATE) != null && !normalFields.get(PARAM_FROM_EVENT_DATE).equals(""))  {
+                fromDate.setTime(ServletUtil.getDateFromString(normalFields.get(PARAM_FROM_EVENT_DATE)));
             } else  {
                 errors.add("You must select a start date for the event.");
             }
 
-            if(request.getParameter(PARAM_FROM_EVENT_HOUR) != null && !request.getParameter(PARAM_FROM_EVENT_HOUR).equals(""))  {
+            if(normalFields.get(PARAM_FROM_EVENT_HOUR) != null && !normalFields.get(PARAM_FROM_EVENT_HOUR).equals(""))  {
                 //sets it on a 12 hr basis
-                fromDate.set(Calendar.HOUR, Integer.parseInt(request.getParameter(PARAM_FROM_EVENT_HOUR)));
+                fromDate.set(Calendar.HOUR, Integer.parseInt(normalFields.get(PARAM_FROM_EVENT_HOUR)));
             }
 
-            if(request.getParameter(PARAM_FROM_EVENT_MIN) != null && !request.getParameter(PARAM_FROM_EVENT_MIN).equals(""))  {
-                fromDate.set(Calendar.MINUTE, Integer.parseInt(request.getParameter(PARAM_FROM_EVENT_MIN)));
+            if(normalFields.get(PARAM_FROM_EVENT_MIN) != null && !normalFields.get(PARAM_FROM_EVENT_MIN).equals(""))  {
+                fromDate.set(Calendar.MINUTE, Integer.parseInt(normalFields.get(PARAM_FROM_EVENT_MIN)));
             }
 
-            if(request.getParameter(PARAM_FROM_EVENT_AM_PM) != null && !request.getParameter(PARAM_FROM_EVENT_AM_PM).equals(""))  {
-                if(request.getParameter(PARAM_FROM_EVENT_AM_PM).equalsIgnoreCase("AM"))  {
+            if(normalFields.get(PARAM_FROM_EVENT_AM_PM) != null && !normalFields.get(PARAM_FROM_EVENT_AM_PM).equals(""))  {
+                if(normalFields.get(PARAM_FROM_EVENT_AM_PM).equalsIgnoreCase("AM"))  {
                     fromDate.set(Calendar.AM_PM, Calendar.AM);
                 } else  {
                     fromDate.set(Calendar.AM_PM, Calendar.PM);
@@ -725,23 +755,23 @@ public class InventoryEditorServlet extends HttpServlet {
             event.setFromDate(fromDate.getTime());
 
             Calendar toDate = Calendar.getInstance();
-            if(request.getParameter(PARAM_TO_EVENT_DATE) != null && !request.getParameter(PARAM_TO_EVENT_DATE).equals(""))  {
-                toDate.setTime(ServletUtil.getDateFromString(request.getParameter(PARAM_TO_EVENT_DATE)));
+            if(normalFields.get(PARAM_TO_EVENT_DATE) != null && !normalFields.get(PARAM_TO_EVENT_DATE).equals(""))  {
+                toDate.setTime(ServletUtil.getDateFromString(normalFields.get(PARAM_TO_EVENT_DATE)));
             } else  {
                 errors.add("You must select an end date for the event.");
             }
 
-            if(request.getParameter(PARAM_TO_EVENT_HOUR) != null && !request.getParameter(PARAM_TO_EVENT_HOUR).equals(""))  {
+            if(normalFields.get(PARAM_TO_EVENT_HOUR) != null && !normalFields.get(PARAM_TO_EVENT_HOUR).equals(""))  {
                 //sets it on a 12 hr basis
-                toDate.set(Calendar.HOUR, Integer.parseInt(request.getParameter(PARAM_TO_EVENT_HOUR)));
+                toDate.set(Calendar.HOUR, Integer.parseInt(normalFields.get(PARAM_TO_EVENT_HOUR)));
             }
 
-            if(request.getParameter(PARAM_TO_EVENT_MIN) != null && !request.getParameter(PARAM_TO_EVENT_MIN).equals(""))  {
-                toDate.set(Calendar.MINUTE, Integer.parseInt(request.getParameter(PARAM_TO_EVENT_MIN)));
+            if(normalFields.get(PARAM_TO_EVENT_MIN) != null && !normalFields.get(PARAM_TO_EVENT_MIN).equals(""))  {
+                toDate.set(Calendar.MINUTE, Integer.parseInt(normalFields.get(PARAM_TO_EVENT_MIN)));
             }
 
-            if(request.getParameter(PARAM_TO_EVENT_AM_PM) != null && !request.getParameter(PARAM_TO_EVENT_AM_PM).equals(""))  {
-                if(request.getParameter(PARAM_TO_EVENT_AM_PM).equalsIgnoreCase("AM"))  {
+            if(normalFields.get(PARAM_TO_EVENT_AM_PM) != null && !normalFields.get(PARAM_TO_EVENT_AM_PM).equals(""))  {
+                if(normalFields.get(PARAM_TO_EVENT_AM_PM).equalsIgnoreCase("AM"))  {
                     toDate.set(Calendar.AM_PM, Calendar.AM);
                 } else  {
                     toDate.set(Calendar.AM_PM, Calendar.PM);
@@ -754,35 +784,40 @@ public class InventoryEditorServlet extends HttpServlet {
                 errors.add("The start date must fall before the end date.");
             }
 
-            event.setDescription(request.getParameter(PARAM_EVENT_DESCRIPTION));
-            if(request.getParameter(PARAM_EVENT_DESCRIPTION) == null ||
-                    request.getParameter(PARAM_EVENT_DESCRIPTION).equals(""))  {
+            event.setDescription(normalFields.get(PARAM_EVENT_DESCRIPTION));
+            if(normalFields.get(PARAM_EVENT_DESCRIPTION) == null ||
+                    normalFields.get(PARAM_EVENT_DESCRIPTION).equals(""))  {
                 errors.add("You must enter a description for the event.");
             }
 
-            if(request.getParameter(PARAM_EVENT_NUMBER_IN_STORE_USERS) != null &&
-                    !request.getParameter(PARAM_EVENT_NUMBER_IN_STORE_USERS).equals(""))  {
-                event.setNumberInStoreUsers(Integer.parseInt(request.getParameter(PARAM_EVENT_NUMBER_IN_STORE_USERS)));
+            if(normalFields.get(PARAM_EVENT_NUMBER_IN_STORE_USERS) != null &&
+                    !normalFields.get(PARAM_EVENT_NUMBER_IN_STORE_USERS).equals(""))  {
+                event.setNumberInStoreUsers(Integer.parseInt(normalFields.get(PARAM_EVENT_NUMBER_IN_STORE_USERS)));
             } else  {
                 errors.add("You must enter the number of in store users.");
             }
 
-            if(request.getParameter(PARAM_EVENT_PLAYER_LIMIT) != null &&
-                    !request.getParameter(PARAM_EVENT_PLAYER_LIMIT).equals(""))  {
-                event.setPlayerLimit(Integer.parseInt(request.getParameter(PARAM_EVENT_PLAYER_LIMIT)));
+            if(normalFields.get(PARAM_EVENT_PLAYER_LIMIT) != null &&
+                    !normalFields.get(PARAM_EVENT_PLAYER_LIMIT).equals(""))  {
+                event.setPlayerLimit(Integer.parseInt(normalFields.get(PARAM_EVENT_PLAYER_LIMIT)));
             } else  {
                 errors.add("You must enter the player limit.");
             }
 
-            event.setTitle(request.getParameter(PARAM_EVENT_TITLE));
-            if(request.getParameter(PARAM_EVENT_TITLE) == null || request.getParameter(PARAM_EVENT_TITLE).equals("") ||
-                    request.getParameter(PARAM_EVENT_TITLE).length() > 200)  {
+            event.setTitle(normalFields.get(PARAM_EVENT_TITLE));
+            if(normalFields.get(PARAM_EVENT_TITLE) == null || normalFields.get(PARAM_EVENT_TITLE).equals("") ||
+                    normalFields.get(PARAM_EVENT_TITLE).length() > 200)  {
                 errors.add("You must enter a title for the event.");
             }
 
         }
-        //otherwise it is just a generic item
 
+        //check that there are not errors before creating the image (otherwise we do not want to upload it)
+        if(errors.size() == 0)  {
+            processUpload(request, uploadFields, normalFields.get(PARAM_TYPE), session, inventory);
+        }
+
+        //make sure there are no errors generated from the image or otherwise
         if(errors.size() == 0)  {
             //no errors so save the object and forward back to the editor with a save message
             if(yugiohCard != null)  {
@@ -814,11 +849,35 @@ public class InventoryEditorServlet extends HttpServlet {
 
             session.save(inventory);
 
+            ResultSet rs = ServletUtil.getResultSetFromSql("select * from stt_cost where cst_inv_uid = " + inventory.getUid());
+            ArrayList<Integer> stockNotificationsToRemove = new ArrayList<>();
             if(costs != null)  {
                 for(Cost currentCost : costs)  {
                     if(currentCost.getItemPrice() > 0 || currentCost.getItemQuantity() > 0)  {
-                        currentCost.setInvUid(inventory.getUid());
-                        session.save(currentCost);
+                        try {
+                            if(rs != null && rs.next())  {
+                                while(rs.next())  {
+                                    if(rs.getString("cst_item_condition").equalsIgnoreCase(currentCost.getItemCondition().toString()))  {
+                                        if(rs.getInt("cst_item_quantity") > currentCost.getItemQuantity())  {
+                                            //do check here
+                                            ResultSet usersToNotify = ServletUtil.getResultSetFromSql("select * from stt_stock_notification where snt_inv_uid = " + inventory.getUid() + " and snt_condition = '" + currentCost.getItemCondition() + "'");
+                                            while(usersToNotify != null && usersToNotify.next())  {
+                                                //send email here
+                                                stockNotificationsToRemove.add(usersToNotify.getInt("snt_uid"));
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                                //possibly greater must check
+                            } else  {
+                                //don't exit so must check for any stock notifications that exist
+                                currentCost.setInvUid(inventory.getUid());
+                                session.save(currentCost);
+                            }
+                        } catch (SQLException e) {
+                            logger.error("Could not go through resultset.", e);
+                        }
                     }
                 }
             }
@@ -830,9 +889,32 @@ public class InventoryEditorServlet extends HttpServlet {
                 }
             }
 
+            //delete stock notification
+            String toDelete = "";
+            for(int currentNotification: stockNotificationsToRemove)  {
+                toDelete += currentNotification + ", ";
+            }
+
+            //gets rid of last comma
+            if(toDelete.length() > 2)  {
+                toDelete = toDelete.substring(0, toDelete.length() - 2);
+            }
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MONTH, -3);
+            String sql = "delete from stt_stock_notification where snt_uid in (:toDelete) or snt_created < :dateCreated";
+            Query query = session.createSQLQuery(sql);
+            query.setParameter("toDelete", toDelete);
+            query.setParameter("dateCreated", calendar.get(Calendar.YEAR) + calendar.get(Calendar.MONTH) + calendar.get(Calendar.DAY_OF_MONTH) + "0000");
+            int result = query.executeUpdate();
+
+            if(result == 0)  {
+                logger.error("Could not delete the stock notifications.");
+            }
+
             session.getTransaction().commit();
-            forwardToEditor(request, response, null, "The transaction was saved successfully", inventory,
-                    magicCard, event, yugiohCard, warning, magicSets, request.getParameter(PARAM_TYPE), costs, categories);
+            info.add("The transaction was saved successfully");
+            forwardToEditor(request, response, null, info, inventory,
+                    magicCard, event, yugiohCard, warning, magicSets, normalFields.get(PARAM_TYPE), costs, categories);
         }  else  {
             if(magicCard == null)  {
                 magicCard = new MagicCard();
@@ -845,16 +927,16 @@ public class InventoryEditorServlet extends HttpServlet {
             if(event == null)  {
                 event = new Event();
             }
-            forwardToEditor(request, response, errors, "", inventory, magicCard, event, yugiohCard, "", magicSets,
-                    request.getParameter(PARAM_TYPE), costs, categories);
+            forwardToEditor(request, response, errors, null, inventory, magicCard, event, yugiohCard, null, magicSets,
+                    normalFields.get(PARAM_TYPE), costs, categories);
         }
 
         session.close();
     }
 
     private static void forwardToEditor(HttpServletRequest request, HttpServletResponse response,ArrayList<String> errors,
-                                        String info, Inventory inventory, MagicCard magicCard,
-                                        Event event, YugiohCard yugiohCard, String warning, ResultSet magicSets,
+                                        ArrayList<String> info, Inventory inventory, MagicCard magicCard,
+                                        Event event, YugiohCard yugiohCard, ArrayList<String> warning, ResultSet magicSets,
                                         String type, List<Cost> costs, List<Category> categories) throws IOException,
             ServletException {
         request.setAttribute(ATTR_ERRORS, errors);
@@ -869,6 +951,80 @@ public class InventoryEditorServlet extends HttpServlet {
         request.setAttribute(ATTR_COST_ITEMS, costs);
         request.setAttribute(ATTR_CATEGORIES, categories);
         request.getRequestDispatcher("/admin/InventoryEditor.jsp").forward(request, response);
+    }
+
+    private void processUpload(HttpServletRequest request, HashMap<String,FileItem> uploadedFiles, String type, Session session, Inventory inventory)  {
+        FileItem uploadFileItem = uploadedFiles.get(PARAM_INVENTORY_IMAGE);
+
+        if(uploadFileItem == null)  {
+            return;
+        }
+
+        String originalFileName = uploadFileItem.getName();
+        if(originalFileName != null && !originalFileName.equals(""))  {
+            inventory.setImage(originalFileName);
+            String filePart = "/" + (originalFileName);
+
+            String magicPath = "/inventory/magic";
+            String yugiohPath = "/inventory/yugioh";
+            String otherPath = "/inventory/other";
+
+            //default is website path
+            String path = "/website";
+            if(type != null)  {
+                if(type.equalsIgnoreCase("magic"))  {
+                    path = magicPath;
+                } else if(type.equalsIgnoreCase("yugioh"))  {
+                    path = yugiohPath;
+                } else if(type.equalsIgnoreCase("GENERIC"))  {
+                    path = otherPath;
+                }
+            }
+
+            //used for local
+            String uploadFilePath = "c:/Users/Jessica/IdeaProjects/statbooster2/web/images" + path + filePart;
+
+            //used for prod on digitalocean
+            //String uploadFilePath = "/home/images/inventory/other" + path + filePart;
+            File uploadFile = new File(uploadFilePath);
+            Image image = new Image();
+            image.setPath(uploadFilePath);
+
+            try  {
+                uploadFileItem.write(uploadFile);
+                info.add("The file was uploaded successfully to " + uploadFilePath);
+            }  catch(Exception e)  {
+                logger.error("Could not write the file.", e);
+                errors.add("The file could not be uploaded");
+            }
+        }
+        //no error, they do not have to select an image to upload
+    }
+
+
+    //gets all of the other fields like text, checkbox, etc
+    private HashMap<String, String> getNormalFields(List<FileItem> uploadItems) throws IOException  {
+        HashMap<String, String> normalFields = new HashMap<>();
+
+        for(FileItem currentItem : uploadItems)  {
+            if(currentItem.isFormField())  {
+                normalFields.put(currentItem.getFieldName(), currentItem.getString());
+            }
+        }
+
+        return normalFields;
+    }
+
+    //gets all of the fields that are files to upload
+    private HashMap<String, FileItem> getUploadedFields(List<FileItem> uploadItems)  {
+        HashMap<String, FileItem> normalFields = new HashMap<>();
+        for (FileItem currentItem : uploadItems)  {
+            if(!currentItem.isFormField())  {
+                normalFields.put(currentItem.getFieldName(), currentItem);
+            }
+        }
+
+        return normalFields;
     }
 
     public static String getEditUrl(int inventoryUid)  {

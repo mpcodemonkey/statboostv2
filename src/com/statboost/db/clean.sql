@@ -169,12 +169,12 @@ CREATE TABLE `stt_stock_notification` (
   `snt_uid` int(11) NOT NULL AUTO_INCREMENT,
   `snt_email` varchar(200) DEFAULT NULL,
   `snt_inv_uid` int(11) NOT NULL,
+  `snt_condition` enum('NEW','NEAR_MINT','LIGHTLY_PLAYED','MODERATELY_PLAYED','HEAVILY_PLAYED','DAMAGED') DEFAULT NULL,
+  `snt_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`snt_uid`),
   KEY `snt_inv_uid_fk` (`snt_inv_uid`),
   CONSTRAINT `snt_inv_uid_fk` FOREIGN KEY (`snt_inv_uid`) REFERENCES `stt_inventory` (`inv_uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
 
 CREATE TABLE stt_cost (
   cst_uid int(11) NOT NULL AUTO_INCREMENT,

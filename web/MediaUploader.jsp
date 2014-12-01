@@ -40,7 +40,6 @@
         <tr>
             <td colspan="2">Please make sure the image has a meaningful name before uploading the image. You will NOT be able to edit or delete the image after it has been uploaded.</td>
         </tr>
-        <%--todo: create radio buttons for determining where the image will be used--%>
         <%--todo: maybe give them a way to pick the file name--%>
         <tr>
             <td colspan="2">

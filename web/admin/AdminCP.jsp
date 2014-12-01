@@ -1,3 +1,6 @@
+<%@ page import="com.statboost.controllers.admin.InventoryEditorServlet" %>
+<%@ page import="com.statboost.models.inventory.InventoryCategory" %>
+<%@ page import="com.statboost.controllers.admin.InventorySqllistServlet" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <jsp:include page="/include/Header.jsp"/>
@@ -45,8 +48,7 @@
                 <div class="panel-body">
                     <div class="btn-toolbar">
                         <div class="btn-group"><a href="/Events"><button class="btn btn-primary">View Event Calendar</button></a></div>
-                        <div class="btn-group"><button class="btn btn-primary">Add New Event</button></div>
-                        <div class="btn-group"><button class="btn btn-primary">Cancel Event</button></div>
+                        <div class="btn-group"><a href="<%=InventoryEditorServlet.SRV_MAP + "?" + InventoryEditorServlet.PARAM_TYPE + "=EVENT"%>" class="btn btn-primary">Add New Event</a></div>
                     </div>
                 </div>
             </div>
@@ -56,9 +58,8 @@
                 </div>
                 <div class="panel-body">
                     <div class="btn-toolbar">
-                        <div class="btn-group"><a href="/admin/inventorysqllist"><button class="btn btn-primary">Browse Inventory</button></a></div>
-                        <div class="btn-group"><a href="/admin/inventoryeditor"><button class="btn btn-primary">Add New Inventory</button></a></div>
-                        <div class="btn-group"><button class="btn btn-danger">Remove Inventory</button></div>
+                        <div class="btn-group"><a href="<%=InventorySqllistServlet.SRV_MAP%>"><button class="btn btn-primary">Browse Inventory</button></a></div>
+                        <div class="btn-group"><a href="<%=InventoryEditorServlet.SRV_MAP%>"><button class="btn btn-primary">Add New Inventory</button></a></div>
                     </div>
                 </div>
             </div>

@@ -108,16 +108,19 @@
 <div class="container-fluid">
 <div class="well well-sm col-sm-12">
 <div class="col-sm-12">
-    <form method="post" action="<%=InventoryEditorServlet.SRV_MAP%>">
+    <form method="post" action="<%=InventoryEditorServlet.SRV_MAP%>" enctype="multipart/form-data">
         <input type="hidden" name="<%=InventoryEditorServlet.PARAM_INVENTORY_UID%>" value="<%=inventory.getUid()%>">
         <input type="hidden" name="<%=InventoryEditorServlet.PARAM_MAGIC_CARD_UID%>" value="<%=magicCard != null? magicCard.getMcrUid(): null%>">
         <input type="hidden" name="<%=InventoryEditorServlet.PARAM_YUGIOH_UID%>" value="<%=yugiohCard != null? yugiohCard.getYcrUid(): null%>">
         <input type="hidden" name="<%=InventoryEditorServlet.PARAM_EVENT_UID%>" value="<%=event != null? event.getUid(): null%>">
         <%
             if(request.getAttribute(InventoryEditorServlet.ATTR_INFO)  != null)  {
+                ArrayList<String> info = (ArrayList<String>) request.getAttribute(InventoryEditorServlet.ATTR_INFO);
+                for(String currentInfo : info)  {
         %>
-        <%=request.getAttribute(InventoryEditorServlet.ATTR_INFO)%>
+        <%=currentInfo%>
         <%
+                }
             }
         %>
         <%
@@ -133,10 +136,12 @@
 
         <%
             if(request.getAttribute(InventoryEditorServlet.ATTR_WARNING) != null)  {
-                String warning = (String) request.getAttribute(InventoryEditorServlet.ATTR_WARNING);
+                ArrayList<String> warnings = (ArrayList<String>) request.getAttribute(InventoryEditorServlet.ATTR_WARNING);
+                for(String currentWarning : warnings)  {
         %>
-        <%=warning%>
+        <%=currentWarning%>
         <%
+                }
             }
         %>
         <h3 class="col-sm-12">Add New Inventory</h3>
@@ -239,40 +244,34 @@
                 <div><b>Damaged</b></div>
                 <div><input type="text" name="<%=PARAM_NUM_DAMAGED_IN_STOCK%>" value="<%=costHash.get(ItemCondition.DAMAGED) != null ? costHash.get(ItemCondition.DAMAGED).getItemQuantity(): 0%>"></div>
             </div>
+            <div>
+                <div>Please make sure that the image name is accurate.</div>
+                <div></div>
+            </div>
+            <div>
+                <div><b>Image</b></div>
+                <div>
+                    <input type="file" name="<%=PARAM_INVENTORY_IMAGE%>">
+                </div>
+            </div>
+            <div>
+                <div><b>Description</b></div>
+                <div><textarea cols="50" rows="5" name="<%=PARAM_INVENTORY_DESCRIPTION%>"><%=ServletUtil.hideNulls(inventory.getDescription())%></textarea></div>
+            </div>
+            <div>
+                <input id="GENERIC" class="inventoryType" type="radio" onclick="switchType();" name="<%=PARAM_TYPE%>" value="GENERIC">
+                <label for="GENERIC">Generic</label>
+                <input id="MAGIC" class="inventoryType" type="radio" onclick="switchType();" name="<%=PARAM_TYPE%>" value="MAGIC">
+                <label for="MAGIC">Magic</label>
+                <input id="YUGIOH" class="inventoryType" type="radio" onclick="switchType();" name="<%=PARAM_TYPE%>" value="YUGIOH">
+                <label for="YUGIOH">Yu-gi-oh</label>
+                <input id="EVENT" class="inventoryType" type="radio" onclick="switchType();" name="<%=PARAM_TYPE%>" value="EVENT">
+                <label for="EVENT">Event</label>
+            </div>
         </div>
 
         <table>
         <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-            </tr>
-
-            <tr>
-                <td colspan="2">Number in Stock</td>
-            </tr>
-
-            <%--todo: give them way to browse images--%>
-            <tr>
-                <td>Image Url</td>
-                <td><input type="text" name="<%=PARAM_INVENTORY_IMAGE%>" value="<%=ServletUtil.hideNulls(request.getParameter(PARAM_INVENTORY_IMAGE))%>"></td>
-            </tr>
-            <tr>
-                <td>Description</td>
-                <td><textarea cols="50" rows="5" name="<%=PARAM_INVENTORY_DESCRIPTION%>"><%=ServletUtil.hideNulls(inventory.getDescription())%></textarea></td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <input id="GENERIC" class="inventoryType" type="radio" onclick="switchType();" name="<%=PARAM_TYPE%>" value="GENERIC">
-                    <label for="GENERIC">Generic</label>
-                    <input id="MAGIC" class="inventoryType" type="radio" onclick="switchType();" name="<%=PARAM_TYPE%>" value="MAGIC">
-                    <label for="MAGIC">Magic</label>
-                    <input id="YUGIOH" class="inventoryType" type="radio" onclick="switchType();" name="<%=PARAM_TYPE%>" value="YUGIOH">
-                    <label for="YUGIOH">Yu-gi-oh</label>
-                    <input id="EVENT" class="inventoryType" type="radio" onclick="switchType();" name="<%=PARAM_TYPE%>" value="EVENT">
-                    <label for="EVENT">Event</label>
-                </td>
-            </tr>
             <tr>
                 <td colspan="2">
                     <div id="magicDiv">
