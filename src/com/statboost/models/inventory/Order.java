@@ -5,6 +5,7 @@ import com.statboost.models.actor.User;
 import com.statboost.models.enumType.OrderStatus;
 import com.statboost.models.session.QueryObject;
 import com.statboost.util.HibernateUtil;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -119,6 +120,10 @@ public class Order {
                 tx = session.beginTransaction();
                 //query
                 order = (Order) session.createQuery("FROM Order WHERE uid=" + orderNumber + "").uniqueResult();
+                //init all the order's items
+                for (InventoryItem i : order.getInventoryItems()) {
+                    Hibernate.initialize(i);
+                }
                 tx.commit();
             } catch (HibernateException e) {
                 if (tx != null) tx.rollback();

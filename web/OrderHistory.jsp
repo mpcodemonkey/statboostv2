@@ -29,16 +29,16 @@
                         <h2 align="center">Order-000${param.orderID}</h2>
                         <table class="table table-responsive table-bordered">
                             <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Condition</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                            </tr>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Condition</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                </tr>
                             </thead>
-                            <thead>
+                            <tbody>
                             <c:forEach  items="${requestScope.orderItems}" var="item" varStatus="i">
                                 <tr>
                                     <td>${i.count}</td>
@@ -49,7 +49,7 @@
                                     <td><fmt:formatNumber value="${item.price}" type="currency"/></td>
                                 </tr>
                             </c:forEach>
-                            </thead>
+                            </tbody>
                         </table>
                     </div>
                 </c:if>
