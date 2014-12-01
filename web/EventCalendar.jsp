@@ -48,7 +48,6 @@
 
     });
 </script>
-
 <div class="container">
     <div id="fullCalModal" class="modal fade">
         <div class="modal-dialog">
@@ -58,6 +57,11 @@
                 </div>
                 <div id="modalBody" class="modal-body">
                     <div class="row">
+                        <div class="col-xs-6 col-md-3">
+                            <a href="#" class="thumbnail">
+                                <img src="http://localhost:8080/include/images/logo.png" alt="">
+                            </a>
+                        </div>
                         <div class="col-md-4">
                             <div class="row">
                                 <div class="col-md-4">
@@ -74,27 +78,23 @@
                             <p id="eventDesc">This paragraph holds the description!</p>
                         </div>
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <h4 class="pull-left">Price: </h4>
                     <h4 class="pull-left" id="eventPrice">$$$$</h4>
                     <button class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-default" onclick="addToCart(theId, cond, 1)">Register</button>
+                    <button type="button" class="btn btn-primary" onclick="addToCart(theId, cond, 1)">Register</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
 <div class="container-fluid">
     <div class="well well-lg">
-        <h2 align="center"><img src="/include/images/logo.png" height="75px" width="100px"> Event Calendar</h2>
+        <h2 align="center"><img src="http://127.0.0.1:40000/http://teamjjacs.us/include/images/logo.png" height="75px" width="100px"> Event Calendar</h2>
         <div id="calendar"></div>
     </div>
 </div>
-
 <script>
     function addToCart(inv_uid, condition, quantity) {
         xmlhttp = new XMLHttpRequest();
