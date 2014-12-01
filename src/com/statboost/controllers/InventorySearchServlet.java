@@ -57,11 +57,11 @@ public class InventorySearchServlet extends HttpServlet {
 
         if(request.getParameter("mId") != null){
             GenericDAO inventoryDAO = new GenericDAO();
-            hql = "From Inventory as I, Cost as C where C.invUid = I.uid and I.magicCard.mcrMultiverseId=:id";
+            sql = "SELECT i.inv_uid, co.cst_item_quantity, co.cst_item_price, i.inv_name, i.inv_description, i.inv_image, co.cst_item_condition FROM stt_inventory i, stt_cost co, stt_magic_card m where co.cst_inv_uid = i.inv_uid and i.inv_mcr_uid = m.mcr_uid and m.mcr_multiverse_id = :id";
             int theId = ServletUtil.isInteger(request.getParameter("mId")) == true ? Integer.parseInt(request.getParameter("mId")) : -1;
             buildableQuery.put("id", theId);
-            QueryObject qo = new QueryObject(buildableQuery, hql);
-            inventoryResults = (List<Object>)inventoryDAO.getResultSet(qo);
+            QueryObject qo = new QueryObject(buildableQuery, sql);
+            inventoryResults = (List<Object>)inventoryDAO.getResultSetFromSqlIterative(qo, 1);
 
             ArrayList<InventoryRecord> inventoryPage = getInventoryRecords(inventoryResults);
             //set search results
@@ -76,16 +76,18 @@ public class InventorySearchServlet extends HttpServlet {
             }
             //route to results page even if no results found or transaction throws exception
             request.getRequestDispatcher("/InventoryResult.jsp").forward(request, response);
+            return;
 
 
         }//TODO: merge yId and mId code so it's not redundant
         else if(request.getParameter("yId") != null){
             GenericDAO inventoryDAO = new GenericDAO();
-            hql = "From Inventory as I, Cost as C where C.invUid = I.uid and I.yugiohCard.ycrUid=:id";
+            //hql = "From Inventory as I, Cost as C where C.invUid = I.uid and I.yugiohCard.ycrUid=:id";
+            sql = "SELECT i.inv_uid, co.cst_item_quantity, co.cst_item_price, i.inv_name, i.inv_description, i.inv_image, co.cst_item_condition FROM stt_inventory i, stt_cost co, stt_yugioh_card y where co.cst_inv_uid = i.inv_uid and i.inv_mcr_uid = y.ycr_uid and y.ycr_uid=:id";
             int theId = ServletUtil.isInteger(request.getParameter("yId")) == true ? Integer.parseInt(request.getParameter("yId")) : -1;
             buildableQuery.put("id", theId);
-            QueryObject qo = new QueryObject(buildableQuery, hql);
-            inventoryResults = (List<Object>)inventoryDAO.getResultSet(qo);
+            QueryObject qo = new QueryObject(buildableQuery, sql);
+            inventoryResults = (List<Object>)inventoryDAO.getResultSetFromSqlIterative(qo, 1);
 
             ArrayList<InventoryRecord> inventoryPage = getInventoryRecords(inventoryResults);
             //set search results
@@ -100,6 +102,7 @@ public class InventorySearchServlet extends HttpServlet {
             }
             //route to results page even if no results found or transaction throws exception
             request.getRequestDispatcher("/InventoryResult.jsp").forward(request, response);
+            return;
         }
 
 
