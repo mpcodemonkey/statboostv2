@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.statboost.models.ygo.YugiohCard" table="stt_yugioh_card">
+        <id name="ycrUid" column="ycr_uid">
+            <generator class="identity"/>
+        </id>
+        <property name="ycrName" column="ycr_name"/>
+        <property name="ycrCardType" column="ycr_card_type"/>
+        <property name="ycrType" column="ycr_type"/>
+        <property name="ycrAttribute" column="ycr_attribute"/>
+        <property name="ycrLevel" column="ycr_level"/>
+        <property name="ycrRank" column="ycr_rank"/>
+        <property name="ycrAtk" column="ycr_atk"/>
+        <property name="ycrDef" column="ycr_def"/>
+        <property name="ycrDescription" column="ycr_description"/>
+        <property name="ycrPendulumScale" column="ycr_pendulum_scale"/>
+        <property name="ycrPendulumDescription" column="ycr_pendulum_description"/>
+        <property name="ycrImage" column="ycr_image"/>
+        <property name="ycrIcon" column="ycr_icon"/>
+        <property name="ycrMonsterType" column="ycr_monster_type"/>
+    </class>
+</hibernate-mapping>

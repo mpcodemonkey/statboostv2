@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.statboost.models.inventory.InventoryCategory" table="stt_inventory_category" schema=""
+           catalog="statboost">
+        <composite-id mapped="true" class="com.statboost.models.inventory.InventoryCategory">
+            <key-property name="invUid" column="inv_uid"/>
+            <key-property name="catUid" column="cat_uid"/>
+        </composite-id>
+    </class>
+</hibernate-mapping>
