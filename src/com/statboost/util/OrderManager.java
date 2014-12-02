@@ -30,13 +30,15 @@ public class OrderManager {
      * @param orderParams - a Map of order specific details that were supplied by the user.
      * @return - true if order record is successfully created.
      */
-    public static int createOrder(User user, ShoppingCartSessionObject shoppingCart, Map<String, String> orderParams) {
+    public static int createOrder(User user, String contactEmail, ShoppingCartSessionObject shoppingCart, Map<String, String> orderParams) {
         Integer orderID = null;
 
         //init new order object
         Order order = new Order();
-        order.setUser(user);
-        order.setUserEmail(user.getUsrEmail());
+        if (user != null) {
+            order.setUser(user);
+        }
+        order.setUserEmail(contactEmail);
         order.setPaid(true);
         order.setStatus(OrderStatus.PLACED);
         order.setTransactionId(orderParams.get("transactionId"));
@@ -109,14 +111,11 @@ public class OrderManager {
                 Inventory inv = itemObject.getInventory();
                 Cost cost = itemObject.getCost();
 
-
                 inventoryItem.setName(inv.getName());
                 inventoryItem.setDescription(inv.getDescription()==null?"N/A":inv.getDescription());
                 inventoryItem.setPrice(cost.getItemPrice());
                 inventoryItem.setCondition(Cost.getConditionString(cost.getItemCondition()));
                 inventoryItem.setQuantity(itemObject.getQuantity());
-                //todo: have a discussion about how we want to deal with this
-                //inventoryItem.setImage(inv.getImageUid());
                 inventoryItem.setEvent(inv.getEvent());
                 inventoryItem.setMagicCard(inv.getMagicCard());
                 inventoryItem.setYugiohCard(inv.getYugiohCard());

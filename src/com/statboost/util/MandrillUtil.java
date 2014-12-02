@@ -56,8 +56,8 @@ public class MandrillUtil {
             JsonArray vars = new JsonArray();
             for (Pair pair : mergeVarMap.get(rcpt)) {
                 JsonObject p = new JsonObject();
-                p.addProperty("name", (String)pair.getKey());
-                p.addProperty("content", (String)pair.getValue());
+                p.addProperty("name", pair.getKey().toString());
+                p.addProperty("content", pair.getValue().toString());
                 vars.add(p);
             }
             mergeVar.add("vars", vars);
