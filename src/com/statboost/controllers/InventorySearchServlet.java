@@ -83,7 +83,7 @@ public class InventorySearchServlet extends HttpServlet {
         else if(request.getParameter("yId") != null){
             GenericDAO inventoryDAO = new GenericDAO();
             //hql = "From Inventory as I, Cost as C where C.invUid = I.uid and I.yugiohCard.ycrUid=:id";
-            sql = "SELECT i.inv_uid, co.cst_item_quantity, co.cst_item_price, i.inv_name, i.inv_description, i.inv_image, co.cst_item_condition FROM stt_inventory i, stt_cost co, stt_yugioh_card y where co.cst_inv_uid = i.inv_uid and i.inv_mcr_uid = y.ycr_uid and y.ycr_uid=:id";
+            sql = "SELECT i.inv_uid, co.cst_item_quantity, co.cst_item_price, i.inv_name, i.inv_description, i.inv_image, co.cst_item_condition FROM stt_inventory i, stt_cost co, stt_yugioh_card y where co.cst_inv_uid = i.inv_uid and i.inv_ycr_uid = y.ycr_uid and y.ycr_uid=:id";
             int theId = ServletUtil.isInteger(request.getParameter("yId")) == true ? Integer.parseInt(request.getParameter("yId")) : -1;
             buildableQuery.put("id", theId);
             QueryObject qo = new QueryObject(buildableQuery, sql);
