@@ -92,11 +92,12 @@ public class PaymentResultServlet extends HttpServlet {
             orderParams.put("shippingZip", shipZip);
 
             //create the order
+            String contactEmail = request.getParameter(ResponseField.EMAIL_ADDRESS.getFieldName());
             User user = User.find((String)session.getAttribute("email"));
             ShoppingCartSessionObject shoppingCart = (ShoppingCartSessionObject)session.getAttribute("shoppingCart");
             Integer orderID = null;
             try {
-               orderID = OrderManager.createOrder(user, shoppingCart, orderParams);
+               orderID = OrderManager.createOrder(user, contactEmail, shoppingCart, orderParams);
             } catch (Exception e) {
                 logger.setLevel(Level.DEBUG);
                 logger.debug("Something terrible happened when creating the order for transaction #" + transactionID + ".");

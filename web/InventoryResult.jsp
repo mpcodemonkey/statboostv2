@@ -50,7 +50,7 @@
                         <div class="col-sm-8">
                             <div class="row col-sm-12">
                                 <!--<label>Condition:</label>
-                                <label id="condLabel">${inventory.condition}</label>
+                                <label id="condLabel">${fn:replace(inventory.condition, "_", " ")}</label>
                                 <br>
 
                                 <label>Number in stock:</label>
@@ -72,7 +72,7 @@
             </c:when>
         </c:choose>
                                     <tr>
-                                        <td>${inventory.condition}</td>
+                                        <td>${fn:replace(inventory.condition, "_", " ")}</td>
                                         <td><fmt:formatNumber value="${inventory.price}" type="currency"/></td>
                                         <td>
                                             <select id="quantityPicker-${inventory.inv_uid}" class="form-control">

@@ -80,6 +80,14 @@
                receiptUrlBuffer.append(ResponseField.TAX.getFieldName()).append("=");
                receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.TAX.getFieldName()));
 
+
+                /**
+                * Other custom params passed from form
+                */
+               receiptUrlBuffer.append("&");
+               receiptUrlBuffer.append(ResponseField.EMAIL_ADDRESS.getFieldName()).append("=");
+               receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.EMAIL_ADDRESS.getFieldName()));
+
                receiptUrlBuffer.append("&");
                receiptUrlBuffer.append("inStorePickup").append("=");
                receiptUrlBuffer.append(result.getResponseMap().get("inStorePickup"));
