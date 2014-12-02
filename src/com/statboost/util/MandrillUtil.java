@@ -2,6 +2,8 @@ package com.statboost.util;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -17,7 +19,7 @@ import java.util.Map;
 public class MandrillUtil {
     private static final String API_KEY = "SEkTm2zp5JPbsxA7hV6DgQ";
     private static final String REST_URL = "https://mandrillapp.com/api/1.0/";
-
+    private static Logger logger = Logger.getLogger(MandrillUtil.class);
 
     /**
      *
@@ -26,7 +28,7 @@ public class MandrillUtil {
      * @param mergeVarMap - map of email addresses to a list of merge variable pairs
      */
     public static void sendEmail(String templateName, List<String> recipients, Map<String, List<Pair>> mergeVarMap) {
-
+        logger.setLevel(Level.INFO);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("key", API_KEY);
         jsonObject.addProperty("template_name", templateName);
@@ -64,9 +66,7 @@ public class MandrillUtil {
         message.add("merge_vars", mergeVarArray);
 
         jsonObject.add("message", message);
-
-        System.out.println(jsonObject.toString());
-        System.out.println(sendJsonToMandrill("messages/send-template.json", jsonObject.toString()));
+        logger.info("RESULT:\n" + sendJsonToMandrill("messages/send-template.json", jsonObject.toString()));
     }
 
 
@@ -99,7 +99,7 @@ public class MandrillUtil {
 
             //write json to request
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
-            System.out.println("JSON REQUEST:\n" + json);
+            logger.info("JSON REQUEST:\n" + json);
             writer.write(json);
             writer.close();
 
