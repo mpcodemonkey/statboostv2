@@ -107,18 +107,19 @@ public class ShoppingCartServlet extends HttpServlet {
                 uid = Integer.parseInt(inv_uid);
             } catch (NumberFormatException e) { }
 
-
             if (uid > -1) {
                 //if cart doesn't exist, create a new one
                 if (shoppingCart == null) {
                     shoppingCart = new ShoppingCartSessionObject();
                 }
+                //prepare condition string to get enum value
+                if (condition != null && !condition.isEmpty()) {
+                    condition = condition.replaceAll("_", " ").toLowerCase();
+                }
                 //add the item to the cart
                 shoppingCart.addCartItem(uid, qty, Cost.getConditionEnum(condition));
                 session.setAttribute("shoppingCart", shoppingCart);
             }
-            //response.sendRedirect("/cart");
-           // return;
         }
 
         //handle item removal via ajax/rest call
@@ -154,10 +155,6 @@ public class ShoppingCartServlet extends HttpServlet {
             }
         }
 
-/*
-        if (shoppingCart.getCartItems().size() <= 0) {
-            se
-        }*/
         if (shoppingCart != null) {
             session.setAttribute("shoppingCart", shoppingCart);
         }
