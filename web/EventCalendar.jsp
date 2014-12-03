@@ -59,7 +59,7 @@
                     <div class="row">
                         <div class="col-xs-6 col-md-3">
                             <a href="#" class="thumbnail">
-                                <img src="http://localhost:8080/include/images/logo.png" alt="">
+                                <img src="/include/images/logo.png" alt="">
                             </a>
                         </div>
                         <div class="col-md-4">
@@ -91,7 +91,7 @@
 </div>
 <div class="container-fluid">
     <div class="well well-lg">
-        <h2 align="center"><img src="http://127.0.0.1:40000/http://teamjjacs.us/include/images/logo.png" height="75px" width="100px"> Event Calendar</h2>
+        <h2 align="center"><img src="/include/images/logo.png" height="75px" width="100px"> Event Calendar</h2>
         <div id="calendar"></div>
     </div>
 </div>
