@@ -59,7 +59,7 @@
                     <div class="row">
                         <div class="col-xs-6 col-md-3">
                             <a href="#" class="thumbnail">
-                                <img src="http://localhost:8080/include/images/logo.png" alt="">
+                                <img src="/include/images/logo.png" alt="">
                             </a>
                         </div>
                         <div class="col-md-4">
