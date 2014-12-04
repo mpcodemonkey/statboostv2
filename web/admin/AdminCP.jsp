@@ -69,7 +69,10 @@
                 <div class="panel-body">
                     <div class="panel panel-default">
                         <div class="panel-heading">Email Templates</div>
-                        <div class="panel-body"><li>--available email templates will be listed here--</li></div>
+                        <div class="panel-body"><li>--available email templates will be listed here--</li><br>
+                            <div class="btn-group"><a href="https://mandrillapp.com/templates"><button class="btn btn-primary">Mandrill Template Editor</button></a></div><br><br>
+                        *You may need to log in in order to view web client.  Currently linked to TeamJJACS@gmail.com login
+                        </div>
                     </div>
                     <div class="panel panel-default">
                         <div class="panel-heading">Email Alerts</div>
