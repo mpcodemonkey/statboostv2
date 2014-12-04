@@ -82,8 +82,20 @@
                 <div class="modal-footer">
                     <h4 class="pull-left">Price: </h4>
                     <h4 class="pull-left" id="eventPrice">$$$$</h4>
-                    <button class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="addToCart(theId, cond, 1)">Register</button>
+
+                    <div class="list-group">
+
+                        <c:if test="${sessionScope.email == null}">
+                            <button type="button" class="btn btn-primary" onclick="window.location='/login'">Login</button>
+                        </c:if>
+
+                        <c:if test="${sessionScope.email != null}">
+                            <button type="button" class="btn btn-primary" onclick="addToCart(theId, cond, 1)">Add to Cart</button>
+                        </c:if>
+                        <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+
+
                 </div>
             </div>
         </div>
