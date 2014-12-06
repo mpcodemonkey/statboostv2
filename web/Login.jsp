@@ -30,8 +30,10 @@
                 </div>-->
                 <br><br>
                 <div>
-                    <button type="submit" class="btn btn-primary">Sign in</button>
+                    <button type="submit" class="btn btn-primary" style="float:left;">Sign in</button>
+                    <span style="float:right;">Need an Account? <a href="/register">Register here!</a></span>
                 </div>
+                <div>&nbsp;</div>
             </div>
         </div>
     </div>

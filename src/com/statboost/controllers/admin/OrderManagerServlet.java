@@ -2,6 +2,7 @@ package com.statboost.controllers.admin;
 
 import com.statboost.models.actor.User;
 import com.statboost.models.enumType.OrderStatus;
+import com.statboost.models.inventory.InventoryItem;
 import com.statboost.models.inventory.Order;
 
 import javax.servlet.ServletException;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Created by Sam Kerr
@@ -28,8 +30,10 @@ public class OrderManagerServlet extends HttpServlet {
             //get the order that was selected for viewing/editing
             if (request.getParameter("orderId") != null) {
                 Order order = Order.findByNumber(request.getParameter("orderId"));
+                Set<InventoryItem> orderItems = order.getInventoryItems();
                 if (order != null) {
                     request.setAttribute("specificOrder", order);
+                    request.setAttribute("orderItems", orderItems);
                     //compose a list of order statuses used when editing
                     OrderStatus[] statusList = OrderStatus.values();
                     ArrayList<String> statusValues = new ArrayList();

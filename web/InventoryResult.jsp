@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%--
   Created by IntelliJ IDEA.
   User: Jon
@@ -11,36 +12,83 @@
 <jsp:include page="/include/Header.jsp"/>
 <jsp:include page="/include/Navbar.jsp"/>
 
-<div class="container-fluid">
+<c:set var="previousItemName" value="startName" />
+<c:set var="previousItemDesc" value="startName" />
+
+
     <c:forEach items="${requestScope.inventoryList}" var="inventory">
 
-        <div class="panel panel-default">
-            <div class="panel-heading">${inventory.name}</div>
-            <div class="panel-body">
-                <div id="${inventory.inv_uid}" class="alert alert-success fade in" style="display: none;">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <strong>Alert:</strong> Item has been added to your shopping cart!
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <img class="media-object img-rounded img-responsive" src="https://placehold.it/350x250" alt="placehold.it/350x250">
-                    </div>
-                    <div class="col-md-4">
-                        <div class="row">
-                            <label>Condition:</label>
-                            <label id="condLabel">${inventory.condition}</label>
-                            <br>
+        <c:choose>
 
-                            <label>Number in stock:</label>
-                            <label id="stockLabel">${inventory.quantity}</label>
-                            <br>
-
-                            <label>Description:</label>
-                            <label id="descLabel">${inventory.description}</label>
-                            <br>
+            <c:when test="${((previousItemName != inventory.name) || ((previousItemName == inventory.name) && (previousItemDesc != inventory.description)))}">
+                <c:choose>
+                    <c:when test="${!fn:contains(previousItemName, 'startName')}">
+                        </tbody>
+                        </table>
                         </div>
-                    </div>
-                    <div class="col-md-4">
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                    </c:when>
+                </c:choose>
+                <div class="container-fluid">
+                <div class="panel panel-default">
+                <div class="panel-heading">${inventory.name}</div>
+                <div class="panel-body">
+                    <!--<div id="${inventory.inv_uid}" class="alert alert-success fade in" style="display: none;">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <strong>Alert:</strong> Item has been added to your shopping cart!
+                    </div>-->
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <img class="media-object img-rounded img-responsive" src="https://placehold.it/350x250" alt="placehold.it/350x250">
+                        </div>
+
+                        <div class="col-sm-8">
+                            <div class="row col-sm-12">
+                                <!--<label>Condition:</label>
+                                <label id="condLabel">${fn:replace(inventory.condition, "_", " ")}</label>
+                                <br>
+
+                                <label>Number in stock:</label>
+                                <label id="stockLabel">${inventory.quantity}</label>
+                                <br>-->
+                                <label>Description:</label>
+                                <label id="descLabel">${inventory.description}</label>
+                                <br>
+                            </div>
+                            <div class="row col-sm-12">
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <th>Condition</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th></th>
+                                    </tr>
+            </c:when>
+        </c:choose>
+                                    <tr>
+                                        <td>${fn:replace(inventory.condition, "_", " ")}</td>
+                                        <td><fmt:formatNumber value="${inventory.price}" type="currency"/></td>
+                                        <td>
+                                            <select id="quantityPicker-${inventory.inv_uid}" class="form-control">
+                                                <c:forEach begin="1" end="${inventory.quantity}" varStatus="loop">
+                                                    <option>${loop.index}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary" style="float:right;" onclick="addToCart(${inventory.inv_uid}, '${inventory.condition}', $('#quantityPicker-${inventory.inv_uid}').val())">Add To Cart</button>
+                                        </td>
+                                    </tr>
+            <c:set var="previousItemName" value="${inventory.name}" />
+            <c:set var="previousItemDesc" value="${inventory.description}" />
+
+            <!--<div class="col-md-4">
                         <div class="form-group">
                             <label class="control-label" for="quantityPicker-${inventory.inv_uid}">Quantity: </label>
                             <br>
@@ -59,12 +107,24 @@
                             </div>
                         </div>
                     </div>
+                            </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-
-            </div>
-        </div>
+                </div>
+                </div>-->
 
     </c:forEach>
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
 
     <ul class="pagination">
         <c:if test="${currentPage != 1}">

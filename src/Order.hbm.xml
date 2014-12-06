@@ -34,7 +34,7 @@
                      column="ord_usr_uid" not-null="false" insert="true" update="true"
                      cascade="all" />
         <set name="inventoryItems" table="stt_inventory_item" cascade="all" inverse="true">
-            <key column="iit_uid" not-null="true"></key>
+            <key column="iit_ord_uid" not-null="true"></key>
             <one-to-many class="com.statboost.models.inventory.InventoryItem"/>
         </set>
     </class>

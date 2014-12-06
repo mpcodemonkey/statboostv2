@@ -1,6 +1,8 @@
 package com.statboost.controllers;
 
 import com.statboost.models.actor.User;
+import com.statboost.util.MandrillUtil;
+import com.statboost.util.Pair;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -10,6 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -62,6 +68,10 @@ public class RegisterServlet extends HttpServlet {
                 //insert the new user into database
                 logger.info("Inserting user: " + usrEmail);
                 User.insert(usrFirstName, usrLastName, usrEmail, usrPassword, "Customer", usrAddress1, usrAddress2, usrCity, usrState, usrZip, usrPhone, usrNewsletter, usrDciNumber);
+
+                //send email notification to user
+                sendEmailNotification(usrEmail, usrFirstName, usrLastName);
+
                 request.setAttribute("alertType", "success");
                 request.setAttribute("alert", "The account for " + usrEmail + " has been created successfully!");
                 response.sendRedirect("/login");
@@ -77,6 +87,21 @@ public class RegisterServlet extends HttpServlet {
             request.setAttribute("alert", "The email you have chosen, \"" + usrEmail + "\" , is not an accepted format, please use another.");
             request.getRequestDispatcher("/Register.jsp").forward(request, response);
         }
+    }
+
+    private void sendEmailNotification(String email, String firstName, String lastName) {
+        ArrayList<String> recipientList = new ArrayList<>();
+        recipientList.add(email);
+        Map<String, List<Pair>> varMap = new HashMap<>();
+        //create list of merge vars - pairs of merge var name to merge var value
+        List<Pair> mergeVars = new ArrayList<>();
+        mergeVars.add(new Pair("FNAME", firstName));
+        mergeVars.add(new Pair("LNAME", lastName));
+        mergeVars.add(new Pair("EMAILADDRESS", email));
+        varMap.put(email, mergeVars);
+
+        //fire off email
+        MandrillUtil.sendEmail("register-for-account-response", recipientList, varMap);
     }
 
 }

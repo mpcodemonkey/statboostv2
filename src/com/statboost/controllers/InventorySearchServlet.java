@@ -2,7 +2,6 @@ package com.statboost.controllers;
 
 import com.statboost.models.DAO.GenericDAO;
 import com.statboost.models.inventory.Cost;
-import com.statboost.models.inventory.Inventory;
 import com.statboost.models.session.QueryObject;
 import com.statboost.util.HibernateUtil;
 import com.statboost.util.ServletUtil;
@@ -15,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -52,15 +52,16 @@ public class InventorySearchServlet extends HttpServlet {
         List<Object> inventoryResults = null;
         int page = 1;
         String hql = "From Inventory as I, Cost as C where C.invUid = I.uid ";
-
+        String sql = "SELECT i.inv_uid, co.cst_item_quantity, co.cst_item_price, i.inv_name, i.inv_description, i.inv_image, co.cst_item_condition FROM stt_cost co Join (stt_inventory i INNER JOIN (SELECT ic.inv_uid FROM stt_inventory_category ic INNER JOIN stt_inventory i ON i.inv_uid = ic.inv_uid INNER JOIN stt_category c ON c.cat_uid = ic.cat_uid ";
+        boolean prevcon = false;
 
         if(request.getParameter("mId") != null){
             GenericDAO inventoryDAO = new GenericDAO();
-            hql = "From Inventory as I, Cost as C where C.invUid = I.uid and I.magicCard.mcrMultiverseId=:id";
+            sql = "SELECT i.inv_uid, co.cst_item_quantity, co.cst_item_price, i.inv_name, i.inv_description, i.inv_image, co.cst_item_condition FROM stt_inventory i, stt_cost co, stt_magic_card m where co.cst_inv_uid = i.inv_uid and i.inv_mcr_uid = m.mcr_uid and m.mcr_multiverse_id = :id";
             int theId = ServletUtil.isInteger(request.getParameter("mId")) == true ? Integer.parseInt(request.getParameter("mId")) : -1;
             buildableQuery.put("id", theId);
-            QueryObject qo = new QueryObject(buildableQuery, hql);
-            inventoryResults = (List<Object>)inventoryDAO.getResultSet(qo);
+            QueryObject qo = new QueryObject(buildableQuery, sql);
+            inventoryResults = (List<Object>)inventoryDAO.getResultSetFromSqlIterative(qo, 1);
 
             ArrayList<InventoryRecord> inventoryPage = getInventoryRecords(inventoryResults);
             //set search results
@@ -75,16 +76,18 @@ public class InventorySearchServlet extends HttpServlet {
             }
             //route to results page even if no results found or transaction throws exception
             request.getRequestDispatcher("/InventoryResult.jsp").forward(request, response);
+            return;
 
 
         }//TODO: merge yId and mId code so it's not redundant
         else if(request.getParameter("yId") != null){
             GenericDAO inventoryDAO = new GenericDAO();
-            hql = "From Inventory as I, Cost as C where C.invUid = I.uid and I.yugiohCard.ycrUid=:id";
+            //hql = "From Inventory as I, Cost as C where C.invUid = I.uid and I.yugiohCard.ycrUid=:id";
+            sql = "SELECT i.inv_uid, co.cst_item_quantity, co.cst_item_price, i.inv_name, i.inv_description, i.inv_image, co.cst_item_condition FROM stt_inventory i, stt_cost co, stt_yugioh_card y where co.cst_inv_uid = i.inv_uid and i.inv_ycr_uid = y.ycr_uid and y.ycr_uid=:id";
             int theId = ServletUtil.isInteger(request.getParameter("yId")) == true ? Integer.parseInt(request.getParameter("yId")) : -1;
             buildableQuery.put("id", theId);
-            QueryObject qo = new QueryObject(buildableQuery, hql);
-            inventoryResults = (List<Object>)inventoryDAO.getResultSet(qo);
+            QueryObject qo = new QueryObject(buildableQuery, sql);
+            inventoryResults = (List<Object>)inventoryDAO.getResultSetFromSqlIterative(qo, 1);
 
             ArrayList<InventoryRecord> inventoryPage = getInventoryRecords(inventoryResults);
             //set search results
@@ -99,6 +102,7 @@ public class InventorySearchServlet extends HttpServlet {
             }
             //route to results page even if no results found or transaction throws exception
             request.getRequestDispatcher("/InventoryResult.jsp").forward(request, response);
+            return;
         }
 
 
@@ -117,7 +121,7 @@ public class InventorySearchServlet extends HttpServlet {
 
                 GenericDAO mcAccessObject = new GenericDAO();
 
-                inventoryResults = (List<Object>)mcAccessObject.getResultSet(sessionQuery, page);
+                inventoryResults = (List<Object>)mcAccessObject.getResultSetFromSql(sessionQuery, page);
 
 
                 session.setAttribute("QueryObject", sessionQuery);
@@ -150,108 +154,78 @@ public class InventorySearchServlet extends HttpServlet {
 
         SessionFactory invFactory = HibernateUtil.getDatabaseSessionFactory();
 
-        if(request.getParameter("nameField") != null && !request.getParameter("nameField").equalsIgnoreCase("")){
-            nameConstraint += " and I.name like :name";
-            queryparams.add(nameConstraint);
-            buildableQuery.put("name", "%"+request.getParameter("nameField")+"%");
-        }
-        if(request.getParameter("condPicker") != null && !request.getParameter("condPicker").equalsIgnoreCase("")){
-            condConstraint += " and C.itemCondition = :cond";
-            queryparams.add(condConstraint);
-            buildableQuery.put("cond", Cost.getConditionEnum(request.getParameter("condPicker")));
-        }
-        /*if(request.getParameter("priceField") != null && !request.getParameter("priceField").equalsIgnoreCase("")){
-            priceConstraint += " and C.itemPrice " + request.getParameter("pricePicker") + " :price";
-            queryparams.add(priceConstraint);
-            buildableQuery.put("price", Double.parseDouble(request.getParameter("priceField")));
-        }*/
-
-        priceConstraint += " and C.itemPrice <= :priceMax and C.itemPrice >= :priceMin";
-        priceConstraintMin = Double.parseDouble(request.getParameter("minPrice"));
-        priceConstraintMax = Double.parseDouble(request.getParameter("maxPrice"));
-        queryparams.add(priceConstraint);
-        buildableQuery.put("priceMax", priceConstraintMax);
-        buildableQuery.put("priceMin", priceConstraintMin);
 
         if(request.getParameterValues("catPicker") != null)
         {
-            categoryConstraint += " and I.uid in(Select Distinct U.invUid From InventoryCategory as U "
-                    + "where U.catUid in(";
-
+            String categories = "(";
             String[] cats = request.getParameterValues("catPicker");
-
-            for(int q = 0; q < cats.length; q++)
-            {
-                if( q == 0)
-                { categoryConstraint += ":cats"+q; }
-                else
-                { categoryConstraint += ",:cats"+q; }
+            for(int i = 0; i < cats.length; i++){
+                categories += "\"" + cats[i] + "\"";
+                if(i != cats.length - 1){
+                    categories+=',';
+                }
             }
+            categories += ")";
 
-            categoryConstraint += ") Group By U.invUid Having Count(Distinct U.catUid) <= :num)";
+            categoryConstraint += " where c.category IN " + categories;
+            categoryConstraint += " GROUP BY ic.inv_uid ";
+            categoryConstraint += " HAVING Count(ic.inv_uid) = " + cats.length+") aa ";
+            categoryConstraint += " ON i.inv_uid = aa.inv_uid)";
+            categoryConstraint += " ON i.inv_uid = co.cst_inv_uid ";
 
             queryparams.add(categoryConstraint);
 
-            for(int r = 0; r < cats.length; r++)
-            {
-                buildableQuery.put("cats"+r,Integer.parseInt(cats[r]));
-            }
-            buildableQuery.put("num", Long.parseLong(cats.length+""));
-
-            //System.out.println(catList);
+            prevcon = true;
         }
+        else{
+            categoryConstraint += " GROUP BY ic.inv_uid ";
+            categoryConstraint += " HAVING Count(ic.inv_uid) > 0) aa";
+            categoryConstraint += " ON i.inv_uid = aa.inv_uid)";
+            categoryConstraint += " ON i.inv_uid = co.cst_inv_uid ";
+            queryparams.add(categoryConstraint);
+        }
+        if(request.getParameter("nameField") != null && !request.getParameter("nameField").equalsIgnoreCase("")){
+            String nam = "\"%"+request.getParameter("nameField")+"%\"";
+            nameConstraint += " i.inv_name like " + nam;
+            if(prevcon){
+                nameConstraint = " and" + nameConstraint;
+            }
+            else{
+                nameConstraint = " where" + nameConstraint;
+                prevcon = true;
+            }
+            queryparams.add(nameConstraint);
+        }
+        if(request.getParameter("condPicker") != null && !request.getParameter("condPicker").equalsIgnoreCase("")){
+            String con = "\"" + Cost.getConditionEnum(request.getParameter("condPicker")) + "\"";
+            condConstraint += " co.cst_item_condition = " + con;
+            if(prevcon){
+                condConstraint = " and" + condConstraint;
+            }
+            else{
+                condConstraint = " where" + condConstraint;
+                prevcon = true;
+            }
+
+            queryparams.add(condConstraint);
+        }
+
+        priceConstraintMin = Double.parseDouble(request.getParameter("minPrice"));
+        priceConstraintMax = Double.parseDouble(request.getParameter("maxPrice"));
+        priceConstraint += " and co.cst_item_price <= "+priceConstraintMax + " and co.cst_item_price >= " + priceConstraintMin;
+        queryparams.add(priceConstraint);
+
 
 
         for(String s: queryparams){
-            hql += s;
+            sql += s;
         }
 
-        /*
-        hql = "Select I from Inventory I join I.categories c where I.name like :name and c.category in (:categories) group by I having count(c)=:category_count";
 
-        hql = 	"select I from Inventory I " +
-                "join I.categories c " +
-                "where c.category in (:categories) " +
-                "and I.id in (" +
-                "select I2.id " +
-                "from Inventory I2 " +
-                "join I2.categories c2 " +
-                "group by I2 " +
-                "having count(c2)=:category_count) " +
-                "group by I " +
-                "having count(c)=:category_count";
-
-        String[] cats = {"Magic", "Single"};
-        System.out.println(hql);
-
-        SessionFactory genericQueryFactory = HibernateUtil.getDatabaseSessionFactory();
-        List<Object> resultSet = null;
-        Session gensession = genericQueryFactory.openSession();
-        Transaction tx = null;
-        try {
-            tx = gensession.beginTransaction();
-            Query query = gensession.createQuery(hql);
-            //query.setParameter("name", "%goblin%");
-            query.setParameterList("categories", cats);
-            query.setInteger("category_count", cats.length);
-
-            resultSet = query.list();
-
-            tx.commit();
-        } catch (HibernateException e) {
-            if (tx != null) tx.rollback();
-            e.printStackTrace();
-        } finally {
-            gensession.close();
-        }
-
-        System.out.println(resultSet.size());
-*/
-
-        QueryObject inventoryQuery = new QueryObject(buildableQuery, hql);
+        QueryObject inventoryQuery = new QueryObject(buildableQuery, sql);
         GenericDAO inventoryDAO = new GenericDAO();
 
-        inventoryResults = (List<Object>)inventoryDAO.getResultSet(inventoryQuery, page);
+        inventoryResults = (List<Object>)inventoryDAO.getResultSetFromSql(inventoryQuery, page);
 
         session.setAttribute("QueryObject", inventoryQuery);
 
@@ -269,25 +243,22 @@ public class InventorySearchServlet extends HttpServlet {
         }
         //route to results page even if no results found or transaction throws exception
         request.getRequestDispatcher("/InventoryResult.jsp").forward(request, response);
-
     }
 
     private ArrayList<InventoryRecord> getInventoryRecords(List<Object> results){
         ArrayList<InventoryRecord> inventoryPage = new ArrayList<>();
-        Iterator pairsIt = results.iterator();
-        while(pairsIt.hasNext()){
-            Object[] pair = (Object[]) pairsIt.next();
-            Inventory inv = (Inventory)pair[0];
-            Cost co = (Cost)pair[1];
+        Iterator inventoryIterator = results.iterator();
+        while(inventoryIterator.hasNext()){
+            Object[] row = (Object[]) inventoryIterator.next();
 
             InventoryRecord ir = new InventoryRecord();
-            ir.inv_uid = inv.getUid();
-            ir.quantity = co.getItemQuantity();
-            ir.price = co.getItemPrice();
-            ir.name = inv.getName();
-            ir.description = inv.getDescription();
-            ir.imageName = inv.getImage();
-            ir.condition = Cost.getConditionString(co.getItemCondition());
+            ir.inv_uid = (int)row[0];
+            ir.quantity = (int)row[1];
+            ir.price =  ((BigDecimal)row[2]).doubleValue();
+            ir.name =  (String)row[3];
+            ir.description = (String)row[4];
+            ir.imageName = (String)row[5];
+            ir.condition = (String)row[6];
 
             inventoryPage.add(ir);
 
