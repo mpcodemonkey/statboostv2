@@ -1,5 +1,6 @@
 package com.statboost.controllers.admin;
 
+import com.statboost.models.actor.User;
 import com.statboost.models.inventory.Inventory;
 import com.statboost.util.ServletUtil;
 import org.apache.log4j.Logger;
@@ -9,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.ResultSet;
 
@@ -21,11 +23,16 @@ public class InventorySqllistServlet extends HttpServlet {
     static Logger logger = Logger.getLogger(InventorySqllistServlet.class);
     public static final String SRV_MAP = "/admin/inventorysqllist";
     public static final String ATTR_INVENTORY = "inventory";
+    public static final String PARAM_KEYWORD = "keyword";
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //todo: add admin check
-        //todo: pagination
-        String sql = "select * from stt_inventory limit 10";
+        HttpSession userSession = request.getSession(false); //obtain the session object if exists
+        if (!User.isAdmin(userSession)) {
+            response.sendRedirect("/");
+            return;
+        }
+
+        String sql = "select * from stt_inventory where inv_name like '%" + request.getParameter(PARAM_KEYWORD) + "%'";
         ResultSet inventory = ServletUtil.getResultSetFromSql(sql);
         forwardToSqllist(request, response, inventory);
     }
