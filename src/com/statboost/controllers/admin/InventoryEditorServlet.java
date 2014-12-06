@@ -1,5 +1,6 @@
 package com.statboost.controllers.admin;
 
+import com.statboost.models.actor.User;
 import com.statboost.models.enumType.ItemCondition;
 import com.statboost.models.inventory.*;
 import com.statboost.models.mtg.MagicCard;
@@ -23,6 +24,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -57,6 +59,7 @@ public class InventoryEditorServlet extends HttpServlet {
     public static final String PARAM_NUM_LIGHTLY_PLAYED_IN_STOCK = "numLightlyPlayedInStock";
     public static final String PARAM_NUM_NEAR_MINT_IN_STOCK = "nearMintInStock";
     public static final String PARAM_NUM_NEW_IN_STOCK = "numNewInStock";
+    public static final String PARAM_FOILED = "foiled";
 
     //determines if it is a magic card, yugioh card, event, or generic item
     public static final String PARAM_TYPE = "type";
@@ -136,7 +139,11 @@ public class InventoryEditorServlet extends HttpServlet {
     private ArrayList<String> warning = new ArrayList<>();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //todo: add admin check
+        HttpSession userSession = request.getSession(false); //obtain the session object if exists
+        if (!User.isAdmin(userSession)) {
+            response.sendRedirect("/");
+            return;
+        }
         Inventory inventory = null;
         SessionFactory sessionFactory = HibernateUtil.getDatabaseSessionFactory();
         Session session = sessionFactory.openSession();
@@ -199,6 +206,12 @@ public class InventoryEditorServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession userSession = request.getSession(false); //obtain the session object if exists
+        if (!User.isAdmin(userSession)) {
+            response.sendRedirect("/");
+            return;
+        }
+
         if(!ServletFileUpload.isMultipartContent(request))  {
             logger.error("The form must be type multipart/form-data");
         }
@@ -267,6 +280,12 @@ public class InventoryEditorServlet extends HttpServlet {
             inventory.setPreOrder(true);
         } else  {
             inventory.setPreOrder(false);
+        }
+
+        if(normalFields.get(PARAM_FOILED) != null && !normalFields.get(PARAM_FOILED).equals(""))  {
+            inventory.setInvFoil(Byte.parseByte("1"));
+        } else  {
+            inventory.setInvFoil(Byte.parseByte("0"));
         }
 
         //warning about not filling price

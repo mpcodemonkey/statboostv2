@@ -9,9 +9,7 @@
             <generator class="identity"/>
         </id>
         <property name="name" column="inv_name"/>
-        <property name="image">
-            <column name="inv_image" sql-type="varchar" length="300"/>
-        </property>
+        <property name="image" column="inv_image"/>
         <property name="preOrder" column="inv_pre_order"/>
         <property name="description" column="inv_description"/>
         <property name="invFoil" column="inv_foil"/>
