@@ -175,9 +175,19 @@
             <div class="col-sm-12"><b>Is this a Pre-Order item?</b></div>
             <div class="col-sm-4">
             <label class="checkbox-inline">
-                <input type="checkbox" <%=inventory.isPreOrder()? "checked=\"checked\"" : ""%>>
+                <input name="<%=PARAM_INVENTORY_PRE_ORDER%>" type="checkbox" <%=inventory.isPreOrder()? "checked=\"checked\"" : ""%>>
                 Pre Order
             </label>
+            </div>
+        </div>
+        <hr class="col-sm-10" />
+        <div class="col-sm-12">
+            <div class="col-sm-12"><b>Is this a foiled item?</b></div>
+            <div class="col-sm-4">
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="<%=PARAM_FOILED%>" <%=inventory.getInvFoil() == 1? "checked=\"checked\"" : ""%>>
+                    Foiled
+                </label>
             </div>
         </div>
         <hr class="col-sm-10" />
@@ -246,7 +256,7 @@
             </div>
             <div>
                 <div>Please make sure that the image name is accurate.</div>
-                <div></div>
+                <div>Current Image: <%=inventory.getImage() == null? "N/A" : inventory.getImage()%></div>
             </div>
             <div>
                 <div><b>Image</b></div>
