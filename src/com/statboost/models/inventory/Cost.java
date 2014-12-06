@@ -39,11 +39,17 @@ public class Cost {
 
     public static ItemCondition getConditionEnum(String condition){
         switch(condition){
+            case "new":
             case "New": return ItemCondition.NEW;
+            case "near mint":
             case "Near Mint": return ItemCondition.NEAR_MINT;
-            case  "Lightly Played": return ItemCondition.LIGHTLY_PLAYED;
+            case "lightly played":
+            case "Lightly Played": return ItemCondition.LIGHTLY_PLAYED;
+            case "moderately played":
             case "Moderately Played": return ItemCondition.MODERATELY_PLAYED;
+            case "heavily played":
             case "Heavily Played": return ItemCondition.HEAVILY_PLAYED;
+            case "damaged":
             case "Damaged": return ItemCondition.DAMAGED;
             default: return ItemCondition.NEW;
         }

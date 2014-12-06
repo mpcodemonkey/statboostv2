@@ -45,12 +45,12 @@
                             <label class="control-label" for="catPicker">Category:</label>
                             <div>
                                 <select class="form-control multiselect" name="catPicker" id="catPicker" multiple="multiple">
-                                    <option value="1">Accessories</option>
-                                    <option value="2">Board Games</option>
-                                    <option value="3">Magic</option>
-                                    <option value="4">Sealed</option>
-                                    <option value="5">Single</option>
-                                    <option value="6">Yu-Gi-Oh</option>
+                                    <option value="Accessories">Accessories</option>
+                                    <option value="Board Games">Board Games</option>
+                                    <option value="Magic">Magic</option>
+                                    <option value="Sealed">Sealed</option>
+                                    <option value="Single">Single</option>
+                                    <option value="Yu-Gi-Oh">Yu-Gi-Oh</option>
                                 </select>
                             </div>
                         </div>

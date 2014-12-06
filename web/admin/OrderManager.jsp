@@ -101,6 +101,35 @@
                                 </div>
                             </form>
                         </div>
+                        <br><br>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <table class="table table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Item Name</th>
+                                            <th>Description</th>
+                                            <th>Condition</th>
+                                            <th>Quantity</th>
+                                            <th>Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach  items="${requestScope.orderItems}" var="item" varStatus="i">
+                                        <tr>
+                                            <td>${i.count}</td>
+                                            <td>${item.name}</td>
+                                            <td>${item.description}</td>
+                                            <td>${item.condition}</td>
+                                            <td>${item.quantity}</td>
+                                            <td><fmt:formatNumber value="${item.price}" type="currency"/></td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

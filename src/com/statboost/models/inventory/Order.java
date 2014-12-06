@@ -5,6 +5,9 @@ import com.statboost.models.actor.User;
 import com.statboost.models.enumType.OrderStatus;
 import com.statboost.models.session.QueryObject;
 import com.statboost.util.HibernateUtil;
+import com.statboost.util.MandrillUtil;
+import com.statboost.util.Pair;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -50,7 +53,7 @@ public class Order {
             case READY_FOR_PICKUP: return "Ready For Pickup";
             case CANCELLED: return "Cancelled";
             case COMPLETE: return "Complete";
-            default: return "";
+            default: return "Placed";
         }
     }
 
@@ -82,14 +85,19 @@ public class Order {
                 tx = session.beginTransaction();
                 //query
                 Order order = (Order) session.createQuery("FROM Order WHERE uid=" + orderId + "").uniqueResult();
-                order.setStatus(Order.getOrderStatusEnum(status));
-                if (status.equalsIgnoreCase("complete")) {
-                    //Adjust server time into PST
-                    Calendar cal = Calendar.getInstance();
-                    cal.add(Calendar.HOUR, -8);
-                    order.setDateComplete(cal.getTime());
+                if (order != null) {
+                    order.setStatus(Order.getOrderStatusEnum(status));
+                    if (status.equalsIgnoreCase("ready for pickup")) {
+                        //Email user to come get their order
+                        sendEmailNotificationOrderComplete(order);
+                    } else if (status.equalsIgnoreCase("complete")) {
+                        //Adjust server time into PST
+                        Calendar cal = Calendar.getInstance();
+                        cal.add(Calendar.HOUR, -8);
+                        order.setDateComplete(cal.getTime());
+                    }
+                    session.update(order);
                 }
-                session.update(order);
                 tx.commit();
             } catch (HibernateException e) {
                 if (tx != null) tx.rollback();
@@ -101,6 +109,23 @@ public class Order {
         }
 
         return result;
+    }
+
+    private static void sendEmailNotificationOrderComplete(Order order) {
+        ArrayList<String> recipientList = new ArrayList<>();
+        recipientList.add(order.getUserEmail());
+        Map<String, List<Pair>> varMap = new HashMap<>();
+        //create list of merge vars - pairs of merge var name to merge var value
+        List<Pair> mergeVars = new ArrayList<>();
+        mergeVars.add(new Pair("FNAME", order.getUser().getUsrFirstName()));
+        mergeVars.add(new Pair("LNAME", order.getUser().getUsrLastName()));
+        mergeVars.add(new Pair("ORDER_NUMBER", order.getUid()));
+        mergeVars.add(new Pair("TRANSACTION_ID", order.getTransactionId()));
+
+        varMap.put(order.getUserEmail(), mergeVars);
+
+        //fire off email
+        MandrillUtil.sendEmail("ready-for-pickup", recipientList, varMap);
     }
 
 
@@ -119,6 +144,12 @@ public class Order {
                 tx = session.beginTransaction();
                 //query
                 order = (Order) session.createQuery("FROM Order WHERE uid=" + orderNumber + "").uniqueResult();
+                //init all the order's items
+                if (order != null) {
+                    for (InventoryItem i : order.getInventoryItems()) {
+                        Hibernate.initialize(i);
+                    }
+                }
                 tx.commit();
             } catch (HibernateException e) {
                 if (tx != null) tx.rollback();

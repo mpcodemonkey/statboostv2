@@ -116,7 +116,7 @@
                 <div class="row">
                     <div class="col-lg-6" style="max-width: 500px;">
                         <div class="form-group">
-                            <label class="">Contact Email</label>
+                            <label class="">Contact Email</label><br><small>NOTE: This email will be used for receipt and order status updates.</small>
                             <input class="form-control" id="email" type='text' class='text' name='x_email' value="${sessionScope.email}" required/>
                         </div>
                     </div>
