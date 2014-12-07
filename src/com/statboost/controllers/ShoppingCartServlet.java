@@ -55,7 +55,7 @@ public class ShoppingCartServlet extends HttpServlet {
                 //inventory info
                 cartItem.invUID = inv.getUid();
                 cartItem.name = inv.getName();
-                cartItem.description = inv.getDescription();
+                cartItem.description = inv.getEvent() != null ? inv.getEvent().getDescription() : inv.getDescription();
                 cartItem.imageName = inv.getImage();
                 cartItem.price = cost.getItemPrice();
                 cartItem.condition = Cost.getConditionString(cost.getItemCondition());
