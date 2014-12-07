@@ -53,17 +53,15 @@
                                     </div>
                                     <div class="col-md-3">
                                         <c:choose>
-                                            <c:when test="${fn:contains(cartItem.description, 'YGO')}">
-                                                <!-- PROD LINK
-                                                <img id="YGO-${status.count}" src="/static-images/inventory/yugioh/${cartItem.imageName}" style="max-height: 100px;" onclick="toggleSize(this.id);"> -->
-                                                <img id="YGO-${status.count}" src="https://teamjjacs.us/static-images/inventory/yugioh/${cartItem.imageName}" style="max-height: 100px;" onclick="toggleSize(this.id);">
+                                            <c:when test="${cartItem.type == 'YGO'}">
+                                                <img id="YGO-${status.count}" src="//teamjjacs.us/static-images/inventory/yugioh/${cartItem.imageName}" style="max-height: 100px;" onclick="toggleSize(this.id);" onerror="this.style.display='none'">
                                             </c:when>
-                                            <c:when test="${fn:contains(cartItem.description, 'MTG')}">
-                                                <img id="MTG-${status.count}" src="https://teamjjacs.us/static-images/inventory/mtg/${cartItem.imageName}" style="max-height: 100px;" onclick="toggleSize(this.id);">
+                                            <c:when test="${cartItem.type == 'MTG'}">
+                                                <img id="MTG-${status.count}" src="//teamjjacs.us/static-images/inventory/mtg/${cartItem.imageName}" style="max-height: 100px;" onclick="toggleSize(this.id);" onerror="this.style.display='none'">
                                             </c:when>
-                                            <c:otherwise>
-                                                <img id="GEN-${status.count}" src="https://teamjjacs.us/static-images/inventory/generic/${cartItem.imageName}" style="max-height: 100px;" onclick="toggleSize(this.id);">
-                                            </c:otherwise>
+                                            <c:when test="${cartItem.type == 'GEN'}">
+                                                <img id="GEN-${status.count}" src="h//teamjjacs.us/static-images/inventory/generic/${cartItem.imageName}" style="max-height: 100px;" onclick="toggleSize(this.id);" onerror="this.style.display='none'">
+                                            </c:when>
                                         </c:choose>
                                     </div>
 

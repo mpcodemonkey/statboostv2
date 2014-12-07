@@ -56,7 +56,7 @@
             <strong>Alert:</strong> <c:out value="${requestScope.alert}" />
         </div>
     </c:if>
-    <c:forEach items="${requestScope.cardList}" var="card">
+    <c:forEach items="${requestScope.cardList}" var="card" varStatus="i">
         <c:set var="typeVar" value="${card.ycrCardType}"/>
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
@@ -64,12 +64,12 @@
                     <div class="panel-heading"><a href="/Store?yId=${card.ycrUid}">${card.ycrName}</a></div>
                     <div class="panel-body">
                         <div class="col-md-2">
-                            <img src="https://placehold.it/150X150" class="img-rounded">
+                            <img id="YGO-${i.count}" src="//teamjjacs.us/static-images/inventory/yugioh/${card.ycrImage}" style="max-height: 200px;" onclick="toggleSize(this.id)" onerror="this.style.display='none'">
                         </div>
                         <div class="col-md-8 col-md-offset-1">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <table class="table">
+                                    <table class="table table-responsive">
                                         <thead><tr>
                                             <th class="col-sm-2">Type</th>
                                             <th class="col-sm-2">Card Type</th>
@@ -174,6 +174,22 @@
     </ul>
 
 </div>
+
+
+<script>
+    function toggleSize(id) {
+        if( $('#'+id).css('max-height') == '200px' )  {
+            $('#'+id).animate({
+                "max-height": 350
+            }, 200 );
+        }
+        else {
+            $('#'+id).animate({
+                "max-height": 200
+            }, 200 );
+        }
+    }
+</script>
 
 
 
