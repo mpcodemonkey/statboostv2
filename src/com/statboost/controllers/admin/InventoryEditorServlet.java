@@ -8,7 +8,6 @@ import com.statboost.models.mtg.MagicSet;
 import com.statboost.models.ygo.YugiohCard;
 import com.statboost.util.HibernateUtil;
 import com.statboost.util.ServletUtil;
-import com.sun.deploy.net.HttpRequest;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
@@ -982,11 +981,11 @@ public class InventoryEditorServlet extends HttpServlet {
         String originalFileName = uploadFileItem.getName();
         if(originalFileName != null && !originalFileName.equals(""))  {
             inventory.setImage(originalFileName);
-            String filePart = "/" + (originalFileName);
+            String filePart = originalFileName;
 
-            String magicPath = "/inventory/mtg";
-            String yugiohPath = "/inventory/yugioh";
-            String otherPath = "/inventory/generic";
+            String magicPath = "inventory/mtg/";
+            String yugiohPath = "inventory/yugioh/";
+            String otherPath = "inventory/generic/";
 
             //default is website path
             String path = "/website";
@@ -1007,7 +1006,7 @@ public class InventoryEditorServlet extends HttpServlet {
 //            String uploadFilePath = "/home/images/inventory/other" + path + filePart;
 
             //used for prod on javapipe
-            String uploadFilePath = "/static-images/";
+            String uploadFilePath = "/static-images/" + path + filePart;
 
 
             File uploadFile = new File(uploadFilePath);
