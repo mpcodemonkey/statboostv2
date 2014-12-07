@@ -38,7 +38,6 @@ public class ShoppingCartServlet extends HttpServlet {
             cartManager.buildCartDataCollection(shoppingCart.getCartItems());
             List<CartManager.ItemDataObject> cartObjects = cartManager.getCartDataObjects();
 
-
             List<ShoppingCartItem> itemsInCart = new ArrayList<>();
             double subtotal = 0.0;
 
@@ -48,7 +47,12 @@ public class ShoppingCartServlet extends HttpServlet {
                 Inventory inv = cartObject.getInventory();
                 Cost cost = cartObject.getCost();
 
-                //build cart item to be displayed on JSP
+                //build cart items to be displayed on JSP
+                //determine inventory type (for image path references)
+                if (inv.getMagicCard() != null) { cartItem.type = "MTG"; }
+                else if (inv.getYugiohCard() != null) { cartItem.type = "YGO"; }
+                else { cartItem.type = "GEN";}
+                //inventory info
                 cartItem.invUID = inv.getUid();
                 cartItem.name = inv.getName();
                 cartItem.description = inv.getDescription();
@@ -180,6 +184,7 @@ public class ShoppingCartServlet extends HttpServlet {
         private String description;
         private String imageName;
         private String condition;
+        private String type;
 
         public int getQuantity() {
             return quantity;
@@ -205,6 +210,10 @@ public class ShoppingCartServlet extends HttpServlet {
 
         public int getInvUID() {
             return invUID;
+        }
+
+        public String getType() {
+            return type;
         }
     }
 
