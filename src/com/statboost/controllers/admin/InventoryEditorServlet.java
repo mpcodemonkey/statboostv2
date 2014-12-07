@@ -984,9 +984,9 @@ public class InventoryEditorServlet extends HttpServlet {
             inventory.setImage(originalFileName);
             String filePart = "/" + (originalFileName);
 
-            String magicPath = "/inventory/magic";
+            String magicPath = "/inventory/mtg";
             String yugiohPath = "/inventory/yugioh";
-            String otherPath = "/inventory/other";
+            String otherPath = "/inventory/generic";
 
             //default is website path
             String path = "/website";
@@ -1001,10 +1001,15 @@ public class InventoryEditorServlet extends HttpServlet {
             }
 
             //used for local
-            String uploadFilePath = "c:/Users/Jessica/IdeaProjects/statbooster2/web/images" + path + filePart;
+//            String uploadFilePath = "c:/Users/Jessica/IdeaProjects/statbooster2/web/images" + path + filePart;
 
             //used for prod on digitalocean
-            //String uploadFilePath = "/home/images/inventory/other" + path + filePart;
+//            String uploadFilePath = "/home/images/inventory/other" + path + filePart;
+
+            //used for prod on javapipe
+            String uploadFilePath = "/static-images/";
+
+
             File uploadFile = new File(uploadFilePath);
             Image image = new Image();
             image.setPath(uploadFilePath);
