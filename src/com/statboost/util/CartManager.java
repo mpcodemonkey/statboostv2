@@ -61,6 +61,9 @@ public class CartManager {
                 Inventory inv_item = cost.getInventory();
                 Hibernate.initialize(cost);
                 Hibernate.initialize(inv_item);
+                if (inv_item.getEvent() != null) {
+                    Hibernate.initialize(inv_item.getEvent());
+                }
 
                 if (inv_item != null && cost != null) {
                     ItemDataObject dataObject = new ItemDataObject(inv_item, cost, requestedItem.getQuantity());

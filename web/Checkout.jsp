@@ -7,6 +7,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <jsp:include page="/include/Header.jsp"/>
 <jsp:include page="/include/Navbar.jsp"/>
@@ -181,7 +182,7 @@
 
                 <!-- for each of all cart items item ID<|>item name<|>item description<|>item quantity<|>item price per unit<|>is Taxable -->
                 <c:forEach items="${sessionScope.itemsInCart}" var="item" varStatus="status">
-                    <input type='hidden' name='x_line_item' value='${item.invUID}<|>${item.description}<|>${item.name} - ${item.condition}<|>${item.quantity}<|>${item.price}<|>TRUE' />
+                    <input type='hidden' name='x_line_item' value='${item.invUID}<|><c:choose><c:when test="${fn:length(item.name) > 30}">${fn:substring(item.name, 0, 30)}</c:when><c:otherwise>${item.name}</c:otherwise></c:choose><|>${item.description} - ${item.condition}<|>${item.quantity}<|>${item.price}<|>TRUE' />
                 </c:forEach>
                 <br><br><br>
                 <div align="center">
@@ -189,7 +190,7 @@
                     <span class="btn btn-lg btn-default" type='button' onclick="window.location='/';">Cancel</span>
                 </div>
                 <br>
-                <img src="/include/images/RapidSSL_SEAL-90x50.gif">
+                <a href="//www.rapidssl.com"><img src="/include/images/RapidSSL_SEAL-90x50.gif"></a>
             </form>
         </div>
     </div>
