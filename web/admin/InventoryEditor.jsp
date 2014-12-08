@@ -491,7 +491,7 @@
                     <div><b>Start Date: </b></div>
                     <div>
                         <span>
-                            <input class="datePicker" type="text" name="<%=PARAM_FROM_EVENT_DATE%>" value="<%=event.getFromDate() == null? "" : DateUtil.getFormattedDate(event.getFromDate(), "MM/dd/yy")%>">
+                            <input class="datePicker" type="text" name="<%=PARAM_FROM_EVENT_DATE%>" value="<%=event.getFromDate() == null? "" : DateUtil.getFormattedDate(event.getFromDate(), "MM/dd/yyyy")%>">
                         </span>
                         <span>
                             <select id="startHour" name="<%=PARAM_FROM_EVENT_HOUR%>">
@@ -569,7 +569,7 @@
                     <div><b>End Date: </b></div>
                     <div>
                         <span>
-                            <input class="datePicker" type="text" name="<%=PARAM_TO_EVENT_DATE%>" value="<%=event.getFromDate() == null? "" : DateUtil.getFormattedDate(event.getFromDate(), "MM/dd/yy")%>">
+                            <input class="datePicker" type="text" name="<%=PARAM_TO_EVENT_DATE%>" value="<%=event.getFromDate() == null? "" : DateUtil.getFormattedDate(event.getFromDate(), "MM/dd/yyyy")%>">
                         </span>
                         <span>
                         <select id="endHour" name="<%=PARAM_TO_EVENT_HOUR%>">
