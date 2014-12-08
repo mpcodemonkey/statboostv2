@@ -33,6 +33,7 @@
         String type = (String) request.getAttribute(InventoryEditorServlet.ATTR_TYPE);
         List<Cost> costs = (List<Cost>) request.getAttribute(InventoryEditorServlet.ATTR_COST_ITEMS);
         List<Category> categories = (List<Category>) request.getAttribute(InventoryEditorServlet.ATTR_CATEGORIES);
+        ResultSet inventoryCategories = ServletUtil.getResultSetFromSql("select * from stt_inventory_category where inv_uid = " + inventory.getUid());
 
         HashMap<ItemCondition, Cost> costHash = new HashMap<ItemCondition, Cost>();
         if(costs != null)  {
@@ -159,10 +160,20 @@
             <div class="col-sm-12"><b>Categories:</b></div>
             <div class="col-sm-12">
                 <%
+                    boolean isChecked = false;
                     for(Category currentCategory : categories)  {
+                        isChecked = false;
+                        if(inventoryCategories != null)  {
+                            while(inventoryCategories.next())  {
+                                if(inventoryCategories.getInt("cat_uid") == currentCategory.getCatUid())  {
+                                    isChecked = true;
+                                }
+                            }
+                            inventoryCategories.beforeFirst();
+                        }
                 %>
                     <label class="checkbox-inline col-sm-3">
-                        <input type="checkbox" name="<%=PARAM_CATEGORIES%>" value="<%=currentCategory.getCatUid()%>">
+                        <input type="checkbox" <%=isChecked? "checked=\"checked\"" : ""%> name="<%=PARAM_CATEGORIES%>" value="<%=currentCategory.getCatUid()%>">
                         <%=currentCategory.getCategory()%>
                     </label>
                 <% if (currentCategory.getCatUid() == 3) {%>
