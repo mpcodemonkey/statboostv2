@@ -988,7 +988,7 @@ public class InventoryEditorServlet extends HttpServlet {
             String otherPath = "inventory/generic/";
 
             //default is website path
-            String path = "/website";
+            String path = "website";
             if(type != null)  {
                 if(type.equalsIgnoreCase("magic"))  {
                     path = magicPath;
@@ -1006,7 +1006,7 @@ public class InventoryEditorServlet extends HttpServlet {
 //            String uploadFilePath = "/home/images/inventory/other" + path + filePart;
 
             //used for prod on javapipe
-            String uploadFilePath = "/static-images/" + path + filePart;
+            String uploadFilePath = "teamjjacs.us/static-images/" + path + filePart;
 
 
             File uploadFile = new File(uploadFilePath);
