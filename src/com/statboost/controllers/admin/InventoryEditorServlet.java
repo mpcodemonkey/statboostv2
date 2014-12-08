@@ -71,6 +71,7 @@ public class InventoryEditorServlet extends HttpServlet {
     public static final String ATTR_WARNING = "warning";
     public static final String ATTR_CATEGORIES = "categories";
     public static final String PARAM_CATEGORIES = "categoriesparam";
+    public static final String ATTR_INVENTORY_CATEGORIES = "inventoryCategories";
 
     //params for yugioh card
     public static final String PARAM_YUGIOH_NAME = "yugiohName";
@@ -153,6 +154,7 @@ public class InventoryEditorServlet extends HttpServlet {
         String typeToPass = "GENERIC";
         List<Cost> costs = null;
         List<Category> categories = null;
+        List<InventoryCategory> inventoryCategories = null;
         if(request.getParameter(PARAM_INVENTORY_UID) == null || request.getParameter(PARAM_INVENTORY_UID).equals("0") ||
                 request.getParameter(PARAM_INVENTORY_UID).equals("0"))  {
             inventory = new Inventory();
@@ -162,6 +164,7 @@ public class InventoryEditorServlet extends HttpServlet {
         } else  {
             inventory = (Inventory) session.load(Inventory.class, Integer.parseInt(request.getParameter(PARAM_INVENTORY_UID)));
             costs = (List<Cost>) session.createSQLQuery("select * from stt_cost where cst_inv_uid = " + inventory.getUid()).addEntity(Cost.class).list();
+            inventoryCategories = inventory != null? (List<InventoryCategory>) session.createSQLQuery("select * from stt_inventory_category were inv_uid = " + inventory.getUid()) : null;
             //check if it has the item if it does not initialize it to a new item so that we aren't throwing nulls in
             // the jsp and they can switch the type
             if(inventory != null && inventory.getMagicCard() != null)  {
@@ -200,7 +203,7 @@ public class InventoryEditorServlet extends HttpServlet {
         magicSets = ServletUtil.getResultSetFromSql("select * from stt_magic_set");
         categories = (List<Category>) session.createSQLQuery("select * from stt_category").addEntity(Category.class).list();
 
-        forwardToEditor(request, response, null, null, inventory, magicCard, event, yugiohCard, null, magicSets, typeToPass, costs, categories);
+        forwardToEditor(request, response, null, null, inventory, magicCard, event, yugiohCard, null, magicSets, typeToPass, costs, categories, inventoryCategories);
         session.close();
     }
 
@@ -248,6 +251,7 @@ public class InventoryEditorServlet extends HttpServlet {
         List<Cost> costs = null;
         ResultSet magicSets = null;
         List<Category> categories = null;
+        List<InventoryCategory> inventoryCategories = null;
         if(normalFields.get(PARAM_INVENTORY_UID) == null || normalFields.get(PARAM_INVENTORY_UID).equals("0") ||
                 normalFields.get(PARAM_INVENTORY_UID).equals("0"))  {
             inventory = new Inventory();
@@ -255,6 +259,7 @@ public class InventoryEditorServlet extends HttpServlet {
         } else  {
             inventory = (Inventory) session.load(Inventory.class, Integer.parseInt(normalFields.get(PARAM_INVENTORY_UID)));
             costs = (List<Cost>) session.createSQLQuery("select * from stt_cost where cst_inv_uid = " + inventory.getUid()).addEntity(Cost.class).list();
+            inventoryCategories = inventory != null? (List<InventoryCategory>) session.createSQLQuery("select * from stt_inventory_category were inv_uid = " + inventory.getUid()) : null;
             if(normalFields.get(PARAM_MAGIC_CARD_UID) != null && ! normalFields.get(PARAM_MAGIC_CARD_UID).equals("0") &&
                     ! normalFields.get(PARAM_MAGIC_CARD_UID).equals(""))  {
                 magicCard = (MagicCard) session.load(MagicCard.class, Integer.parseInt(normalFields.get(PARAM_MAGIC_CARD_UID)));
@@ -409,7 +414,11 @@ public class InventoryEditorServlet extends HttpServlet {
             lightlyPlayed.setItemPrice(Double.parseDouble(normalFields.get(PARAM_LIGHTLY_PLAYED_PRICE)));
         }
 
-        String categoriesChecked = normalFields.get(PARAM_CATEGORIES);
+        String[] categoriesChecked = null;
+        if(normalFields.get(PARAM_CATEGORIES) != null)  {
+            categoriesChecked = normalFields.get(PARAM_CATEGORIES).split(",");
+        }
+
         boolean didCheck;
         List<InventoryCategory> categorySaved = (List<InventoryCategory>) session.createSQLQuery("select * from stt_inventory_category where inv_uid =" + inventory.getUid()).addEntity(InventoryCategory.class).list();
         List<InventoryCategory> categoriesToRemove = new ArrayList<InventoryCategory>();
@@ -417,9 +426,11 @@ public class InventoryEditorServlet extends HttpServlet {
             for(Category currentCategory: categories)  {
                 didCheck = false;
                 if(categoriesChecked != null)  {
-                    if((currentCategory.getCatUid() + "").equals(categoriesChecked))  {
-                        didCheck = true;
-                        break;
+                    for(String currentUid : categoriesChecked)  {
+                        if((currentCategory.getCatUid() + "").equals(currentUid))  {
+                            didCheck = true;
+                            break;
+                        }
                     }
                 }
 
@@ -932,7 +943,7 @@ public class InventoryEditorServlet extends HttpServlet {
             session.getTransaction().commit();
             info.add("The transaction was saved successfully");
             forwardToEditor(request, response, null, info, inventory,
-                    magicCard, event, yugiohCard, warning, magicSets, normalFields.get(PARAM_TYPE), costs, categories);
+                    magicCard, event, yugiohCard, warning, magicSets, normalFields.get(PARAM_TYPE), costs, categories, inventoryCategories);
         }  else  {
             if(magicCard == null)  {
                 magicCard = new MagicCard();
@@ -946,7 +957,7 @@ public class InventoryEditorServlet extends HttpServlet {
                 event = new Event();
             }
             forwardToEditor(request, response, errors, null, inventory, magicCard, event, yugiohCard, null, magicSets,
-                    normalFields.get(PARAM_TYPE), costs, categories);
+                    normalFields.get(PARAM_TYPE), costs, categories, inventoryCategories);
         }
 
         session.close();
@@ -955,7 +966,7 @@ public class InventoryEditorServlet extends HttpServlet {
     private static void forwardToEditor(HttpServletRequest request, HttpServletResponse response,ArrayList<String> errors,
                                         ArrayList<String> info, Inventory inventory, MagicCard magicCard,
                                         Event event, YugiohCard yugiohCard, ArrayList<String> warning, ResultSet magicSets,
-                                        String type, List<Cost> costs, List<Category> categories) throws IOException,
+                                        String type, List<Cost> costs, List<Category> categories, List<InventoryCategory> inventoryCategories) throws IOException,
             ServletException {
         request.setAttribute(ATTR_ERRORS, errors);
         request.setAttribute(ATTR_INFO, info);
@@ -968,6 +979,7 @@ public class InventoryEditorServlet extends HttpServlet {
         request.setAttribute(ATTR_TYPE, type);
         request.setAttribute(ATTR_COST_ITEMS, costs);
         request.setAttribute(ATTR_CATEGORIES, categories);
+        request.setAttribute(ATTR_INVENTORY_CATEGORIES, inventoryCategories);
         request.getRequestDispatcher("/admin/InventoryEditor.jsp").forward(request, response);
     }
 
@@ -1031,7 +1043,11 @@ public class InventoryEditorServlet extends HttpServlet {
 
         for(FileItem currentItem : uploadItems)  {
             if(currentItem.isFormField())  {
-                normalFields.put(currentItem.getFieldName(), currentItem.getString());
+                if(normalFields.get(currentItem.getFieldName()) == null)  {
+                    normalFields.put(currentItem.getFieldName(), currentItem.getString());
+                } else  {
+                    normalFields.put(currentItem.getFieldName(), normalFields.get(currentItem.getFieldName()) + "," + currentItem.getString());
+                }
             }
         }
 
