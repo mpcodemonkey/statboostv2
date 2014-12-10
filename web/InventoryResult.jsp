@@ -16,7 +16,7 @@
 <c:set var="previousItemDesc" value="startName" />
 
 
-    <c:forEach items="${requestScope.inventoryList}" var="inventory">
+    <c:forEach items="${requestScope.inventoryList}" var="inventory" varStatus="i">
 
         <c:choose>
 
@@ -38,13 +38,26 @@
                 <div class="panel panel-default">
                 <div class="panel-heading">${inventory.name}</div>
                 <div class="panel-body">
-                    <!--<div id="${inventory.inv_uid}" class="alert alert-success fade in" style="display: none;">
+                    <div id="${inventory.inv_uid}" class="alert alert-success fade in" style="display: none;">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                         <strong>Alert:</strong> Item has been added to your shopping cart!
-                    </div>-->
+                    </div>
                     <div class="row">
                         <div class="col-sm-4">
-                            <img class="media-object img-rounded img-responsive" src="https://placehold.it/350x250" alt="placehold.it/350x250">
+                            <c:choose>
+                                <c:when test="${inventory.type == 'YGO'}">
+                                    <img id="YGO-${i.count}" src="//teamjjacs.us/static-images/inventory/yugioh/${inventory.imageName}" style="max-height: 200px;" onclick="toggleSize(this.id);" onerror="this.style.display='none'">
+                                </c:when>
+                                <c:when test="${inventory.type == 'MTG'}">
+                                    <img id="MTG-${i.count}" src="//teamjjacs.us/static-images/inventory/mtg/${inventory.imageName}" style="max-height: 200px;" onclick="toggleSize(this.id);" onerror="this.src='https://placehold.it/150x200';this.onerror=null;">
+                                </c:when>
+                                <c:when test="${inventory.type == 'GEN'}">
+                                    <img id="GEN-${i.count}" src="//teamjjacs.us/static-images/inventory/generic/${inventory.imageName}" style="max-height: 200px;" onclick="toggleSize(this.id);" onerror="this.style.display='none'">
+                                </c:when>
+                                <c:otherwise>
+                                    <img class="media-object img-rounded img-responsive" src="https://placehold.it/150x200">
+                                </c:otherwise>
+                            </c:choose>
                         </div>
 
                         <div class="col-sm-8">
@@ -176,6 +189,20 @@
         $('#'+inv_uid).show();
         setTimeout(function() {location.reload(true)}, 500);
     }
+
+    function toggleSize(id) {
+        if( $('#'+id).css('max-height') == '200px' )  {
+            $('#'+id).animate({
+                "max-height": 350
+            }, 200 );
+        }
+        else {
+            $('#'+id).animate({
+                "max-height": 200
+            }, 200 );
+        }
+    }
 </script>
+
 
 <jsp:include page="/include/Footer.jsp"/>
