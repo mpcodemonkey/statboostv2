@@ -52,12 +52,12 @@ public class InventorySearchServlet extends HttpServlet {
         List<Object> inventoryResults = null;
         int page = 1;
         String hql = "From Inventory as I, Cost as C where C.invUid = I.uid ";
-        String sql = "SELECT i.inv_uid, co.cst_item_quantity, co.cst_item_price, i.inv_name, i.inv_description, i.inv_image, co.cst_item_condition FROM stt_cost co Join (stt_inventory i INNER JOIN (SELECT ic.inv_uid FROM stt_inventory_category ic INNER JOIN stt_inventory i ON i.inv_uid = ic.inv_uid INNER JOIN stt_category c ON c.cat_uid = ic.cat_uid ";
+        String sql = "SELECT i.inv_uid, co.cst_item_quantity, co.cst_item_price, i.inv_name, i.inv_description, i.inv_image, co.cst_item_condition, i.inv_mcr_uid, i.inv_ycr_uid FROM stt_cost co Join (stt_inventory i INNER JOIN (SELECT ic.inv_uid FROM stt_inventory_category ic INNER JOIN stt_inventory i ON i.inv_uid = ic.inv_uid INNER JOIN stt_category c ON c.cat_uid = ic.cat_uid ";
         boolean prevcon = false;
 
         if(request.getParameter("mId") != null){
             GenericDAO inventoryDAO = new GenericDAO();
-            sql = "SELECT i.inv_uid, co.cst_item_quantity, co.cst_item_price, i.inv_name, i.inv_description, i.inv_image, co.cst_item_condition FROM stt_inventory i, stt_cost co, stt_magic_card m where co.cst_inv_uid = i.inv_uid and i.inv_mcr_uid = m.mcr_uid and m.mcr_multiverse_id = :id";
+            sql = "SELECT i.inv_uid, co.cst_item_quantity, co.cst_item_price, i.inv_name, i.inv_description, i.inv_image, co.cst_item_condition, i.inv_mcr_uid, i.inv_ycr_uid FROM stt_inventory i, stt_cost co, stt_magic_card m where co.cst_inv_uid = i.inv_uid and i.inv_mcr_uid = m.mcr_uid and m.mcr_multiverse_id = :id";
             int theId = ServletUtil.isInteger(request.getParameter("mId")) == true ? Integer.parseInt(request.getParameter("mId")) : -1;
             buildableQuery.put("id", theId);
             QueryObject qo = new QueryObject(buildableQuery, sql);
@@ -83,7 +83,7 @@ public class InventorySearchServlet extends HttpServlet {
         else if(request.getParameter("yId") != null){
             GenericDAO inventoryDAO = new GenericDAO();
             //hql = "From Inventory as I, Cost as C where C.invUid = I.uid and I.yugiohCard.ycrUid=:id";
-            sql = "SELECT i.inv_uid, co.cst_item_quantity, co.cst_item_price, i.inv_name, i.inv_description, i.inv_image, co.cst_item_condition FROM stt_inventory i, stt_cost co, stt_yugioh_card y where co.cst_inv_uid = i.inv_uid and i.inv_ycr_uid = y.ycr_uid and y.ycr_uid=:id";
+            sql = "SELECT i.inv_uid, co.cst_item_quantity, co.cst_item_price, i.inv_name, i.inv_description, i.inv_image, co.cst_item_condition, i.inv_mcr_uid, i.inv_ycr_uid FROM stt_inventory i, stt_cost co, stt_yugioh_card y where co.cst_inv_uid = i.inv_uid and i.inv_ycr_uid = y.ycr_uid and y.ycr_uid=:id";
             int theId = ServletUtil.isInteger(request.getParameter("yId")) == true ? Integer.parseInt(request.getParameter("yId")) : -1;
             buildableQuery.put("id", theId);
             QueryObject qo = new QueryObject(buildableQuery, sql);
@@ -260,6 +260,11 @@ public class InventorySearchServlet extends HttpServlet {
             ir.imageName = (String)row[5];
             ir.condition = (String)row[6];
 
+            //determine inventory type
+            if (row[7] != null) {ir.type = "MTG";}
+            else if (row[8]  != null) {ir.type = "YGO";}
+            else {ir.type = "GEN";}
+
             inventoryPage.add(ir);
 
         }
@@ -275,6 +280,7 @@ public class InventorySearchServlet extends HttpServlet {
         private String description;
         private String imageName;
         private String condition;
+        private String type;
 
         public int getInv_uid() { return inv_uid; }
 
@@ -300,5 +306,8 @@ public class InventorySearchServlet extends HttpServlet {
 
         public String getCondition() { return condition; }
 
+        public String getType() {
+            return type;
+        }
     }
 }
