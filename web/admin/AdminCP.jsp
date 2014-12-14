@@ -1,5 +1,4 @@
 <%@ page import="com.statboost.controllers.admin.InventoryEditorServlet" %>
-<%@ page import="com.statboost.models.inventory.InventoryCategory" %>
 <%@ page import="com.statboost.controllers.admin.InventorySqllistServlet" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -68,21 +67,8 @@
                     <h1 class="panel-title">Manage Email Notifications</h1>
                 </div>
                 <div class="panel-body">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Email Templates</div>
-                        <div class="panel-body"><li>--available email templates will be listed here--</li><br>
-                            <div class="btn-group"><a href="https://mandrillapp.com/templates"><button class="btn btn-primary">Mandrill Template Editor</button></a></div><br><br>
-                        *You may need to log in in order to view web client.  Currently linked to TeamJJACS@gmail.com login
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Email Alerts</div>
-                        <div class="panel-body"><li>--available email alerts will be listed here--</li></div>
-                    </div>
-                    <div class="btn-toolbar">
-                        <div class="btn-group"><button class="btn btn-primary">New Email Template</button></div>
-                        <div class="btn-group"><button class="btn btn-primary">New Email Alert</button></div>
-                    </div>
+                    <div class="btn-group"><a href="https://mandrillapp.com/templates"><button class="btn btn-primary">Mandrill Template Editor</button></a></div><br><br>
+                    *You may need to log in in order to view web client.  Currently linked to TeamJJACS@gmail.com login
                 </div>
             </div>
         </div>

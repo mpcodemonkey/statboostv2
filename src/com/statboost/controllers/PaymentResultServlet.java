@@ -64,6 +64,11 @@ public class PaymentResultServlet extends HttpServlet {
             request.setAttribute("cardType", cardType);
             request.setAttribute("acctNumber", acctNumber);
 
+            //get contact information
+            String contactEmail = request.getParameter(ResponseField.EMAIL_ADDRESS.getFieldName());
+            String contactFirstName = request.getParameter(ResponseField.FIRST_NAME.getFieldName());
+            String contactLastName = request.getParameter(ResponseField.LAST_NAME.getFieldName());
+
             //get shipping details
             String inStorePickup = request.getParameter("inStorePickup");
             inStorePickup = inStorePickup.equalsIgnoreCase("No") ? "false" : "true";
@@ -81,6 +86,9 @@ public class PaymentResultServlet extends HttpServlet {
             //set orderParams for creating order
             Map<String, String> orderParams = new HashMap<>();
             orderParams.put("transactionId", transactionID);
+            orderParams.put("contactEmail", contactEmail);
+            orderParams.put("contactFirstName", contactFirstName);
+            orderParams.put("contactLastName", contactLastName);
             orderParams.put("orderTotal", orderTotal);
             orderParams.put("shippingTotal", shippingTotal);
             orderParams.put("taxTotal", taxTotal);
@@ -92,12 +100,11 @@ public class PaymentResultServlet extends HttpServlet {
             orderParams.put("shippingZip", shipZip);
 
             //create the order
-            String contactEmail = request.getParameter(ResponseField.EMAIL_ADDRESS.getFieldName());
             User user = User.find((String)session.getAttribute("email"));
             ShoppingCartSessionObject shoppingCart = (ShoppingCartSessionObject)session.getAttribute("shoppingCart");
             Integer orderID = null;
             try {
-               orderID = OrderManager.createOrder(user, contactEmail, shoppingCart, orderParams);
+               orderID = OrderManager.createOrder(user, shoppingCart, orderParams);
             } catch (Exception e) {
                 logger.setLevel(Level.DEBUG);
                 logger.debug("Something terrible happened when creating the order for transaction #" + transactionID + ".");

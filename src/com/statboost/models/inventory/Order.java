@@ -7,10 +7,7 @@ import com.statboost.models.session.QueryObject;
 import com.statboost.util.HibernateUtil;
 import com.statboost.util.MandrillUtil;
 import com.statboost.util.Pair;
-import org.hibernate.Hibernate;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -38,7 +35,9 @@ public class Order {
     private String trackingNumber;
     private boolean inStorePickup;
     private boolean paid;
-    private String userEmail;
+    private String contactLastName;
+    private String contactFirstName;
+    private String contactEmail;
     private User user;
 
 
@@ -113,19 +112,48 @@ public class Order {
 
     private static void sendEmailNotificationOrderComplete(Order order) {
         ArrayList<String> recipientList = new ArrayList<>();
-        recipientList.add(order.getUserEmail());
+        recipientList.add(order.getContactEmail());
         Map<String, List<Pair>> varMap = new HashMap<>();
         //create list of merge vars - pairs of merge var name to merge var value
         List<Pair> mergeVars = new ArrayList<>();
-        mergeVars.add(new Pair("FNAME", order.getUser().getUsrFirstName()));
-        mergeVars.add(new Pair("LNAME", order.getUser().getUsrLastName()));
+        mergeVars.add(new Pair("FNAME", order.getContactFirstName()));
+        mergeVars.add(new Pair("LNAME", order.getContactLastName()));
         mergeVars.add(new Pair("ORDER_NUMBER", order.getUid()));
         mergeVars.add(new Pair("TRANSACTION_ID", order.getTransactionId()));
 
-        varMap.put(order.getUserEmail(), mergeVars);
+        varMap.put(order.getContactEmail(), mergeVars);
 
         //fire off email
         MandrillUtil.sendEmail("ready-for-pickup", recipientList, varMap);
+    }
+
+    /**
+     * This method returns a list of the most recently submitted orders with a limit set by the parameter specified.
+     * @param limit
+     * @return - List of orders
+     */
+    public static List<Order> getRecentOrders(int limit) {
+        List<Order> orderList = null;
+
+        Session session = HibernateUtil.getDatabaseSessionFactory().openSession();
+        Transaction tx = null;
+        if (limit > 0) {
+            try {
+                tx = session.beginTransaction();
+                //query
+                Query query = session.createQuery("FROM Order ORDER BY dateSubmitted DESC");
+                query.setMaxResults(limit);
+                orderList = (List<Order>) query.list();
+                tx.commit();
+            } catch (HibernateException e) {
+                if (tx != null) tx.rollback();
+                e.printStackTrace();
+            } finally {
+                session.close();
+            }
+        }
+
+        return orderList;
     }
 
 
@@ -350,12 +378,28 @@ public class Order {
         this.shippingMethod = shippingMethod;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getContactEmail() {
+        return contactEmail;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setContactEmail(String userEmail) {
+        this.contactEmail = userEmail;
+    }
+
+    public String getContactLastName() {
+        return contactLastName;
+    }
+
+    public void setContactLastName(String contactLastName) {
+        this.contactLastName = contactLastName;
+    }
+
+    public String getContactFirstName() {
+        return contactFirstName;
+    }
+
+    public void setContactFirstName(String contactFirstName) {
+        this.contactFirstName = contactFirstName;
     }
 
     public User getUser() {

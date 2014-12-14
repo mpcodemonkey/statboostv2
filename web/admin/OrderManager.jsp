@@ -13,7 +13,9 @@
 
 <div class="container">
     <div class="well well-lg">
-
+        <c:if test="${requestScope.specificOrder != null}">
+            <button class="btn btn-sm btn-primary" onclick="window.location='/admin/ordermanager'"><< Back</button>
+        </c:if>
         <h1 align="center">Order Manager</h1>
         <c:if test="${requestScope.alert != null && requestScope.alertType != null}">
             <div class="alert alert-${requestScope.alertType} fade in">
@@ -59,8 +61,6 @@
                         <div class="row">
                             <form method="POST">
                                 <div class="col-sm-4">
-                                    Transaction ID: ${specificOrder.transactionId}<br>
-                                    Customer: ${specificOrder.userEmail}<br>
                                     <div id="editStatus" style="display: none;" class="form-group-sm">
                                         <br><label>Status:</label>
                                         <select id="status" name="orderStatus" class="form-control">
@@ -76,14 +76,19 @@
                                         Status: <span class="badge">${fn:replace(specificOrder.status, "_", " ")}</span>
                                     </div>
                                     <br>
+                                    Transaction ID: ${specificOrder.transactionId}<br>
+                                    First Name: ${specificOrder.contactFirstName}<br>
+                                    Last Name: ${specificOrder.contactLastName}<br>
+                                    Contact Email: ${specificOrder.contactEmail}<br>
+                                    <br>
                                     Shipping Total: <fmt:formatNumber value="${specificOrder.shippingTotal}" type="currency"/><br>
                                     Tax Total: <fmt:formatNumber value="${specificOrder.taxTotal}" type="currency"/><br>
                                     Order Total: <fmt:formatNumber value="${specificOrder.orderTotal}" type="currency"/><br><br>
-                                    Date Submitted: <fmt:formatDate type="date" value="${specificOrder.dateSubmitted}"/><br>
-                                    Date Completed: <fmt:formatDate type="date" value="${specificOrder.dateComplete}"/><br>
+                                    Date Submitted: <fmt:formatDate pattern="MMM dd, yyyy h:mm a" value="${specificOrder.dateSubmitted}" /><br>
+                                    Date Completed:<fmt:formatDate pattern="MMM dd, yyyy h:mm a" value="${specificOrder.dateComplete}" /><br>
                                 </div>
                                 <div class="col-sm-4">
-                                    In Store Pickup?: ${specificOrder.inStorePickup}<br>
+                                    In Store Pickup?: <c:choose><c:when test="${specificOrder.inStorePickup == 'true'}">Yes</c:when><c:otherwise>No</c:otherwise></c:choose><br>
                                     Shipping Method: ${specificOrder.shippingMethod}<br>
                                     Tracking Number: ${specificOrder.trackingNumber}<br>
                                     Shipping Address: ${specificOrder.shippingAddress1}<br>
@@ -158,8 +163,8 @@
                             <th>Order Number</th>
                             <th>Date Submitted</th>
                             <th>Order Status</th>
-                            <th>In Store Pickup?</th>
-                            <th>Customer</th>
+                            <th>Contact Name</th>
+                            <th>Contact Email</th>
                             <th>Order Total</th>
                         </tr>
                     </thead>
@@ -167,10 +172,10 @@
                     <c:forEach items="${requestScope.orderList}" var="order" varStatus="i">
                         <tr>
                             <td><button class="btn btn-sm btn-primary" onclick="window.location='?orderId=${order.uid}'">Order-${order.uid}</button></td>
-                            <td><fmt:formatDate type="date" value="${order.dateSubmitted}"/></td>
+                            <td><fmt:formatDate pattern="MMM dd, yyyy h:mm a" value="${order.dateSubmitted}"/></td>
                             <td><span class="badge">${fn:replace(order.status, "_", " ")}</span></td>
-                            <td><c:choose><c:when test="${order.inStorePickup == 'true'}">Yes</c:when><c:otherwise>No</c:otherwise></c:choose></td>
-                            <td>${order.userEmail}</td>
+                            <td>${order.contactFirstName} ${order.contactLastName}</td>
+                            <td>${order.contactEmail}</td>
                             <td><fmt:formatNumber value="${order.orderTotal}" type="currency"/></td>
                         </tr>
                     </c:forEach>

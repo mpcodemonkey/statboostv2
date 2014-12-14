@@ -29,7 +29,9 @@
         <property name="trackingNumber" column="ord_tracking_number"/>
         <property name="inStorePickup" column="ord_in_store_pickup"/>
         <property name="paid" column="ord_paid"/>
-        <property name="userEmail" column="ord_usr_email"/>
+        <property name="contactFirstName" column="ord_usr_first_name"/>
+        <property name="contactLastName" column="ord_usr_last_name"/>
+        <property name="contactEmail" column="ord_usr_email"/>
         <many-to-one name="user" class="com.statboost.models.actor.User"
                      column="ord_usr_uid" not-null="false" insert="true" update="true"
                      cascade="all" />
