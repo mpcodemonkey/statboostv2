@@ -30,13 +30,15 @@ public class OrderManager {
      * @param orderParams - a Map of order specific details that were supplied by the user.
      * @return - true if order record is successfully created.
      */
-    public static int createOrder(User user, String contactEmail, ShoppingCartSessionObject shoppingCart, Map<String, String> orderParams) {
+    public static int createOrder(User user, ShoppingCartSessionObject shoppingCart, Map<String, String> orderParams) {
         Integer orderID = null;
 
         //init new order object
         Order order = new Order();
         order.setUser(user);
-        order.setUserEmail(contactEmail);
+        order.setContactFirstName(orderParams.get("contactFirstName"));
+        order.setContactLastName(orderParams.get("contactLastName"));
+        order.setContactEmail(orderParams.get("contactEmail"));
         order.setPaid(true);
         order.setStatus(OrderStatus.PLACED);
         order.setTransactionId(orderParams.get("transactionId"));

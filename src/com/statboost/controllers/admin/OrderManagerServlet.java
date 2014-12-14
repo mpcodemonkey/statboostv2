@@ -51,9 +51,8 @@ public class OrderManagerServlet extends HttpServlet {
 
             //get list of recently submitted orders.
             else {
-
-                //TODO
-
+                int resultLimit = 5;
+                request.setAttribute("orderList", Order.getRecentOrders(resultLimit));
             }
 
             request.getRequestDispatcher("/admin/OrderManager.jsp").forward(request, response);
@@ -110,8 +109,8 @@ public class OrderManagerServlet extends HttpServlet {
                 request.setAttribute("alertType", "info");
             }
 
-
-            request.getRequestDispatcher("/admin/OrderManager.jsp").forward(request, response);
+            //start over
+            doGet(request, response);
         } else {
             response.sendRedirect("/");
         }

@@ -85,6 +85,14 @@
                 * Other custom params passed from form
                 */
                receiptUrlBuffer.append("&");
+               receiptUrlBuffer.append(ResponseField.FIRST_NAME.getFieldName()).append("=");
+               receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.FIRST_NAME.getFieldName()));
+
+               receiptUrlBuffer.append("&");
+               receiptUrlBuffer.append(ResponseField.LAST_NAME.getFieldName()).append("=");
+               receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.LAST_NAME.getFieldName()));
+
+               receiptUrlBuffer.append("&");
                receiptUrlBuffer.append(ResponseField.EMAIL_ADDRESS.getFieldName()).append("=");
                receiptUrlBuffer.append(result.getResponseMap().get(ResponseField.EMAIL_ADDRESS.getFieldName()));
 

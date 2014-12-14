@@ -7,7 +7,7 @@
   Date: 8/3/2014
   Time: 10:23 PM
 --%>
-
+<%@ page trimDirectiveWhitespaces="true" %>
 <style type="text/css">
     .dropdown:hover .dropdown-menu {
         display: block;
@@ -27,18 +27,16 @@
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <!--<li><a href="/">Home</a></li>-->
                 <li><a href="/Events">Events</a></li>
                 <li><a href="/Store">Store</a></li>
-                <li class="dropdown"><!--"/Games.jsp"-->
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         Games <span class="caret"></span>
                     </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/magicSearch">Magic: The Gathering</a></li>
-                            <!--<li><a href="/YugiohMain.jsp">Yu Gi Oh</a></li>-->
-                            <li><a href="/ygoSearch">Yu Gi Oh</a></li>
-                        </ul>
+                    <ul class="dropdown-menu">
+                        <li><a href="/magicSearch">Magic: The Gathering</a></li>
+                        <li><a href="/ygoSearch">Yu-Gi-Oh!</a></li>
+                    </ul>
                 </li>
                 <li><a href="/AboutUs.jsp">Contact Us</a></li>
             </ul>
@@ -95,7 +93,7 @@
         </div><!-- /.nav-collapse -->
     </div><!-- /.container -->
 </div><!-- /.navbar -->
-<br><br><br>
+
 <%--Alert Handler--%>
 <c:if test="${requestScope.navAlert != null && requestScope.alertType != null}">
     <div class="alert alert-${requestScope.alertType} fade in">
