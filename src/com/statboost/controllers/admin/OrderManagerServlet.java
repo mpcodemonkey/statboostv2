@@ -49,6 +49,13 @@ public class OrderManagerServlet extends HttpServlet {
                 }
             }
 
+            //get list of recently submitted orders.
+            else {
+
+                //TODO
+
+            }
+
             request.getRequestDispatcher("/admin/OrderManager.jsp").forward(request, response);
         } else {
             response.sendRedirect("/");

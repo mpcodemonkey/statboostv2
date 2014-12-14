@@ -91,7 +91,7 @@
                        <div class="well well-lg totalBox">
                             <div>
                                 <p class="lead">
-                                    Calculate shipping rates: null<br>
+                                    Shipping Method: N/A<br>
 
                                 </p>
                             </div>
@@ -140,13 +140,11 @@
 
     function toggleSize(id) {
         if( $('#'+id).css('max-height') == '100px' )  {
-           // $('#'+id).css('max-height', '250px');
             $('#'+id).animate({
                 "max-height": 250
             }, 200 );
         }
         else {
-           // $('#'+id).css('max-height', '100px');
             $('#'+id).animate({
                 "max-height": 100
             }, 200 );

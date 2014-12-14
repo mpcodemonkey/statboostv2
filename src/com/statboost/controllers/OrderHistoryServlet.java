@@ -31,7 +31,7 @@ public class OrderHistoryServlet extends HttpServlet {
             GenericDAO dao = new GenericDAO();
             List<Order> orderList = (List<Order>)dao.getResultSet("From Order where user = '" + user.getUsrUid() + "' order by dateSubmitted desc");
 
-            if (orderList.isEmpty()) {
+            if (orderList == null || orderList.isEmpty()) {
                 request.setAttribute("alert", "You have no orders :(");
                 request.setAttribute("alertType", "warning");
             } else {
