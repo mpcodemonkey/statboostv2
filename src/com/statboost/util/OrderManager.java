@@ -35,9 +35,7 @@ public class OrderManager {
 
         //init new order object
         Order order = new Order();
-        if (user != null) {
-            order.setUser(user);
-        }
+        order.setUser(user);
         order.setUserEmail(contactEmail);
         order.setPaid(true);
         order.setStatus(OrderStatus.PLACED);

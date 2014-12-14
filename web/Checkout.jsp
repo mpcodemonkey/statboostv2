@@ -21,9 +21,14 @@
         }
 
         //init input masks
+        $('.zip').mask('99999', {placeholder: ""});
         $('#cc_number').mask('9999999999999?999', {placeholder: ""});
         $('#cc_code').mask('999?9', {placeholder: ""});
         $('#exp').mask('99/99', {placeholder: "#"});
+
+        $(".state").keyup(function(){
+            this.value = this.value.toUpperCase();
+        });
 
         //copyFields($('#checkout'));
         //$('#copyShipping').prop('checked', true);
@@ -85,8 +90,8 @@
                             <input class="form-control" type='text' name='x_last_name' placeholder="Cardholder's Last Name" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrLastName}</c:if>' required/><br>
                             <input class="form-control" type='text' name='x_address' placeholder="Billing Address" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrAddress1}</c:if>' required/><br>
                             <input class="form-control" type='text' name='x_city' placeholder="Billing City" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrCity}</c:if>' required/><br>
-                            <input class="form-control" type='text' name='x_state' placeholder="Billing State" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrState}</c:if>' required/><br>
-                            <input class="form-control" type='text' name='x_zip' placeholder="Billing Zip" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrZip}</c:if>' required/><br>
+                            <input class="form-control state" type='text' name='x_state' maxlength="2" placeholder="Billing State" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrState}</c:if>' required/><br>
+                            <input class="form-control zip" type='text' name='x_zip' maxlength="5" placeholder="Billing Zip" value='<c:if test="${requestScope.user != null}">${requestScope.user.usrZip}</c:if>' required/><br>
                         </fieldset>
                     </div>
                     <div class="col-xs-6">
@@ -96,8 +101,8 @@
                             <input class="form-control" type='text' name='x_ship_to_last_name' placeholder="Last Name" <c:if test="${param.pickupOrder == 'No'}">required</c:if>/><br>
                             <input class="form-control" type='text' name='x_ship_to_address' placeholder="Address" <c:if test="${param.pickupOrder == 'No'}">required</c:if>/><br>
                             <input class="form-control" type='text' name='x_ship_to_city' placeholder="City" <c:if test="${param.pickupOrder == 'No'}">required</c:if>/><br>
-                            <input class="form-control" type='text' name='x_ship_to_state' placeholder="State" maxlength="2" <c:if test="${param.pickupOrder == 'No'}">required</c:if>/><br>
-                            <input class="form-control" type='text' name='x_ship_to_zip' placeholder="Zip" <c:if test="${param.pickupOrder == 'No'}">required</c:if>/><br>
+                            <input class="form-control state" type='text' name='x_ship_to_state' maxlength="2" placeholder="State" maxlength="2" <c:if test="${param.pickupOrder == 'No'}">required</c:if>/><br>
+                            <input class="form-control zip" type='text' name='x_ship_to_zip' maxlength="5" placeholder="Zip" <c:if test="${param.pickupOrder == 'No'}">required</c:if>/><br>
                         </fieldset>
                     </div>
                 </div>
