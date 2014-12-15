@@ -174,7 +174,7 @@
                             <td><button class="btn btn-sm btn-primary" onclick="window.location='?orderId=${order.uid}'">Order-${order.uid}</button></td>
                             <td><fmt:formatDate pattern="MMM dd, yyyy h:mm a" value="${order.dateSubmitted}"/></td>
                             <td><span class="badge">${fn:replace(order.status, "_", " ")}</span></td>
-                            <td>${order.contactFirstName} ${order.contactLastName}</td>
+                            <td>${order.contactFirstName}&nbsp;${order.contactLastName}</td>
                             <td>${order.contactEmail}</td>
                             <td><fmt:formatNumber value="${order.orderTotal}" type="currency"/></td>
                         </tr>

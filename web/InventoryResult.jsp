@@ -90,7 +90,14 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-primary" style="float:right;" onclick="addToCart(${inventory.inv_uid}, '${inventory.condition}', $('#quantityPicker-${inventory.inv_uid}').val(), '${inventory.name}')">Add To Cart</button>
+                                            <c:set var="apost" value="'"/>
+                                            <c:set var="replace" value="\\'"/>
+                                            <c:set var="invName" value='${fn:replace(inventory.name, apost, replace)}'/>
+
+                                            <c:set var="quote" value='"'/>
+                                            <c:set var="replace2" value="\\'"/>
+                                            <c:set var="invName" value='${fn:replace(invName, quote, replace2)}'/>
+                                            <button type="button" class="btn btn-primary" style="float:right;" onclick="addToCart(${inventory.inv_uid}, '${inventory.condition}', $('#quantityPicker-${inventory.inv_uid}').val(), '${invName}')">Add To Cart</button>
                                         </td>
                                     </tr>
             <c:set var="previousItemName" value="${inventory.name}" />
