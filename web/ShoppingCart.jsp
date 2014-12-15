@@ -56,8 +56,8 @@
                                             <c:when test="${cartItem.type == 'YGO'}">
                                                 <img id="YGO-${status.count}" src="//teamjjacs.us/static-images/inventory/yugioh/${cartItem.imageName}" style="max-height: 100px;" onclick="toggleSize(this.id);" onerror="this.style.display='none'">
                                             </c:when>
-                                            <c:when test="${cartItem.type == 'MTG'}">
-                                                <img id="MTG-${status.count}" src="//teamjjacs.us/static-images/inventory/mtg/${cartItem.imageName}" style="max-height: 100px;" onclick="toggleSize(this.id);" onerror="this.style.display='none'">
+                                            <c:when test="${cartItem.type == 'MTG'}"> <!--//teamjjacs.us/static-images/inventory/mtg/${cartItem.imageName} -->
+                                                <img id="MTG-${status.count}" src="http://mtgimage.com/card/${cartItem.imageName}&#46;jpg" style="max-height: 100px;" onclick="toggleSize(this.id);" onerror="this.style.display='none'">
                                             </c:when>
                                             <c:when test="${cartItem.type == 'GEN'}">
                                                 <img id="GEN-${status.count}" src="//teamjjacs.us/static-images/inventory/generic/${cartItem.imageName}" style="max-height: 100px;" onclick="toggleSize(this.id);" onerror="this.style.display='none'">
