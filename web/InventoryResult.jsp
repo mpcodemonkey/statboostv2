@@ -44,8 +44,8 @@
                                 <c:when test="${inventory.type == 'YGO'}">
                                     <img id="YGO-${i.count}" src="//teamjjacs.us/static-images/inventory/yugioh/${inventory.imageName}" style="max-height: 200px;" onclick="toggleSize(this.id);" onerror="this.style.display='none'">
                                 </c:when>
-                                <c:when test="${inventory.type == 'MTG'}">
-                                    <img id="MTG-${i.count}" src="//teamjjacs.us/static-images/inventory/mtg/${inventory.imageName}" style="max-height: 200px;" onclick="toggleSize(this.id);" onerror="this.src='https://placehold.it/150x200';this.onerror=null;">
+                                <c:when test="${inventory.type == 'MTG'}"><!-- //teamjjacs.us/static-images/inventory/mtg/ -->
+                                    <img id="MTG-${i.count}" src="<c:choose><c:when test="${inventory.setId != null}">http://mtgimage.com/set/${inventory.setId}/${inventory.imageName}&#46;jpg</c:when><c:otherwise>http://mtgimage.com/card/${inventory.imageName}&#46;jpg</c:otherwise></c:choose>" style="max-height: 200px;" onclick="toggleSize(this.id);" onerror="this.src='https://placehold.it/150x200';this.onerror=null;">
                                 </c:when>
                                 <c:when test="${inventory.type == 'GEN'}">
                                     <img id="GEN-${i.count}" src="//teamjjacs.us/static-images/inventory/generic/${inventory.imageName}" style="max-height: 200px;" onclick="toggleSize(this.id);" onerror="this.style.display='none'">

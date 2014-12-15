@@ -57,7 +57,7 @@ public class InventorySearchServlet extends HttpServlet {
 
         if(request.getParameter("mId") != null){
             GenericDAO inventoryDAO = new GenericDAO();
-            sql = "SELECT i.inv_uid, co.cst_item_quantity, co.cst_item_price, i.inv_name, i.inv_description, i.inv_image, co.cst_item_condition, i.inv_mcr_uid, i.inv_ycr_uid FROM stt_inventory i, stt_cost co, stt_magic_card m where co.cst_inv_uid = i.inv_uid and i.inv_mcr_uid = m.mcr_uid and m.mcr_multiverse_id = :id";
+            sql = "SELECT i.inv_uid, co.cst_item_quantity, co.cst_item_price, i.inv_name, i.inv_description, i.inv_image, co.cst_item_condition, i.inv_mcr_uid, i.inv_ycr_uid, m.mcr_set_id FROM stt_inventory i, stt_cost co, stt_magic_card m where co.cst_inv_uid = i.inv_uid and i.inv_mcr_uid = m.mcr_uid and m.mcr_multiverse_id = :id";
             int theId = ServletUtil.isInteger(request.getParameter("mId")) == true ? Integer.parseInt(request.getParameter("mId")) : -1;
             buildableQuery.put("id", theId);
             QueryObject qo = new QueryObject(buildableQuery, sql);
@@ -261,9 +261,12 @@ public class InventorySearchServlet extends HttpServlet {
             ir.condition = (String)row[6];
 
             //determine inventory type
-            if (row[7] != null) {ir.type = "MTG";}
-            else if (row[8]  != null) {ir.type = "YGO";}
+            if (row.length > 7 && row[7] != null) {ir.type = "MTG";}
+            else if (row.length > 8 && row[8]  != null) {ir.type = "YGO";}
             else {ir.type = "GEN";}
+
+            if (row.length > 9 && row[9] != null)
+                ir.setId = (String) row[9];
 
             inventoryPage.add(ir);
 
@@ -281,6 +284,7 @@ public class InventorySearchServlet extends HttpServlet {
         private String imageName;
         private String condition;
         private String type;
+        private String setId;
 
         public int getInv_uid() { return inv_uid; }
 
@@ -308,6 +312,10 @@ public class InventorySearchServlet extends HttpServlet {
 
         public String getType() {
             return type;
+        }
+
+        public String getSetId() {
+            return setId;
         }
     }
 }
