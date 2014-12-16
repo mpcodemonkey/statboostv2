@@ -38,7 +38,7 @@
                         <li><a href="/ygoSearch">Yu-Gi-Oh!</a></li>
                     </ul>
                 </li>
-                <li><a href="/AboutUs.jsp">Contact Us</a></li>
+                <li><a href="/AboutUs">Contact Us</a></li>
             </ul>
 
             <form class="navbar-form navbar-left" role="search" method="get" action="/magicSearch">

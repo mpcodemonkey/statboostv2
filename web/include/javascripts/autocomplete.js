@@ -32,8 +32,10 @@ $(function() {
         });
     })
     .data("ui-autocomplete")._renderItem = function(ul, item){
+        var tmp = item.name.replaceAll("%C6", "Æ");
+        tmp = tmp.replaceAll(" ", "%20");
         return $("<li>")
-            .append( "<a href=/magicSearch?cardName="+encodeURIComponent(item.name)+"><b><u>" + item.name + "</u></b><br><i>" + item.text + "</i></a>" )
+            .append( "<a href=/magicSearch?cardName="+tmp+"><b><u>" + item.name + "</u></b><br><i>" + item.text + "</i></a>" )
             .appendTo(ul);
     }
 

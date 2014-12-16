@@ -164,7 +164,7 @@ public class InventoryEditorServlet extends HttpServlet {
         } else  {
             inventory = (Inventory) session.load(Inventory.class, Integer.parseInt(request.getParameter(PARAM_INVENTORY_UID)));
             costs = (List<Cost>) session.createSQLQuery("select * from stt_cost where cst_inv_uid = " + inventory.getUid()).addEntity(Cost.class).list();
-            inventoryCategories = inventory != null? (List<InventoryCategory>) session.createSQLQuery("select * from stt_inventory_category were inv_uid = " + inventory.getUid()) : null;
+            inventoryCategories = inventory != null? (List<InventoryCategory>) session.createSQLQuery("select * from stt_inventory_category where inv_uid = " + inventory.getUid()).addEntity(InventoryCategory.class).list() : null;
             //check if it has the item if it does not initialize it to a new item so that we aren't throwing nulls in
             // the jsp and they can switch the type
             if(inventory != null && inventory.getMagicCard() != null)  {
@@ -1018,7 +1018,7 @@ public class InventoryEditorServlet extends HttpServlet {
 //            String uploadFilePath = "/home/images/inventory/other" + path + filePart;
 
             //used for prod on javapipe
-            String uploadFilePath = "teamjjacs.us/static-images/" + path + filePart;
+            String uploadFilePath = "/static-images/" + path + filePart;
 
 
             File uploadFile = new File(uploadFilePath);
