@@ -179,7 +179,7 @@ public class InventorySearchServlet extends HttpServlet {
         }
         else{
             categoryConstraint += " GROUP BY ic.inv_uid ";
-            categoryConstraint += " HAVING Count(ic.inv_uid) > 0) aa";
+            categoryConstraint += " HAVING Count(ic.inv_uid) >= 0) aa";
             categoryConstraint += " ON i.inv_uid = aa.inv_uid)";
             categoryConstraint += " ON i.inv_uid = co.cst_inv_uid ";
             queryparams.add(categoryConstraint);
@@ -221,11 +221,12 @@ public class InventorySearchServlet extends HttpServlet {
             sql += s;
         }
 
-
+        System.out.println(sql);
         QueryObject inventoryQuery = new QueryObject(buildableQuery, sql);
         GenericDAO inventoryDAO = new GenericDAO();
 
         inventoryResults = (List<Object>)inventoryDAO.getResultSetFromSql(inventoryQuery, page);
+
 
         session.setAttribute("QueryObject", inventoryQuery);
 

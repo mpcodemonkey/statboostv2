@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.statboost.models.enumType.ItemCondition;
 import com.statboost.models.inventory.Cost;
 import com.statboost.util.HibernateUtil;
+import com.statboost.util.ServletUtil;
 import org.hibernate.*;
 
 import javax.servlet.ServletException;
@@ -47,7 +48,7 @@ public class CalendarFeedServlet extends HttpServlet {
             jo.addProperty("description", (String)col[2]);
             jo.addProperty("playerLimit", (int)col[5]);
             jo.addProperty("inStoreUsers", (int)col[6]);
-            jo.addProperty("eventCost", "$"+(double)col[7]);
+            jo.addProperty("eventCost", "$" + ServletUtil.formatCurrency((double)col[7]));
             jo.addProperty("invId", (int)col[8]);
             jo.addProperty("cond", Cost.getConditionString((ItemCondition)col[9]));
             j.add(jo);
