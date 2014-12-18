@@ -259,7 +259,7 @@ public class InventoryEditorServlet extends HttpServlet {
         } else  {
             inventory = (Inventory) session.load(Inventory.class, Integer.parseInt(normalFields.get(PARAM_INVENTORY_UID)));
             costs = (List<Cost>) session.createSQLQuery("select * from stt_cost where cst_inv_uid = " + inventory.getUid()).addEntity(Cost.class).list();
-            inventoryCategories = inventory != null? (List<InventoryCategory>) session.createSQLQuery("select * from stt_inventory_category were inv_uid = " + inventory.getUid()) : null;
+            inventoryCategories = inventory != null? (List<InventoryCategory>) session.createSQLQuery("select * from stt_inventory_category where inv_uid = " + inventory.getUid()) : null;
             if(normalFields.get(PARAM_MAGIC_CARD_UID) != null && ! normalFields.get(PARAM_MAGIC_CARD_UID).equals("0") &&
                     ! normalFields.get(PARAM_MAGIC_CARD_UID).equals(""))  {
                 magicCard = (MagicCard) session.load(MagicCard.class, Integer.parseInt(normalFields.get(PARAM_MAGIC_CARD_UID)));
