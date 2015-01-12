@@ -65,9 +65,10 @@ public class RegisterServlet extends HttpServlet {
                     usrNewsletter = new Byte(Byte.MAX_VALUE); //user wants newsletter
                 }
                 String usrDciNumber = request.getParameter("dcinumber");
+                String usrCossyNumber = request.getParameter("cossynumber");
                 //insert the new user into database
                 logger.info("Inserting user: " + usrEmail);
-                User.insert(usrFirstName, usrLastName, usrEmail, usrPassword, "Customer", usrAddress1, usrAddress2, usrCity, usrState, usrZip, usrPhone, usrNewsletter, usrDciNumber);
+                User.insert(usrFirstName, usrLastName, usrEmail, usrPassword, "Customer", usrAddress1, usrAddress2, usrCity, usrState, usrZip, usrPhone, usrNewsletter, usrDciNumber, usrCossyNumber);
 
                 //send email notification to user
                 sendEmailNotification(usrEmail, usrFirstName, usrLastName);

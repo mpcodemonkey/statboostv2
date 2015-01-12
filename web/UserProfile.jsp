@@ -47,6 +47,7 @@
                 <br>
                 <li><b>Recieve Newsletter? </b> <c:choose><c:when test="${user.usrNewsletter == '127'}">Yes</c:when><c:otherwise>No</c:otherwise></c:choose></li>
                 <li><b>DCI Number:</b> ${user.usrDciNumber}</li>
+                <li><b>COSSY Number:</b> ${user.usrCossyNumber}</li>
             </div>
             <div id="editProfile" style="display: none;">
                 <div style="max-width: 300px;" align="left">
@@ -136,8 +137,12 @@
                                 <input id="newsletter" name="newsletter" type="checkbox" value="true" class="checkbox-inline" <c:if test="${user.usrNewsletter == '127'}">checked</c:if> > <br><br>
                             </div>
                             <div class="form-group">
-                                <label><i>DCI Number:</i></label>
-                                <input id="dcinumber" name="dcinumber" type="text" class="form-control" value="${user.usrDciNumber}">
+                            <label><i>DCI Number:</i></label>
+                            <input id="dcinumber" name="dcinumber" type="text" class="form-control" value="${user.usrDciNumber}">
+                            </div>
+                            <div class="form-group">
+                                <label><i>COSSY Number:</i></label>
+                                <input id="cossynumber" name="cossynumber" type="text" class="form-control" value="${user.usrCossyNumber}">
                             </div>
                             <input type="hidden" name="profileUpdate" value="true">
                             <div align="center">
@@ -190,6 +195,7 @@
         $('#phone').mask('(999)-999-9999', {placeholder: "_"});
         $('#zip').mask('99999?-9999', {placeholder: "_"});
         $('#dcinumber').mask('9999999999', {placeholder: "_"});
+        $('#cossynumber').mask('9999999999', {placeholder: "_"});
 
         initPswdChecker();
     });
