@@ -3,11 +3,13 @@ package com.statboost.models.inventory;
 import com.statboost.models.mtg.MagicCard;
 import com.statboost.models.ygo.YugiohCard;
 
+import javax.persistence.Entity;
 import java.util.Set;
 
 /**
  * Created by Jessica on 9/25/14.
  */
+@Entity
 public class Inventory {
     private int uid;
     private String name;

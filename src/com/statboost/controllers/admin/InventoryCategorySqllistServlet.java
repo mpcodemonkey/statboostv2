@@ -1,6 +1,7 @@
 package com.statboost.controllers.admin;
 
 import com.statboost.models.actor.User;
+import com.statboost.models.inventory.Category;
 import com.statboost.util.ServletUtil;
 import org.apache.log4j.Logger;
 
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.sql.ResultSet;
+import java.util.List;
 
 /**
  * Created by Jessica on 11/15/14.
@@ -32,12 +34,12 @@ public class InventoryCategorySqllistServlet extends HttpServlet {
             return;
         }
 
-        String sql = "select * from stt_category";
-        ResultSet category = ServletUtil.getResultSetFromSql(sql);
+        String hql = "from Category";
+        List category = (List<Category>)ServletUtil.getListFromHql(hql);
         forwardToSqllist(request, response, category);
     }
 
-    private static void forwardToSqllist(HttpServletRequest request, HttpServletResponse response, ResultSet category)
+    private static void forwardToSqllist(HttpServletRequest request, HttpServletResponse response, List category)
             throws IOException, ServletException {
         request.setAttribute(ATTR_INVENTORY_CATEGORY, category);
         request.getRequestDispatcher("/admin/InventoryCategorySqllist.jsp").forward(request, response);

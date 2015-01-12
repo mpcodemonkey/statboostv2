@@ -1,9 +1,11 @@
 package com.statboost.controllers.admin;
 
+import com.statboost.models.DAO.GenericDAO;
 import com.statboost.models.actor.User;
 import com.statboost.models.inventory.Inventory;
 import com.statboost.util.ServletUtil;
 import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Jessica on 9/25/14.
@@ -31,13 +35,18 @@ public class InventorySqllistServlet extends HttpServlet {
             response.sendRedirect("/");
             return;
         }
+        GenericDAO inventoryDAO = new GenericDAO();
+        String kw = request.getParameter(PARAM_KEYWORD);
+        String hql = "FROM Inventory where name like '%" + kw + "%'";
 
-        String sql = "select * from stt_inventory where inv_name like '%" + request.getParameter(PARAM_KEYWORD) + "%'";
-        ResultSet inventory = ServletUtil.getResultSetFromSql(sql);
+        ArrayList<Inventory> inventory = (ArrayList<Inventory>)ServletUtil.getListFromHql(hql);
+        if(inventory == null) {
+            logger.error("could not retrieve result set in inventorysqllist");
+        }
         forwardToSqllist(request, response, inventory);
     }
 
-    private static void forwardToSqllist(HttpServletRequest request, HttpServletResponse response, ResultSet inventory)
+    private static void forwardToSqllist(HttpServletRequest request, HttpServletResponse response, List inventory)
             throws IOException, ServletException {
         request.setAttribute(ATTR_INVENTORY, inventory);
         request.getRequestDispatcher("/admin/InventorySqllist.jsp").forward(request, response);

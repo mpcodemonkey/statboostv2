@@ -1,6 +1,8 @@
 package com.statboost.util;
 
 import org.apache.log4j.Logger;
+import org.hibernate.*;
+import org.hibernate.cfg.Configuration;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.PrintWriter;
@@ -14,12 +16,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 public class ServletUtil {
     static Logger logger = Logger.getLogger(ServletUtil.class);
 
-    public static ResultSet getResultSetFromSql(String sql)  {
+   /* public static ResultSet getResultSetFromSql(String sql)  {
         Connection connection = null;
         Properties connectionProperties = new Properties();
         ResultSet rs = null;
@@ -32,6 +35,48 @@ public class ServletUtil {
             logger.error("Could not get the result set.", e);
         }
         return null;
+    }*/
+
+    public static Object getListFromSql(String sql)  {
+        List<Object> rs = null;
+        SessionFactory genericQueryFactory = HibernateUtil.getDatabaseSessionFactory();
+        Session session = genericQueryFactory.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createSQLQuery(sql);
+            rs = query.list();
+
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            logger.error("Could not get the result set.", e);
+        } finally {
+            session.close();
+        }
+
+        return rs;
+    }
+
+    public static Object getListFromHql(String hql)  {
+        List<Object> rs = null;
+        SessionFactory genericQueryFactory = HibernateUtil.getDatabaseSessionFactory();
+        Session session = genericQueryFactory.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery(hql);
+            rs = query.list();
+
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            logger.error("Could not get the result set.", e);
+        } finally {
+            session.close();
+        }
+
+        return rs;
     }
 
     public static boolean isEmailPattern(String possibleEmail)  {

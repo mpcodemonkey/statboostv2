@@ -4,15 +4,13 @@
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="com.statboost.models.mtg.MagicCard" %>
 <%@ page import="com.statboost.models.ygo.YugiohCard" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page import="com.statboost.controllers.admin.InventorySqllistServlet" %>
 <%@ page import="com.statboost.util.ServletUtil" %>
-<%@ page import="java.util.Calendar" %>
 <%@ page import="net.authorize.util.DateUtil" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.HashMap" %>
 <%@ page import="com.statboost.models.enumType.ItemCondition" %>
 <%@ page import="com.statboost.models.inventory.*" %>
+<%@ page import="com.statboost.models.mtg.MagicSet" %>
+<%@ page import="java.util.*" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -29,11 +27,11 @@
         MagicCard magicCard = (MagicCard) request.getAttribute(InventoryEditorServlet.ATTR_MAGIC_CARD);
         YugiohCard yugiohCard = (YugiohCard) request.getAttribute(InventoryEditorServlet.ATTR_YUGIOH_CARD);
         Event event = (Event) request.getAttribute(InventoryEditorServlet.ATTR_EVENT);
-        ResultSet magicSets = (ResultSet) request.getAttribute(InventoryEditorServlet.ATTR_MAGIC_SETS);
+        List<MagicSet> magicSets = (List<MagicSet>) request.getAttribute(InventoryEditorServlet.ATTR_MAGIC_SETS);
         String type = (String) request.getAttribute(InventoryEditorServlet.ATTR_TYPE);
         List<Cost> costs = (List<Cost>) request.getAttribute(InventoryEditorServlet.ATTR_COST_ITEMS);
         List<Category> categories = (List<Category>) request.getAttribute(InventoryEditorServlet.ATTR_CATEGORIES);
-        ResultSet inventoryCategories = ServletUtil.getResultSetFromSql("select * from stt_inventory_category where inv_uid = " + inventory.getUid());
+        List<InventoryCategory> inventoryCategories = (List<InventoryCategory>)ServletUtil.getListFromHql("from InventoryCategory where invUid = " + inventory.getUid());
 
         HashMap<ItemCondition, Cost> costHash = new HashMap<ItemCondition, Cost>();
         if(costs != null)  {
@@ -164,12 +162,13 @@
                     for(Category currentCategory : categories)  {
                         isChecked = false;
                         if(inventoryCategories != null)  {
-                            while(inventoryCategories.next())  {
-                                if(inventoryCategories.getInt("cat_uid") == currentCategory.getCatUid())  {
+                            Iterator<InventoryCategory> icIt = inventoryCategories.iterator();
+                            while(icIt.hasNext())  {
+                                InventoryCategory currentIc = icIt.next();
+                                if(currentIc.getCatUid() == currentCategory.getCatUid())  {
                                     isChecked = true;
                                 }
                             }
-                            inventoryCategories.beforeFirst();
                         }
                 %>
                     <label class="checkbox-inline col-sm-3">
@@ -314,9 +313,11 @@
                             <option value="">Select One</option>
                                 <%
                                     if(magicSets != null)  {
-                                    while(magicSets.next())  {
+                                        Iterator<MagicSet> msIt = magicSets.iterator();
+                                    while(msIt.hasNext())  {
+                                        MagicSet currentSet = msIt.next();
                                 %>
-                                <option value="<%=magicSets.getString("mst_uid")%>"><%=magicSets.getString("mst_name")%></option>
+                                <option value="<%=currentSet.getMstUid()%>"><%=currentSet.getMstName()%></option>
                                 <%
                                     }
                                     }
