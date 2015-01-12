@@ -1,6 +1,7 @@
 package com.statboost.controllers.admin;
 
 import com.statboost.models.actor.User;
+import com.statboost.models.form.Webpage;
 import com.statboost.util.ServletUtil;
 import org.apache.log4j.Logger;
 
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.util.List;
 
 /**
  * Created by Jessica on 10/20/14.
@@ -29,12 +31,12 @@ public class MagicSetSqllistServlet extends HttpServlet {
             return;
         }
 
-        String sql = "select * from stt_magic_set";
-        ResultSet webpages = ServletUtil.getResultSetFromSql(sql);
+        String hql = "from MagicSet";
+        List webpages = (List<Webpage>)ServletUtil.getListFromHql(hql);
         forwardToSqllist(request, response, webpages);
     }
 
-    private static void forwardToSqllist(HttpServletRequest request, HttpServletResponse response, ResultSet webpages)
+    private static void forwardToSqllist(HttpServletRequest request, HttpServletResponse response, List webpages)
             throws IOException, ServletException {
         HttpSession userSession = request.getSession(false); //obtain the session object if exists
         if (!User.isAdmin(userSession)) {

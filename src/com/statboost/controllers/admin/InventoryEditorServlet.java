@@ -14,6 +14,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -28,10 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Jessica on 9/25/14.
@@ -149,7 +147,7 @@ public class InventoryEditorServlet extends HttpServlet {
         Session session = sessionFactory.openSession();
         MagicCard magicCard = null;
         YugiohCard yugiohCard = null;
-        ResultSet magicSets = null;
+        List magicSets = null;
         Event event = null;
         String typeToPass = "GENERIC";
         List<Cost> costs = null;
@@ -163,8 +161,8 @@ public class InventoryEditorServlet extends HttpServlet {
             event = new Event();
         } else  {
             inventory = (Inventory) session.load(Inventory.class, Integer.parseInt(request.getParameter(PARAM_INVENTORY_UID)));
-            costs = (List<Cost>) session.createSQLQuery("select * from stt_cost where cst_inv_uid = " + inventory.getUid()).addEntity(Cost.class).list();
-            inventoryCategories = inventory != null? (List<InventoryCategory>) session.createSQLQuery("select * from stt_inventory_category where inv_uid = " + inventory.getUid()).addEntity(InventoryCategory.class).list() : null;
+            costs = (List<Cost>) session.createQuery("from Cost where invUid = " + inventory.getUid()).list();
+            inventoryCategories = inventory != null? (List<InventoryCategory>) session.createQuery("From InventoryCategory where invUid = " + inventory.getUid()).list() : null;
             //check if it has the item if it does not initialize it to a new item so that we aren't throwing nulls in
             // the jsp and they can switch the type
             if(inventory != null && inventory.getMagicCard() != null)  {
@@ -200,8 +198,8 @@ public class InventoryEditorServlet extends HttpServlet {
         warning = new ArrayList<>();
         errors = new ArrayList<>();
 
-        magicSets = ServletUtil.getResultSetFromSql("select * from stt_magic_set");
-        categories = (List<Category>) session.createSQLQuery("select * from stt_category").addEntity(Category.class).list();
+        magicSets = session.createQuery("from MagicSet").list();
+        categories = (List<Category>) session.createQuery("from Category").list();
 
         forwardToEditor(request, response, null, null, inventory, magicCard, event, yugiohCard, null, magicSets, typeToPass, costs, categories, inventoryCategories);
         session.close();
@@ -249,7 +247,7 @@ public class InventoryEditorServlet extends HttpServlet {
         YugiohCard yugiohCard = null;
         Event event = null;
         List<Cost> costs = null;
-        ResultSet magicSets = null;
+        List magicSets = null;
         List<Category> categories = null;
         List<InventoryCategory> inventoryCategories = null;
         if(normalFields.get(PARAM_INVENTORY_UID) == null || normalFields.get(PARAM_INVENTORY_UID).equals("0") ||
@@ -276,7 +274,7 @@ public class InventoryEditorServlet extends HttpServlet {
             costs = new ArrayList<Cost>();
         }
 
-        magicSets = ServletUtil.getResultSetFromSql("select * from stt_magic_set");
+        magicSets = (List<MagicSet>)ServletUtil.getListFromHql("from MagicSet");
         categories = (List<Category>) session.createSQLQuery("select * from stt_category").addEntity(Category.class).list();
 
         //inventory validation & setting
@@ -877,23 +875,32 @@ public class InventoryEditorServlet extends HttpServlet {
             }
 
             session.save(inventory);
-
-            ResultSet rs = ServletUtil.getResultSetFromSql("select * from stt_cost where cst_inv_uid = " + inventory.getUid());
+//todo: functions have been recoded with hql syntax, needs to be tested extensively
+            List costResults = (List<Cost>)ServletUtil.getListFromHql("from Cost where invUid = " + inventory.getUid());
+            Iterator rs = costResults.iterator();
             ArrayList<Integer> stockNotificationsToRemove = new ArrayList<>();
             if(costs != null)  {
                 for(Cost currentCost : costs)  {
                     if(currentCost.getItemPrice() > 0 || currentCost.getItemQuantity() > 0)  {
                         try {
-                            if(rs != null && rs.next())  {
-                                while(rs.next())  {
-                                    if(rs.getString("cst_item_condition").equalsIgnoreCase(currentCost.getItemCondition().toString()))  {
-                                        if(rs.getInt("cst_item_quantity") > currentCost.getItemQuantity())  {
+                            if(rs.hasNext())  {
+                                while(rs.hasNext())  {
+                                    Cost tmp = (Cost)rs.next();
+                                    if(Cost.getConditionString(tmp.getItemCondition()).equalsIgnoreCase(currentCost.getItemCondition().toString()))  {
+                                        if(tmp.getItemQuantity() > currentCost.getItemQuantity())  {
                                             //do check here
-                                            ResultSet usersToNotify = ServletUtil.getResultSetFromSql("select * from stt_stock_notification where snt_inv_uid = " + inventory.getUid() + " and snt_condition = '" + currentCost.getItemCondition() + "'");
-                                            while(usersToNotify != null && usersToNotify.next())  {
-                                                //send email here
-                                                stockNotificationsToRemove.add(usersToNotify.getInt("snt_uid"));
+                                            List usersToNotify = (List<StockNotification>)ServletUtil.getListFromSql("select * from stt_stock_notification where snt_inv_uid = " + inventory.getUid() + " and snt_condition = '" + currentCost.getItemCondition() + "'");
+                                            Iterator it = null;
+                                            if(usersToNotify != null) it = usersToNotify.iterator();
+                                            if(it != null){
+                                                while(it.hasNext())  {
+                                                    //send email here
+                                                    StockNotification st = (StockNotification)it.next();
+                                                    stockNotificationsToRemove.add(st.getUid());
+                                                }
                                             }
+
+
                                         }
                                         break;
                                     }
@@ -904,8 +911,8 @@ public class InventoryEditorServlet extends HttpServlet {
                                 currentCost.setInvUid(inventory.getUid());
                                 session.save(currentCost);
                             }
-                        } catch (SQLException e) {
-                            logger.error("Could not go through resultset.", e);
+                        } catch (HibernateException e) {
+                            logger.error("Could not go through hibernate list.", e);
                         }
                     }
                 }
@@ -965,7 +972,7 @@ public class InventoryEditorServlet extends HttpServlet {
 
     private static void forwardToEditor(HttpServletRequest request, HttpServletResponse response,ArrayList<String> errors,
                                         ArrayList<String> info, Inventory inventory, MagicCard magicCard,
-                                        Event event, YugiohCard yugiohCard, ArrayList<String> warning, ResultSet magicSets,
+                                        Event event, YugiohCard yugiohCard, ArrayList<String> warning, List magicSets,
                                         String type, List<Cost> costs, List<Category> categories, List<InventoryCategory> inventoryCategories) throws IOException,
             ServletException {
         request.setAttribute(ATTR_ERRORS, errors);

@@ -1,8 +1,14 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="com.statboost.controllers.admin.InventoryEditorServlet" %>
 <%@ page import="com.statboost.controllers.admin.InventorySqllistServlet" %>
 <%@ page import="org.apache.log4j.Logger" %>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="com.statboost.controllers.admin.AdminCPServlet" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="com.statboost.models.inventory.Inventory" %>
+<%@ page import="java.util.ArrayList" %>
 
 <jsp:include page="/include/Header.jsp"/>
 <%--todo: DO NOT INCLUDE THIS WILL CONFLICT WITH THE INVENTORY SEARCH, JUST ADD A BUTTON THAT TAKES THEM BACK TO THE ADMIN CONTROL PANEL --%>
@@ -12,9 +18,6 @@
 <head>
     <%!
         static Logger logger = Logger.getLogger(InventorySqllistServlet.class);
-    %>
-    <%
-        ResultSet inventory = (ResultSet) request.getAttribute(InventorySqllistServlet.ATTR_INVENTORY);
     %>
 </head>
 <div class="col-sm-12">
@@ -41,24 +44,21 @@
                             <th></th>
                             <th>Description:</th>
                         </tr>
-                        <%    if(inventory != null)  {
-                                while(inventory.next())  {
-                        %>
-                        <tr>
-                            <td>
-                                <a href="<%=InventoryEditorServlet.getEditUrl(inventory.getInt("inv_uid"))%>">
-                                    <%=inventory.getString("inv_name")%>
-                                </a>
-                            </td>
-                            <td> - </td>
-                            <td>
-                                <%=inventory.getString("inv_description")%>
-                            </td>
-                        </tr>
-                        <%
-                                }
-                            }
-                        %>
+                        <c:forEach items="${requestScope.inventory}" var="inv" varStatus="i">
+                            <c:set var="urlp1" value="<%=InventoryEditorServlet.SRV_MAP + '?' + InventoryEditorServlet.PARAM_INVENTORY_UID%>"/>
+                            <c:set var="url" value="${urlp1}=${inv.uid}"/>
+                            <tr>
+                                <td>
+                                    <a href="${url}">
+                                        ${inv.name}
+                                    </a>
+                                </td>
+                                <td> - </td>
+                                <td>
+                                    ${inv.description}
+                                </td>
+                            </tr>
+                        </c:forEach>
                     </table>
                 </div>
             </form>
