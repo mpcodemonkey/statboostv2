@@ -22,5 +22,6 @@
         <property name="usrNewsletter" column="usr_newsletter"/>
         <property name="usrActive" column="usr_active"/>
         <property name="usrDciNumber" column="usr_dci_number"/>
+        <property name="usrCossyNumber" column="usr_cossy_number"/>
     </class>
 </hibernate-mapping>

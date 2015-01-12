@@ -36,6 +36,7 @@ public class User {
     private Byte usrNewsletter;
     private Byte usrActive;
     private String usrDciNumber;
+    private String usrCossyNumber;
 
     private static SessionFactory userFactory = HibernateUtil.getDatabaseSessionFactory();
 
@@ -76,8 +77,9 @@ public class User {
      * @param usrNewsletter
      * @param usrActive
      * @param usrDciNumber
+     * @param usrCossyNumber
      */
-    public User(String usrFirstName, String usrLastName, String usrEmail, String usrPassword, String usrRole, String usrAddress1, String usrAddress2, String usrCity, String usrState, String usrZip, String usrPhone, Byte usrNewsletter, Byte usrActive, String usrDciNumber) {
+    public User(String usrFirstName, String usrLastName, String usrEmail, String usrPassword, String usrRole, String usrAddress1, String usrAddress2, String usrCity, String usrState, String usrZip, String usrPhone, Byte usrNewsletter, Byte usrActive, String usrDciNumber, String usrCossyNumber) {
         this.usrFirstName = usrFirstName;
         this.usrLastName = usrLastName;
         this.usrEmail = usrEmail;
@@ -92,6 +94,7 @@ public class User {
         this.usrNewsletter = usrNewsletter;
         this.usrActive = usrActive;
         this.usrDciNumber = usrDciNumber;
+        this.usrCossyNumber = usrCossyNumber;
     }
 
     /**
@@ -123,16 +126,17 @@ public class User {
      * @param usrPhone
      * @param usrNewsletter
      * @param usrDciNumber
+     * @param usrCossyNumber
      * @return true if success
      */
-    public static boolean insert(String usrFirstName, String usrLastName, String usrEmail, String usrPassword, String usrRole, String usrAddress1, String usrAddress2, String usrCity, String usrState, String usrZip, String usrPhone, Byte usrNewsletter, String usrDciNumber) {
+    public static boolean insert(String usrFirstName, String usrLastName, String usrEmail, String usrPassword, String usrRole, String usrAddress1, String usrAddress2, String usrCity, String usrState, String usrZip, String usrPhone, Byte usrNewsletter, String usrDciNumber, String usrCossyNumber) {
         boolean result = false;
         Session session = userFactory.openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
             String hashed = BCrypt.hashpw(usrPassword, BCrypt.gensalt());
-            User newUser = new User(usrFirstName, usrLastName, usrEmail, hashed, usrRole, usrAddress1, usrAddress2, usrCity, usrState, usrZip, usrPhone, usrNewsletter, Byte.MAX_VALUE, usrDciNumber); //user is active
+            User newUser = new User(usrFirstName, usrLastName, usrEmail, hashed, usrRole, usrAddress1, usrAddress2, usrCity, usrState, usrZip, usrPhone, usrNewsletter, Byte.MAX_VALUE, usrDciNumber, usrCossyNumber); //user is active
             session.save(newUser);
             tx.commit();
             result = true;
@@ -449,6 +453,10 @@ public class User {
         this.usrDciNumber = usrDciNumber;
     }
 
+    public String getUsrCossyNumber(){ return usrCossyNumber; }
+
+    public void setUsrCossyNumber(String usrCossyNumber){ this.usrCossyNumber = usrCossyNumber; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -462,6 +470,7 @@ public class User {
         if (usrAddress2 != null ? !usrAddress2.equals(that.usrAddress2) : that.usrAddress2 != null) return false;
         if (usrCity != null ? !usrCity.equals(that.usrCity) : that.usrCity != null) return false;
         if (usrDciNumber != null ? !usrDciNumber.equals(that.usrDciNumber) : that.usrDciNumber != null) return false;
+        if (usrCossyNumber != null ? !usrCossyNumber.equals(that.usrCossyNumber) : that.usrCossyNumber != null) return false;
         if (usrEmail != null ? !usrEmail.equals(that.usrEmail) : that.usrEmail != null) return false;
         if (usrFirstName != null ? !usrFirstName.equals(that.usrFirstName) : that.usrFirstName != null) return false;
         if (usrLastName != null ? !usrLastName.equals(that.usrLastName) : that.usrLastName != null) return false;
@@ -493,6 +502,7 @@ public class User {
         result = 31 * result + (usrNewsletter != null ? usrNewsletter.hashCode() : 0);
         result = 31 * result + (usrActive != null ? usrActive.hashCode() : 0);
         result = 31 * result + (usrDciNumber != null ? usrDciNumber.hashCode() : 0);
+        result = 31 * result + (usrCossyNumber != null ? usrCossyNumber.hashCode() : 0);
         return result;
     }
 

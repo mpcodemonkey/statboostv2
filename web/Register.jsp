@@ -16,7 +16,7 @@
         $('#phone').mask('(999)-999-9999',{placeholder:"_"});
         $('#zip').mask('99999?-9999',{placeholder:"_"});
         $('#dcinumber').mask('9999999999',{placeholder:"_"});
-
+        $('#cossynumber').mask('9999999999',{placeholder:"_"});
         //init password strength checker
         "use strict";
         var options = {};
@@ -195,6 +195,11 @@
                             <div class="form-group">
                                 <label><i>Magic The Gathering Players:</i></label>
                                 <input id="dcinumber" name="dcinumber" type="text" class="form-control" placeholder="DCI Number">
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label><i>Yu-Gi-Oh Players:</i></label>
+                                <input id="cossynumber" name="cossynumber" type="text" class="form-control" placeholder="COSSY Number">
                             </div>
                         </div>
                         <br>
