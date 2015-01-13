@@ -72,6 +72,35 @@ public class ShoppingCartSessionObject {
     }
 
     /**
+     * Add a inventory item to the shopping cart.  If the item already exists in the cart, the
+     * existing item quantity will be updated. If more than totalQuantity inventory items are added,
+     * an insufficient quantity alert is returned
+     * @param inventoryUID - uid of product inventory from database
+     * @param quantity - number of items requested by user
+     * @param condition - ItemCondition of the inventory
+     * @param totalQuantity - total number of items available
+     */
+    public void addCartItem(Integer inventoryUID, int quantity, ItemCondition condition, int totalQuantity) {
+        boolean itemAlreadyExists = false;
+        int existingIndex = -1;
+        for (RequestedItem item : cartList) {
+            if (item.inv_uid == inventoryUID && item.condition == condition) {
+                itemAlreadyExists = true;
+                existingIndex = cartList.indexOf(item);
+            }
+        }
+
+        if (itemAlreadyExists && existingIndex > -1) { //update existing item quantity
+            //todo:logic for telling the user there is not enough stock available
+            cartList.get(existingIndex).setQuantity(cartList.get(existingIndex).getQuantity() + quantity);
+        } else { //add new cart item
+            RequestedItem requestedItem = new RequestedItem(inventoryUID, quantity, condition);
+            cartList.add(requestedItem);
+        }
+
+    }
+
+    /**
      * Update the quantity requested of an item in the shopping cart.
      * @param itemIndex - item index in the cart list
      * @param quantity - new quantity requested
