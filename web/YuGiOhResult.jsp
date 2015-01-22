@@ -58,14 +58,14 @@
         </div>
     </c:if>
     <c:forEach items="${requestScope.cardList}" var="card" varStatus="i">
-        <c:set var="typeVar" value="${card.ycrCardType}"/>
+        <c:set var="typeVar" value="${card.ycrSuperType}"/>
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel">
                     <div class="panel-heading"><a href="/Store?yId=${card.ycrUid}">${card.ycrName}</a></div>
                     <div class="panel-body">
                         <div class="col-md-2">
-                            <img id="YGO-${i.count}" src="//teamjjacs.us/static-images/inventory/yugioh/${card.ycrImage}" style="max-height: 200px;" onclick="toggleSize(this.id)" onerror="this.style.display='none'">
+                            <img id="YGO-${i.count}" src="//teamjjacs.us/static-images/inventory/yugioh/${card.yugiohSet.ystPathName}/${card.ycrImageName}" style="max-height: 200px;" onclick="toggleSize(this.id)" onerror="this.style.display='none'">
                         </div>
                         <div class="col-md-8 col-md-offset-1">
                             <div class="row">
@@ -95,7 +95,7 @@
                                         <tbody>
                                             <tr>
                                                 <td>${card.ycrType}</td>
-                                                <td>${card.ycrCardType}</td>
+                                                <td>${card.ycrSuperType}</td>
                                                 <c:choose>
                                                     <c:when test="${fn:contains(typeVar, 'Monster')}">
                                                         <td>${card.ycrAtk}</td>
@@ -121,8 +121,8 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <c:choose>
-                                        <c:when test="${card.ycrDescription} == null">N/A</c:when>
-                                        <c:otherwise>${card.ycrDescription}</c:otherwise>
+                                        <c:when test="${card.ycrFlavorText} == null">N/A</c:when>
+                                        <c:otherwise>${card.ycrFlavorText}</c:otherwise>
                                     </c:choose>
                                 </div>
                             </div>

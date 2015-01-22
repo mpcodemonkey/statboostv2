@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.statboost.models.ygo.YugiohSet" table="stt_yugioh_set" schema="" catalog="statboost">
+        <id name="ystUid" column="yst_uid"/>
+        <property name="ystName" column="yst_name"/>
+        <property name="ystReleaseDate" column="yst_release_date"/>
+        <property name="ystPathName" column="yst_path_name"/>
+    </class>
+</hibernate-mapping>

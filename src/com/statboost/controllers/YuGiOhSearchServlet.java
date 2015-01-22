@@ -94,14 +94,14 @@ public class YuGiOhSearchServlet extends HttpServlet {
 
         SessionFactory ygoFactory = HibernateUtil.getDatabaseSessionFactory();
 
-        String hql = "From YugiohCard where ";
+        String hql = "Select y from YugiohCard y inner join fetch y.yugiohSet where ";
         if(request.getParameter("simpleSubmit") != null){
             String ygoName = request.getParameter("fi1");
-            hql+="ycrName LIKE :name ";
+            hql+="y.ycrName LIKE :name ";
 
             String typeConstraint = request.getParameter("r1");
             if(!typeConstraint.equalsIgnoreCase("all")){
-                hql+="and ycrCardType LIKE :type";
+                hql+="and y.ycrCardType LIKE :type";
             }
 
             System.out.println("\n\n\n\n\n" + hql);
@@ -116,7 +116,6 @@ public class YuGiOhSearchServlet extends HttpServlet {
                     query.setParameter("type", ServletUtil.sanitizeWildcard(typeConstraint));
                 }
                 cards = query.list();
-
 
                 tx.commit();
             } catch (HibernateException e) {
@@ -151,12 +150,12 @@ public class YuGiOhSearchServlet extends HttpServlet {
             HashMap<String, Object> buildableQuery = new HashMap<>();
             boolean prevCon = false;
             String and = " and";
-            String defaultOrderBy = "ycrName";
+            String defaultOrderBy = "y.ycrName";
             String defaultOrder = "asc";
 
             if(request.getParameter("nameInput") != null && !request.getParameter("nameInput").equals(""))
             {
-                nameConstraint = "ycrName LIKE :name";
+                nameConstraint = "y.ycrName LIKE :name";
 
                 queryparams.add(nameConstraint);
                 buildableQuery.put("name", ServletUtil.sanitizeWildcard(request.getParameter("nameInput")));
@@ -164,7 +163,7 @@ public class YuGiOhSearchServlet extends HttpServlet {
             }
             if(request.getParameter("textInput") != null && !request.getParameter("textInput").equals(""))
             {
-                textConstraint = "ycrDescription LIKE :desc";
+                textConstraint = " y.ycrFlavorText LIKE :desc";
 
                 if(prevCon){
                     textConstraint = and + textConstraint;
@@ -175,7 +174,7 @@ public class YuGiOhSearchServlet extends HttpServlet {
             }
             if(request.getParameter("effectInput") != null && !request.getParameter("effectInput").equals(""))
             {
-                pendulumConstraint = "ycrPendulumDescription LIKE :pendEff";
+                pendulumConstraint = " y.ycrPendulumFlavor LIKE :pendEff";
 
                 if(prevCon){
                     pendulumConstraint = and + pendulumConstraint;
@@ -186,7 +185,7 @@ public class YuGiOhSearchServlet extends HttpServlet {
             }
             if(request.getParameter("atkInput") != null && !request.getParameter("atkInput").equals(""))
             {
-                atkConstraint = "ycrAtk = :atk";
+                atkConstraint = " y.ycrAtk = :atk";
 
                 if(prevCon){
                     atkConstraint = and + atkConstraint;
@@ -206,7 +205,7 @@ public class YuGiOhSearchServlet extends HttpServlet {
             }
             if(request.getParameter("defInput") != null && !request.getParameter("defInput").equals(""))
             {
-                defConstraint = "ycrDef = :def";
+                defConstraint = " y.ycrDef = :def";
 
                 if(prevCon){
                     defConstraint = and + defConstraint;
@@ -226,7 +225,7 @@ public class YuGiOhSearchServlet extends HttpServlet {
             }
             if(request.getParameter("scaleInput") != null && !request.getParameter("scaleInput").equals(""))
             {
-                scaleConstraint = "ycrPendulumScale = :scale";
+                scaleConstraint = " y.ycrPendulumScale = :scale";
                 int pendulum;
                 if(ServletUtil.isInteger(request.getParameter("scaleInput"))){
                     pendulum = Integer.parseInt(request.getParameter("scaleInput"));
@@ -245,19 +244,31 @@ public class YuGiOhSearchServlet extends HttpServlet {
             if(request.getParameterValues("attribInput") != null)
             {
                 System.out.println(request.getParameterValues("attribInput"));
-                String defCon = " ycrAttribute = :attribs";
+                String defCon = " y.ycrAttribute = :attribs";
                 String[] attributes = request.getParameterValues("attribInput");
+                boolean firstRun = true;
 
                 if(attributes.length > 1)
                 {
-                    defCon = " ycrAttribute LIKE :attribs";
+                    defCon = "y.ycrAttribute LIKE :attribs";
                 }
                 for(int i = 0; i < attributes.length; i++)
                 {
                     attribConstraint = defCon + i;
-                    if(prevCon)
+                    if(prevCon && firstRun)
                     {
-                        attribConstraint = and + defCon + i;
+                        attribConstraint = and + '(' + defCon + i;
+                    }
+                    else if(!firstRun){
+                        attribConstraint = " or " + defCon + i;
+                    }
+                    //first constraint
+                    if(i == 0 && !prevCon){
+                        attribConstraint = '(' + attribConstraint;
+                    }
+                    //last constraint
+                    if(i == attributes.length-1){
+                        attribConstraint += ')';
                     }
                     queryparams.add(attribConstraint);
                     if(attributes.length > 1)
@@ -265,24 +276,37 @@ public class YuGiOhSearchServlet extends HttpServlet {
                     else
                         buildableQuery.put("attribs" + i, attributes[i]);
                     prevCon = true;
+                    firstRun = false;
                 }
             }
             if(request.getParameterValues("iconInput") != null)
             {
                 System.out.println(request.getParameterValues("iconInput"));
-                String defCon = " ycrIcon = :icons";
+                String defCon = " y.ycrIcon = :icons";
+                boolean firstRun = true;
                 String[] icons = request.getParameterValues("iconInput");
 
                 if(icons.length > 1)
                 {
-                    defCon = " ycrIcon LIKE :icons";
+                    defCon = "y.ycrIcon LIKE :icons";
                 }
                 for(int i = 0; i < icons.length; i++)
                 {
                     iconConstraint = defCon + i;
-                    if(prevCon)
+                    if(prevCon && firstRun)
                     {
-                        iconConstraint = and + defCon + i;
+                        iconConstraint = and + '(' + defCon + i;
+                    }
+                    else if(!firstRun){
+                        iconConstraint = " or " + defCon + i;
+                    }
+                    //first constraint
+                    if(i == 0 && !prevCon){
+                        iconConstraint = '(' + iconConstraint;
+                    }
+                    //last constraint
+                    if(i == icons.length-1){
+                        iconConstraint += ')';
                     }
                     queryparams.add(iconConstraint);
                     if(icons.length > 1)
@@ -290,24 +314,36 @@ public class YuGiOhSearchServlet extends HttpServlet {
                     else
                         buildableQuery.put("icons" + i, icons[i]);
                     prevCon = true;
+                    firstRun = false;
                 }
             }
             if(request.getParameterValues("monsterType") != null)
             {
                 System.out.println(request.getParameterValues("monsterType"));
-                String defCon = " ycrMonsterType like :mTypes";
+                String defCon = " y.ycrMonsterType like :mTypes";
                 String[] mTypes = request.getParameterValues("monsterType");
-
+                boolean firstRun = true;
                 if(mTypes.length > 1)
                 {
-                    defCon = " ycrMonsterType LIKE :mTypes";
+                    defCon = " y.ycrMonsterType LIKE :mTypes";
                 }
                 for(int i = 0; i < mTypes.length; i++)
                 {
                     monsterTypeConstraint = defCon + i;
-                    if(prevCon)
+                    if(prevCon && firstRun)
                     {
-                        monsterTypeConstraint = "or" + defCon + i;
+                        monsterTypeConstraint = and + '(' + defCon + i;
+                    }
+                    else if(!firstRun){
+                        monsterTypeConstraint = " or " + defCon + i;
+                    }
+                    //first constraint
+                    if(i == 0 && !prevCon){
+                        monsterTypeConstraint = '(' + monsterTypeConstraint;
+                    }
+                    //last constraint
+                    if(i == mTypes.length-1){
+                        monsterTypeConstraint += ')';
                     }
                     queryparams.add(monsterTypeConstraint);
                     if(mTypes.length > 1)
@@ -315,49 +351,36 @@ public class YuGiOhSearchServlet extends HttpServlet {
                     else
                         buildableQuery.put("mTypes" + i, "%" + mTypes[i] + "%");
                     prevCon = true;
-                }
-            }
-            if(request.getParameterValues("iconInput") != null)
-            {
-                System.out.println(request.getParameterValues("iconInput"));
-                String defCon = " ycrIcon like :cIcons";
-                String[] iTypes = request.getParameterValues("iconInput");
-
-                if(iTypes.length > 1)
-                {
-                    defCon = " ycrIcon LIKE :cIcons";
-                }
-                for(int i = 0; i < iTypes.length; i++)
-                {
-                    cardTypeConstraint = defCon + i;
-                    if(prevCon)
-                    {
-                        cardTypeConstraint = and + defCon + i;
-                    }
-                    queryparams.add(cardTypeConstraint);
-                    if(iTypes.length > 1)
-                        buildableQuery.put("cIcons" + i, "%" + iTypes[i] + "%");
-                    else
-                        buildableQuery.put("cIcons" + i, iTypes[i]);
-                    prevCon = true;
+                    firstRun = false;
                 }
             }
             if(request.getParameterValues("cardTypeInput") != null)
             {
                 System.out.println(request.getParameterValues("cardTypeInput"));
-                String defCon = " ycrType like :cTypes";
+                String defCon = " y.ycrType like :cTypes";
                 String[] cTypes = request.getParameterValues("cardTypeInput");
-
+                boolean firstRun = true;
                 if(cTypes.length > 1)
                 {
-                    defCon = " ycrType LIKE :cTypes";
+                    defCon = " y.ycrType LIKE :cTypes";
                 }
                 for(int i = 0; i < cTypes.length; i++)
                 {
                     cardTypeConstraint = defCon + i;
-                    if(prevCon)
+                    if(prevCon && firstRun)
                     {
-                        cardTypeConstraint = and + defCon + i;
+                        cardTypeConstraint = and + '(' + defCon + i;
+                    }
+                    else if(!firstRun){
+                        cardTypeConstraint = " or " + defCon + i;
+                    }
+                    //first constraint
+                    if(i == 0 && !prevCon){
+                        cardTypeConstraint = '(' + cardTypeConstraint;
+                    }
+                    //last constraint
+                    if(i == cTypes.length-1){
+                        cardTypeConstraint += ')';
                     }
                     queryparams.add(cardTypeConstraint);
                     if(cTypes.length > 1)
@@ -365,6 +388,7 @@ public class YuGiOhSearchServlet extends HttpServlet {
                     else
                         buildableQuery.put("cTypes" + i, cTypes[i]);
                     prevCon = true;
+                    firstRun = false;
                 }
             }
 

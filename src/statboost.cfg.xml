@@ -19,10 +19,9 @@
 
         <!--Dev Alt connection(DigitalOcean) -->
 
-        <property name="hibernate.connection.url">jdbc:mysql://104.131.189.31:3306/statboost?characterEncoding=UTF-8</property>
+        <property name="hibernate.connection.url">jdbc:mysql://104.131.189.31:3306/statboost</property>
         <property name="hibernate.connection.username">generic</property>
         <property name="hibernate.connection.password">generic11PASSWORD</property>
-
         <!-- Prod Connection -->
         <!--
         <property name="hibernate.connection.url">jdbc:mysql://10.128.219.28:3306/teamjjac_statboost</property>
@@ -59,5 +58,6 @@
         <mapping resource="Category.hbm.xml"/>
         <mapping resource="InventoryCategory.hbm.xml"/>
         <mapping resource="YugiohCard.hbm.xml"/>
+        <mapping resource="YugiohSet.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>
