@@ -142,10 +142,6 @@
                                             <!-- multiselect for card attribute -->
                                             <label class="control-label" for="attrib">Attribute</label>
                                             <br>
-                                            <label class="control-label" for="ac1">and</label>
-                                            <input type="checkbox" class="attribCheck" id="ac1">
-                                            <label class="control-label" for="ac1">or</label>
-                                            <input type="checkbox" class="attribCheck" id="ac2">
                                             <select class="form-control multiselect" multiple="multiple" id="attrib" name="attribInput">
                                                 <c:forEach items="${requestScope.attribList}" var="attribs">
                                                     <option value="${attribs}">${attribs}</option>
@@ -156,10 +152,6 @@
                                             <!-- multiselect for card icon -->
                                             <label class="control-label" for="iconInput">Icon</label>
                                             <br>
-                                            <label class="control-label" for="ic1">and</label>
-                                            <input type="checkbox" class="iconCheck" id="ic1">
-                                            <label class="control-label" for="ic2">or</label>
-                                            <input type="checkbox" class="iconCheck" id="ic2">
                                             <select class="form-control multiselect" multiple="multiple" name="iconInput" id="iconInput">
                                                 <c:forEach items="${requestScope.iconList}" var="icons">
                                                     <option value="${icons}">${icons}</option>
@@ -170,10 +162,6 @@
                                             <!-- multiselect for monster type -->
                                             <label class="control-label" for="monsterType">Monster Type</label>
                                             <br>
-                                            <label class="control-label" for="mc1">and</label>
-                                            <input type="checkbox" class="monsterCheck" id="mc1">
-                                            <label class="control-label" for="mc2">or</label>
-                                            <input type="checkbox" class="monsterCheck" id="mc2">
                                             <select class="form-control multiselect" multiple="multiple" id="monsterType" name="monsterType">
                                                 <c:forEach items="${requestScope.mTypeList}" var="mTypes">
                                                     <option value="${mTypes}">${mTypes}</option>
@@ -184,10 +172,6 @@
                                             <!-- multiselect for card Type(not type) -->
                                             <label class="control-label" for="cardTypeInput">Card Type</label>
                                             <br>
-                                            <label class="control-label" for="cc1">and</label>
-                                            <input type="checkbox" class="cardCheck" id="cc1">
-                                            <label class="control-label" for="cc2">or</label>
-                                            <input type="checkbox" class="cardCheck" id="cc2">
                                             <select class="form-control multiselect" multiple="multiple" id="cardTypeInput" name="cardTypeInput" >
                                                 <option value="effect">Effect</option>
                                                 <option value="flip">Flip</option>

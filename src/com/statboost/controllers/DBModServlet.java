@@ -99,7 +99,7 @@ public class DBModServlet extends HttpServlet {
 
             try {
                 tx = session.beginTransaction();
-                Query q = session.createQuery("FROM YugiohCard");
+                Query q = session.createQuery("Select y from YugiohCard y inner join fetch y.yugiohSet");
                 ySet = q.list();
             } catch (Exception e) {
                 logger.error("Could not get the result set.", e);
@@ -117,10 +117,10 @@ public class DBModServlet extends HttpServlet {
                         Inventory inventory = new Inventory();
                         Inventory holo = new Inventory();
                         inventory.setName(ySet.get(j).getYcrName());
-                        inventory.setImage(ySet.get(j).getYcrImage());
+                        inventory.setImage(ySet.get(j).getYugiohSet().getYstPathName() + '/' + ySet.get(j).getYcrImageName());
                         inventory.setDescription("YGO");
                         holo.setName(ySet.get(j).getYcrName());
-                        holo.setImage(ySet.get(j).getYcrImage());
+                        holo.setImage(ySet.get(j).getYcrImageName());
                         holo.setDescription("YGO");
                         //generate random card costs
 

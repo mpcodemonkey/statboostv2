@@ -533,7 +533,7 @@ public class InventoryEditorServlet extends HttpServlet {
             }
 
             //all fields required except description, atk, and def
-            yugiohCard.setYcrDescription(normalFields.get(PARAM_YUGIOH_DESCRIPTION));
+            yugiohCard.setYcrFlavorText(normalFields.get(PARAM_YUGIOH_DESCRIPTION));
 
             if(normalFields.get(PARAM_YUGIOH_ATK) != null && !normalFields.get(PARAM_YUGIOH_ATK).equals(""))  {
                 if(Integer.parseInt(normalFields.get(PARAM_YUGIOH_ATK)) >= 0)  {
@@ -558,7 +558,7 @@ public class InventoryEditorServlet extends HttpServlet {
                 errors.add("You must enter an attribute for the Yu-gi-oh card.");
             }
 
-            yugiohCard.setYcrCardType(normalFields.get(PARAM_YUGIOH_CARD_TYPE));
+            yugiohCard.setYcrSuperType(normalFields.get(PARAM_YUGIOH_CARD_TYPE));
             if(normalFields.get(PARAM_YUGIOH_CARD_TYPE) == null ||
                     normalFields.get(PARAM_YUGIOH_CARD_TYPE).equals("") ||
                     normalFields.get(PARAM_YUGIOH_CARD_TYPE).length() > 50)  {
