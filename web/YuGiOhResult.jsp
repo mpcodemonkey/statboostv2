@@ -12,44 +12,7 @@
 <jsp:include page="/include/Header.jsp"/>
 <jsp:include page="/include/Navbar.jsp"/>
 
-<%--
-<div class="container-fluid">
-    <c:forEach items="${requestScope.cardList}" var="card">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                        ${card.ycrName}
-                </h3>
-            </div>
-            <div class="panel-body">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Card Type</th>
-                        <th>Attribute</th>
-                        <th>Monster Type</th>
-                        <th>Card Text</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>${card.ycrCardType}</td>
-                        <td>${card.ycrAttribute}</td>
-                        <td>${card.ycrType}</td>
-                        <td>
-                            <c:choose>
-                                <c:when test="${card.ycrDescription} == null">N/A</c:when>
-                                <c:otherwise>${card.ycrDescription}</c:otherwise>
-                            </c:choose>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </c:forEach>
-</div>
---%>
+
 <div class="container-fluid">
     <c:if test="${requestScope.alert != null && requestScope.alertType != null}">
         <div class="alert alert-${requestScope.alertType} fade in">
@@ -59,73 +22,189 @@
     </c:if>
     <c:forEach items="${requestScope.cardList}" var="card" varStatus="i">
         <c:set var="typeVar" value="${card.ycrSuperType}"/>
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel">
-                    <div class="panel-heading"><a href="/Store?yId=${card.ycrUid}">${card.ycrName}</a></div>
-                    <div class="panel-body">
-                        <div class="col-md-2">
-                            <img id="YGO-${i.count}" src="//teamjjacs.us/static-images/inventory/yugioh/${card.yugiohSet.ystPathName}/${card.ycrImageName}" style="max-height: 200px;" onclick="toggleSize(this.id)" onerror="this.style.display='none'">
-                        </div>
-                        <div class="col-md-8 col-md-offset-1">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <table class="table table-responsive">
-                                        <thead><tr>
-                                            <th class="col-sm-2">Type</th>
-                                            <th class="col-sm-2">Card Type</th>
-                                            <c:choose>
-                                                <c:when test="${fn:contains(typeVar, 'Monster')}">
-                                                    <th class="col-sm-2">ATK</th>
-                                                    <th class="col-sm-2">DEF</th>
-                                                    <th class="col-sm-2">Level</th>
-                                                </c:when>
-                                                <c:when test="${fn:contains(typeVar, 'Trap')}">
-                                                    <th class="col-sm-2">ID</th>
-                                                    <th class="col-sm-2">ID</th>
-                                                    <th class="col-sm-2">ID</th>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <th class="col-sm-2">ID</th>
-                                                    <th class="col-sm-2">ID</th>
-                                                    <th class="col-sm-2">ID</th>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </tr></thead>
+        <div class="panel panel-default">
+            <div class="panel-heading"><a href="/Store?yId=${card.ycrUid}">${card.ycrName}</a></div>
+            <div class="row">
+                <div class="col-md-3" style="text-align:center; vertical-align: middle">
+                    <img id="YGO-${i.count}" src="//teamjjacs.us/static-images/inventory/yugioh/${card.yugiohSet.ystPathName}/${card.ycrImageName}" class="img-rounded" style="max-height: 200px;" onclick="toggleSize(this.id)" onerror="this.style.display='none'">
+                </div>
+                <div class="col-md-8">
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <table class="table" >
+                                <c:choose>
+                                    <c:when test="${fn:contains(typeVar, 'Monster')}">
                                         <tbody>
-                                            <tr>
-                                                <td>${card.ycrType}</td>
-                                                <td>${card.ycrSuperType}</td>
+                                        <tr>
+                                            <th style="border-top:none;">
+                                                Attribute
+                                            </th>
+                                            <td style="border-top:none;">
                                                 <c:choose>
-                                                    <c:when test="${fn:contains(typeVar, 'Monster')}">
-                                                        <td>${card.ycrAtk}</td>
-                                                        <td>${card.ycrDef}</td>
-                                                        <td>${card.ycrLevel}</td>
-                                                    </c:when>
-                                                    <c:when test="${fn:contains(typeVar, 'Trap')}">
-                                                        <td>${card.ycrUid}</td>
-                                                        <td>${card.ycrUid}</td>
-                                                        <td>${card.ycrUid}</td>
+                                                    <c:when test="${card.ycrAttribute == null }">N/A</c:when>
+                                                    <c:otherwise>${card.ycrAttribute}</c:otherwise>
+                                                </c:choose>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                Type(s)</th>
+                                            <td>
+                                                <c:choose>
+                                                    <c:when test="${card.ycrMonsterType == null}">N/A</c:when>
+                                                    <c:otherwise>${card.ycrMonsterType}</c:otherwise>
+                                                </c:choose>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                Level
+                                            </th>
+                                            <td>
+                                                <c:choose>
+                                                    <c:when test="${card.ycrLevel == null}">N/A</c:when>
+                                                    <c:otherwise>${card.ycrLevel}</c:otherwise>
+                                                </c:choose>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                Rarity
+                                            </th>
+                                            <td>
+                                                <c:choose>
+                                                    <c:when test="${card.ycrRarity == null}">
+                                                        N/A
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <td>${card.ycrUid}</td>
-                                                        <td>${card.ycrUid}</td>
-                                                        <td>${card.ycrUid}</td>
+                                                        ${card.ycrRarity}
                                                     </c:otherwise>
                                                 </c:choose>
-                                            </tr></tbody>
-                                        <tbody><tr></tr></tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <tr>
+                                            <th style="border-top:none;">
+                                                Type
+                                            </th>
+                                            <td style="border-top:none;">
+                                                <c:choose>
+                                                    <c:when test="${card.ycrType == null}">
+                                                        N/A
+                                                    </c:when>
+                                                    <c:otherwise>${card.ycrType}</c:otherwise>
+                                                </c:choose>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                Icon
+                                            </th>
+                                            <td>
+                                                <c:choose>
+                                                    <c:when test="${card.ycrIcon == null}">N/A</c:when>
+                                                    <c:otherwise>${card.ycrIcon}</c:otherwise>
+                                                </c:choose>
+                                            </td>
+                                        </tr>
+                                    </c:otherwise>
+                                </c:choose>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table">
+                                <tbody>
                                     <c:choose>
-                                        <c:when test="${card.ycrFlavorText} == null">N/A</c:when>
-                                        <c:otherwise>${card.ycrFlavorText}</c:otherwise>
+                                        <c:when test="${fn:contains(typeVar, 'Monster')}">
+                                            <tr>
+                                                <th style="border-top:none;">
+                                                    ATK
+                                                </th>
+                                                <td style="border-top:none;">
+                                                    <c:choose>
+                                                        <c:when test="${card.ycrAtk == null}">N/A</c:when>
+                                                        <c:otherwise>${card.ycrAtk}</c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    DEF
+                                                </th>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${card.ycrDef == null}">N/A</c:when>
+                                                        <c:otherwise>${card.ycrDef}</c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    Effect Types</th>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${card.ycrCardEffectType == null}">N/A</c:when>
+                                                        <c:otherwise>${card.ycrCardEffectType}</c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <c:choose>
+                                                    <c:when test="${card.ycrPendulumScale != 0}">
+                                                        <th>
+                                                            Pendulum Scale</th>
+                                                        <td>
+                                                            ${card.ycrPendulumScale}
+                                                        </td>
+                                                    </c:when>
+                                                </c:choose>
+                                            </tr>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <tr>
+                                                <th style="border-top:none;">
+                                                    Rarity
+                                                </th>
+                                                <td style="border-top:none;">
+                                                    <c:choose>
+                                                        <c:when test="${card.ycrRarity == null}">N/A</c:when>
+                                                        <c:otherwise>${card.ycrRarity}</c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    Effect Types</th>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${card.ycrCardEffectType == null}">N/A</c:when>
+                                                        <c:otherwise>${card.ycrCardEffectType}</c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                            </tr>
+                                        </c:otherwise>
                                     </c:choose>
-                                </div>
-                            </div>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <c:choose>
+                                <c:when test="${card.ycrFlavorText == null}">N/A</c:when>
+                                <c:otherwise>${card.ycrFlavorText}</c:otherwise>
+                            </c:choose>
+                            <c:choose>
+                                <c:when test="${card.ycrPendulumFlavor != null}">
+                                    <br><br>
+                                    Pendulum Effect:
+                                    <br>
+                                    ${card.ycrPendulumFlavor}
+                                </c:when>
+                            </c:choose>
                         </div>
                     </div>
                 </div>
