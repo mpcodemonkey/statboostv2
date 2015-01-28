@@ -53,7 +53,16 @@
                                             <td>
                                                 <c:choose>
                                                     <c:when test="${card.ycrMonsterType == null}">N/A</c:when>
-                                                    <c:otherwise>${card.ycrMonsterType}</c:otherwise>
+                                                    <c:otherwise>
+                                                        <c:choose>
+                                                            <c:when test="${card.ycrType == null}">
+                                                                ${card.ycrMonsterType}
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                ${card.ycrMonsterType},${card.ycrType}
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </c:otherwise>
                                                 </c:choose>
                                             </td>
                                         </tr>
