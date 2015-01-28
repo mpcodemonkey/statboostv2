@@ -18,13 +18,26 @@
         -->
 
         <!--Dev Alt connection(DigitalOcean) -->
-
         <property name="hibernate.connection.url">jdbc:mysql://104.131.189.31:3306/statboost</property>
         <property name="hibernate.connection.username">generic</property>
         <property name="hibernate.connection.password">generic11PASSWORD</property>
         <!-- Prod Connection -->
         <!--
         <property name="hibernate.connection.url">jdbc:mysql://10.128.219.28:3306/teamjjac_statboost</property>
+        <property name="hibernate.connection.username">teamjjac_apiuser</property>
+        <property name="hibernate.connection.password">1!a^%=%+Z|6G1:X</property>
+        -->
+
+        <!-- Prod Connection(DOCEAN) -->
+        <!--
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/statboost</property>
+        <property name="hibernate.connection.username">generic</property>
+        <property name="hibernate.connection.password">generic11PASSWORD</property>
+        -->
+
+        <!-- Internal prod Connection -->
+        <!--
+        <property name="hibernate.connection.url">jdbc:mysql://127.0.0.1:3306/teamjjac_statboost</property>
         <property name="hibernate.connection.username">teamjjac_apiuser</property>
         <property name="hibernate.connection.password">1!a^%=%+Z|6G1:X</property>
         -->

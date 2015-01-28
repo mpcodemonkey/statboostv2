@@ -34,7 +34,7 @@ public class GenericDAO{
     public Object getResultSet(QueryObject q, int pageNo){
 
 
-        numberPerPage=15;//hardcoded till not lazy
+        numberPerPage=16;//hardcoded till not lazy
         currentPage = pageNo;
         SessionFactory genericQueryFactory = HibernateUtil.getDatabaseSessionFactory();
         List<Object> resultSet = null;
@@ -67,7 +67,7 @@ public class GenericDAO{
     public Object getResultSetFromSql(QueryObject q, int pageNo){
 
 
-        numberPerPage=15;//hardcoded till not lazy
+        numberPerPage=16;//hardcoded till not lazy
         currentPage = pageNo;
         SessionFactory genericQueryFactory = HibernateUtil.getDatabaseSessionFactory();
         List<Object> resultSet = null;
@@ -96,7 +96,7 @@ public class GenericDAO{
     public Object getResultSetFromSqlIterative(QueryObject q, int pageNo){
 
 
-        numberPerPage=15;//hardcoded till not lazy
+        numberPerPage=16;//hardcoded till not lazy
         currentPage = pageNo;
         SessionFactory genericQueryFactory = HibernateUtil.getDatabaseSessionFactory();
         List<Object> resultSet = null;
