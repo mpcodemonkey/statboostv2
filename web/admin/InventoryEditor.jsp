@@ -454,7 +454,7 @@
                 </div>
                 <div>
                     <div><b>Card Type: </b></div>
-                    <div><input type="text" name="<%=PARAM_YUGIOH_CARD_TYPE%>" value="<%=ServletUtil.hideNulls(yugiohCard.getYcrCardType())%>"></div>
+                    <div><input type="text" name="<%=PARAM_YUGIOH_CARD_TYPE%>" value="<%=ServletUtil.hideNulls(yugiohCard.getYcrSuperType())%>"></div>
                 </div>
                 <div>
                     <div><b>Attribute: </b></div>
@@ -482,7 +482,7 @@
             <div class="col-sm-12">
                 <div>
                     <div><b>Text/Lore: </b></div>
-                    <div><textarea cols="40" rows="5"  name="<%=PARAM_YUGIOH_DESCRIPTION%>"><%=ServletUtil.hideNulls(yugiohCard.getYcrDescription())%></textarea></div>
+                    <div><textarea cols="40" rows="5"  name="<%=PARAM_YUGIOH_DESCRIPTION%>"><%=ServletUtil.hideNulls(yugiohCard.getYcrFlavorText())%></textarea></div>
                 </div>
             </div>
         </div>
