@@ -23,7 +23,19 @@
     <c:forEach items="${requestScope.cardList}" var="card" varStatus="i">
         <c:set var="typeVar" value="${card.ycrSuperType}"/>
         <div class="panel panel-default">
-            <div class="panel-heading"><a href="/Store?yId=${card.ycrUid}">${card.ycrName}</a></div>
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5 style="text-align: left"><a href="/Store?yId=${card.ycrUid}">${card.ycrName}</a></h5>
+                    </div>
+                    <div class="col-md-4">
+                        <h5 style="text-align: center">${card.yugiohSet.ystName}</h5>
+                    </div>
+                    <div class="col-md-4">
+                        <h5 style="text-align: right">${card.ycrCardId}</h5>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-3" style="text-align:center; vertical-align: middle">
                     <img id="YGO-${i.count}" src="//teamjjacs.us/static-images/inventory/yugioh/${card.yugiohSet.ystPathName}/${card.ycrImageName}" class="img-rounded" style="max-height: 200px;" onclick="toggleSize(this.id)" onerror="this.style.display='none'">
@@ -67,15 +79,24 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th>
-                                                Level
-                                            </th>
-                                            <td>
-                                                <c:choose>
-                                                    <c:when test="${card.ycrLevel == null}">N/A</c:when>
-                                                    <c:otherwise>${card.ycrLevel}</c:otherwise>
-                                                </c:choose>
-                                            </td>
+                                            <c:choose>
+                                                <c:when test="${card.ycrLevel != 0}">
+                                                    <th>
+                                                        Level
+                                                    </th>
+                                                    <td>
+                                                        ${card.ycrLevel}
+                                                    </td>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <th>
+                                                        Rank
+                                                    </th>
+                                                    <td>
+                                                        ${card.ycrRank}
+                                                    </td>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </tr>
                                         <tr>
                                             <th>
