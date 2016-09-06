@@ -1,0 +1,6 @@
+{
+  "name": "Statboostv2",
+  "tagline": "E-commerce website for Magic: The Gathering and Yu-Gi-Oh card sales",
+  "body": "## Purpose\r\nThis project was undertaken by Jonathan Tinney, Jessica Willis, Alex Villucci, and Catherine Kramer, for the fulfillment of Senior Project at California State University, Sacramento. The project is an e-commerce site geared towards stores that sell both Magic and Yu-Gi-Oh cards. It contains comprehensive search logic for cards from both games, as well as mandrill integration for sending emails. It also includes support for SSL and encrypted credit card transactions from major credit card vendors through Authorize.net",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
